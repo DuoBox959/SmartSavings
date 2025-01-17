@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Definimos el estándar HTML5 -->
+    <meta charset="UTF-8">
+    <!-- Configuración para diseño responsivo -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Título de la página que aparece en la pestaña del navegador -->
+    <title>Gestión de Productos</title>
+
+    <!-- Vinculación de archivos CSS -->
+    <link rel="stylesheet" href="../style/producto.css">
+
+    <!-- Librerías y scripts necesarios -->
+    <!-- jQuery: Facilita manipulación del DOM y AJAX -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- DataTables: Funcionalidades avanzadas para tablas -->
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <!-- PouchDB: Manejo de bases de datos locales en el navegador -->
+    <script src="../libs/pouchdb-9.0.0.min.js"></script>
+    <!-- Funciones específicas para la gestión de productos -->
+    <script src="../functions/productos.js"></script>
+    <!-- Validaciones personalizadas para los formularios -->
+    <script src="../valid/validaciones.js"></script>
+</head>
+<body>
+    <!-- 🔔 Aviso Importante -->
+    <div id="aviso" style="background-color: #ffeeba; border: 1px solid #f5c6cb; padding: 10px; margin: 10px; border-radius: 5px;">
+        <strong>Aviso:</strong> La base de datos es pública y los datos ingresados pueden estar desactualizados o no ser exactos.
+    </div>
+
+    <!-- 🏷️ Encabezado Principal -->
+    <h1>Gestión de Productos</h1>
+    <!-- Botón para abrir el formulario de agregar un producto -->
+    <button onclick="mostrarFormularioAgregar()">Agregar Producto</button>
+
+    <!-- 📊 Tabla Dinámica -->
+    <table id="productosTable" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <!-- Encabezados de las columnas -->
+                <th>ID</th>
+                <th>Producto</th>
+                <th>Marca</th>
+                <th>Precio Unidad</th>
+                <th>Precio Lote</th>
+                <th>Peso</th> <!-- Nuevo campo -->
+                <th>Última Modificación</th>
+                <th>Supermercado</th>
+                <th>Ubicación</th>
+                <th>Acciones</th> <!-- Para editar o eliminar productos -->
+            </tr>
+        </thead>
+        <!-- Cuerpo dinámico de la tabla (rellenado mediante JavaScript) -->
+        <tbody id="productosBody"></tbody>
+    </table>
+
+    <!-- ✍️ Formulario para Agregar o Editar Productos -->
+    <div id="formularioProducto" style="display: none;">
+        <h2 id="formTitulo">Agregar Producto</h2>
+        <!-- Campo oculto para guardar el ID del producto al editar -->
+        <input type="hidden" id="productoID">
+
+        <!-- Campos del formulario -->
+        <label for="nombreProducto">Nombre del Producto:</label>
+        <input type="text" id="nombreProducto"><br>
+
+        <label for="marcaProducto">Marca:</label>
+        <input type="text" id="marcaProducto"><br>
+
+        <label for="precioUnidad">Precio Unidad:</label>
+        <input type="number" id="precioUnidad" step="0.01" min="0"><br>
+
+        <label for="precioLote">Precio Lote:</label>
+        <input type="number" id="precioLote" step="0.01" min="0"><br>
+
+        <label for="pesoProducto">Peso:</label>
+        <input type="number" id="pesoProducto" step="0.01" min="0" placeholder="Ejemplo: 1.5"><br>
+
+        <label for="unidadPeso">Unidad de Peso:</label>
+        <select id="unidadPeso">
+            <option value="kg">Kilogramos (kg)</option>
+            <option value="g">Gramos (g)</option>
+            <option value="l">Litros (l)</option>
+        </select><br>
+
+        <label for="nombreSupermercado">Supermercado:</label>
+        <input type="text" id="nombreSupermercado"><br>
+
+        <label for="ubicacionSupermercado">Ubicación:</label>
+        <input type="text" id="ubicacionSupermercado"><br>
+
+        <!-- Botones de acción -->
+        <div id="botonesFormulario">
+            <button onclick="guardarCambiosDesdeFormulario()">Guardar</button>
+            <button onclick="cerrarFormulario()">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- 🔙 Botón para regresar -->
+    <button class="back-button" onclick="volverAtras()">Volver Atrás</button>
+</body>
+</html>

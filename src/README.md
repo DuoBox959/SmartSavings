@@ -1,0 +1,1 @@
+En el buscador de producto: Cuando vayas poniendo un caracter te vaya saliendo los productos relacionados, a medida que vayas poniendo mas caracteres te va saliendo una busqueda mas precisa del producto evitando asi, que la gente se confunda con las tildes mayusominus.

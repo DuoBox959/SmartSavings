@@ -1,0 +1,116 @@
+/* 🌟 Reset */
+* {
+  margin: 0; /* Elimina márgenes por defecto */
+  padding: 0; /* Elimina relleno por defecto */
+  box-sizing: border-box; /* Incluye bordes y relleno en el tamaño total de los elementos */
+}
+
+/* 🌐 General */
+body {
+  font-family: 'Roboto', sans-serif; /* Fuente moderna y legible */
+  background: #f3f4f6; /* Fondo claro y suave */
+  color: #333; /* Texto oscuro para mejor contraste */
+  display: flex; /* Crea una disposición en flexbox */
+  flex-direction: column; /* Organiza los hijos en columna */
+  min-height: 100vh; /* Asegura que el cuerpo ocupe toda la altura de la ventana */
+}
+
+.container {
+  flex: 1; /* Permite que el contenedor crezca para llenar el espacio disponible */
+  display: flex;
+  flex-direction: column;
+}
+
+/* 🏷️ Encabezado */
+header {
+  text-align: center; /* Centra el contenido del encabezado */
+  padding: 20px; /* Espaciado interno */
+  background: linear-gradient(145deg, #4caf50, #8bc34a); /* Degradado para un diseño atractivo */
+  color: white; /* Texto blanco para contraste */
+}
+
+header h1 {
+  font-size: 2.5em; /* Tamaño del texto grande para destacar */
+  font-weight: 700; /* Texto en negrita */
+}
+
+header .subtitulo {
+  font-size: 1.2em; /* Tamaño menor para subtítulos */
+  margin-top: 10px; /* Espaciado superior */
+  font-weight: 400; /* Peso de fuente estándar */
+  color: #e8f5e9; /* Color más claro para diferenciar del título */
+}
+
+/* 📦 Tarjetas */
+.tarjetas {
+  display: flex; /* Organiza las tarjetas en fila */
+  justify-content: center; /* Centra horizontalmente las tarjetas */
+  gap: 20px; /* Espaciado entre tarjetas */
+  padding: 30px; /* Espaciado interno alrededor de las tarjetas */
+}
+
+.tarjeta {
+  background: linear-gradient(145deg, #ffffff, #e0e0e0); /* Fondo con efecto de luz suave */
+  color: #333; /* Color del texto */
+  width: 200px; /* Ancho fijo */
+  height: 250px; /* Altura fija */
+  display: flex; /* Disposición en flexbox */
+  flex-direction: column; /* Organiza los hijos en columna */
+  align-items: center; /* Centra los elementos horizontalmente */
+  justify-content: center; /* Centra los elementos verticalmente */
+  border-radius: 12px; /* Bordes redondeados */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Sombra para un efecto elevado */
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease; /* Transiciones suaves */
+  text-align: center; /* Centra el texto */
+  padding: 15px; /* Espaciado interno */
+}
+
+.tarjeta img {
+  width: 80px; /* Ancho de la imagen */
+  height: 80px; /* Altura de la imagen */
+  margin-bottom: 10px; /* Espaciado inferior */
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2)); /* Sombra para la imagen */
+  transition: transform 0.3s ease; /* Transición suave en el hover */
+}
+
+.tarjeta p {
+  font-size: 1em; /* Tamaño estándar de texto */
+  font-weight: 600; /* Texto ligeramente negrita */
+  margin-bottom: 10px; /* Espaciado inferior */
+}
+
+.tarjeta .enlace {
+  font-size: 0.9em; /* Tamaño del texto del enlace */
+  font-weight: 600; /* Negrita ligera */
+  text-decoration: none; /* Sin subrayado */
+  color: #ffffff; /* Texto blanco */
+  background: linear-gradient(145deg, #2196f3, #42a5f5); /* Fondo degradado */
+  padding: 8px 15px; /* Espaciado interno */
+  border-radius: 8px; /* Bordes redondeados */
+  transition: background 0.3s ease, transform 0.3s ease; /* Transiciones suaves */
+}
+
+.tarjeta .enlace:hover {
+  background: linear-gradient(145deg, #1976d2, #1e88e5); /* Fondo más oscuro en hover */
+  transform: scale(1.1); /* Aumenta el tamaño en hover */
+}
+
+/* Hover Effects */
+.tarjeta:hover {
+  transform: scale(1.05); /* Aumenta ligeramente el tamaño */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+}
+
+.tarjeta:hover img {
+  transform: scale(1.1); /* Agranda la imagen en hover */
+}
+
+/* 🛠️ Footer */
+footer {
+  text-align: center; /* Centra el contenido */
+  background: #333; /* Fondo oscuro */
+  color: #eee; /* Texto claro */
+  padding: 15px 20px; /* Espaciado interno */
+  font-size: 0.9em; /* Tamaño pequeño del texto */
+  margin-top: auto; /* Empuja el pie de página al final de la página */
+}

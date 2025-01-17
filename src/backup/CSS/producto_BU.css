@@ -1,0 +1,340 @@
+/* 🌐 Estilo General */
+body {
+    font-family: 'Arial', sans-serif; /* Fuente legible y estándar */
+    background: linear-gradient(135deg, #4caf50, #8bc34a); /* Fondo degradado verde */
+    color: #ffffff; /* Texto blanco para un buen contraste */
+    margin: 0; /* Elimina márgenes por defecto */
+    padding: 0; /* Elimina relleno por defecto */
+    text-align: center; /* Centra el texto horizontalmente */
+}
+
+/* 🏷️ Títulos */
+h1 {
+    font-size: 2.5em; /* Tamaño destacado */
+    margin-top: 20px; /* Espaciado superior */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); /* Sombra elegante */
+}
+
+/* 🔘 Botones Generales */
+button {
+    background-color: #1976d2; /* Azul vibrante */
+    color: white; /* Texto blanco */
+    border: none; /* Sin bordes */
+    padding: 10px 20px; /* Tamaño cómodo para clics */
+    font-size: 1em; /* Texto estándar */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Muestra puntero para indicar clics */
+    margin-bottom: 20px; /* Espaciado inferior */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Transiciones suaves */
+}
+
+button:hover {
+    background-color: #1565c0; /* Azul más oscuro al pasar el cursor */
+    transform: scale(1.05); /* Aumenta ligeramente el tamaño al pasar el cursor */
+}
+
+/* 🔙 Botón de Regreso */
+.back-button {
+    background-color: #4caf50; /* Verde para diferenciar de otros botones */
+    color: white; /* Texto blanco */
+    border: none; /* Sin bordes */
+    padding: 10px 15px; /* Tamaño cómodo para clics */
+    font-size: 1em; /* Texto estándar */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Muestra puntero para indicar clics */
+    margin-top: 20px; /* Espaciado superior */
+    transition: background-color 0.3s ease; /* Transición suave */
+}
+
+.back-button:hover {
+    background-color: #388e3c; /* Verde más oscuro al pasar el cursor */
+}
+
+/* 📊 Estilo de la Tabla */
+table.dataTable {
+    width: 100%; /* Ocupa todo el ancho disponible */
+    background-color: #ffffff; /* Fondo blanco */
+    border-collapse: collapse; /* Elimina bordes duplicados */
+    color: #333; /* Texto oscuro */
+    margin: 0 auto; /* Centra la tabla horizontalmente */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para resaltar */
+}
+
+/* Encabezados de la Tabla */
+table.dataTable thead th {
+    background-color: #1976d2; /* Fondo azul */
+    color: white; /* Texto blanco */
+    padding: 10px; /* Espaciado interno */
+    text-align: center; /* Centra el texto */
+    font-size: 1em; /* Tamaño estándar del texto */
+}
+
+/* Celdas del Cuerpo de la Tabla */
+table.dataTable tbody td {
+    padding: 10px; /* Espaciado interno */
+    text-align: center; /* Centra el texto */
+    font-size: 0.9em; /* Tamaño ligeramente reducido */
+}
+
+/* Fila Alternada */
+table.dataTable tbody tr:nth-child(even) {
+    background-color: #f9f9f9; /* Fondo gris claro para filas pares */
+}
+
+/* Fila en Hover */
+table.dataTable tbody tr:hover {
+    background-color: #e3f2fd; /* Azul claro al pasar el cursor */
+}
+
+/* 🔍 Controles de la Tabla */
+.dataTables_length,
+.dataTables_filter {
+    color: #333; /* Texto oscuro */
+    font-size: 1em; /* Tamaño estándar */
+    margin-bottom: 10px; /* Espaciado inferior */
+}
+
+/* Estilo del Texto de Controles */
+.dataTables_filter label,
+.dataTables_length label {
+    color: #333; /* Texto oscuro */
+}
+
+/* 💾 Envolvente de la Tabla */
+.dataTables_wrapper {
+    width: 90%; /* Ocupa el 90% del ancho disponible */
+    margin: 0 auto; /* Centra el contenedor */
+    background: white; /* Fondo blanco */
+    border-radius: 10px; /* Bordes redondeados */
+    padding: 20px; /* Espaciado interno */
+}
+
+/* Alineación de Controles */
+.dataTables_length {
+    float: left; /* Alinea a la izquierda */
+}
+
+.dataTables_filter {
+    float: right; /* Alinea a la derecha */
+}
+
+
+/* 🌐 Estilo Responsive */
+
+/* 📱 Para pantallas pequeñas: móviles (máximo 576px de ancho) */
+@media (max-width: 576px) {
+    body {
+        font-size: 0.9em; /* Reduce el tamaño general del texto */
+    }
+
+    h1 {
+        font-size: 1.8em; /* Ajusta el tamaño del título */
+    }
+
+    #formularioProducto {
+        width: 100%; /* Ocupa todo el ancho de la pantalla */
+        padding: 15px; /* Reduce el relleno interno */
+    }
+
+    #formularioProducto input,
+    #formularioProducto select {
+        font-size: 0.9em; /* Reduce el tamaño del texto de los campos */
+    }
+
+    #formularioProducto button {
+        width: 100%; /* Los botones ocupan todo el ancho */
+        margin: 10px 0; /* Espaciado vertical */
+    }
+
+    table.dataTable {
+        font-size: 0.8em; /* Reduce el tamaño del texto */
+    }
+
+    .dataTables_wrapper {
+        padding: 10px; /* Reduce el relleno interno */
+    }
+}
+
+/* 📲 Para tabletas (máximo 768px de ancho) */
+@media (max-width: 768px) {
+    body {
+        font-size: 1em; /* Ajusta el tamaño general del texto */
+    }
+
+    h1 {
+        font-size: 2em; /* Reduce ligeramente el tamaño del título */
+    }
+
+    #formularioProducto {
+        width: 90%; /* Mantén un ancho proporcional */
+    }
+
+    #formularioProducto button {
+        width: 48%; /* Botones en dos columnas */
+        margin: 5px 1%; /* Ajusta el margen */
+    }
+
+    table.dataTable {
+        font-size: 0.9em; /* Ajusta el tamaño del texto */
+    }
+
+    .dataTables_wrapper {
+        padding: 15px; /* Ajusta el relleno interno */
+    }
+}
+
+/* 💻 Para pantallas pequeñas de ordenadores (máximo 992px de ancho) */
+@media (max-width: 992px) {
+    body {
+        font-size: 1.1em; /* Aumenta ligeramente el tamaño del texto */
+    }
+
+    h1 {
+        font-size: 2.2em; /* Ajusta el tamaño del título */
+    }
+
+    #formularioProducto {
+        max-width: 80%; /* Reduce el ancho máximo */
+    }
+
+    #formularioProducto button {
+        width: 45%; /* Botones ligeramente más pequeños */
+    }
+
+    table.dataTable {
+        font-size: 1em; /* Mantén el tamaño estándar del texto */
+    }
+
+    .dataTables_wrapper {
+        padding: 20px; /* Mantén un relleno cómodo */
+    }
+}
+
+/* 🖥️ General para dispositivos con pantallas más grandes */
+@media (min-width: 993px) {
+    body {
+        font-size: 1.2em; /* Texto ligeramente más grande */
+    }
+
+    h1 {
+        font-size: 2.5em; /* Tamaño estándar del título */
+    }
+
+    #formularioProducto {
+        max-width: 600px; /* Mantén el ancho máximo del formulario */
+    }
+
+    table.dataTable {
+        font-size: 1em; /* Texto estándar */
+    }
+
+    .dataTables_wrapper {
+        padding: 25px; /* Amplía el relleno interno */
+    }
+}
+
+
+
+/* 🌐 Estilo del Formulario */
+#formularioProducto {
+    display: none; /* Inicialmente oculto */
+    background: white; /* Fondo blanco para contraste */
+    color: #333; /* Texto oscuro para legibilidad */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para resaltarlo */
+    width: 90%; /* Ajusta el ancho */
+    max-width: 600px; /* Máximo ancho para pantallas grandes */
+    margin: 20px auto; /* Centra horizontalmente */
+    padding: 20px; /* Espaciado interno */
+    text-align: left; /* Alinea el contenido a la izquierda */
+}
+
+/* Título del Formulario */
+#formularioProducto h2 {
+    font-size: 1.8em; /* Tamaño destacado */
+    margin-bottom: 20px; /* Espaciado inferior */
+    text-align: center; /* Centra el texto del título */
+    color: #1976d2; /* Azul acorde al diseño general */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Sombra ligera */
+}
+
+/* Etiquetas */
+#formularioProducto label {
+    display: block; /* Asegura que ocupen toda la línea */
+    font-size: 1em; /* Tamaño legible */
+    margin-bottom: 5px; /* Espaciado inferior */
+    color: #333; /* Color oscuro */
+    font-weight: bold; /* Destaca las etiquetas */
+}
+
+/* Campos de Entrada */
+#formularioProducto input,
+#formularioProducto select {
+    width: 100%; /* Ocupa todo el ancho del formulario */
+    padding: 10px; /* Espaciado interno */
+    margin-bottom: 15px; /* Espaciado inferior */
+    font-size: 1em; /* Tamaño del texto */
+    border: 1px solid #ccc; /* Bordes grises */
+    border-radius: 5px; /* Bordes redondeados */
+    box-sizing: border-box; /* Incluye el relleno en el ancho */
+}
+
+/* Estilo de los Select */
+#formularioProducto select {
+    background: #f9f9f9; /* Fondo claro */
+    cursor: pointer; /* Muestra puntero */
+}
+
+/* Botones del Formulario */
+#formularioProducto button {
+    width: 48%; /* Mitad del ancho del formulario */
+    padding: 10px; /* Espaciado interno */
+    font-size: 1em; /* Texto estándar */
+    margin: 5px 1%; /* Espaciado con un pequeño margen */
+    border-radius: 5px; /* Bordes redondeados */
+    border: none; /* Sin bordes */
+    cursor: pointer; /* Indica interacción */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Transiciones suaves */
+}
+
+/* Botón Guardar */
+#formularioProducto button:nth-child(1) {
+    background-color: #4caf50; /* Verde */
+    color: white; /* Texto blanco */
+}
+
+#formularioProducto button:nth-child(1):hover {
+    background-color: #388e3c; /* Verde más oscuro */
+    transform: scale(1.05); /* Aumenta ligeramente */
+}
+
+/* Botón Cancelar */
+#formularioProducto button:nth-child(2) {
+    background-color: #f44336; /* Rojo */
+    color: white; /* Texto blanco */
+}
+
+#formularioProducto button:nth-child(2):hover {
+    background-color: #d32f2f; /* Rojo más oscuro */
+    transform: scale(1.05); /* Aumenta ligeramente */
+}
+
+#botonesFormulario {
+    text-align: center;
+}
+
+.btn-eliminar {
+    background-color: #f44336; /* Rojo */
+    color: white; /* Texto blanco */
+    border: none; /* Sin bordes */
+    padding: 10px 20px; /* Tamaño cómodo */
+    font-size: 1em; /* Texto estándar */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cursor de puntero */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Transición suave */
+}
+
+.btn-eliminar:hover {
+    background-color: #d32f2f; /* Rojo más oscuro al pasar el cursor */
+    transform: scale(1.05); /* Efecto de aumento ligero */
+}

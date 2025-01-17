@@ -1,0 +1,116 @@
+/* 🌟 Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 🌐 General */
+body {
+  font-family: 'Roboto', sans-serif;
+  background: #f3f4f6;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 🏷️ Encabezado */
+header {
+  text-align: center;
+  padding: 20px;
+  background: linear-gradient(145deg, #4caf50, #8bc34a);
+  color: white;
+}
+
+header h1 {
+  font-size: 2.5em;
+  font-weight: 700;
+}
+
+header .subtitulo {
+  font-size: 1.2em;
+  margin-top: 10px;
+  font-weight: 400;
+  color: #e8f5e9;
+}
+
+/* 📦 Tarjetas */
+.tarjetas {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 30px;
+}
+
+.tarjeta {
+  background: linear-gradient(145deg, #ffffff, #e0e0e0);
+  color: #333;
+  width: 200px;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  text-align: center;
+  padding: 15px;
+}
+
+.tarjeta img {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 10px;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+  transition: transform 0.3s ease;
+}
+
+.tarjeta p {
+  font-size: 1em;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.tarjeta .enlace {
+  font-size: 0.9em;
+  font-weight: 600;
+  text-decoration: none;
+  color: #ffffff;
+  background: linear-gradient(145deg, #2196f3, #42a5f5);
+  padding: 8px 15px;
+  border-radius: 8px;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.tarjeta .enlace:hover {
+  background: linear-gradient(145deg, #1976d2, #1e88e5);
+  transform: scale(1.1);
+}
+
+/* Hover Effects */
+.tarjeta:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.tarjeta:hover img {
+  transform: scale(1.1);
+}
+
+/* 🛠️ Footer */
+footer {
+  text-align: center;
+  background: #333;
+  color: #eee;
+  padding: 15px 20px;
+  font-size: 0.9em;
+  margin-top: auto;
+}
