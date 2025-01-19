@@ -23,22 +23,55 @@ body {
 
 /* 🏷️ Encabezado */
 header {
-  text-align: center; /* Centra el contenido del encabezado */
+  display: flex; /* Flexbox para organizar elementos en fila */
+  align-items: center; /* Centra los elementos verticalmente */
+  justify-content: space-between; /* Distribuye los elementos uniformemente */
   padding: 20px; /* Espaciado interno */
-  background: linear-gradient(145deg, #4caf50, #8bc34a); /* Degradado para un diseño atractivo */
-  color: white; /* Texto blanco para contraste */
+  background: #A8D5BA; /* Verde oliva suave para un diseño acogedor */
+  color: #2C3E34; /* Verde oscuro para buen contraste */
 }
 
-header h1 {
-  font-size: 2.5em; /* Tamaño del texto grande para destacar */
-  font-weight: 700; /* Texto en negrita */
+/* Estilo del logo (sección izquierda) */
+header .logo h1 {
+  font-size: 1.8em; /* Tamaño adecuado para el logo */
+  font-weight: 700; /* Negrita */
+  margin: 0; /* Elimina márgenes */
+  color: #2C3E34; /* Verde oscuro */
 }
 
-header .subtitulo {
+/* Estilo del eslogan (sección central) */
+header .eslogan {
+  text-align: center; /* Alinea el texto al centro */
+  flex-grow: 1; /* Permite que el eslogan ocupe el espacio sobrante */
+}
+
+header .eslogan .subtitulo {
   font-size: 1.2em; /* Tamaño menor para subtítulos */
-  margin-top: 10px; /* Espaciado superior */
-  font-weight: 400; /* Peso de fuente estándar */
-  color: #e8f5e9; /* Color más claro para diferenciar del título */
+  margin: 0; /* Elimina márgenes */
+  font-weight: 400; /* Peso estándar */
+  color: #345E4D; /* Verde ligeramente más claro para destacar */
+}
+
+/* Estilo de los enlaces (sección derecha) */
+header .acciones {
+  display: flex; /* Alinea los enlaces en fila */
+  gap: 15px; /* Espaciado entre los enlaces */
+}
+
+header .acciones .enlace {
+  font-size: 1em; /* Tamaño estándar */
+  color: #2C3E34; /* Verde oscuro */
+  text-decoration: none; /* Elimina subrayado */
+  font-weight: 500; /* Peso medio */
+  padding: 5px 10px; /* Espaciado interno */
+  border: 1px solid #2C3E34; /* Borde verde oscuro */
+  border-radius: 5px; /* Bordes redondeados */
+  transition: background 0.3s; /* Transición suave al pasar el mouse */
+}
+
+header .acciones .enlace:hover {
+  background: #2C3E34; /* Fondo verde oscuro al pasar el mouse */
+  color: #A8D5BA; /* Texto verde oliva suave */
 }
 
 /* 📦 Tarjetas */
@@ -113,4 +146,176 @@ footer {
   padding: 15px 20px; /* Espaciado interno */
   font-size: 0.9em; /* Tamaño pequeño del texto */
   margin-top: auto; /* Empuja el pie de página al final de la página */
+  border-top: 1px solid #444; /* Línea superior sutil para separación */
+}
+
+/* Enlaces del footer */
+footer .footer-enlaces {
+  margin-top: 10px; /* Espaciado entre el texto y los enlaces */
+}
+
+footer .footer-enlaces a {
+  color: #81C784; /* Verde claro para los enlaces */
+  text-decoration: none; /* Sin subrayado */
+  font-weight: 500; /* Peso medio */
+  margin: 0 5px; /* Espaciado horizontal entre los enlaces */
+  transition: color 0.3s; /* Transición suave para el hover */
+}
+
+footer .footer-enlaces a:hover {
+  color: #A8D5BA; /* Verde oliva suave al pasar el mouse */
+}
+
+/* 🍪 Banner de Cookies */
+.cookies-banner {
+  position: fixed; /* Se queda fijo en la parte inferior */
+  bottom: 0; /* Pegado al borde inferior */
+  left: 0;
+  width: 100%; /* Ocupa todo el ancho de la pantalla */
+  background: #333; /* Fondo blanco con sombra sutil */
+  color: #ffffff; /* Texto oscuro */
+  padding: 15px 30px; /* Espaciado interno */
+  font-size: 1em; /* Tamaño de texto cómodo */
+  display: flex; /* Alineación flexible */
+  justify-content: center; /* Centra el contenido */
+  align-items: center; /* Centrado vertical */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+  z-index: 1000; /* Asegura que se vea sobre el contenido */
+}
+
+.cookies-content {
+  max-width: 1000px; /* Limita el ancho del contenido */
+  width: 100%; /* Asegura que ocupe todo el ancho disponible */
+  text-align: center; /* Alineación centrada */
+}
+
+.cookies-banner p {
+  margin: 0; /* Elimina márgenes */
+  font-weight: 400; /* Peso estándar */
+  font-family: 'Roboto', sans-serif; /* Fuente agradable */
+}
+
+.cookies-link {
+  color: #A8D5BA; /* Verde oliva suave */
+  text-decoration: none; /* Sin subrayado */
+  font-weight: 500; /* Peso medio */
+}
+
+.cookies-link:hover {
+  color: #81C784; /* Verde más claro al pasar el mouse */
+}
+
+.cookies-buttons {
+  margin-top: 15px; /* Espaciado entre texto y botones */
+  display: flex;
+  justify-content: center; /* Centra los botones */
+  gap: 15px; /* Espaciado entre los botones */
+}
+
+.cookies-btn {
+  background: #78ce9a; /* Fondo verde oliva */
+  color: #fff; /* Texto blanco */
+  border: none; /* Sin borde */
+  padding: 12px 25px; /* Espaciado interno */
+  border-radius: 5px; /* Bordes redondeados */
+  font-size: 1em; /* Tamaño de texto más grande */
+  cursor: pointer; /* Manito para indicar clic */
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Transiciones suaves */
+}
+
+.cookies-btn:hover {
+  background: #81C784; /* Verde más claro al pasar el mouse */
+  transform: scale(1.05); /* Efecto de aumentar ligeramente el tamaño */
+}
+
+.cookies-rechazar {
+  background: #FF4B5C; /* Color rojo para el botón de rechazar */
+}
+
+.cookies-rechazar:hover {
+  background: #FF6B80; /* Rojo más claro al pasar el mouse */
+}
+
+/* 🍪 Banner de Cookies */
+.cookies-banner {
+  position: fixed; /* Se queda fijo en la parte inferior */
+  bottom: 0; /* Pegado al borde inferior */
+  left: 0;
+  width: 100%; /* Ocupa todo el ancho de la pantalla */
+  background: #333;
+  color: #ffffff; 
+  padding: 15px 30px; /* Espaciado interno */
+  font-size: 1em; /* Tamaño de texto cómodo */
+  display: flex; /* Alineación flexible */
+  justify-content: center; /* Centra el contenido */
+  align-items: center; /* Centrado vertical */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+  z-index: 1001; /* Asegura que se vea sobre el contenido */
+}
+
+.cookies-content {
+  max-width: 1000px; /* Limita el ancho del contenido */
+  width: 100%; /* Asegura que ocupe todo el ancho disponible */
+  text-align: center; /* Alineación centrada */
+}
+
+.cookies-banner p {
+  margin: 0; /* Elimina márgenes */
+  font-weight: 400; /* Peso estándar */
+  font-family: 'Roboto', sans-serif; /* Fuente agradable */
+}
+
+.cookies-link {
+  color: #A8D5BA; /* Verde oliva suave */
+  text-decoration: none; /* Sin subrayado */
+  font-weight: 500; /* Peso medio */
+}
+
+.cookies-link:hover {
+  color: #81C784; /* Verde más claro al pasar el mouse */
+}
+
+.cookies-buttons {
+  margin-top: 15px; /* Espaciado entre texto y botones */
+  display: flex;
+  justify-content: center; /* Centra los botones */
+  gap: 15px; /* Espaciado entre los botones */
+}
+
+.cookies-btn {
+  background: #7bbb95;
+  color: #fff; /* Texto blanco */
+  border: none; /* Sin borde */
+  padding: 12px 25px; /* Espaciado interno */
+  border-radius: 5px; /* Bordes redondeados */
+  font-size: 1em; /* Tamaño de texto más grande */
+  cursor: pointer; /* Manito para indicar clic */
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Transiciones suaves */
+}
+
+.cookies-btn:hover {
+  background: #81C784; /* Verde más claro al pasar el mouse */
+  transform: scale(1.05); /* Efecto de aumentar ligeramente el tamaño */
+}
+
+.cookies-rechazar {
+  background: #FF4B5C; /* Color rojo para el botón de rechazar */
+}
+
+.cookies-rechazar:hover {
+  background: #FF6B80; /* Rojo más claro al pasar el mouse */
+}
+
+/* 🍪 Superposición para bloquear el contenido */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7); /* Fondo oscuro y más opaco */
+  z-index: 1000; /* Se asegura que quede debajo del banner de cookies */
+  display: none; /* Inicialmente oculto */
+  pointer-events: auto; /* Permite interactuar con la superposición */
+  filter: blur(5px); /* Aplica un desenfoque al contenido */
 }
