@@ -1,52 +1,57 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
+  <head>
     <!-- Meta información básica -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Comparador de Precios</title>
 
     <!-- Enlace a la hoja de estilos -->
-    <link rel="stylesheet" href="../style/comparador.css">
-    <link rel="stylesheet" href="../style/responsivo.css">
-    
+    <link rel="stylesheet" href="../style/comparador.css" />
+    <link rel="stylesheet" href="../style/responsivo.css" />
+
     <!-- Carga de PouchDB desde una librería local -->
     <!-- Asegúrate de que la ruta del archivo `pouchdb-9.0.0.min.js` sea correcta -->
     <script src="../libs/pouchdb-9.0.0.min.js"></script>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Título principal de la página -->
     <h1>Comparador de Precios</h1>
 
     <!-- Formulario para la selección de producto y tiendas -->
     <form id="comparadorForm">
-        <!-- Selector de productos -->
-        <label for="producto">Producto:</label>
-        <select id="producto" onchange="cargarTiendas()">
-            <!-- Opción por defecto para indicar que el usuario debe seleccionar algo -->
-            <option value="">Selecciona un producto</option>
-        </select>
+      <!-- Selector de productos -->
+      <label for="producto">Producto:</label>
+      <select id="producto" onchange="cargarTiendas()">
+        <!-- Opción por defecto para indicar que el usuario debe seleccionar algo -->
+        <option value="">Selecciona un producto</option>
+      </select>
 
-        <!-- Selector para la primera tienda -->
-        <label for="tienda1">Tienda 1:</label>
-        <select id="tienda1">
-            <option value="">Selecciona una tienda</option>
-        </select>
+      <!-- Selector para la primera tienda -->
+      <label for="tienda1">Tienda 1:</label>
+      <select id="tienda1">
+        <option value="">Selecciona una tienda</option>
+      </select>
 
-        <!-- Selector para la segunda tienda -->
-        <label for="tienda2">Tienda 2:</label>
-        <select id="tienda2">
-            <option value="">Selecciona una tienda</option>
-        </select>
-        <!-- Botón para añadir más tiendas debajo del selector de Tienda 2 -->
-        <button type="button" id="addStoreButton" onclick="añadirSelectorTienda()">+</button>
+      <!-- Selector para la segunda tienda -->
+      <label for="tienda2">Tienda 2:</label>
+      <select id="tienda2">
+        <option value="">Selecciona una tienda</option>
+      </select>
+      <!-- Botón para añadir más tiendas debajo del selector de Tienda 2 -->
+      <button
+        type="button"
+        id="addStoreButton"
+        onclick="añadirSelectorTienda()"
+      >
+        +
+      </button>
 
-        <!-- Contenedor para selectores adicionales de tiendas -->
-        <div id="extraStores"></div>
+      <!-- Contenedor para selectores adicionales de tiendas -->
+      <div id="extraStores"></div>
 
-
-        <!-- Botón para realizar la comparación -->
-        <button type="button" onclick="compararPrecios()">Comparar</button>
+      <!-- Botón para realizar la comparación -->
+      <button type="button" onclick="compararPrecios()">Comparar</button>
     </form>
 
     <!-- Contenedor donde se mostrarán los resultados de la comparación -->
@@ -59,5 +64,5 @@
     <!-- Carga del archivo JavaScript con las funciones necesarias -->
     <!-- Verifica que la ruta de `comparador.js` sea correcta -->
     <script src="../functions/comparador.js"></script>
-</body>
+  </body>
 </html>

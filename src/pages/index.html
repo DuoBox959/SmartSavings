@@ -1,85 +1,103 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
+  <head>
     <!-- Definimos el estándar HTML5 -->
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <!-- Hacemos que el diseño sea responsive para dispositivos móviles -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Título de la página que se muestra en la pestaña del navegador -->
     <title>Inicio | Comparador de Precios</title>
 
     <!-- Importación de fuentes externas desde Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <!-- Vinculación al archivo de estilos CSS específico para esta página -->
-    <link rel="stylesheet" href="../style/index.css">
+    <link rel="stylesheet" href="../style/index.css" />
 
     <!-- Vinculación al archivo JavaScript con carga diferida -->
     <script src="../functions/index.js" defer></script>
-</head>
-<body>
+  </head>
+  <body>
     <!-- 🏷️ Encabezado Principal -->
-<header>
-    <div class="logo">
+    <header>
+      <div class="logo">
         <h1>ComparaTú</h1>
-    </div>
-    <div class="eslogan">
-        <p class="subtitulo">Encuentra las mejores ofertas y organiza tus productos fácilmente</p>
-    </div>
-    <div class="acciones">
+      </div>
+      <div class="eslogan">
+        <p class="subtitulo">
+          Encuentra las mejores ofertas y organiza tus productos fácilmente
+        </p>
+      </div>
+      <div class="acciones">
         <a href="#registrarte" class="enlace">Registrate</a>
         <a href="#iniciar-sesion" class="enlace">Iniciar Sesión</a>
-    </div>
-</header>
+      </div>
+    </header>
 
     <div class="container">
-        
-        <!-- 📦 Contenido Principal -->
-        <main>
-            <section class="tarjetas">
-                <!-- Tarjeta 1: Gestión de Productos -->
-                <div class="tarjeta">
-                    <!-- Imagen representativa -->
-                    <img src="https://via.placeholder.com/150?text=API" alt="API" class="icono">
-                    <!-- Enlace a la página de gestión de productos -->
-                    <a href="productos.html" class="enlace">Gestión de Productos</a>
-                </div>
+      <!-- 📦 Contenido Principal -->
+      <main>
+        <section class="tarjetas">
+          <!-- Tarjeta 1: Gestión de Productos -->
+          <div class="tarjeta">
+            <!-- Imagen representativa -->
+            <img
+              src="https://via.placeholder.com/150?text=API"
+              alt="API"
+              class="icono"
+            />
+            <!-- Enlace a la página de gestión de productos -->
+            <a href="productos.html" class="enlace">Gestión de Productos</a>
+          </div>
 
-                <!-- Tarjeta 2: Comparador de Precios -->
-                <div class="tarjeta">
-                    <!-- Imagen representativa -->
-                    <img src="https://via.placeholder.com/150?text=Web" alt="Desarrollo Web" class="icono">
-                    <!-- Enlace a la página del comparador -->
-                    <a href="comparador.html" class="enlace">Comparador de Precios</a>
-                </div>
-            </section>
-        </main>
-
-      
+          <!-- Tarjeta 2: Comparador de Precios -->
+          <div class="tarjeta">
+            <!-- Imagen representativa -->
+            <img
+              src="https://via.placeholder.com/150?text=Web"
+              alt="Desarrollo Web"
+              class="icono"
+            />
+            <!-- Enlace a la página del comparador -->
+            <a href="comparador.html" class="enlace">Comparador de Precios</a>
+          </div>
+        </section>
+      </main>
     </div>
-      <!-- 🛠️ Pie de Página -->
-<footer>
-    <p>&copy; 2025 Comparador de Precios. Todos los derechos reservados a Francisco Javier Domínguez y Rubén Fernández Páez.</p>
-    <div class="footer-enlaces">
-      <a href="#aviso-legal">Aviso Legal</a> |
-      <a href="#politica-privacidad">Política de Privacidad</a> |
-      <a href="#terminos-condiciones">Términos y Condiciones</a>
-    </div>
-  </footer>
-<!-- 🍪 Banner de Cookies -->
-<div class="cookies-banner" id="cookies-banner">
-    <div class="cookies-content">
+    <!-- 🛠️ Pie de Página -->
+    <footer>
+      <p>
+        &copy; 2025 Comparador de Precios. Todos los derechos reservados a
+        Francisco Javier Domínguez y Rubén Fernández Páez.
+      </p>
+      <div class="footer-enlaces">
+        <a href="avisolegal.html">Aviso Legal</a> |
+        <a href="politicaprivacidad.html">Política de Privacidad</a> |
+        <a href="terminoscondiciones.html">Términos y Condiciones</a>
+      </div>
+    </footer>
+    <!-- 🍪 Banner de Cookies -->
+    <div class="cookies-banner" id="cookies-banner">
+      <div class="cookies-content">
         <p>
-            Este sitio web utiliza cookies para mejorar tu experiencia. Al continuar navegando, aceptas su uso. 
-            <a href="#politica-cookies" class="cookies-link">Leer más</a>.
+          Este sitio web utiliza cookies para mejorar tu experiencia. Al
+          continuar navegando, aceptas su uso.
+          <a href="#politica-cookies" class="cookies-link">Leer más</a>.
         </p>
         <div class="cookies-buttons">
-            <button id="aceptar-cookies" class="cookies-btn cookies-aceptar">Aceptar</button>
-            <button id="rechazar-cookies" class="cookies-btn cookies-rechazar">Rechazar</button>
+          <button id="aceptar-cookies" class="cookies-btn cookies-aceptar">
+            Aceptar
+          </button>
+          <button id="rechazar-cookies" class="cookies-btn cookies-rechazar">
+            Rechazar
+          </button>
         </div>
+      </div>
     </div>
-</div>
 
-<!-- 🛠️ Superposición para difuminar el fondo -->
-<div class="overlay" id="overlay"></div> 
-</body>
+    <!-- 🛠️ Superposición para difuminar el fondo -->
+    <div class="overlay" id="overlay"></div>
+  </body>
 </html>

@@ -7,8 +7,8 @@
 
 /* 🌐 General */
 body {
-  font-family: 'Roboto', sans-serif; /* Fuente moderna y legible */
-  background: #f3f4f6; /* Fondo claro y suave */
+  font-family: "Roboto", sans-serif; /* Fuente moderna y legible */
+  background: #cecfcfe8;
   color: #333; /* Texto oscuro para mejor contraste */
   display: flex; /* Crea una disposición en flexbox */
   flex-direction: column; /* Organiza los hijos en columna */
@@ -27,8 +27,8 @@ header {
   align-items: center; /* Centra los elementos verticalmente */
   justify-content: space-between; /* Distribuye los elementos uniformemente */
   padding: 20px; /* Espaciado interno */
-  background: #A8D5BA; /* Verde oliva suave para un diseño acogedor */
-  color: #2C3E34; /* Verde oscuro para buen contraste */
+  background: #a8d5ba; /* Verde oliva suave para un diseño acogedor */
+  color: #2c3e34; /* Verde oscuro para buen contraste */
 }
 
 /* Estilo del logo (sección izquierda) */
@@ -36,7 +36,7 @@ header .logo h1 {
   font-size: 1.8em; /* Tamaño adecuado para el logo */
   font-weight: 700; /* Negrita */
   margin: 0; /* Elimina márgenes */
-  color: #2C3E34; /* Verde oscuro */
+  color: #2c3e34; /* Verde oscuro */
 }
 
 /* Estilo del eslogan (sección central) */
@@ -49,7 +49,7 @@ header .eslogan .subtitulo {
   font-size: 1.2em; /* Tamaño menor para subtítulos */
   margin: 0; /* Elimina márgenes */
   font-weight: 400; /* Peso estándar */
-  color: #345E4D; /* Verde ligeramente más claro para destacar */
+  color: #345e4d; /* Verde ligeramente más claro para destacar */
 }
 
 /* Estilo de los enlaces (sección derecha) */
@@ -60,18 +60,18 @@ header .acciones {
 
 header .acciones .enlace {
   font-size: 1em; /* Tamaño estándar */
-  color: #2C3E34; /* Verde oscuro */
+  color: #2c3e34; /* Verde oscuro */
   text-decoration: none; /* Elimina subrayado */
   font-weight: 500; /* Peso medio */
   padding: 5px 10px; /* Espaciado interno */
-  border: 1px solid #2C3E34; /* Borde verde oscuro */
+  border: 1px solid #2c3e34; /* Borde verde oscuro */
   border-radius: 5px; /* Bordes redondeados */
   transition: background 0.3s; /* Transición suave al pasar el mouse */
 }
 
 header .acciones .enlace:hover {
-  background: #2C3E34; /* Fondo verde oscuro al pasar el mouse */
-  color: #A8D5BA; /* Texto verde oliva suave */
+  background: #2c3e34; /* Fondo verde oscuro al pasar el mouse */
+  color: #a8d5ba; /* Texto verde oliva suave */
 }
 
 /* 📦 Tarjetas */
@@ -83,7 +83,11 @@ header .acciones .enlace:hover {
 }
 
 .tarjeta {
-  background: linear-gradient(145deg, #ffffff, #e0e0e0); /* Fondo con efecto de luz suave */
+  background: linear-gradient(
+    145deg,
+    #ffffff,
+    #e0e0e0
+  ); /* Fondo con efecto de luz suave */
   color: #333; /* Color del texto */
   width: 200px; /* Ancho fijo */
   height: 250px; /* Altura fija */
@@ -124,7 +128,11 @@ header .acciones .enlace:hover {
 }
 
 .tarjeta .enlace:hover {
-  background: linear-gradient(145deg, #1976d2, #1e88e5); /* Fondo más oscuro en hover */
+  background: linear-gradient(
+    145deg,
+    #1976d2,
+    #1e88e5
+  ); /* Fondo más oscuro en hover */
   transform: scale(1.1); /* Aumenta el tamaño en hover */
 }
 
@@ -155,7 +163,7 @@ footer .footer-enlaces {
 }
 
 footer .footer-enlaces a {
-  color: #81C784; /* Verde claro para los enlaces */
+  color: #81c784; /* Verde claro para los enlaces */
   text-decoration: none; /* Sin subrayado */
   font-weight: 500; /* Peso medio */
   margin: 0 5px; /* Espaciado horizontal entre los enlaces */
@@ -163,7 +171,7 @@ footer .footer-enlaces a {
 }
 
 footer .footer-enlaces a:hover {
-  color: #A8D5BA; /* Verde oliva suave al pasar el mouse */
+  color: #a8d5ba; /* Verde oliva suave al pasar el mouse */
 }
 
 /* 🍪 Banner de Cookies */
@@ -192,17 +200,17 @@ footer .footer-enlaces a:hover {
 .cookies-banner p {
   margin: 0; /* Elimina márgenes */
   font-weight: 400; /* Peso estándar */
-  font-family: 'Roboto', sans-serif; /* Fuente agradable */
+  font-family: "Roboto", sans-serif; /* Fuente agradable */
 }
 
 .cookies-link {
-  color: #A8D5BA; /* Verde oliva suave */
+  color: #a8d5ba; /* Verde oliva suave */
   text-decoration: none; /* Sin subrayado */
   font-weight: 500; /* Peso medio */
 }
 
 .cookies-link:hover {
-  color: #81C784; /* Verde más claro al pasar el mouse */
+  color: #81c784; /* Verde más claro al pasar el mouse */
 }
 
 .cookies-buttons {
@@ -224,16 +232,16 @@ footer .footer-enlaces a:hover {
 }
 
 .cookies-btn:hover {
-  background: #81C784; /* Verde más claro al pasar el mouse */
+  background: #81c784; /* Verde más claro al pasar el mouse */
   transform: scale(1.05); /* Efecto de aumentar ligeramente el tamaño */
 }
 
 .cookies-rechazar {
-  background: #FF4B5C; /* Color rojo para el botón de rechazar */
+  background: #ff4b5c; /* Color rojo para el botón de rechazar */
 }
 
 .cookies-rechazar:hover {
-  background: #FF6B80; /* Rojo más claro al pasar el mouse */
+  background: #ff6b80; /* Rojo más claro al pasar el mouse */
 }
 
 /* 🍪 Banner de Cookies */
@@ -243,7 +251,7 @@ footer .footer-enlaces a:hover {
   left: 0;
   width: 100%; /* Ocupa todo el ancho de la pantalla */
   background: #333;
-  color: #ffffff; 
+  color: #ffffff;
   padding: 15px 30px; /* Espaciado interno */
   font-size: 1em; /* Tamaño de texto cómodo */
   display: flex; /* Alineación flexible */
@@ -262,17 +270,17 @@ footer .footer-enlaces a:hover {
 .cookies-banner p {
   margin: 0; /* Elimina márgenes */
   font-weight: 400; /* Peso estándar */
-  font-family: 'Roboto', sans-serif; /* Fuente agradable */
+  font-family: "Roboto", sans-serif; /* Fuente agradable */
 }
 
 .cookies-link {
-  color: #A8D5BA; /* Verde oliva suave */
+  color: #a8d5ba; /* Verde oliva suave */
   text-decoration: none; /* Sin subrayado */
   font-weight: 500; /* Peso medio */
 }
 
 .cookies-link:hover {
-  color: #81C784; /* Verde más claro al pasar el mouse */
+  color: #81c784; /* Verde más claro al pasar el mouse */
 }
 
 .cookies-buttons {
@@ -294,16 +302,16 @@ footer .footer-enlaces a:hover {
 }
 
 .cookies-btn:hover {
-  background: #81C784; /* Verde más claro al pasar el mouse */
+  background: #81c784; /* Verde más claro al pasar el mouse */
   transform: scale(1.05); /* Efecto de aumentar ligeramente el tamaño */
 }
 
 .cookies-rechazar {
-  background: #FF4B5C; /* Color rojo para el botón de rechazar */
+  background: #ff4b5c; /* Color rojo para el botón de rechazar */
 }
 
 .cookies-rechazar:hover {
-  background: #FF6B80; /* Rojo más claro al pasar el mouse */
+  background: #ff6b80; /* Rojo más claro al pasar el mouse */
 }
 
 /* 🍪 Superposición para bloquear el contenido */

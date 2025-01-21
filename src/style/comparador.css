@@ -1,105 +1,105 @@
 /* 🌐 Estilo General */
 body {
-    font-family: 'Arial', sans-serif; /* Fuente simple y legible */
-    text-align: center; /* Centra el contenido */
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f9; /* Fondo claro para mejorar la legibilidad */
-    color: #333; /* Texto oscuro para buen contraste */
+  font-family: "Arial", sans-serif; /* Fuente simple y legible */
+  text-align: center; /* Centra el contenido */
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f9; /* Fondo claro para mejorar la legibilidad */
+  color: #333; /* Texto oscuro para buen contraste */
 }
 
 /* 🎨 Estilo del Título Principal */
 h1 {
-    font-size: 2.5em; /* Tamaño grande para destacar */
-    color: #1976d2; /* Azul vibrante */
-    margin: 20px 0; /* Espaciado superior e inferior */
+  font-size: 2.5em; /* Tamaño grande para destacar */
+  color: #1976d2; /* Azul vibrante */
+  margin: 20px 0; /* Espaciado superior e inferior */
 }
 
 /* 🖋 Estilo del Formulario */
 form {
-    margin-bottom: 20px; /* Espaciado inferior */
-    background-color: #ffffff; /* Fondo blanco para destacar del fondo general */
-    padding: 20px; /* Espaciado interno para evitar que el texto toque los bordes */
-    border-radius: 10px; /* Bordes redondeados para un diseño moderno */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    display: inline-block; /* Centra el formulario horizontalmente */
-    width: 90%; /* Toma la mayor parte del ancho disponible */
-    max-width: 400px; /* No crece más allá de este límite */
+  margin-bottom: 20px; /* Espaciado inferior */
+  background-color: #ffffff; /* Fondo blanco para destacar del fondo general */
+  padding: 20px; /* Espaciado interno para evitar que el texto toque los bordes */
+  border-radius: 10px; /* Bordes redondeados para un diseño moderno */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  display: inline-block; /* Centra el formulario horizontalmente */
+  width: 90%; /* Toma la mayor parte del ancho disponible */
+  max-width: 400px; /* No crece más allá de este límite */
 }
 
 form label {
-    display: block; /* Etiquetas en su propia línea */
-    font-weight: bold; /* Resalta las etiquetas */
-    margin-bottom: 5px; /* Espaciado entre la etiqueta y el campo */
-    color: #333; /* Color de texto oscuro */
-    text-align: left; /* Alinea las etiquetas a la izquierda */
+  display: block; /* Etiquetas en su propia línea */
+  font-weight: bold; /* Resalta las etiquetas */
+  margin-bottom: 5px; /* Espaciado entre la etiqueta y el campo */
+  color: #333; /* Color de texto oscuro */
+  text-align: left; /* Alinea las etiquetas a la izquierda */
 }
 
 form select {
-    width: 100%; /* Ocupa todo el ancho del formulario */
-    padding: 10px; /* Espaciado interno para campos más grandes y cómodos */
-    margin-bottom: 15px; /* Espaciado inferior entre campos */
-    border: 1px solid #ccc; /* Bordes suaves */
-    border-radius: 5px; /* Bordes ligeramente redondeados */
-    font-size: 1em; /* Tamaño estándar de texto */
-    background-color: #f9f9f9; /* Fondo claro */
+  width: 100%; /* Ocupa todo el ancho del formulario */
+  padding: 10px; /* Espaciado interno para campos más grandes y cómodos */
+  margin-bottom: 15px; /* Espaciado inferior entre campos */
+  border: 1px solid #ccc; /* Bordes suaves */
+  border-radius: 5px; /* Bordes ligeramente redondeados */
+  font-size: 1em; /* Tamaño estándar de texto */
+  background-color: #f9f9f9; /* Fondo claro */
 }
 
 /* 🔘 Estilo de Botones */
 button {
-    background-color: #1976d2; /* Azul vibrante */
-    color: white; /* Texto blanco para contraste */
-    border: none; /* Sin bordes */
-    padding: 10px 20px; /* Tamaño cómodo para clics */
-    border-radius: 5px; /* Bordes redondeados */
-    font-size: 1em; /* Tamaño estándar del texto */
-    cursor: pointer; /* Cambia el cursor a puntero para indicar interactividad */
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Transición suave en hover */
+  background-color: #1976d2; /* Azul vibrante */
+  color: white; /* Texto blanco para contraste */
+  border: none; /* Sin bordes */
+  padding: 10px 20px; /* Tamaño cómodo para clics */
+  border-radius: 5px; /* Bordes redondeados */
+  font-size: 1em; /* Tamaño estándar del texto */
+  cursor: pointer; /* Cambia el cursor a puntero para indicar interactividad */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Transición suave en hover */
 }
 
 button:hover {
-    background-color: #1565c0; /* Azul más oscuro en hover */
-    transform: scale(1.05); /* Ligeramente más grande al pasar el cursor */
+  background-color: #1565c0; /* Azul más oscuro en hover */
+  transform: scale(1.05); /* Ligeramente más grande al pasar el cursor */
 }
 
 /* Botón para Volver Atrás */
 .back-button {
-    margin-top: 20px; /* Espaciado superior para separarlo del contenido */
-    background-color: #4caf50; /* Verde para diferenciar del resto */
+  margin-top: 20px; /* Espaciado superior para separarlo del contenido */
+  background-color: #4caf50; /* Verde para diferenciar del resto */
 }
 
 .back-button:hover {
-    background-color: #388e3c; /* Verde más oscuro en hover */
+  background-color: #388e3c; /* Verde más oscuro en hover */
 }
 
 /* 📋 Estilo del Contenedor de Resultados */
 #resultadoComparacion {
-    margin-top: 20px; /* Espaciado superior para separar del formulario */
-    font-size: 1.2em; /* Texto ligeramente más grande */
-    text-align: left; /* Alineación a la izquierda para legibilidad */
-    max-width: 600px; /* Ancho máximo para evitar textos muy largos */
-    margin-left: auto;
-    margin-right: auto; /* Centra horizontalmente */
-    padding: 15px; /* Espaciado interno */
-    border: 1px solid #ddd; /* Borde gris claro */
-    border-radius: 5px; /* Bordes redondeados */
-    background-color: #ffffff; /* Fondo blanco */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra para destacar */
+  margin-top: 20px; /* Espaciado superior para separar del formulario */
+  font-size: 1.2em; /* Texto ligeramente más grande */
+  text-align: left; /* Alineación a la izquierda para legibilidad */
+  max-width: 600px; /* Ancho máximo para evitar textos muy largos */
+  margin-left: auto;
+  margin-right: auto; /* Centra horizontalmente */
+  padding: 15px; /* Espaciado interno */
+  border: 1px solid #ddd; /* Borde gris claro */
+  border-radius: 5px; /* Bordes redondeados */
+  background-color: #ffffff; /* Fondo blanco */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra para destacar */
 }
 
 /* 📱 Diseño Responsivo */
 @media (max-width: 768px) {
-    form {
-        width: 95%; /* Aumenta el ancho para pantallas pequeñas */
-        padding: 15px; /* Reduce el espaciado interno */
-    }
+  form {
+    width: 95%; /* Aumenta el ancho para pantallas pequeñas */
+    padding: 15px; /* Reduce el espaciado interno */
+  }
 
-    h1 {
-        font-size: 2em; /* Reduce el tamaño del título en pantallas pequeñas */
-    }
+  h1 {
+    font-size: 2em; /* Reduce el tamaño del título en pantallas pequeñas */
+  }
 
-    button {
-        font-size: 0.9em; /* Botones ligeramente más pequeños */
-        padding: 8px 15px; /* Ajusta el tamaño del botón */
-    }
+  button {
+    font-size: 0.9em; /* Botones ligeramente más pequeños */
+    padding: 8px 15px; /* Ajusta el tamaño del botón */
+  }
 }

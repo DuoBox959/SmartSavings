@@ -1,0 +1,155 @@
+/* 🌟 Reset */
+* {
+  margin: 0; /* Elimina márgenes por defecto */
+  padding: 0; /* Elimina relleno por defecto */
+  box-sizing: border-box; /* Incluye bordes y relleno en el tamaño total de los elementos */
+}
+
+/* 🏷️ Encabezado */
+header {
+  display: flex; /* Flexbox para organizar elementos en fila */
+  align-items: center; /* Centra los elementos verticalmente */
+  justify-content: space-between; /* Distribuye los elementos uniformemente */
+  padding: 20px; /* Espaciado interno */
+  background: #a8d5ba; /* Verde oliva suave para un diseño acogedor */
+  color: #2c3e34; /* Verde oscuro para buen contraste */
+}
+
+/* Estilo del logo (sección izquierda) */
+header .logo h1 {
+  font-size: 1.8em; /* Tamaño adecuado para el logo */
+  font-weight: 700; /* Negrita */
+  margin: 0; /* Elimina márgenes */
+  color: #2c3e34; /* Verde oscuro */
+}
+
+/* Estilo del eslogan (sección central) */
+header .eslogan {
+  text-align: center; /* Alinea el texto al centro */
+  flex-grow: 1; /* Permite que el eslogan ocupe el espacio sobrante */
+}
+
+header .eslogan .subtitulo {
+  font-size: 1.2em; /* Tamaño menor para subtítulos */
+  margin: 0; /* Elimina márgenes */
+  font-weight: 400; /* Peso estándar */
+  color: #345e4d; /* Verde ligeramente más claro para destacar */
+}
+
+/* Estilo de los enlaces (sección derecha) */
+header .acciones {
+  display: flex; /* Alinea los enlaces en fila */
+  gap: 15px; /* Espaciado entre los enlaces */
+}
+
+header .acciones .enlace {
+  font-size: 1em; /* Tamaño estándar */
+  color: #2c3e34; /* Verde oscuro */
+  text-decoration: none; /* Elimina subrayado */
+  font-weight: 500; /* Peso medio */
+  padding: 5px 10px; /* Espaciado interno */
+  border: 1px solid #2c3e34; /* Borde verde oscuro */
+  border-radius: 5px; /* Bordes redondeados */
+  transition: background 0.3s; /* Transición suave al pasar el mouse */
+}
+
+header .acciones .enlace:hover {
+  background: #2c3e34; /* Fondo verde oscuro al pasar el mouse */
+  color: #a8d5ba; /* Texto verde oliva suave */
+}
+
+/* 🌐 General */
+body {
+  font-family: "Roboto", sans-serif; /* Fuente moderna y legible */
+  background: #cecfcfe8;
+  color: #333; /* Texto oscuro para mejor contraste */
+  display: flex; /* Crea una disposición en flexbox */
+  flex-direction: column; /* Organiza los hijos en columna */
+  min-height: 100vh; /* Asegura que el cuerpo ocupe toda la altura de la ventana */
+}
+
+.container {
+  flex: 1; /* Permite que el contenedor crezca para llenar el espacio disponible */
+  display: flex;
+  flex-direction: column;
+}
+
+.legal-notice {
+  background: #ffffff; /* Fondo blanco para destacar */
+  padding: 30px; /* Espaciado interno más generoso */
+  margin: 30px auto; /* Centra el aviso dentro del contenedor */
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil para dar profundidad */
+  max-width: 800px; /* Limita el ancho para una mejor lectura */
+  line-height: 1.8; /* Espaciado entre líneas más amplio */
+  font-size: 16px; /* Tamaño de fuente legible */
+  color: #444; /* Color de texto ligeramente más claro que el predeterminado */
+}
+
+.legal-notice h2 {
+  text-align: center; /* Centra el título principal */
+  font-size: 28px; /* Aumenta el tamaño del título principal */
+  color: #333; /* Color oscuro para mayor contraste */
+  margin-bottom: 20px; /* Espaciado debajo del título */
+  border-bottom: 2px solid #0078d7; /* Línea decorativa */
+  padding-bottom: 10px; /* Espaciado interno del título */
+}
+
+.legal-notice h3 {
+  text-align: center; /* Centra los subtítulos */
+  font-size: 20px; /* Tamaño ligeramente más pequeño que el título principal */
+  color: #0078d7; /* Color azul para los subtítulos */
+  margin-top: 30px; /* Espaciado superior */
+  margin-bottom: 15px; /* Espaciado inferior */
+}
+
+.legal-notice p {
+  margin-bottom: 20px; /* Espaciado entre párrafos */
+  text-align: justify; /* Alineación justificada para un aspecto más formal */
+}
+
+.legal-notice ul {
+  margin: 20px 40px; /* Márgenes alrededor de la lista */
+  padding-left: 20px; /* Separación interna izquierda */
+}
+
+.legal-notice ul li {
+  margin-bottom: 10px; /* Espaciado entre elementos de la lista */
+}
+
+.legal-notice a {
+  color: #0078d7; /* Color azul para enlaces */
+  text-decoration: none; /* Sin subrayado */
+}
+
+.legal-notice a:hover {
+  text-decoration: underline; /* Subrayado al pasar el mouse */
+}
+
+/* 🛠️ Footer */
+footer {
+  text-align: center; /* Centra el contenido */
+  background: #333; /* Fondo oscuro */
+  color: #eee; /* Texto claro */
+  padding: 15px 20px; /* Espaciado interno */
+  font-size: 0.9em; /* Tamaño pequeño del texto */
+  margin-top: auto; /* Empuja el pie de página al final de la página */
+  border-top: 1px solid #444; /* Línea superior sutil para separación */
+}
+
+/* Enlaces del footer */
+footer .footer-enlaces {
+  margin-top: 10px; /* Espaciado entre el texto y los enlaces */
+}
+
+footer .footer-enlaces a {
+  color: #81c784; /* Verde claro para los enlaces */
+  text-decoration: none; /* Sin subrayado */
+  font-weight: 500; /* Peso medio */
+  margin: 0 5px; /* Espaciado horizontal entre los enlaces */
+  transition: color 0.3s; /* Transición suave para el hover */
+}
+
+footer .footer-enlaces a:hover {
+  color: #a8d5ba; /* Verde oliva suave al pasar el mouse */
+}
