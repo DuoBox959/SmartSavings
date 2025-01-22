@@ -1,3 +1,7 @@
+import { db } from "../libs/db.js";
+
+import { validarEmailYPassword } from "../valid/validaciones.js";
+
 // 🔙 Función para regresar a la página anterior
 function volverAtras() {
   window.history.back();

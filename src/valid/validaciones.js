@@ -85,8 +85,13 @@ function asignarValoresPredeterminados() {
   $("#ubicacionSupermercado").val(ubicacionSupermercado || "-"); // Predeterminado: "-"
 }
 
+<<<<<<< HEAD
 function validarEmailYPassword(email, password) {
   // Validación de email
+=======
+// Exporta la función validarEmailYPassword
+export function validarEmailYPassword(email, password) {
+>>>>>>> ab4802e5abac86d357932df98b93af07acc8f068
   const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Asegura formato estándar de email
   if (!email) {
     alert('⚠️ El campo "Email" es obligatorio.');
@@ -99,16 +104,24 @@ function validarEmailYPassword(email, password) {
     return false;
   }
 
-  // Validación de contraseña
   const regexPassword =
     /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/;
   /*
       Reglas de la contraseña:
+<<<<<<< HEAD
       - Mínimo 8 caracteres
       - Al menos una letra mayúscula
       - Al menos una letra minúscula
       - Al menos un número
       - Al menos un carácter especial (@, $, !, %, *, ?, &)
+=======
+      
+      Mínimo 8 caracteres
+      Al menos una letra mayúscula
+      Al menos una letra minúscula
+      Al menos un número
+      Al menos un carácter especial (@, $, !, %, *, ?, &)
+>>>>>>> ab4802e5abac86d357932df98b93af07acc8f068
   */
 
   if (!password) {
@@ -127,6 +140,5 @@ function validarEmailYPassword(email, password) {
     return false;
   }
 
-  // Si todo está bien, devuelve true
   return true;
 }
