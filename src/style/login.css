@@ -83,4 +83,19 @@ form button:hover {
 .register-link a:hover, .login-link a:hover {
   text-decoration: underline;
 }
-  
+/* 🔙 Botón de Regreso */
+.back-button {
+  background-color: #4caf50; /* Verde para diferenciarlo */
+  color: white; /* Texto blanco */
+  border: none; /* Sin bordes */
+  padding: 10px 15px; /* Tamaño cómodo */
+  font-size: 1em; /* Texto estándar */
+  border-radius: 5px; /* Bordes redondeados */
+  cursor: pointer; /* Indica clics */
+  margin-top: 20px; /* Espaciado superior */
+  transition: background-color 0.3s ease; /* Transición suave */
+}
+
+.back-button:hover {
+  background-color: #388e3c; /* Verde más oscuro al pasar el cursor */
+}

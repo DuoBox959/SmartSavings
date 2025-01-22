@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Registro - ComparaTú</title>
   <link rel="stylesheet" href="../style/register.css" />
+  <!-- Vinculación al archivo JavaScript con carga diferida -->
+  <script src="../functions/register.js" defer></script>
 </head>
 <body>
   <div class="container">
@@ -32,10 +34,11 @@
         <button type="submit">Registrarse</button>
 
         <p class="login-link">¿Ya tienes cuenta? <a href="login.html">Inicia sesión aquí</a></p>
+        <button class="back-button" onclick="volverAtras()">Volver Atrás</button>
+
       </form>
     </div>
   </div>
-  <button class="back-button" onclick="volverAtras()">Volver Atrás</button>
 
 </body>
 </html>
