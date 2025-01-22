@@ -1,5 +1,9 @@
 import { db } from "../libs/db.js";
 
+window.cargarTiendas = cargarTiendas;
+window.añadirSelectorTienda = añadirSelectorTienda;
+window.compararPrecios = compararPrecios;
+window.volverAtras= volverAtras;
 
 // 📋 Función genérica para crear opciones en un `<select>`
 const crearOpciones = (elemento, opciones) => {
