@@ -87,7 +87,7 @@ function asignarValoresPredeterminados() {
 
 function validarEmailYPassword(email, password) {
   // Validación de email
-  const regexEmail = /^[^\s@]+@[^\s@]+.[^\s@]+$/; // Asegura formato estándar de email
+  const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Asegura formato estándar de email
   if (!email) {
     alert('⚠️ El campo "Email" es obligatorio.');
     return false;
@@ -101,15 +101,14 @@ function validarEmailYPassword(email, password) {
 
   // Validación de contraseña
   const regexPassword =
-    /^(?=.[A-Z])(?=.[a-z])(?=.\d)(?=.[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/;
+    /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/;
   /*
       Reglas de la contraseña:
-      
-  Mínimo 8 caracteres
-  Al menos una letra mayúscula
-  Al menos una letra minúscula
-  Al menos un número
-  Al menos un carácter especial (@, $, !, %, *, ?, &)
+      - Mínimo 8 caracteres
+      - Al menos una letra mayúscula
+      - Al menos una letra minúscula
+      - Al menos un número
+      - Al menos un carácter especial (@, $, !, %, *, ?, &)
   */
 
   if (!password) {

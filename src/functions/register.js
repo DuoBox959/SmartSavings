@@ -3,6 +3,25 @@ function volverAtras() {
   window.history.back();
 }
 
+// Función para validar email y contraseña
+function validarEmailYPassword(email, password) {
+  const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const regexPassword =
+    /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/;
+
+  if (!email || !regexEmail.test(email)) {
+    alert('⚠️ El email no es válido.');
+    return false;
+  }
+
+  if (!password || !regexPassword.test(password)) {
+    alert('⚠️ La contraseña debe cumplir con los requisitos.');
+    return false;
+  }
+
+  return true;
+}
+
 // Función para registrar usuarios
 async function registrarUsuario(nombre, email, password) {
   try {
