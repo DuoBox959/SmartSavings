@@ -1,20 +1,5 @@
 import { db } from "../libs/db.js";
 
-// // Configuración de sincronización en vivo entre PouchDB y CouchDB
-
-// try {
-//   db.sync(remoteDB, { live: true, retry: true })
-//     .on("change", (info) =>
-//       console.log("Sincronización: cambio detectado:", info)
-//     )
-//     .on("paused", (err) => console.log("Sincronización pausada:", err))
-//     .on("active", () => console.log("Sincronización reanudada."))
-//     .on("error", (err) =>
-//       console.error("Error durante la sincronización:", err)
-//     );
-// } catch (error) {
-//   console.error("Error en la sincronización:", error);
-// }
 
 // Variables globales
 let productosTable;
@@ -180,10 +165,18 @@ async function eliminarProducto(id) {
     }
   }
 }
+// Esto se pone porque el script es tipo module, para exponer las funciones al ámbito global usando window
+window.editarProducto = editarProducto;
+window.eliminarProducto = eliminarProducto;
+window.mostrarFormularioAgregar = mostrarFormularioAgregar;
+window.guardarCambiosDesdeFormulario = guardarCambiosDesdeFormulario;
+window.cerrarFormulario = cerrarFormulario;
+window.volverAtras= volverAtras;
 
 function volverAtras() {
-  window.history.back();
-}
+  window.location.href = "../pages/index.html"; }
+
+
 
 function cerrarFormulario() {
   $("#formularioProducto").hide();
