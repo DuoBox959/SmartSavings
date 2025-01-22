@@ -5,9 +5,11 @@ body {
   padding: 0;
   background: linear-gradient(to right, #a8ff78, #78ffd6);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
+  box-sizing: border-box;
 }
 
 .container {
@@ -85,17 +87,47 @@ form button:hover {
 }
 /* 🔙 Botón de Regreso */
 .back-button {
-  background-color: #4caf50; /* Verde para diferenciarlo */
-  color: white; /* Texto blanco */
-  border: none; /* Sin bordes */
-  padding: 10px 15px; /* Tamaño cómodo */
-  font-size: 1em; /* Texto estándar */
-  border-radius: 5px; /* Bordes redondeados */
-  cursor: pointer; /* Indica clics */
-  margin-top: 20px; /* Espaciado superior */
-  transition: background-color 0.3s ease; /* Transición suave */
+  background-color: #4caf50; 
+  color: white;
+  border: none; 
+  padding: 10px 15px; 
+  font-size: 1em; 
+  border-radius: 5px; 
+  cursor: pointer;
+  margin-top: 20px; 
+  transition: background-color 0.3s ease;
 }
 
 .back-button:hover {
-  background-color: #388e3c; /* Verde más oscuro al pasar el cursor */
+  background-color: #388e3c;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  background: #333;
+  color: #eee;
+  padding: 15px 20px;
+  font-size: 0.9em;
+  border-top: 1px solid #444;
+  width: 100%;
+  margin-top: auto;
+  box-sizing: border-box;
+}
+
+/* Enlaces del footer */
+footer .footer-enlaces {
+  margin-top: 10px;
+}
+
+footer .footer-enlaces a {
+  color: #81c784;
+  text-decoration: none;
+  font-weight: 500;
+  margin: 0 5px;
+  transition: color 0.3s;
+}
+
+footer .footer-enlaces a:hover {
+  color: #a8d5ba;
 }
