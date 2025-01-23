@@ -1,90 +1,46 @@
-import { db } from "../libs/db.js";
+import { db } from '../libs/dbuser.js';
 
-import { validarEmailYPassword } from "../valid/validaciones.js";
+const registerForm = document.querySelector('form');
+const nameInput = document.getElementById('name');
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password');
+const confirmPasswordInput = document.getElementById('confirm-password');
 
-// 🔙 Función para regresar a la página anterior
-function volverAtras() {
-  window.history.back();
-}
+registerForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
 
-// Función para validar email y contraseña
-function validarEmailYPassword(email, password) {
-  const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const regexPassword =
-    /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/;
+  const name = nameInput.value;
+  const email = emailInput.value;
+  const password = passwordInput.value;
+  const confirmPassword = confirmPasswordInput.value;
 
-  if (!email || !regexEmail.test(email)) {
-    alert('⚠️ El email no es válido.');
-    return false;
+  // Validación de campos
+  if (!name || !email || !password || !confirmPassword) {
+    alert('Por favor, completa todos los campos.');
+    return;
   }
 
-  if (!password || !regexPassword.test(password)) {
-    alert('⚠️ La contraseña debe cumplir con los requisitos.');
-    return false;
+  if (password !== confirmPassword) {
+    alert('Las contraseñas no coinciden.');
+    return;
   }
 
-  return true;
-}
-
-// Función para registrar usuarios
-async function registrarUsuario(nombre, email, password) {
   try {
-    // Validación de email y contraseña usando el archivo validaciones.js
-    if (!validarEmailYPassword(email, password)) {
-      return;
-    }
-
-    // Verificar si el email ya está registrado
-    const resultado = await db.find({
-      selector: { email: email },
-    });
-
-    if (resultado.docs.length > 0) {
-      alert('⚠️ Este email ya está registrado.');
-      return;
-    }
-
-    // Crear un nuevo usuario
-    const usuario = {
-      _id: `user_${new Date().getTime()}`, // ID único basado en el tiempo
-      nombre: nombre,
+    // Crear un nuevo usuario en la base de datos
+    const newUser = {
+      _id: new Date().toISOString(), // Generar un ID único
+      name: name,
       email: email,
-      password: btoa(password), // Encriptar la contraseña
+      password: password, // En un entorno real, se debería hashear la contraseña
     };
 
-    // Guardar el usuario en la base de datos local
-    await db.put(usuario);
+    await db.put(newUser);
 
-    alert('✅ Usuario registrado exitosamente.');
-
-    // Redirigir al login
-    window.location.href = "login.html";
+    // Redirigir al usuario a la página de inicio de sesión
+    window.location.href = 'login.html';
+    alert('Usuario registrado correctamente.');
   } catch (error) {
-    console.error("Error registrando usuario:", error);
-    alert("⚠️ Ocurrió un error al registrar el usuario.");
+    console.error('Error al registrar el usuario:', error);
+    alert('Error al registrar el usuario. Por favor, inténtalo de nuevo.');
   }
-}
-
-// Manejar el evento de envío del formulario
-document.querySelector("form").addEventListener("submit", (e) => {
-  e.preventDefault();
-
-  const nombre = document.getElementById("name").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
-  const confirmPassword = document.getElementById("confirm-password").value.trim();
-
-  // Validar campos
-  if (password !== confirmPassword) {
-    alert("⚠️ Las contraseñas no coinciden.");
-    return;
-  }
-
-  if (!nombre || !email || !password) {
-    alert("⚠️ Todos los campos son obligatorios.");
-    return;
-  }
-
-  // Registrar el usuario
-  registrarUsuario(nombre, email, password);
 });
