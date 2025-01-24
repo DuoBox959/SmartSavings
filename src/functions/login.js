@@ -27,7 +27,12 @@ loginForm.addEventListener('submit', async (event) => {
       if (user.password === password) {
         alert('Inicio de sesión exitoso');
         console.log('Usuario autenticado:', user);
-        // Aquí puedes redirigir al usuario o realizar otras acciones
+        
+        // Guardar el estado del usuario en el localStorage para mantenerlo conectado
+        localStorage.setItem('user', JSON.stringify(user));
+
+        // Redirigir al usuario a index.html
+        window.location.href = 'index.html';
       } else {
         alert('Contraseña incorrecta');
       }
