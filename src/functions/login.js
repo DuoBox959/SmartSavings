@@ -31,6 +31,7 @@ loginForm.addEventListener('submit', async (event) => {
         alert(`Inicio de sesión exitoso. Bienvenido, ${user.name}!`);
         console.log('Usuario autenticado:', user);
         // Aquí puedes redirigir al usuario o realizar otras acciones
+        window.location.href = 'index.html';
       } else {
         alert('Contraseña incorrecta');
       }
