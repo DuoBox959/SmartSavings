@@ -15,6 +15,7 @@
     />
     <!-- Vinculación al archivo de estilos CSS específico para esta página -->
     <link rel="stylesheet" href="../style/politicaprivacidad.css" />
+    <script src="../functions/politicaprivacidad.js" defer></script>
   </head>
   <body>
     <!-- 🏷️ Encabezado Principal -->
@@ -23,10 +24,9 @@
         <h1>ComparaTú</h1>
       </div>
       <div class="eslogan">
-        <p class="subtitulo">
-          Encuentra las mejores ofertas y organiza tus productos fácilmente
-        </p>
+        <p class="subtitulo">Encuentra las mejores ofertas y organiza tus productos fácilmente</p>
       </div>
+<<<<<<< HEAD
       <div class="acciones">
         <a href="#registrarte" class="enlace">Registrate</a>
         <a href="#iniciar-sesion" class="enlace">Iniciar Sesión</a>
@@ -39,6 +39,22 @@
               <a href="#" id="accountSettings">Configuración de la Cuenta</a>
             </div>
           </div>
+=======
+      <div class="acciones" id="acciones">
+        <!-- Enlaces para el registro y login (solo visibles si no hay usuario logueado) -->
+        <a href="register.html" class="enlace" id="registerLink">Registrate</a>
+        <a href="login.html" class="enlace" id="loginLink">Iniciar Sesión</a>
+    
+        <!-- Menú desplegable del usuario -->
+        <div class="user-dropdown" id="userDropdown" style="display: none;">
+          <span id="userName" class="enlace"></span> <!-- Nombre del usuario -->
+          <div class="dropdown-content" id="userMenu">
+            <a href="#">Actualizar</a>
+            <a href="#" id="deleteAccount">Borrar Cuenta</a>
+            <a href="#" id="logout">Cerrar Sesión</a>
+          </div>
+        </div>
+>>>>>>> 4b29f8ac5ae8c44b749fabdee058e6aa98c59a63
       </div>
     </header>
     <div class="container">

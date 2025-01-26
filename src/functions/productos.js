@@ -174,7 +174,8 @@ window.cerrarFormulario = cerrarFormulario;
 window.volverAtras= volverAtras;
 
 function volverAtras() {
-  window.location.href = "../pages/index.html"; }
+  window.location.href = "../pages/index.html"; 
+}
 
 
 

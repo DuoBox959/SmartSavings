@@ -52,3 +52,9 @@ registerForm.addEventListener('submit', async (event) => {
     alert('Error al registrar el usuario. Por favor, inténtalo de nuevo.');
   }
 });
+
+function volverAtras() {
+  window.location.href = "../pages/index.html"; 
+}
+
+window.volverAtras = volverAtras;
