@@ -58,6 +58,63 @@ header .acciones .enlace:hover {
   color: #a8d5ba;
 }
 
+/* 🔽 Menú desplegable */
+.user-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+#userName {
+  font-weight: bold;
+  padding: 5px 10px;
+  border: 1px solid #2c3e34;
+  border-radius: 5px;
+  transition: background 0.3s;
+}
+
+#userName:hover {
+  background: #2c3e34;
+  color: #a8d5ba;
+}
+
+/* Contenedor del menú desplegable */
+.dropdown-content {
+  display: block;
+  position: absolute;
+  background-color: white;
+  min-width: 150px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+  border-radius: 5px;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-10px); /* Lo subimos 10px para la animación */
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+  max-height: 0; /* Para la animación de expansión */
+  visibility: hidden; /* Oculta completamente cuando está cerrado */
+  margin-top: 25px; /* Separar el menú del botón de bienvenida */
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 10px;
+  color: #2c3e34;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.dropdown-content a:hover {
+  background-color: #a8d5ba;
+}
+
+/* Cuando el menú está visible, hacemos la animación */
+.show {
+  opacity: 1;
+  transform: translateY(0);
+  max-height: 200px; /* Ajusta según el contenido */
+  visibility: visible;
+}
+
 /* 🌐 General */
 body {
   font-family: "Roboto", sans-serif; 

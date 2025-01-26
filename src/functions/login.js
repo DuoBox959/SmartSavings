@@ -44,3 +44,9 @@ loginForm.addEventListener('submit', async (event) => {
     alert('Ocurrió un error al intentar iniciar sesión. Inténtalo nuevamente.');
   }
 });
+
+function volverAtras() {
+  window.location.href = "../pages/index.html"; 
+}
+
+window.volverAtras = volverAtras;

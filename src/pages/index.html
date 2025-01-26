@@ -9,6 +9,7 @@
     <script src="../functions/index.js" defer></script>
   </head>
   <body>
+    <!-- 🏷️ Encabezado Principal -->
     <header>
       <div class="logo">
         <h1>ComparaTú</h1>
@@ -17,16 +18,21 @@
         <p class="subtitulo">Encuentra las mejores ofertas y organiza tus productos fácilmente</p>
       </div>
       <div class="acciones" id="acciones">
-        <!-- Enlaces para el registro y login -->
+        <!-- Enlaces para el registro y login (solo visibles si no hay usuario logueado) -->
         <a href="register.html" class="enlace" id="registerLink">Registrate</a>
         <a href="login.html" class="enlace" id="loginLink">Iniciar Sesión</a>
-        
-        <!-- Nombre del usuario y enlace de logout -->
-        <span id="userName" style="display:none;" class="enlace"></span> <!-- Nombre del usuario -->
-        <a href="#" id="logout" style="display:none;" class="enlace">Cerrar Sesión</a> <!-- Enlace de logout -->
+    
+        <!-- Menú desplegable del usuario -->
+        <div class="user-dropdown" id="userDropdown" style="display: none;">
+          <span id="userName" class="enlace"></span> <!-- Nombre del usuario -->
+          <div class="dropdown-content" id="userMenu">
+            <a href="#">Actualizar</a>
+            <a href="#" id="deleteAccount">Borrar Cuenta</a>
+            <a href="#" id="logout">Cerrar Sesión</a>
+          </div>
+        </div>
       </div>
     </header>
-
     <div class="container">
       <main>
         <section class="tarjetas">
@@ -58,7 +64,7 @@
       <div class="cookies-content">
         <p>
           Este sitio web utiliza cookies para mejorar tu experiencia. Al continuar navegando, aceptas su uso.
-          <a href="#politica-cookies" class="cookies-link">Leer más</a>.
+          <a href="politicacookies.html" class="cookies-link">Leer más</a>.
         </p>
         <div class="cookies-buttons">
           <button id="aceptar-cookies" class="cookies-btn cookies-aceptar">Aceptar</button>

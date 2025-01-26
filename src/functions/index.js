@@ -1,12 +1,10 @@
-// 🍪 Script para el mensaje de cookies
 document.addEventListener("DOMContentLoaded", () => {
-  // Manejo del banner de cookies
+  // 🍪 Manejo del banner de cookies
   const banner = document.getElementById("cookies-banner");
   const overlay = document.getElementById("overlay");
   const aceptarBtn = document.getElementById("aceptar-cookies");
   const rechazarBtn = document.getElementById("rechazar-cookies");
 
-  // Función para verificar si han pasado 24 horas desde la última aceptación de cookies
   function checkCookieExpiration() {
     const cookieData = localStorage.getItem("cookies-aceptadas");
     if (cookieData) {
@@ -14,7 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const now = new Date().getTime();
       const elapsedTime = now - parsedData.timestamp;
       if (elapsedTime > 24 * 60 * 60 * 1000) {
-        // 24 horas en milisegundos
         localStorage.removeItem("cookies-aceptadas");
         return false;
       }
@@ -23,7 +20,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return false;
   }
 
-  // Verifica si las cookies fueron aceptadas y gestiona la visibilidad del banner
   if (checkCookieExpiration()) {
     banner.style.display = "none";
     overlay.style.display = "none";
@@ -32,7 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
     banner.style.display = "flex";
   }
 
-  // Si se acepta el uso de cookies
   aceptarBtn.addEventListener("click", () => {
     const now = new Date().getTime();
     const cookieData = JSON.stringify({ accepted: true, timestamp: now });
@@ -41,45 +36,71 @@ document.addEventListener("DOMContentLoaded", () => {
     overlay.style.display = "none";
   });
 
-  // Si se rechazan las cookies
   rechazarBtn.addEventListener("click", () => {
     alert("Debes aceptar las cookies para poder acceder a la página.");
   });
 
-  // 🧑‍💻 Lógica de usuario autenticado
+  // 🧑‍💻 Manejo de usuario autenticado
   let user =
     JSON.parse(sessionStorage.getItem("user")) ||
-    JSON.parse(localStorage.getItem("user")); // Primero intenta en sessionStorage
+    JSON.parse(localStorage.getItem("user"));
 
   const registerLink = document.getElementById("registerLink");
   const loginLink = document.getElementById("loginLink");
+  const userDropdown = document.getElementById("userDropdown");
   const userName = document.getElementById("userName");
+  const userMenu = document.getElementById("userMenu");
   const logout = document.getElementById("logout");
+  const deleteAccount = document.getElementById("deleteAccount");
 
-  // Si el usuario está logueado
   if (user) {
     // Ocultar enlaces de registro e inicio de sesión
     registerLink.style.display = "none";
     loginLink.style.display = "none";
 
-    // Mostrar el nombre del usuario y el enlace de logout
-    userName.style.display = "inline";
+    // Mostrar el menú desplegable
+    userDropdown.style.display = "inline-block";
     userName.textContent = `Bienvenido, ${user.name}`;
-    logout.style.display = "inline";
+
+    // Alternar el menú desplegable con animación
+    userName.addEventListener("click", (event) => {
+      event.stopPropagation(); // Evita que el clic cierre inmediatamente
+      if (userMenu.classList.contains("show")) {
+        userMenu.classList.remove("show");
+      } else {
+        userMenu.classList.add("show");
+      }
+    });
 
     // Manejar el cierre de sesión
     logout.addEventListener("click", () => {
-      sessionStorage.removeItem("user"); // Elimina de sessionStorage
-      localStorage.removeItem("user"); // Elimina de localStorage por si acaso
-      window.location.href = "index.html"; // Redirige a la página de inicio
+      sessionStorage.removeItem("user");
+      localStorage.removeItem("user");
+      window.location.href = "index.html";
+    });
+
+    // Borrar cuenta
+    deleteAccount.addEventListener("click", () => {
+      if (confirm("¿Seguro que quieres borrar tu cuenta? Esta acción es irreversible.")) {
+        sessionStorage.removeItem("user");
+        localStorage.removeItem("user");
+        alert("Tu cuenta ha sido eliminada.");
+        window.location.href = "index.html";
+      }
+    });
+
+    // Cerrar el menú si se hace clic fuera
+    document.addEventListener("click", (event) => {
+      if (!userDropdown.contains(event.target)) {
+        userMenu.classList.remove("show");
+      }
     });
   } else {
-    // Si no hay usuario logueado, mostrar los enlaces de "Registrarse" y "Iniciar Sesión"
+    // Si no hay usuario logueado, mostrar los enlaces de registro e inicio
     registerLink.style.display = "inline";
     loginLink.style.display = "inline";
 
-    // Ocultar nombre de usuario y enlace de logout
-    userName.style.display = "none";
-    logout.style.display = "none";
+    // Ocultar menú desplegable
+    userDropdown.style.display = "none";
   }
 });
