@@ -1,8 +1,12 @@
 /* 🌐 Estilo General */
 body {
   font-family: "Arial", sans-serif; /* Fuente legible y estándar */
-  background: #a8d5ba;
-  color: #333;  /* Texto blanco para buen contraste */
+  background: linear-gradient(
+    135deg,
+    #4caf50,
+    #8bc34a
+  ); /* Fondo degradado verde */
+  color: #ffffff; /* Texto blanco para buen contraste */
   margin: 0; /* Elimina márgenes por defecto */
   padding: 0; /* Elimina relleno por defecto */
   text-align: center; /* Centra el texto horizontalmente */

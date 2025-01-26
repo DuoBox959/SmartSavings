@@ -6,14 +6,27 @@
     <title>Inicio | Comparador de Precios</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="../style/index.css" />
-
-    <!-- Carga el archivo index.js como un módulo -->
-    <script src="../functions/index.js" type="module" defer></script>
-
+    <script src="../functions/index.js" defer></script>
   </head>
   <body>
-    <div id="header"></div> <!-- Aquí se cargará el header -->
-    
+    <header>
+      <div class="logo">
+        <h1>ComparaTú</h1>
+      </div>
+      <div class="eslogan">
+        <p class="subtitulo">Encuentra las mejores ofertas y organiza tus productos fácilmente</p>
+      </div>
+      <div class="acciones" id="acciones">
+        <!-- Enlaces para el registro y login -->
+        <a href="register.html" class="enlace" id="registerLink">Registrate</a>
+        <a href="login.html" class="enlace" id="loginLink">Iniciar Sesión</a>
+        
+        <!-- Nombre del usuario y enlace de logout -->
+        <span id="userName" style="display:none;" class="enlace"></span> <!-- Nombre del usuario -->
+        <a href="#" id="logout" style="display:none;" class="enlace">Cerrar Sesión</a> <!-- Enlace de logout -->
+      </div>
+    </header>
+
     <div class="container">
       <main>
         <section class="tarjetas">
@@ -31,6 +44,15 @@
       </main>
     </div>
 
+    <footer>
+      <p>&copy; 2025 Comparador de Precios. Todos los derechos reservados a Francisco Javier Domínguez y Rubén Fernández Páez.</p>
+      <div class="footer-enlaces">
+        <a href="avisolegal.html">Aviso Legal</a> |
+        <a href="politicaprivacidad.html">Política de Privacidad</a> |
+        <a href="terminoscondiciones.html">Términos y Condiciones</a>
+      </div>
+    </footer>
+    
     <!-- 🍪 Banner de Cookies -->
     <div class="cookies-banner" id="cookies-banner">
       <div class="cookies-content">
@@ -47,8 +69,5 @@
 
     <!-- Superposición para el banner de cookies -->
     <div class="overlay" id="overlay"></div>
-
-    <!-- Aquí se cargará el footer -->
-    <div id="footer"></div>
   </body>
 </html>
