@@ -50,10 +50,18 @@ header .acciones .enlace:hover {
   background: #2c3e34; /* Fondo verde oscuro al pasar el mouse */
   color: #a8d5ba; /* Texto verde oliva suave */
 }
+
+/* Estilo para el enlace ComparaTú */
 .comparaTu {
   text-decoration: none; /* Elimina subrayado */
   color: inherit; /* Usa el color del texto del contenedor */
   cursor: pointer; /* Muestra la manito para indicar que es clickeable */
+  transition: color 0.3s ease; /* Suaviza la transición de color */
+}
+
+/* Cambiar color del texto al pasar el ratón */
+.comparaTu:hover {
+  color: #4A90E2; /* Color azulado */
 }
 
 /* 🔽 Menú desplegable */

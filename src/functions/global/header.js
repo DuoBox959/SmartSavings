@@ -7,11 +7,11 @@ export function gestionarUsuarioAutenticado() {
   const userName = document.getElementById("userName");
   const logout = document.getElementById("logout");
   const changeUser = document.getElementById("changeUser");
-  const accountSettings = document.getElementById("accountSettings");
+  const del = document.getElementById("delete");
 
   console.log(user);  // Verifica si el usuario está correctamente cargado
 
-  if (registerLink && loginLink && userMenu && userName && logout && changeUser && accountSettings) {
+  if (registerLink && loginLink && userMenu && userName && logout && changeUser && del) {
     if (user) {
       // Ocultar enlaces de registro e inicio de sesión
       registerLink.style.display = "none";
@@ -36,7 +36,7 @@ export function gestionarUsuarioAutenticado() {
       });
 
       // Función para abrir la configuración de la cuenta
-      accountSettings.addEventListener("click", () => {
+      del.addEventListener("click", () => {
         alert("¡Configuración de la cuenta aún no implementada!");
       });
     } else {
