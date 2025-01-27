@@ -58,7 +58,7 @@ button {
   transition: background-color 0.3s ease, transform 0.2s ease; /* Transiciones suaves */
 }
 button:hover {
-  background-color: #1565c0; /* Azul más oscuro al pasar el cursor */
+  background-color: #0854ab; /* Azul más oscuro al pasar el cursor */
   transform: scale(1.05); /* Aumenta ligeramente el tamaño al pasar el cursor */
 }
 

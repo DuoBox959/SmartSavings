@@ -55,7 +55,10 @@ header .acciones .enlace:hover {
   color: inherit; /* Usa el color del texto del contenedor */
   cursor: pointer; /* Muestra la manito para indicar que es clickeable */
 }
-
+.comparaTu:hover {
+  background-color: #0854ab; /* Azul más oscuro al pasar el cursor */
+  transform: scale(5.05)!important; /* Aumenta ligeramente el tamaño al pasar el cursor */
+}
 /* 🔽 Menú desplegable */
 .user-dropdown {
   position: relative;
