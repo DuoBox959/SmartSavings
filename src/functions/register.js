@@ -1,11 +1,3 @@
-// Función para manejar el botón "Volver Atrás"
-function volverAtras() {
-  window.history.back(); // Navega a la página anterior
-}
-
-// Hacer accesible la función en el ámbito global
-window.volverAtras = volverAtras;
-
 import { db } from '../libs/dbuser.js';
 
 const registerForm = document.querySelector('form');
