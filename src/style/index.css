@@ -27,17 +27,19 @@ header {
   align-items: center; /* Centra los elementos verticalmente */
   justify-content: space-between; /* Distribuye los elementos uniformemente */
   padding: 20px; /* Espaciado interno */
-  background: #a8d5ba; /* Verde oliva suave */
-  color: #2c3e34; /* Verde oscuro */
+  background: #a8d5ba; /* Verde oliva suave para un diseño acogedor */
+  color: #2c3e34; /* Verde oscuro para buen contraste */
 }
 
+/* Estilo del logo (sección izquierda) */
 header .logo h1 {
   font-size: 1.8em; /* Tamaño adecuado para el logo */
   font-weight: 700; /* Negrita */
-  margin: 0;
+  margin: 0; /* Elimina márgenes */
   color: #2c3e34; /* Verde oscuro */
 }
 
+/* Estilo del eslogan (sección central) */
 header .eslogan {
   text-align: center; /* Alinea el texto al centro */
   flex-grow: 1; /* Permite que el eslogan ocupe el espacio sobrante */
@@ -45,30 +47,31 @@ header .eslogan {
 
 header .eslogan .subtitulo {
   font-size: 1.2em; /* Tamaño menor para subtítulos */
-  margin: 0;
-  font-weight: 400;
-  color: #345e4d; /* Verde ligeramente más claro */
+  margin: 0; /* Elimina márgenes */
+  font-weight: 400; /* Peso estándar */
+  color: #345e4d; /* Verde ligeramente más claro para destacar */
 }
 
+/* Estilo de los enlaces (sección derecha) */
 header .acciones {
   display: flex; /* Alinea los enlaces en fila */
   gap: 15px; /* Espaciado entre los enlaces */
 }
 
 header .acciones .enlace {
-  font-size: 1em;
-  color: #2c3e34;
-  text-decoration: none;
-  font-weight: 500;
-  padding: 5px 10px;
-  border: 1px solid #2c3e34;
-  border-radius: 5px;
-  transition: background 0.3s;
+  font-size: 1em; /* Tamaño estándar */
+  color: #2c3e34; /* Verde oscuro */
+  text-decoration: none; /* Elimina subrayado */
+  font-weight: 500; /* Peso medio */
+  padding: 5px 10px; /* Espaciado interno */
+  border: 1px solid #2c3e34; /* Borde verde oscuro */
+  border-radius: 5px; /* Bordes redondeados */
+  transition: background 0.3s; /* Transición suave al pasar el mouse */
 }
 
 header .acciones .enlace:hover {
-  background: #2c3e34;
-  color: #a8d5ba;
+  background: #2c3e34; /* Fondo verde oscuro al pasar el mouse */
+  color: #a8d5ba; /* Texto verde oliva suave */
 }
 
 /* 🔽 Menú desplegable */
@@ -90,6 +93,7 @@ header .acciones .enlace:hover {
   color: #a8d5ba;
 }
 
+/* Contenedor del menú desplegable */
 .dropdown-content {
   display: block;
   position: absolute;
@@ -100,11 +104,11 @@ header .acciones .enlace:hover {
   border-radius: 5px;
   overflow: hidden;
   opacity: 0;
-  transform: translateY(-10px);
+  transform: translateY(-10px); /* Lo subimos 10px para la animación */
   transition: opacity 0.3s ease-out, transform 0.3s ease-out;
-  max-height: 0;
-  visibility: hidden;
-  margin-top: 25px;
+  max-height: 0; /* Para la animación de expansión */
+  visibility: hidden; /* Oculta completamente cuando está cerrado */
+  margin-top: 25px; /* Separar el menú del botón de bienvenida */
 }
 
 .dropdown-content a {
@@ -119,171 +123,297 @@ header .acciones .enlace:hover {
   background-color: #a8d5ba;
 }
 
+/* Cuando el menú está visible, hacemos la animación */
 .show {
   opacity: 1;
   transform: translateY(0);
-  max-height: 200px;
+  max-height: 200px; /* Ajusta según el contenido */
   visibility: visible;
 }
 
 /* 📦 Tarjetas */
 .tarjetas {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  padding: 30px;
+  display: flex; /* Organiza las tarjetas en fila */
+  justify-content: center; /* Centra horizontalmente las tarjetas */
+  gap: 20px; /* Espaciado entre tarjetas */
+  padding: 30px; /* Espaciado interno alrededor de las tarjetas */
 }
 
 .tarjeta {
-  background: linear-gradient(145deg, #ffffff, #e0e0e0);
-  color: #333;
-  width: 200px;
-  height: 250px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-radius: 12px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
-  text-align: center;
-  padding: 15px;
+  background: linear-gradient(
+    145deg,
+    #ffffff,
+    #e0e0e0
+  ); /* Fondo con efecto de luz suave */
+  color: #333; /* Color del texto */
+  width: 200px; /* Ancho fijo */
+  height: 250px; /* Altura fija */
+  display: flex; /* Disposición en flexbox */
+  flex-direction: column; /* Organiza los hijos en columna */
+  align-items: center; /* Centra los elementos horizontalmente */
+  justify-content: center; /* Centra los elementos verticalmente */
+  border-radius: 12px; /* Bordes redondeados */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Sombra para un efecto elevado */
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease; /* Transiciones suaves */
+  text-align: center; /* Centra el texto */
+  padding: 15px; /* Espaciado interno */
 }
 
 .tarjeta img {
-  width: 80px;
-  height: 80px;
-  margin-bottom: 10px;
-  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
-  transition: transform 0.3s ease;
+  width: 80px; /* Ancho de la imagen */
+  height: 80px; /* Altura de la imagen */
+  margin-bottom: 10px; /* Espaciado inferior */
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2)); /* Sombra para la imagen */
+  transition: transform 0.3s ease; /* Transición suave en el hover */
 }
 
 .tarjeta p {
-  font-size: 1em;
-  font-weight: 600;
-  margin-bottom: 10px;
+  font-size: 1em; /* Tamaño estándar de texto */
+  font-weight: 600; /* Texto ligeramente negrita */
+  margin-bottom: 10px; /* Espaciado inferior */
 }
 
 .tarjeta .enlace {
-  font-size: 0.9em;
-  font-weight: 600;
-  text-decoration: none;
-  color: #ffffff;
-  background: linear-gradient(145deg, #2196f3, #42a5f5);
-  padding: 8px 15px;
-  border-radius: 8px;
-  transition: background 0.3s ease, transform 0.3s ease;
+  font-size: 0.9em; /* Tamaño del texto del enlace */
+  font-weight: 600; /* Negrita ligera */
+  text-decoration: none; /* Sin subrayado */
+  color: #ffffff; /* Texto blanco */
+  background: linear-gradient(145deg, #2196f3, #42a5f5); /* Fondo degradado */
+  padding: 8px 15px; /* Espaciado interno */
+  border-radius: 8px; /* Bordes redondeados */
+  transition: background 0.3s ease, transform 0.3s ease; /* Transiciones suaves */
 }
 
 .tarjeta .enlace:hover {
-  background: linear-gradient(145deg, #1976d2, #1e88e5);
-  transform: scale(1.1);
+  background: linear-gradient(
+    145deg,
+    #1976d2,
+    #1e88e5
+  ); /* Fondo más oscuro en hover */
+  transform: scale(1.1); /* Aumenta el tamaño en hover */
 }
 
+/* Hover Effects */
 .tarjeta:hover {
-  transform: scale(1.05);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05); /* Aumenta ligeramente el tamaño */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
 }
 
 .tarjeta:hover img {
-  transform: scale(1.1);
+  transform: scale(1.1); /* Agranda la imagen en hover */
+}
+.user-menu {
+  position: relative;
+  display: inline-block;
+}
+
+.user-menu-button {
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.user-menu-button:hover {
+  background-color: #f0f0f0;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: #ffffff;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  min-width: 180px;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 10px 15px;
+  color: #333;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.dropdown-menu a:hover {
+  background-color: #f0f0f0;
+}
+
+.user-menu:hover .dropdown-menu {
+  display: block; /* Mostrar el menú al pasar el ratón por encima */
 }
 
 /* 🛠️ Footer */
 footer {
-  text-align: center;
-  background: #333;
-  color: #eee;
-  padding: 15px 20px;
-  font-size: 0.9em;
-  margin-top: auto;
-  border-top: 1px solid #444;
+  text-align: center; /* Centra el contenido */
+  background: #333; /* Fondo oscuro */
+  color: #eee; /* Texto claro */
+  padding: 15px 20px; /* Espaciado interno */
+  font-size: 0.9em; /* Tamaño pequeño del texto */
+  margin-top: auto; /* Empuja el pie de página al final de la página */
+  border-top: 1px solid #444; /* Línea superior sutil para separación */
 }
 
+/* Enlaces del footer */
 footer .footer-enlaces {
-  margin-top: 10px;
+  margin-top: 10px; /* Espaciado entre el texto y los enlaces */
 }
 
 footer .footer-enlaces a {
-  color: #81c784;
-  text-decoration: none;
-  font-weight: 500;
-  margin: 0 5px;
-  transition: color 0.3s;
+  color: #81c784; /* Verde claro para los enlaces */
+  text-decoration: none; /* Sin subrayado */
+  font-weight: 500; /* Peso medio */
+  margin: 0 5px; /* Espaciado horizontal entre los enlaces */
+  transition: color 0.3s; /* Transición suave para el hover */
 }
 
 footer .footer-enlaces a:hover {
-  color: #a8d5ba;
+  color: #a8d5ba; /* Verde oliva suave al pasar el mouse */
 }
 
 /* 🍪 Banner de Cookies */
 .cookies-banner {
-  position: fixed;
-  bottom: 0;
+  position: fixed; /* Se queda fijo en la parte inferior */
+  bottom: 0; /* Pegado al borde inferior */
   left: 0;
-  width: 100%;
-  background: #333;
-  color: #ffffff;
-  padding: 15px 30px;
-  font-size: 1em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
+  width: 100%; /* Ocupa todo el ancho de la pantalla */
+  background: #333; /* Fondo blanco con sombra sutil */
+  color: #ffffff; /* Texto oscuro */
+  padding: 15px 30px; /* Espaciado interno */
+  font-size: 1em; /* Tamaño de texto cómodo */
+  display: flex; /* Alineación flexible */
+  justify-content: center; /* Centra el contenido */
+  align-items: center; /* Centrado vertical */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+  z-index: 1000; /* Asegura que se vea sobre el contenido */
 }
 
 .cookies-content {
-  max-width: 1000px;
-  width: 100%;
-  text-align: center;
+  max-width: 1000px; /* Limita el ancho del contenido */
+  width: 100%; /* Asegura que ocupe todo el ancho disponible */
+  text-align: center; /* Alineación centrada */
 }
 
 .cookies-banner p {
-  margin: 0;
-  font-weight: 400;
-  font-family: "Roboto", sans-serif;
+  margin: 0; /* Elimina márgenes */
+  font-weight: 400; /* Peso estándar */
+  font-family: "Roboto", sans-serif; /* Fuente agradable */
 }
 
 .cookies-link {
-  color: #a8d5ba;
-  text-decoration: none;
-  font-weight: 500;
+  color: #a8d5ba; /* Verde oliva suave */
+  text-decoration: none; /* Sin subrayado */
+  font-weight: 500; /* Peso medio */
 }
 
 .cookies-link:hover {
-  color: #81c784;
+  color: #81c784; /* Verde más claro al pasar el mouse */
 }
 
 .cookies-buttons {
-  margin-top: 15px;
+  margin-top: 15px; /* Espaciado entre texto y botones */
   display: flex;
-  justify-content: center;
-  gap: 15px;
+  justify-content: center; /* Centra los botones */
+  gap: 15px; /* Espaciado entre los botones */
+}
+
+.cookies-btn {
+  background: #78ce9a; /* Fondo verde oliva */
+  color: #fff; /* Texto blanco */
+  border: none; /* Sin borde */
+  padding: 12px 25px; /* Espaciado interno */
+  border-radius: 5px; /* Bordes redondeados */
+  font-size: 1em; /* Tamaño de texto más grande */
+  cursor: pointer; /* Manito para indicar clic */
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Transiciones suaves */
+}
+
+.cookies-btn:hover {
+  background: #81c784; /* Verde más claro al pasar el mouse */
+  transform: scale(1.05); /* Efecto de aumentar ligeramente el tamaño */
+}
+
+.cookies-rechazar {
+  background: #ff4b5c; /* Color rojo para el botón de rechazar */
+}
+
+.cookies-rechazar:hover {
+  background: #ff6b80; /* Rojo más claro al pasar el mouse */
+}
+
+/* 🍪 Banner de Cookies */
+.cookies-banner {
+  position: fixed; /* Se queda fijo en la parte inferior */
+  bottom: 0; /* Pegado al borde inferior */
+  left: 0;
+  width: 100%; /* Ocupa todo el ancho de la pantalla */
+  background: #333;
+  color: #ffffff;
+  padding: 15px 30px; /* Espaciado interno */
+  font-size: 1em; /* Tamaño de texto cómodo */
+  display: flex; /* Alineación flexible */
+  justify-content: center; /* Centra el contenido */
+  align-items: center; /* Centrado vertical */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+  z-index: 1001; /* Asegura que se vea sobre el contenido */
+}
+
+.cookies-content {
+  max-width: 1000px; /* Limita el ancho del contenido */
+  width: 100%; /* Asegura que ocupe todo el ancho disponible */
+  text-align: center; /* Alineación centrada */
+}
+
+.cookies-banner p {
+  margin: 0; /* Elimina márgenes */
+  font-weight: 400; /* Peso estándar */
+  font-family: "Roboto", sans-serif; /* Fuente agradable */
+}
+
+.cookies-link {
+  color: #a8d5ba; /* Verde oliva suave */
+  text-decoration: none; /* Sin subrayado */
+  font-weight: 500; /* Peso medio */
+}
+
+.cookies-link:hover {
+  color: #81c784; /* Verde más claro al pasar el mouse */
+}
+
+.cookies-buttons {
+  margin-top: 15px; /* Espaciado entre texto y botones */
+  display: flex;
+  justify-content: center; /* Centra los botones */
+  gap: 15px; /* Espaciado entre los botones */
 }
 
 .cookies-btn {
   background: #7bbb95;
-  color: #fff;
-  border: none;
-  padding: 12px 25px;
-  border-radius: 5px;
-  font-size: 1em;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  color: #fff; /* Texto blanco */
+  border: none; /* Sin borde */
+  padding: 12px 25px; /* Espaciado interno */
+  border-radius: 5px; /* Bordes redondeados */
+  font-size: 1em; /* Tamaño de texto más grande */
+  cursor: pointer; /* Manito para indicar clic */
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Transiciones suaves */
 }
 
 .cookies-btn:hover {
-  background: #81c784;
-  transform: scale(1.05);
+  background: #81c784; /* Verde más claro al pasar el mouse */
+  transform: scale(1.05); /* Efecto de aumentar ligeramente el tamaño */
 }
 
 .cookies-rechazar {
-  background: #ff4b5c;
+  background: #ff4b5c; /* Color rojo para el botón de rechazar */
 }
 
 .cookies-rechazar:hover {
-  background: #ff6b80;
+  background: #ff6b80; /* Rojo más claro al pasar el mouse */
 }
 
 /* 🍪 Superposición para bloquear el contenido */
@@ -293,9 +423,9 @@ footer .footer-enlaces a:hover {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  z-index: 1000;
-  display: none;
-  pointer-events: auto;
-  filter: blur(5px);
+  background: rgba(0, 0, 0, 0.7); /* Fondo oscuro y más opaco */
+  z-index: 1000; /* Se asegura que quede debajo del banner de cookies */
+  display: none; /* Inicialmente oculto */
+  pointer-events: auto; /* Permite interactuar con la superposición */
+  filter: blur(5px); /* Aplica un desenfoque al contenido */
 }
