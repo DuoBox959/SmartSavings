@@ -17,36 +17,11 @@
     <link rel="stylesheet" href="../style/header.css" />
     <link rel="stylesheet" href="../style/politicas.css" />
     <link rel="stylesheet" href="../style/footer.css" />
-    <script src="../functions/politicas.js" defer></script>
+    <script src="../functions/politicas.js" type="module" defer></script>
   </head>
   <body>
-    <!-- 🏷️ Encabezado Principal -->
-    <header>
-      <div class="logo">
-        <h1>ComparaTú</h1>
-      </div>
-      <div class="eslogan">
-        <p class="subtitulo">
-          Encuentra las mejores ofertas y organiza tus productos fácilmente
-        </p>
-      </div>
-      <div class="acciones" id="acciones">
-        <!-- Enlaces para el registro y login (solo visibles si no hay usuario logueado) -->
-        <a href="register.html" class="enlace" id="registerLink">Registrate</a>
-        <a href="login.html" class="enlace" id="loginLink">Iniciar Sesión</a>
-
-        <!-- Menú desplegable del usuario -->
-        <div class="user-dropdown" id="userDropdown" style="display: none">
-          <span id="userName" class="enlace"></span>
-          <!-- Nombre del usuario -->
-          <div class="dropdown-content" id="userMenu">
-            <a href="#">Actualizar</a>
-            <a href="#" id="deleteAccount">Borrar Cuenta</a>
-            <a href="#" id="logout">Cerrar Sesión</a>
-          </div>
-        </div>
-      </div>
-    </header>
+   <!-- 🧩 Aquí se cargará el header dinámico -->
+   <div id="header"></div>
     <div class="container">
       <div class="politicas">
         <h2>Términos y Condiciones</h2>
@@ -153,17 +128,7 @@
         </p> -->
       </div>
     </div>
-    <!-- 🛠️ Pie de Página -->
-    <footer>
-      <p>
-        &copy; 2025 Comparador de Precios. Todos los derechos reservados a
-        Francisco Javier Domínguez y Rubén Fernández Páez.
-      </p>
-      <div class="footer-enlaces">
-        <a href="avisolegal.html">Aviso Legal</a> |
-        <a href="politicaprivacidad.html">Política de Privacidad</a> |
-        <a href="terminoscondiciones.html">Términos y Condiciones</a>
-      </div>
-    </footer>
+    <!-- 🧩 Aquí se cargará el footer dinámico -->
+    <div id="footer"></div>
   </body>
 </html>

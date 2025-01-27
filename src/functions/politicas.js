@@ -1,4 +1,16 @@
-document.addEventListener("DOMContentLoaded", () => {
+// Importar funciones necesarias
+import { cargarHeaderFooter } from "../functions/global/funciones.js";
+import { gestionarUsuarioAutenticado } from "../functions/global/header.js";
+
+// Evento que se ejecuta cuando el DOM se ha cargado completamente
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    // Cargar el header y el footer dinámicamente
+    await cargarHeaderFooter();
+
+    // Llamar a la función para gestionar el usuario autenticado
+    gestionarUsuarioAutenticado();
+
     // Elementos de la barra de navegación
     const registerLink = document.getElementById("registerLink");
     const loginLink = document.getElementById("loginLink");
@@ -56,4 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Ocultar el dropdown
       userDropdown.style.display = "none";
     }
-  });
+  } catch (error) {
+    console.error("Hubo un error durante la inicialización:", error);
+  }
+});

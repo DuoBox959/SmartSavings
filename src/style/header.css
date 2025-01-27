@@ -81,11 +81,11 @@ header {
     border-radius: 5px;
     overflow: hidden;
     opacity: 0;
-    transform: translateY(-10px); /* Lo subimos 10px para la animación */
+    transform: translateY(-10px); 
     transition: opacity 0.3s ease-out, transform 0.3s ease-out;
-    max-height: 0; /* Para la animación de expansión */
-    visibility: hidden; /* Oculta completamente cuando está cerrado */
-    margin-top: 25px; /* Separar el menú del botón de bienvenida */
+    max-height: 0; 
+    visibility: hidden;
+    margin-top: 25px;
   }
   
   .dropdown-content a {
@@ -106,4 +106,50 @@ header {
     transform: translateY(0);
     max-height: 200px; /* Ajusta según el contenido */
     visibility: visible;
+  }
+
+  .user-menu {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .user-menu-button {
+    background-color: #a8d5ba;
+    border: 1px solid #cccccc;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .user-menu-button:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #ffffff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    min-width: 180px;
+  }
+  
+  .dropdown-menu a {
+    display: block;
+    padding: 10px 15px;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+  }
+  
+  .dropdown-menu a:hover {
+    background-color: #a8d5ba;
+  }
+  
+  .user-menu:hover .dropdown-menu {
+    display: block; 
   }
