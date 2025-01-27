@@ -24,13 +24,18 @@ body {
 
 
 /* 📦 Tarjetas */
+
 .tarjetas {
   display: flex; /* Organiza las tarjetas en fila */
   justify-content: center; /* Centra horizontalmente las tarjetas */
   gap: 20px; /* Espaciado entre tarjetas */
   padding: 30px; /* Espaciado interno alrededor de las tarjetas */
 }
-
+.tarjeta {
+  width: 250px; /* Ancho más grande */
+  height: 300px; /* Altura más grande */
+  border-radius: 15px; /* Bordes más redondeados */
+}
 .tarjeta {
   background: linear-gradient(
     145deg,
@@ -52,11 +57,13 @@ body {
 }
 
 .tarjeta img {
-  width: 80px; /* Ancho de la imagen */
-  height: 80px; /* Altura de la imagen */
-  margin-bottom: 10px; /* Espaciado inferior */
-  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2)); /* Sombra para la imagen */
-  transition: transform 0.3s ease; /* Transición suave en el hover */
+  width: 100px; /* Incrementar tamaño de la imagen */
+  height: 100px;
+  margin-bottom: 10px;
+  border-radius: 50%; /* Hace el recuadro completamente redondeado */
+  background: #e0e0e0; /* Fondo del recuadro redondeado */
+  padding: 10px; /* Espaciado interno entre el ícono y el borde */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para resaltar */
 }
 
 .tarjeta p {
