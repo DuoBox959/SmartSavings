@@ -29,7 +29,7 @@ button {
 }
 
 button:hover {
-  background-color: #1565c0; /* Azul más oscuro al pasar el cursor */
+  background-color: #0854ab; /* Azul más oscuro al pasar el cursor */
   transform: scale(1.05); /* Aumenta ligeramente el tamaño al pasar el cursor */
 }
 
@@ -269,7 +269,7 @@ table.dataTable tbody tr:hover {
 
 /* Botón Cancelar */
 #formularioProducto button:nth-child(2) {
-  background-color: #f44336; /* Rojo */
+  background-color: #ba3d33; /* Rojo */
   color: white; /* Texto blanco */
 }
 
@@ -280,7 +280,7 @@ table.dataTable tbody tr:hover {
 
 /* ⚙️ Botones adicionales */
 .btn-eliminar {
-  background-color: #f44336; /* Rojo */
+  background-color: #ba3d33; /* Rojo */
   color: white; /* Texto blanco */
   border: none; /* Sin bordes */
   padding: 10px 20px; /* Tamaño cómodo */

@@ -63,7 +63,10 @@ header .acciones .enlace:hover {
 .comparaTu:hover {
   color: #4A90E2; /* Color azulado */
 }
-
+.comparaTu:hover {
+  background-color: #0854ab; /* Azul más oscuro al pasar el cursor */
+  transform: scale(5.05)!important; /* Aumenta ligeramente el tamaño al pasar el cursor */
+}
 /* 🔽 Menú desplegable */
 .user-dropdown {
   position: relative;
