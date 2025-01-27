@@ -8,6 +8,7 @@ const passwordInput = document.getElementById('password');
 
 // Agrega un listener al evento submit del formulario
 loginForm.addEventListener('submit', async (event) => {
+  
   event.preventDefault(); // Previene el comportamiento predeterminado del formulario
 
   const email = emailInput.value.trim(); // Obtiene y limpia el email

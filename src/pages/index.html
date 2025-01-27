@@ -1,56 +1,65 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Inicio | Comparador de Precios</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="../style/index.css" />
 
-    <!-- Carga el archivo index.js como un módulo -->
-    <script src="../functions/index.js" type="module" defer></script>
-  </head>
-  <body>
-    <!-- 🧩 Aquí se cargará el header dinámico -->
-    <div id="header"></div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inicio | Comparador de Precios</title>
+  
+  <!-- Fuentes -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+  
+  <!-- Estilos CSS -->
+  <link rel="stylesheet" href="../style/index.css" />
+  
+  <!-- Carga el archivo JS como módulo -->
+  <script src="../functions/index.js" type="module" defer></script>
+</head>
 
+<body>
+  <!-- 🧩 Aquí se cargará el header dinámico -->
+  <div id="header"></div>
 
-    <div class="container">
-      <main>
-        <section class="tarjetas">
-          <!-- Tarjeta 1: Gestión de Productos -->
-          <div class="tarjeta">
-            <img src="../assets/icons/icon1.webp" alt="API" class="icono" />
-            <a href="productos.html" class="enlace">Gestión de Productos</a>
-          </div>
-          <!-- Tarjeta 2: Comparador de Precios -->
-          <div class="tarjeta">
-            <img src="../assets/icons/icon2.webp" alt="Desarrollo Web" class="icono" />
-            <a href="comparador.html" class="enlace">Comparador de Precios</a>
-          </div>
-        </section>
-      </main>
-    </div>
-
-    <!-- 🍪 Banner de Cookies -->
-    <div class="cookies-banner" id="cookies-banner">
-      <div class="cookies-content">
-        <p>
-          Este sitio web utiliza cookies para mejorar tu experiencia. Al continuar navegando, aceptas su uso.
-          <a href="politicacookies.html" class="cookies-link">Leer más</a>.
-        </p>
-        <div class="cookies-buttons">
-          <button id="aceptar-cookies" class="cookies-btn cookies-aceptar">Aceptar</button>
-          <button id="rechazar-cookies" class="cookies-btn cookies-rechazar">Rechazar</button>
+  <!-- Contenedor principal -->
+  <div class="container">
+    <main>
+      <!-- Sección de tarjetas -->
+      <section class="tarjetas">
+        <!-- Tarjeta 1: Gestión de Productos -->
+        <div class="tarjeta">
+          <img src="../assets/icons/icon1.webp" alt="API" class="icono" />
+          <a href="productos.html" class="enlace">Gestión de Productos</a>
         </div>
+        
+        <!-- Tarjeta 2: Comparador de Precios -->
+        <div class="tarjeta">
+          <img src="../assets/icons/icon2.webp" alt="Desarrollo Web" class="icono" />
+          <a href="comparador.html" class="enlace">Comparador de Precios</a>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- 🍪 Banner de Cookies -->
+  <div class="cookies-banner" id="cookies-banner">
+    <div class="cookies-content">
+      <p>
+        Este sitio web utiliza cookies para mejorar tu experiencia. Al continuar navegando, aceptas su uso.
+        <a href="politicacookies.html" class="cookies-link">Leer más</a>.
+      </p>
+      <div class="cookies-buttons">
+        <button id="aceptar-cookies" class="cookies-btn cookies-aceptar">Aceptar</button>
+        <button id="rechazar-cookies" class="cookies-btn cookies-rechazar">Rechazar</button>
       </div>
     </div>
+  </div>
 
-    <!-- Superposición para el banner de cookies -->
-    <div class="overlay" id="overlay"></div>
+  <!-- Superposición para el banner de cookies -->
+  <div class="overlay" id="overlay"></div>
 
-   
-    <!-- 🧩 Aquí se cargará el footer dinámico -->
-    <div id="footer"></div>
-  </body>
+  <!-- 🧩 Aquí se cargará el footer dinámico -->
+  <div id="footer"></div>
+
+</body>
+
 </html>
