@@ -1,161 +1,160 @@
 /* 🏷️ Encabezado */
 header {
-    display: flex; /* Flexbox para organizar elementos en fila */
-    align-items: center; /* Centra los elementos verticalmente */
-    justify-content: space-between; /* Distribuye los elementos uniformemente */
-    padding: 20px; /* Espaciado interno */
-    background: #a8d5ba; /* Verde oliva suave para un diseño acogedor */
-    color: #2c3e34; /* Verde oscuro para buen contraste */
-  }
-  
-  /* Estilo del logo (sección izquierda) */
-  header .logo h1 {
-    font-size: 1.8em; /* Tamaño adecuado para el logo */
-    font-weight: 700; /* Negrita */
-    margin: 0; /* Elimina márgenes */
-    color: #2c3e34; /* Verde oscuro */
-  }
-  
-  /* Estilo del eslogan (sección central) */
-  header .eslogan {
-    text-align: center; /* Alinea el texto al centro */
-    flex-grow: 1; /* Permite que el eslogan ocupe el espacio sobrante */
-  }
-  
-  header .eslogan .subtitulo {
-    font-size: 1.2em; /* Tamaño menor para subtítulos */
-    margin: 0; /* Elimina márgenes */
-    font-weight: 400; /* Peso estándar */
-    color: #345e4d; /* Verde ligeramente más claro para destacar */
-  }
-  
-  /* Estilo de los enlaces (sección derecha) */
-  header .acciones {
-    display: flex; /* Alinea los enlaces en fila */
-    gap: 15px; /* Espaciado entre los enlaces */
-  }
-  
-  header .acciones .enlace {
-    font-size: 1em; /* Tamaño estándar */
-    color: #2c3e34; /* Verde oscuro */
-    text-decoration: none; /* Elimina subrayado */
-    font-weight: 500; /* Peso medio */
-    padding: 5px 10px; /* Espaciado interno */
-    border: 1px solid #2c3e34; /* Borde verde oscuro */
-    border-radius: 5px; /* Bordes redondeados */
-    transition: background 0.3s; /* Transición suave al pasar el mouse */
-  }
-  
-  header .acciones .enlace:hover {
-    background: #2c3e34; /* Fondo verde oscuro al pasar el mouse */
-    color: #a8d5ba; /* Texto verde oliva suave */
-  }
-  .comparaTu {
-    text-decoration: none; /* Elimina subrayado */
-    color: inherit; /* Usa el color del texto del contenedor */
-    cursor: pointer; /* Muestra la manito para indicar que es clickeable */
-  }
-  
-  
-  /* 🔽 Menú desplegable */
-  .user-dropdown {
-    position: relative;
-    display: inline-block;
-  }
-  
-  #userName {
-    font-weight: bold;
-    padding: 5px 10px;
-    border: 1px solid #2c3e34;
-    border-radius: 5px;
-    transition: background 0.3s;
-  }
-  
-  #userName:hover {
-    background: #2c3e34;
-    color: #a8d5ba;
-  }
-  
-  /* Contenedor del menú desplegable */
-  .dropdown-content {
-    display: block;
-    position: absolute;
-    background-color: white;
-    min-width: 150px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-    z-index: 100;
-    border-radius: 5px;
-    overflow: hidden;
-    opacity: 0;
-    transform: translateY(-10px); 
-    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
-    max-height: 0; 
-    visibility: hidden;
-    margin-top: 25px;
-  }
-  
-  .dropdown-content a {
-    display: block;
-    padding: 10px;
-    color: #2c3e34;
-    text-decoration: none;
-    transition: background 0.3s;
-  }
-  
-  .dropdown-content a:hover {
-    background-color: #a8d5ba;
-  }
-  
-  /* Cuando el menú está visible, hacemos la animación */
-  .show {
-    opacity: 1;
-    transform: translateY(0);
-    max-height: 200px; /* Ajusta según el contenido */
-    visibility: visible;
-  }
+  display: flex; /* Flexbox para organizar elementos en fila */
+  align-items: center; /* Centra los elementos verticalmente */
+  justify-content: space-between; /* Distribuye los elementos uniformemente */
+  padding: 20px; /* Espaciado interno */
+  background: #a8d5ba; /* Verde oliva suave para un diseño acogedor */
+  color: #2c3e34; /* Verde oscuro para buen contraste */
+}
 
-  .user-menu {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .user-menu-button {
-    background-color: #a8d5ba;
-    border: 1px solid #cccccc;
-    padding: 8px 12px;
-    cursor: pointer;
-    border-radius: 4px;
-    font-size: 14px;
-  }
-  
-  .user-menu-button:hover {
-    background-color: #f0f0f0;
-  }
-  
-  .dropdown-menu {
-    display: none;
-    position: absolute;
-    right: 0;
-    background-color: #ffffff;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    border: 1px solid #cccccc;
-    border-radius: 4px;
-    min-width: 180px;
-  }
-  
-  .dropdown-menu a {
-    display: block;
-    padding: 10px 15px;
-    color: #333;
-    text-decoration: none;
-    font-size: 14px;
-  }
-  
-  .dropdown-menu a:hover {
-    background-color: #a8d5ba;
-  }
-  
-  .user-menu:hover .dropdown-menu {
-    display: block; 
-  }
+/* Estilo del logo (sección izquierda) */
+header .logo h1 {
+  font-size: 1.8em; /* Tamaño adecuado para el logo */
+  font-weight: 700; /* Negrita */
+  margin: 0; /* Elimina márgenes */
+  color: #2c3e34; /* Verde oscuro */
+}
+
+/* Estilo del eslogan (sección central) */
+header .eslogan {
+  text-align: center; /* Alinea el texto al centro */
+  flex-grow: 1; /* Permite que el eslogan ocupe el espacio sobrante */
+}
+
+header .eslogan .subtitulo {
+  font-size: 1.2em; /* Tamaño menor para subtítulos */
+  margin: 0; /* Elimina márgenes */
+  font-weight: 400; /* Peso estándar */
+  color: #345e4d; /* Verde ligeramente más claro para destacar */
+}
+
+/* Estilo de los enlaces (sección derecha) */
+header .acciones {
+  display: flex; /* Alinea los enlaces en fila */
+  gap: 15px; /* Espaciado entre los enlaces */
+}
+
+header .acciones .enlace {
+  font-size: 1em; /* Tamaño estándar */
+  color: #2c3e34; /* Verde oscuro */
+  text-decoration: none; /* Elimina subrayado */
+  font-weight: 500; /* Peso medio */
+  padding: 5px 10px; /* Espaciado interno */
+  border: 1px solid #2c3e34; /* Borde verde oscuro */
+  border-radius: 5px; /* Bordes redondeados */
+  transition: background 0.3s; /* Transición suave al pasar el mouse */
+}
+
+header .acciones .enlace:hover {
+  background: #2c3e34; /* Fondo verde oscuro al pasar el mouse */
+  color: #a8d5ba; /* Texto verde oliva suave */
+}
+.comparaTu {
+  text-decoration: none; /* Elimina subrayado */
+  color: inherit; /* Usa el color del texto del contenedor */
+  cursor: pointer; /* Muestra la manito para indicar que es clickeable */
+}
+
+/* 🔽 Menú desplegable */
+.user-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+#userName {
+  font-weight: bold;
+  padding: 5px 10px;
+  border: 1px solid #2c3e34;
+  border-radius: 5px;
+  transition: background 0.3s;
+}
+
+#userName:hover {
+  background: #2c3e34;
+  color: #a8d5ba;
+}
+
+/* Contenedor del menú desplegable */
+.dropdown-content {
+  display: block;
+  position: absolute;
+  background-color: white;
+  min-width: 150px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+  border-radius: 5px;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+  max-height: 0;
+  visibility: hidden;
+  margin-top: 25px;
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 10px;
+  color: #2c3e34;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.dropdown-content a:hover {
+  background-color: #a8d5ba;
+}
+
+/* Cuando el menú está visible, hacemos la animación */
+.show {
+  opacity: 1;
+  transform: translateY(0);
+  max-height: 200px; /* Ajusta según el contenido */
+  visibility: visible;
+}
+
+.user-menu {
+  position: relative;
+  display: inline-block;
+}
+
+.user-menu-button {
+  background-color: #a8d5ba;
+  border: 1px solid #cccccc;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.user-menu-button:hover {
+  background-color: #f0f0f0;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: #ffffff;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  min-width: 180px;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 10px 15px;
+  color: #333;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.dropdown-menu a:hover {
+  background-color: #a8d5ba;
+}
+
+.user-menu:hover .dropdown-menu {
+  display: block;
+}

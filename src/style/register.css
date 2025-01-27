@@ -73,18 +73,21 @@ form button:hover {
 }
 
 /* Enlaces */
-.register-link, .login-link {
+.register-link,
+.login-link {
   margin-top: 10px;
   font-size: 14px;
 }
 
-.register-link a, .login-link a {
+.register-link a,
+.login-link a {
   color: #4caf50;
   text-decoration: none;
   font-weight: bold;
 }
 
-.register-link a:hover, .login-link a:hover {
+.register-link a:hover,
+.login-link a:hover {
   text-decoration: underline;
 }
 
@@ -106,34 +109,4 @@ form button:hover {
 
 .back-button:hover {
   background-color: #388e3c;
-}
-
-/* Footer */
-footer {
-  text-align: center;
-  background: #333;
-  color: #eee;
-  padding: 15px 20px;
-  font-size: 0.9em;
-  border-top: 1px solid #444;
-  width: 100%;
-  margin-top: auto;
-  box-sizing: border-box;
-}
-
-/* Enlaces del footer */
-footer .footer-enlaces {
-  margin-top: 10px;
-}
-
-footer .footer-enlaces a {
-  color: #81c784;
-  text-decoration: none;
-  font-weight: 500;
-  margin: 0 5px;
-  transition: color 0.3s;
-}
-
-footer .footer-enlaces a:hover {
-  color: #a8d5ba;
 }

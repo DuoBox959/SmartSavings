@@ -120,7 +120,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       // Borrar cuenta del usuario
       deleteAccount.addEventListener("click", () => {
-        if (confirm("¿Seguro que quieres borrar tu cuenta? Esta acción es irreversible.")) {
+        if (
+          confirm(
+            "¿Seguro que quieres borrar tu cuenta? Esta acción es irreversible."
+          )
+        ) {
           sessionStorage.removeItem("user");
           localStorage.removeItem("user");
           alert("Tu cuenta ha sido eliminada.");
@@ -142,7 +146,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       // Ocultar el menú desplegable
       userDropdown.style.display = "none";
     }
-
   } catch (error) {
     console.error("Hubo un error durante la inicialización:", error);
   }
