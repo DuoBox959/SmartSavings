@@ -50,6 +50,12 @@ header {
     background: #2c3e34; /* Fondo verde oscuro al pasar el mouse */
     color: #a8d5ba; /* Texto verde oliva suave */
   }
+  .comparaTu {
+    text-decoration: none; /* Elimina subrayado */
+    color: inherit; /* Usa el color del texto del contenedor */
+    cursor: pointer; /* Muestra la manito para indicar que es clickeable */
+  }
+  
   
   /* 🔽 Menú desplegable */
   .user-dropdown {

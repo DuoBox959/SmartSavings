@@ -4,15 +4,15 @@ body {
   text-align: center;
   margin: 0;
   padding: 0;
-  background-color: #f4f4f9;
+  background: #a8d5ba;
   color: #333;
 }
 
 /* 🎨 Estilo del Título Principal */
 h1 {
-  font-size: 2.5em;
-  color: #1976d2;
-  margin: 20px 0;
+  font-size: 2.5em; /* Tamaño destacado del título */
+  margin-top: 20px; /* Espaciado superior */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); /* Sombra elegante */
 }
 
 /* 🖋 Estilo del Formulario */
@@ -47,30 +47,38 @@ form select {
 
 /* 🔘 Estilo de Botones */
 button {
-  background-color: #1976d2; 
-  color: white;
-  border: none; 
-  padding: 10px 20px; 
-  border-radius: 5px; 
-  font-size: 1em; 
-  cursor: pointer; 
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  background-color: #1976d2; /* Azul vibrante */
+  color: white; /* Texto blanco */
+  border: none; /* Sin bordes */
+  padding: 10px 20px; /* Tamaño cómodo para clics */
+  font-size: 1em; /* Texto estándar */
+  border-radius: 5px; /* Bordes redondeados */
+  cursor: pointer; /* Indica clics */
+  margin-bottom: 20px; /* Espaciado inferior */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Transiciones suaves */
 }
-
 button:hover {
-  background-color: #1565c0; 
-  transform: scale(1.05);
+  background-color: #1565c0; /* Azul más oscuro al pasar el cursor */
+  transform: scale(1.05); /* Aumenta ligeramente el tamaño al pasar el cursor */
 }
 
 /* Botón para Volver Atrás */
 .back-button {
-  margin-top: 20px; 
-  background-color: #4caf50; 
+  background-color: #4caf50; /* Verde para diferenciarlo */
+  color: white; /* Texto blanco */
+  border: none; /* Sin bordes */
+  padding: 10px 15px; /* Tamaño cómodo */
+  font-size: 1em; /* Texto estándar */
+  border-radius: 5px; /* Bordes redondeados */
+  cursor: pointer; /* Indica clics */
+  margin-top: 20px; /* Espaciado superior */
+  transition: background-color 0.3s ease; /* Transición suave */
 }
 
 .back-button:hover {
-  background-color: #388e3c; 
+  background-color: #388e3c; /* Verde más oscuro al pasar el cursor */
 }
+
 
 /* 📋 Estilo del Contenedor de Resultados */
 #resultadoComparacion {
