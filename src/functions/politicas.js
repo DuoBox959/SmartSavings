@@ -30,9 +30,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       loginLink.style.display = "none";
   
       // Mostrar nombre del usuario y el botón de logout
-      userName.style.display = "inline";
       userName.textContent = `Bienvenido, ${user.name}`;
-      logout.style.display = "inline";
   
       // Mostrar el menú desplegable
       userDropdown.style.display = "inline-block";
