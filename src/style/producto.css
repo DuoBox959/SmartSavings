@@ -17,7 +17,7 @@ h1 {
 
 /* 🔘 Botones Generales */
 button {
-  background-color: #1976d2; /* Azul vibrante */
+  background-color: #365a7e; /* Azul vibrante */
   color: white; /* Texto blanco */
   border: none; /* Sin bordes */
   padding: 10px 20px; /* Tamaño cómodo para clics */
@@ -35,7 +35,7 @@ button:hover {
 
 /* 🔙 Botón de Regreso */
 .back-button {
-  background-color: #4caf50; /* Verde para diferenciarlo */
+  background-color: #237f27; /* Verde para diferenciarlo */
   color: white; /* Texto blanco */
   border: none; /* Sin bordes */
   padding: 10px 15px; /* Tamaño cómodo */
@@ -62,7 +62,7 @@ table.dataTable {
 
 /* Encabezados de la Tabla */
 table.dataTable thead th {
-  background-color: #1976d2; /* Fondo azul */
+  background-color: #365a7e;; /* Fondo azul */
   color: white; /* Texto blanco */
   padding: 10px; /* Espaciado interno */
   text-align: center; /* Texto centrado */

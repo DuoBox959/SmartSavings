@@ -47,7 +47,7 @@ form select {
 
 /* 🔘 Estilo de Botones */
 button {
-  background-color: #1976d2; /* Azul vibrante */
+  background-color: #365a7e; /* Azul vibrante */
   color: white; /* Texto blanco */
   border: none; /* Sin bordes */
   padding: 10px 20px; /* Tamaño cómodo para clics */
@@ -64,7 +64,7 @@ button:hover {
 
 /* Botón para Volver Atrás */
 .back-button {
-  background-color: #4caf50; /* Verde para diferenciarlo */
+  background-color: #237f27; /* Verde para diferenciarlo */
   color: white; /* Texto blanco */
   border: none; /* Sin bordes */
   padding: 10px 15px; /* Tamaño cómodo */

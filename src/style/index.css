@@ -77,7 +77,7 @@ body {
   font-weight: 600; /* Negrita ligera */
   text-decoration: none; /* Sin subrayado */
   color: #ffffff; /* Texto blanco */
-  background: linear-gradient(145deg, #2196f3, #42a5f5); /* Fondo degradado */
+  background-color: #365a7e; 
   padding: 8px 15px; /* Espaciado interno */
   border-radius: 8px; /* Bordes redondeados */
   transition: background 0.3s ease, transform 0.3s ease; /* Transiciones suaves */
