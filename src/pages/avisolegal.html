@@ -14,8 +14,10 @@
       rel="stylesheet"
     />
     <!-- Vinculación al archivo de estilos CSS específico para esta página -->
-    <link rel="stylesheet" href="../style/avisolegal.css" />
-    <script src="../functions/avisolegal.js" defer></script>
+    <link rel="stylesheet" href="../style/header.css" />
+    <link rel="stylesheet" href="../style/politicas.css" />
+    <link rel="stylesheet" href="../style/footer.css" />
+    <script src="../functions/politicas.js" defer></script>
   </head>
   <body>
     <!-- 🏷️ Encabezado Principal -->
@@ -24,16 +26,19 @@
         <h1>ComparaTú</h1>
       </div>
       <div class="eslogan">
-        <p class="subtitulo">Encuentra las mejores ofertas y organiza tus productos fácilmente</p>
+        <p class="subtitulo">
+          Encuentra las mejores ofertas y organiza tus productos fácilmente
+        </p>
       </div>
       <div class="acciones" id="acciones">
         <!-- Enlaces para el registro y login (solo visibles si no hay usuario logueado) -->
         <a href="register.html" class="enlace" id="registerLink">Registrate</a>
         <a href="login.html" class="enlace" id="loginLink">Iniciar Sesión</a>
-    
+
         <!-- Menú desplegable del usuario -->
-        <div class="user-dropdown" id="userDropdown" style="display: none;">
-          <span id="userName" class="enlace"></span> <!-- Nombre del usuario -->
+        <div class="user-dropdown" id="userDropdown" style="display: none">
+          <span id="userName" class="enlace"></span>
+          <!-- Nombre del usuario -->
           <div class="dropdown-content" id="userMenu">
             <a href="#">Actualizar</a>
             <a href="#" id="deleteAccount">Borrar Cuenta</a>
@@ -43,58 +48,82 @@
       </div>
     </header>
     <div class="container">
-        <div class="legal-notice">
-            <h2>Aviso Legal</h2>
-            <p>
-                Bienvenido a <strong>ComparaTu</strong>, una plataforma diseñada para ayudarte a comparar precios y características de productos y servicios de manera eficiente. A continuación, se detallan los términos legales que rigen el uso de este sitio web. Recomendamos leer detenidamente este aviso antes de continuar navegando.
-            </p>
-            
-            <h3>1. Uso del Sitio</h3>
-            <ul>
-                <li>
-                    Al utilizar <strong>ComparaTu</strong>, aceptas respetar las leyes aplicables y los términos descritos en este aviso legal.
-                </li>
-                <li>
-                    La información presentada en este sitio tiene como único propósito facilitar la comparación de precios y características de productos. No garantizamos que dicha información esté libre de errores, ya que proviene de fuentes externas que pueden variar con el tiempo.
-                </li>
-                <li>
-                    <strong>Prohibido:</strong> Está estrictamente prohibido el uso del contenido de <strong>ComparaTu</strong> para fines ilícitos, como la distribución de información falsa o el acceso no autorizado a sistemas informáticos.
-                </li>
-            </ul>
-            
-            <h3>2. Responsabilidad</h3>
-            <ul>
-                <li>
-                    <strong>ComparaTu</strong> actúa únicamente como un intermediario informativo. No somos responsables de las transacciones que los usuarios realicen con terceros a partir de la información proporcionada en este sitio.
-                </li>
-                <li>
-                    Es responsabilidad del usuario verificar los precios, las condiciones y las características del producto directamente con el proveedor antes de realizar cualquier compra.
-                </li>
-                <li>
-                    Aunque hacemos nuestro mejor esfuerzo para mantener la información actualizada, <strong>ComparaTu</strong> no garantiza la disponibilidad o veracidad de los datos en todo momento.
-                </li>
-            </ul>
-            
-            <h3>3. Propiedad Intelectual</h3>
-            <ul>
-                <li>
-                    Todos los contenidos disponibles en <strong>ComparaTu</strong>, incluyendo textos, imágenes, logotipos y diseños, son propiedad intelectual de <strong>ComparaTu</strong> o de sus respectivos autores y están protegidos por las leyes de derechos de autor.
-                </li>
-                <li>
-                    Queda prohibida la reproducción, distribución o modificación del contenido del sitio sin el consentimiento previo por escrito del titular.
-                </li>
-                <li>
-                    El uso no autorizado de los contenidos puede dar lugar a acciones legales conforme a la legislación vigente.
-                </li>
-            </ul>
-            
-            <!-- <h3>4. Contacto</h3>
+      <div class="politicas">
+        <h2>Aviso Legal</h2>
+        <p>
+          Bienvenido a <strong>ComparaTu</strong>, una plataforma diseñada para
+          ayudarte a comparar precios y características de productos y servicios
+          de manera eficiente. A continuación, se detallan los términos legales
+          que rigen el uso de este sitio web. Recomendamos leer detenidamente
+          este aviso antes de continuar navegando.
+        </p>
+
+        <h3>1. Uso del Sitio</h3>
+        <ul>
+          <li>
+            Al utilizar <strong>ComparaTu</strong>, aceptas respetar las leyes
+            aplicables y los términos descritos en este aviso legal.
+          </li>
+          <li>
+            La información presentada en este sitio tiene como único propósito
+            facilitar la comparación de precios y características de productos.
+            No garantizamos que dicha información esté libre de errores, ya que
+            proviene de fuentes externas que pueden variar con el tiempo.
+          </li>
+          <li>
+            <strong>Prohibido:</strong> Está estrictamente prohibido el uso del
+            contenido de <strong>ComparaTu</strong> para fines ilícitos, como la
+            distribución de información falsa o el acceso no autorizado a
+            sistemas informáticos.
+          </li>
+        </ul>
+
+        <h3>2. Responsabilidad</h3>
+        <ul>
+          <li>
+            <strong>ComparaTu</strong> actúa únicamente como un intermediario
+            informativo. No somos responsables de las transacciones que los
+            usuarios realicen con terceros a partir de la información
+            proporcionada en este sitio.
+          </li>
+          <li>
+            Es responsabilidad del usuario verificar los precios, las
+            condiciones y las características del producto directamente con el
+            proveedor antes de realizar cualquier compra.
+          </li>
+          <li>
+            Aunque hacemos nuestro mejor esfuerzo para mantener la información
+            actualizada, <strong>ComparaTu</strong> no garantiza la
+            disponibilidad o veracidad de los datos en todo momento.
+          </li>
+        </ul>
+
+        <h3>3. Propiedad Intelectual</h3>
+        <ul>
+          <li>
+            Todos los contenidos disponibles en <strong>ComparaTu</strong>,
+            incluyendo textos, imágenes, logotipos y diseños, son propiedad
+            intelectual de <strong>ComparaTu</strong> o de sus respectivos
+            autores y están protegidos por las leyes de derechos de autor.
+          </li>
+          <li>
+            Queda prohibida la reproducción, distribución o modificación del
+            contenido del sitio sin el consentimiento previo por escrito del
+            titular.
+          </li>
+          <li>
+            El uso no autorizado de los contenidos puede dar lugar a acciones
+            legales conforme a la legislación vigente.
+          </li>
+        </ul>
+
+        <!-- <h3>4. Contacto</h3>
             <p>
                 Si tienes preguntas, inquietudes o necesitas más información sobre este aviso legal, puedes ponerte en contacto con nosotros a través del siguiente correo electrónico: 
                 <a href="mailto:info@comparatu.com">info@comparatu.com</a>. Estaremos encantados de ayudarte.
             </p>             -->
-        </div>
-    </div>    
+      </div>
+    </div>
     <!-- 🛠️ Pie de Página -->
     <footer>
       <p>

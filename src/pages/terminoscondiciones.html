@@ -14,8 +14,10 @@
       rel="stylesheet"
     />
     <!-- Vinculación al archivo de estilos CSS específico para esta página -->
-    <link rel="stylesheet" href="../style/terminoscondiciones.css" />
-    <script src="../functions/terminoscondiciones.js" defer></script>
+    <link rel="stylesheet" href="../style/header.css" />
+    <link rel="stylesheet" href="../style/politicas.css" />
+    <link rel="stylesheet" href="../style/footer.css" />
+    <script src="../functions/politicas.js" defer></script>
   </head>
   <body>
     <!-- 🏷️ Encabezado Principal -->
@@ -24,16 +26,19 @@
         <h1>ComparaTú</h1>
       </div>
       <div class="eslogan">
-        <p class="subtitulo">Encuentra las mejores ofertas y organiza tus productos fácilmente</p>
+        <p class="subtitulo">
+          Encuentra las mejores ofertas y organiza tus productos fácilmente
+        </p>
       </div>
       <div class="acciones" id="acciones">
         <!-- Enlaces para el registro y login (solo visibles si no hay usuario logueado) -->
         <a href="register.html" class="enlace" id="registerLink">Registrate</a>
         <a href="login.html" class="enlace" id="loginLink">Iniciar Sesión</a>
-    
+
         <!-- Menú desplegable del usuario -->
-        <div class="user-dropdown" id="userDropdown" style="display: none;">
-          <span id="userName" class="enlace"></span> <!-- Nombre del usuario -->
+        <div class="user-dropdown" id="userDropdown" style="display: none">
+          <span id="userName" class="enlace"></span>
+          <!-- Nombre del usuario -->
           <div class="dropdown-content" id="userMenu">
             <a href="#">Actualizar</a>
             <a href="#" id="deleteAccount">Borrar Cuenta</a>
@@ -43,7 +48,7 @@
       </div>
     </header>
     <div class="container">
-      <div class="terminos-condiciones">
+      <div class="politicas">
         <h2>Términos y Condiciones</h2>
         <p>
           Bienvenido a <strong>ComparaTu</strong>. Estos Términos y Condiciones
@@ -135,9 +140,8 @@
         <h3>6. Legislación Aplicable</h3>
         <p>
           Estos Términos y Condiciones se rigen por las leyes vigentes en
-          España. En caso de disputa,
-          las partes acuerdan someterse a la jurisdicción de los tribunales
-          competentes.
+          España. En caso de disputa, las partes acuerdan someterse a la
+          jurisdicción de los tribunales competentes.
         </p>
 
         <!-- <h3>7. Contacto</h3>

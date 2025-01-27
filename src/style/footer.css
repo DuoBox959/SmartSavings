@@ -1,0 +1,27 @@
+/* 🛠️ Footer */
+footer {
+    text-align: center;
+    background: #333; 
+    color: #eee; 
+    padding: 15px 20px; 
+    font-size: 0.9em; 
+    margin-top: auto;
+    border-top: 1px solid #444; 
+  }
+  
+  /* Enlaces del footer */
+  footer .footer-enlaces {
+    margin-top: 10px;
+  }
+  
+  footer .footer-enlaces a {
+    color: #81c784; 
+    text-decoration: none; 
+    font-weight: 500; 
+    margin: 0 5px;
+    transition: color 0.3s;
+  }
+  
+  footer .footer-enlaces a:hover {
+    color: #a8d5ba;
+  }
