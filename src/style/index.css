@@ -14,7 +14,12 @@ body {
   flex-direction: column; /* Organiza los hijos en columna */
   min-height: 100vh; /* Asegura que el cuerpo ocupe toda la altura de la ventana */
 }
-
+main {
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+  min-height: calc(100vh - 200px); /* Altura mínima, restando el espacio del header y footer */
+}
 .container {
   flex: 1; /* Permite que el contenedor crezca para llenar el espacio disponible */
   display: flex;
@@ -22,45 +27,41 @@ body {
 }
 
 /* 📦 Tarjetas */
+.tarjetas {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px; /* Espaciado entre las tarjetas */
+  padding: 50px;
+}
 
 .tarjetas {
-  display: flex; /* Organiza las tarjetas en fila */
-  justify-content: center; /* Centra horizontalmente las tarjetas */
-  gap: 20px; /* Espaciado entre tarjetas */
-  padding: 30px; /* Espaciado interno alrededor de las tarjetas */
+  display: flex;
+  justify-content: center;
+  gap: 40px; /* Aumentar el espaciado entre las tarjetas */
+  padding: 50px; /* Aumentar el espacio alrededor */
 }
 .tarjeta {
-  width: 250px; /* Ancho más grande */
-  height: 300px; /* Altura más grande */
-  border-radius: 15px; /* Bordes más redondeados */
-}
-.tarjeta {
-  background: linear-gradient(
-    145deg,
-    #ffffff,
-    #e0e0e0
-  ); /* Fondo con efecto de luz suave */
-  color: #333; /* Color del texto */
-  width: 200px; /* Ancho fijo */
-  height: 250px; /* Altura fija */
-  display: flex; /* Disposición en flexbox */
-  flex-direction: column; /* Organiza los hijos en columna */
-  align-items: center; /* Centra los elementos horizontalmente */
-  justify-content: center; /* Centra los elementos verticalmente */
-  border-radius: 12px; /* Bordes redondeados */
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Sombra para un efecto elevado */
-  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease; /* Transiciones suaves */
-  text-align: center; /* Centra el texto */
-  padding: 15px; /* Espaciado interno */
+  background: none; /* Quita el fondo */
+  box-shadow: none; /* Elimina la sombra */
+  border-radius: 0; /* Elimina bordes redondeados */
+  width: auto; /* Ajusta el ancho automáticamente */
+  height: auto; /* Ajusta la altura automáticamente */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0; /* Quita el padding */
 }
 
+
 .tarjeta img {
-  width: 100px; /* Incrementar tamaño de la imagen */
-  height: 100px;
+  width: 120px; /* Incrementar tamaño de la imagen */
+  height: 120px;
   margin-bottom: 10px;
   border-radius: 50%; /* Hace el recuadro completamente redondeado */
   background: #e0e0e0; /* Fondo del recuadro redondeado */
-  padding: 10px; /* Espaciado interno entre el ícono y el borde */
+  padding: 15px; /* Espaciado interno entre el ícono y el borde */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para resaltar */
 }
 
@@ -71,12 +72,12 @@ body {
 }
 
 .tarjeta .enlace {
-  font-size: 0.9em; /* Tamaño del texto del enlace */
+  font-size: 1.2em; /* Tamaño del texto del enlace */
   font-weight: 600; /* Negrita ligera */
   text-decoration: none; /* Sin subrayado */
   color: #ffffff; /* Texto blanco */
   background-color: #365a7e; 
-  padding: 8px 15px; /* Espaciado interno */
+  padding: 12px 20px; /* Espaciado interno */
   border-radius: 8px; /* Bordes redondeados */
   transition: background 0.3s ease, transform 0.3s ease; /* Transiciones suaves */
 }
@@ -93,7 +94,7 @@ body {
 }
 
 .tarjeta:hover img {
-  transform: scale(1.1); /* Agranda la imagen en hover */
+  transform: scale(1.4); /* Agranda la imagen en hover */
 }
 
 /* 🍪 Banner de Cookies */
