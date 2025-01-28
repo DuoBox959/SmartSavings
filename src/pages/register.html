@@ -5,77 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Registro - ComparaTú</title>
     <link rel="stylesheet" href="../style/register.css" />
-    <!-- Vinculación al archivo JavaScript con carga diferida -->
     <script src="../libs/pouchdb-9.0.0.min.js"></script>
     <script type="module" src="../functions/register.js" defer></script>
   </head>
   <body>
     <div class="container">
-      <div class="form-container">
-        <h1>Regístrate</h1>
+      <!-- 🖼️ Sección Izquierda -->
+      <div class="left-section">
+        <h1>Crea tu cuenta</h1>
+        <p>Únete a <strong>ComparaTú</strong> y encuentra las mejores ofertas.</p>
+        <img src="../assets/img/product.webp" alt="Imagen decorativa" />
+      </div>
+
+      <!-- 📋 Sección Derecha (Formulario) -->
+      <div class="right-section">
+        <h2>Regístrate</h2>
         <form action="#" method="post">
           <label for="name">Nombre:</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            placeholder="Ingresa tu nombre"
-            required
-          />
+          <input type="text" id="name" name="name" placeholder="Ingresa tu nombre" required />
 
-          <label for="name">Apellidos:</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            placeholder="Ingresa tus apellidos"
-            required
-          />
+          <label for="lastname">Apellidos:</label>
+          <input type="text" id="lastname" name="lastname" placeholder="Ingresa tus apellidos" required />
 
-          <label for="name">Usuario:</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            placeholder="Ingresa tu nombre de usuario"
-            required
-          />
+          <label for="username">Usuario:</label>
+          <input type="text" id="username" name="username" placeholder="Elige un nombre de usuario" required />
 
           <label for="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="Ingresa tu email"
-            required
-          />
+          <input type="email" id="email" name="email" placeholder="Ingresa tu email" required />
 
           <label for="password">Contraseña:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Crea una contraseña"
-            required
-          />
+          <input type="password" id="password" name="password" placeholder="Crea una contraseña" required />
 
           <label for="confirm-password">Confirmar Contraseña:</label>
-          <input
-            type="password"
-            id="confirm-password"
-            name="confirm-password"
-            placeholder="Confirma tu contraseña"
-            required
-          />
+          <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirma tu contraseña" required />
 
-          <button type="submit">Registrarse</button>
+          <button type="submit">Continuar →</button>
 
           <p class="login-link">
             ¿Ya tienes cuenta? <a href="login.html">Inicia sesión aquí</a>
           </p>
-          <button type="button" class="back-button" onclick="volverAtras()">
-            Volver Atrás
-          </button>
+
+          <button type="button" class="back-button" onclick="volverAtras()">Volver Atrás</button>
         </form>
       </div>
     </div>

@@ -1,105 +1,131 @@
-/* General */
-body {
-  font-family: Arial, sans-serif;
+/* 🌟 Reset */
+* {
   margin: 0;
   padding: 0;
-  background: linear-gradient(to right, #a8ff78, #78ffd6);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  min-height: 100vh;
   box-sizing: border-box;
 }
 
+/* 🎨 Fondo general con efecto */
+body {
+  font-family: "Roboto", sans-serif;
+  background: linear-gradient(135deg, #a8d5ba, #7bbb95); /* Degradado suave */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* 📦 Contenedor del formulario */
 .container {
   width: 100%;
   max-width: 400px;
   padding: 20px;
 }
 
+/* 📝 Caja del formulario con efecto neumorfismo */
 .form-container {
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  padding: 20px;
+  background: linear-gradient(145deg, #e0e0e0, #ffffff); /* Efecto de luz suave */
+  border-radius: 15px;
+  box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.2), -6px -6px 15px rgba(255, 255, 255, 0.8); /* Sombra más realista */
+  padding: 30px;
   text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* 🏷️ Títulos con más presencia */
 h1 {
-  font-size: 24px;
+  font-size: 26px;
   margin-bottom: 20px;
-  color: #333;
+  color: #2c3e34;
+  font-weight: 700;
 }
 
-/* Inputs */
+/* 📌 Inputs con bordes suaves */
 form label {
   font-weight: bold;
   margin: 10px 0 5px;
   display: block;
   text-align: left;
+  color: #2c3e34;
 }
 
 form input {
-  width: 95%;
-  max-width: 600px;
-  padding: 10px;
-  margin-bottom: 15px;
-  margin-left: -5%;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
   font-size: 16px;
-  box-sizing: border-box;
+  margin-bottom: 15px;
+  background: #f0f0f0;
+  box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.1), inset -4px -4px 8px rgba(255, 255, 255, 0.7);
+  transition: box-shadow 0.3s ease;
 }
 
-/* Botones */
+/* 🎯 Efecto al enfocar */
+form input:focus {
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1), inset -2px -2px 5px rgba(255, 255, 255, 0.7);
+  outline: none;
+}
+
+/* 🟩 Botón de inicio de sesión con hover atractivo */
 form button {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   border: none;
-  background-color: #4caf50;
+  background: linear-gradient(145deg, #365a7e, #1e3c5a);
   color: white;
   font-size: 18px;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background 0.3s ease, transform 0.3s ease;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2), -4px -4px 8px rgba(255, 255, 255, 0.1);
 }
 
 form button:hover {
-  background-color: #45a049;
+  background: linear-gradient(145deg, #1e3c5a, #365a7e);
+  transform: translateY(-2px);
 }
 
-/* Enlaces */
-.register-link,
-.login-link {
+/* 📎 Enlace de registro con mejor visualización */
+.register-link {
   margin-top: 10px;
   font-size: 14px;
 }
 
-.register-link a,
-.login-link a {
-  color: #4caf50;
+.register-link a {
+  color: #365a7e;
   text-decoration: none;
   font-weight: bold;
+  transition: color 0.3s ease;
 }
 
-.register-link a:hover,
-.login-link a:hover {
+.register-link a:hover {
+  color: #1e3c5a;
   text-decoration: underline;
 }
-/* 🔙 Botón de Regreso */
+
+/* 🔙 Botón de regreso con mejor diseño */
 .back-button {
-  background-color: #237f27; 
+  background: linear-gradient(145deg, #237f27, #185f1a);
   color: white;
   border: none;
   padding: 10px 15px;
   font-size: 1em;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
-  margin-top: 20px;
-  transition: background-color 0.3s ease;
+  margin-top: 15px;
+  transition: background 0.3s ease, transform 0.3s ease;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2), -4px -4px 8px rgba(255, 255, 255, 0.1);
 }
 
 .back-button:hover {
-  background-color: #388e3c;
+  background: linear-gradient(145deg, #185f1a, #237f27);
+  transform: translateY(-2px);
+}
+
+/* 🎭 Efecto de escala en hover para el formulario */
+.form-container:hover {
+  transform: scale(1.02);
+  box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.2), -8px -8px 20px rgba(255, 255, 255, 0.8);
 }

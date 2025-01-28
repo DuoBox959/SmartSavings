@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Usuarios</title>
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="../css/usuarios.css">
+
+    <!-- Librerías necesarias -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="../../libs/pouchdb-9.0.0.min.js"></script>
+
+    <!-- Script de usuarios -->
+    <script type="module" src="../js/usuarios.js"></script>
+</head>
+<body>
+    <!-- 🔔 Aviso -->
+    <div id="aviso">
+        <strong>Aviso:</strong> La base de datos es pública y los datos pueden estar desactualizados.
+    </div>
+
+    <!-- 🏷️ Título -->
+    <h1>Gestión de Usuarios</h1>
+
+    <!-- Botón para agregar un usuario -->
+    <button onclick="mostrarFormularioAgregar()">Añadir Usuario</button>
+
+    <!-- 📊 Tabla de Usuarios -->
+    <table id="usuariosTable" class="display">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Estado</th>
+                <th>Fecha Registro</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="usuariosBody"></tbody>
+    </table>
+
+    <!-- ✍️ Formulario para Agregar/Editar Usuarios -->
+    <div id="formularioUsuario" style="display: none">
+        <h2 id="formTitulo">Añadir Usuario</h2>
+        <input type="hidden" id="usuarioID">
+
+        <label for="nombreUsuario">Nombre:</label>
+        <input type="text" id="nombreUsuario"><br>
+
+        <label for="emailUsuario">Email:</label>
+        <input type="email" id="emailUsuario"><br>
+
+        <label for="passwordUsuario">Contraseña:</label>
+        <input type="password" id="passwordUsuario"><br>
+
+        <label for="estadoUsuario">Estado:</label>
+        <select id="estadoUsuario">
+            <option value="activo">Activo</option>
+            <option value="inactivo">Inactivo</option>
+        </select><br>
+
+        <!-- Botones -->
+        <div id="botonesFormulario">
+            <button onclick="guardarCambiosDesdeFormulario()">Guardar</button>
+            <button onclick="cerrarFormulario()">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- Botón para volver atrás -->
+    <button class="back-button" onclick="volverAtras()">Volver Atrás</button>
+</body>
+</html>

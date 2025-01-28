@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intranet - Panel de Control</title>
+    <link rel="stylesheet" href="../css/intranet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            <h2>INTRANET</h2>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="../html/productos.html"><i class="fas fa-box"></i> Gestión de Productos</a></li>
+                <li><a href="../html/usuarios.html"><i class="fas fa-users"></i> Gestión de Usuarios</a></li>
+                <li><a href="#"><i class="fas fa-chart-line"></i> Reportes</a></li>
+                <li><a href="#"><i class="fas fa-cogs"></i> Configuración</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Contenido principal -->
+    <main class="main-content" id="main-content">
+        <!-- Barra superior -->
+        <header class="topbar">
+            <button class="toggle-sidebar" id="toggleSidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="search-box">
+                <input type="text" placeholder="Buscar...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            <div class="topbar-icons">
+                <i class="fas fa-bell"></i>
+                <i class="fas fa-envelope"></i>
+                <i class="fas fa-user-circle"></i>
+                <button class="logout">Cerrar Sesión</button>
+            </div>
+        </header>
+
+        <!-- Sección principal -->
+        <section class="dashboard">
+            <div class="event-box">
+                <h2>Próximo Evento</h2>
+                <p>Empowerment and Leadership Training</p>
+                <div class="countdown">12:03:19:36</div>
+            </div>
+
+            <div class="news-box">
+                <h2>Últimas Noticias</h2>
+                <p>Un nuevo plan económico está en marcha.</p>
+                <p>Críticas a las nuevas regulaciones del mercado.</p>
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/intranet.js"></script>
+</body>
+</html>
