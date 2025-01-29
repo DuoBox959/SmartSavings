@@ -6,108 +6,135 @@ body {
   padding: 0;
   background: #a8d5ba;
   color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
 }
 
-/* 🎨 Estilo del Título Principal */
+/* 🎨 Estilo del Título */
 h1 {
-  font-size: 2.5em; /* Tamaño destacado del título */
-  margin-top: 20px; /* Espaciado superior */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); /* Sombra elegante */
-}
-
-/* 🖋 Estilo del Formulario */
-form {
+  font-size: 2.5em;
   margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* 🖋 Contenedor del formulario */
+#comparadorForm {
   background-color: #ffffff;
-  padding: 20px;
+  padding: 25px;
   border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  display: inline-block;
-  width: 90%;
-  max-width: 400px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 400px;
+  max-width: 90%;
+  gap: 15px; /* 🔹 Espacio uniforme entre elementos */
 }
 
-form label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 5px;
-  color: #333;
-  text-align: left;
-}
-
-form select {
+/* 📌 Estilos de etiquetas */
+#comparadorForm label {
   width: 100%;
-  padding: 10px; 
-  margin-bottom: 15px; 
+  text-align: left;
+  font-weight: bold;
+  color: #333;
+}
+
+/* 📌 Estilos de los selects */
+#comparadorForm select {
+  width: 100%;
+  padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 1em; 
+  font-size: 1em;
+  background-color: #f9f9f9;
+}
+.select-tiendas {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1em;
   background-color: #f9f9f9;
 }
 
-/* 🔘 Estilo de Botones */
-button {
-  background-color: #365a7e; /* Azul vibrante */
-  color: white; /* Texto blanco */
-  border: none; /* Sin bordes */
-  padding: 10px 20px; /* Tamaño cómodo para clics */
-  font-size: 1em; /* Texto estándar */
-  border-radius: 5px; /* Bordes redondeados */
-  cursor: pointer; /* Indica clics */
-  margin-bottom: 20px; /* Espaciado inferior */
-  transition: background-color 0.3s ease, transform 0.2s ease; /* Transiciones suaves */
-}
-button:hover {
-  background-color: #0854ab; /* Azul más oscuro al pasar el cursor */
-  transform: scale(1.05); /* Aumenta ligeramente el tamaño al pasar el cursor */
+
+/* 🔲 Contenedor para el botón de añadir tienda */
+#addStoreButton {
+  width: 100%;
+  height: 40px;
+  font-size: 1.2em;
+  font-weight: bold;
 }
 
-/* Botón para Volver Atrás */
-.back-button {
-  background-color: #237f27; /* Verde para diferenciarlo */
-  color: white; /* Texto blanco */
-  border: none; /* Sin bordes */
-  padding: 10px 15px; /* Tamaño cómodo */
-  font-size: 1em; /* Texto estándar */
-  border-radius: 5px; /* Bordes redondeados */
-  cursor: pointer; /* Indica clics */
-  margin-top: 20px; /* Espaciado superior */
-  transition: background-color 0.3s ease; /* Transición suave */
+/* 📌 Botón de Comparar */
+#comparadorForm button {
+  background-color: #365a7e;
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: 1em;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: 100%;
 }
 
-.back-button:hover {
-  background-color: #388e3c; /* Verde más oscuro al pasar el cursor */
+#comparadorForm button:hover {
+  background-color: #0854ab;
+  transform: scale(1.05);
 }
-
 
 /* 📋 Estilo del Contenedor de Resultados */
 #resultadoComparacion {
-  margin-top: 20px; 
-  font-size: 1.2em; 
-  text-align: left; 
-  max-width: 600px; 
-  margin-left: auto;
-  margin-right: auto; 
-  padding: 15px; 
-  border: 1px solid #ddd; 
-  border-radius: 5px; 
+  margin-top: 20px;
+  font-size: 1.2em;
+  text-align: left;
+  width: 400px;
+  max-width: 90%;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
   background-color: #ffffff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 🔙 Botón Volver Atrás */
+.back-button {
+  background-color: #237f27;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 1em;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+}
+
+.back-button:hover {
+  background-color: #388e3c;
 }
 
 /* 📱 Diseño Responsivo */
 @media (max-width: 768px) {
-  form {
-    width: 95%; /* Aumenta el ancho para pantallas pequeñas */
-    padding: 15px; /* Reduce el espaciado interno */
+  #comparadorForm {
+    width: 95%;
+    padding: 20px;
   }
 
   h1 {
-    font-size: 2em; /* Reduce el tamaño del título en pantallas pequeñas */
+    font-size: 2em;
   }
 
   button {
-    font-size: 0.9em; /* Botones ligeramente más pequeños */
-    padding: 8px 15px; /* Ajusta el tamaño del botón */
+    font-size: 0.9em;
+    padding: 10px;
+  }
+
+  #resultadoComparacion {
+    width: 95%;
   }
 }

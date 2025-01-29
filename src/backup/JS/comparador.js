@@ -1,14 +1,10 @@
-// Inicializa PouchDB para la base de datos local
-const db = new PouchDB("comparacion_precios_2");
-// Configuración de la base de datos remota con autenticación
-const remoteDB = new PouchDB("http://127.0.0.1:5984/comparacion_precios_2", {
-  auth: { username: "admin", password: "Dalma87" },
-});
-// Sincronización automática entre local y remoto
-db.sync(remoteDB, {
-  live: true, // Sincronización en tiempo real
-  retry: true, // Reintentos automáticos en caso de error
-});
+import { db } from "../libs/db.js";
+
+window.cargarTiendas = cargarTiendas;
+window.añadirSelectorTienda = añadirSelectorTienda;
+window.compararPrecios = compararPrecios;
+window.volverAtras= volverAtras;
+
 // 📋 Función genérica para crear opciones en un `<select>`
 const crearOpciones = (elemento, opciones) => {
   // Limpia el contenido del `<select>` y añade una opción predeterminada

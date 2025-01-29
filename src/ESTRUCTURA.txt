@@ -1,0 +1,63 @@
+🚀 Resumen General
+📦 COMPARAPRECIO/
+┣ 📂 src/
+┃ ┣ 📂 assets/
+┃ ┣ 📂 backup/
+┃ ┣ 📂 functions/
+┃ ┃ ┣ 📂 global/
+┃ ┃ ┃ ┣ 📄 funciones.js
+┃ ┃ ┃ ┣ 📄 header.js
+┃ ┃ ┃ ┣ 📄 comparador.js
+┃ ┃ ┣ 📄 index.js
+┃ ┃ ┣ 📄 login.js
+┃ ┃ ┣ 📄 politicas.js
+┃ ┃ ┣ 📄 productos.js
+┃ ┃ ┣ 📄 register.js
+┃ ┣ 📂 intranet/
+┃ ┃ ┣ 📂 css/
+┃ ┃ ┃ ┣ 📄 intranet.css
+┃ ┃ ┃ ┣ 📄 producto.css
+┃ ┃ ┃ ┣ 📄 usuarios.css
+┃ ┃ ┣ 📂 html/
+┃ ┃ ┃ ┣ 📄 intranet.html
+┃ ┃ ┃ ┣ 📄 productos.html
+┃ ┃ ┃ ┣ 📄 usuarios.html
+┃ ┃ ┣ 📂 js/
+┃ ┃ ┃ ┣ 📄 intranet.js
+┃ ┃ ┃ ┣ 📄 productos.js
+┃ ┃ ┃ ┣ 📄 usuarios.js
+┃ ┃ ┣ 📂 libs/
+┃ ┃ ┃ ┣ 📄 db.js
+┃ ┃ ┃ ┣ 📄 dbuser.js
+┃ ┃ ┃ ┣ 📄 pouchdb-9.0.0.min.js
+┃ ┣ 📂 pages/
+┃ ┃ ┣ 📂 global/
+┃ ┃ ┃ ┣ 📄 footer.html
+┃ ┃ ┃ ┣ 📄 header.html
+┃ ┃ ┃ ┣ 📄 avisoLegal.html
+┃ ┃ ┃ ┣ 📄 comparador.html
+┃ ┃ ┃ ┣ 📄 index.html
+┃ ┃ ┃ ┣ 📄 login.html
+┃ ┃ ┃ ┣ 📄 politicacookies.html
+┃ ┃ ┃ ┣ 📄 politicaprivacidad.html
+┃ ┃ ┃ ┣ 📄 productos.html
+┃ ┃ ┃ ┣ 📄 register.html
+┃ ┃ ┃ ┣ 📄 terminoscondiciones.html
+┃ ┣ 📂 style/
+┃ ┃ ┣ 📂 global/
+┃ ┃ ┃ ┣ 📄 comparador.css
+┃ ┃ ┃ ┣ 📄 footer.css
+┃ ┃ ┃ ┣ 📄 header.css
+┃ ┃ ┃ ┣ 📄 index.css
+┃ ┃ ┃ ┣ 📄 login.css
+┃ ┃ ┃ ┣ 📄 politicas.css
+┃ ┃ ┃ ┣ 📄 producto.css
+┃ ┃ ┃ ┣ 📄 register.css
+┃ ┃ ┃ ┣ 📄 responsivo.css
+┃ ┣ 📂 valid/
+┃ ┃ ┣ 📄 validaciones.js
+┣ 📄 package.json
+┣ 📄 package-lock.json
+┣ 📄 README.md
+┣ 📄 ESTRUCTURA.txt
+

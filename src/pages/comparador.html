@@ -1,67 +1,63 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <!-- Meta información básica -->
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comparador de Precios</title>
 
-    <!-- Enlace a la hoja de estilos -->
-    <link rel="stylesheet" href="../style/comparador.css" />
-    <link rel="stylesheet" href="../style/responsivo.css" />
+    <!-- Estilos CSS -->
+    <link rel="stylesheet" href="../style/comparador.css">
+    <link rel="stylesheet" href="../style/responsivo.css">
 
-    <!-- Carga de PouchDB desde una librería local -->
-    <!-- Asegúrate de que la ruta del archivo `pouchdb-9.0.0.min.js` sea correcta -->
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+
+    <!-- PouchDB -->
     <script src="../libs/pouchdb-9.0.0.min.js"></script>
-  </head>
-  <body>
-    <!-- Título principal de la página -->
+</head>
+<body>
+
     <h1>Comparador de Precios</h1>
 
-    <!-- Formulario para la selección de producto y tiendas -->
     <form id="comparadorForm">
-      <!-- Selector de productos -->
-      <label for="producto">Producto:</label>
-      <select id="producto" onchange="cargarTiendas()">
-        <!-- Opción por defecto para indicar que el usuario debe seleccionar algo -->
-        <option value="">Selecciona un producto</option>
-      </select>
+        <!-- Selector de productos con Select2 -->
+        <label for="producto">Producto:</label>
+        <select id="producto" class="select-tiendas" onchange="cargarTiendas()">
+            <option value="">Selecciona un producto</option>
+        </select>
 
-      <!-- Selector para la primera tienda -->
-      <label for="tienda1">Tienda 1:</label>
-      <select id="tienda1">
-        <option value="">Selecciona una tienda</option>
-      </select>
+        <!-- Selector para la primera tienda -->
+        <label for="tienda1">Tienda 1:</label>
+        <select id="tienda1" class="select-tiendas">
+            <option value="">Selecciona una tienda</option>
+        </select>
 
-      <!-- Selector para la segunda tienda -->
-      <label for="tienda2">Tienda 2:</label>
-      <select id="tienda2">
-        <option value="">Selecciona una tienda</option>
-      </select>
-      <!-- Botón para añadir más tiendas debajo del selector de Tienda 2 -->
-      <button
-        type="button"
-        id="addStoreButton"
-        onclick="añadirSelectorTienda()"
-      >
-        +
-      </button>
+        <!-- Selector para la segunda tienda -->
+        <label for="tienda2">Tienda 2:</label>
+        <select id="tienda2" class="select-tiendas">
+            <option value="">Selecciona una tienda</option>
+        </select>
 
-      <!-- Contenedor para selectores adicionales de tiendas -->
-      <div id="extraStores"></div>
+        <!-- Botón para añadir más tiendas -->
+        <button type="button" id="addStoreButton" onclick="añadirSelectorTienda()">+</button>
 
-      <!-- Botón para realizar la comparación -->
-      <button type="button" onclick="compararPrecios()">Comparar</button>
+        <!-- Contenedor para más tiendas -->
+        <div id="extraStores"></div>
+
+        <!-- Botón para comparar -->
+        <button type="button" onclick="compararPrecios()">Comparar</button>
     </form>
 
-    <!-- Contenedor donde se mostrarán los resultados de la comparación -->
+    <!-- Resultado de la comparación -->
     <div id="resultadoComparacion"></div>
 
-        <!-- 🔙 Botón para regresar -->
-        <button class="back-button" onclick="volverAtras()">Volver Atrás</button>
+    <!-- Botón de regreso -->
+    <button class="back-button" onclick="volverAtras()">Volver Atrás</button>
 
-    <!-- Carga del archivo JavaScript con las funciones necesarias -->
-    <!-- Verifica que la ruta de `comparador.js` sea correcta -->
+    <!-- Carga de JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
     <script type="module" src="../functions/comparador.js"></script>
-  </body>
+
+</body>
 </html>
