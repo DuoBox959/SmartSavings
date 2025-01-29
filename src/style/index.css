@@ -42,16 +42,17 @@ main {
   padding: 50px; /* Aumentar el espacio alrededor */
 }
 .tarjeta {
-  background: none; /* Quita el fondo */
-  box-shadow: none; /* Elimina la sombra */
-  border-radius: 0; /* Elimina bordes redondeados */
-  width: auto; /* Ajusta el ancho automáticamente */
-  height: auto; /* Ajusta la altura automáticamente */
+  background: none !important; /* Asegura que no tenga fondo */
+  box-shadow: none !important; /* Evita que aparezca sombra */
+  border-radius: 0; 
+  width: auto; 
+  height: auto; 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0; /* Quita el padding */
+  padding: 0;
+  transition: transform 0.3s ease; /* Solo aplicar la transformación */
 }
 
 
@@ -90,11 +91,14 @@ main {
 /* Hover Effects */
 .tarjeta:hover {
   transform: scale(1.05); /* Aumenta ligeramente el tamaño */
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
 }
 
 .tarjeta:hover img {
   transform: scale(1.4); /* Agranda la imagen en hover */
+}
+
+.tarjeta:hover .enlace {
+  transform: scale(1.1); 
 }
 
 /* 🍪 Banner de Cookies */

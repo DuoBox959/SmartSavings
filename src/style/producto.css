@@ -1,80 +1,116 @@
+/* 🌟 Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 🌐 General */
+body {
+  font-family: "Roboto", sans-serif;
+  background: linear-gradient(135deg, #e0e0e0, #f8f8f8);
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 /* 🛒 Contenedor de productos */
 .productos-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 20px;
-  padding: 20px;
+  gap: 25px;
+  padding: 30px;
+  flex: 1;
 }
 
 /* 🎴 Tarjeta de producto */
 .product-card {
   background: white;
-  color: black;
-  border-radius: 10px;
-  width: 250px;
-  padding: 15px;
+  color: #222;
+  border-radius: 12px;
+  width: 260px;
+  padding: 20px;
   text-align: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
   position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 
 /* 🖼️ Imagen del producto */
 .product-card img {
   width: 100%;
-  border-radius: 10px;
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover img {
+  transform: scale(1.05);
 }
 
 /* 📛 Nombre del producto */
 .product-card h3 {
-  font-size: 18px;
-  margin: 10px 0;
+  font-size: 20px;
+  margin: 12px 0;
+  font-weight: 600;
 }
 
 /* 🏷️ Marca */
 .product-card .marca {
   font-size: 14px;
-  color: #666;
+  color: #777;
 }
 
 /* 💰 Precio */
 .product-card .precio {
   color: #e63946;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 20px;
 }
 
 /* ❤️ Icono de favorito */
 .favorite-icon {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 24px;
-  color: #bbb;
+  top: 12px;
+  right: 12px;
+  font-size: 26px;
+  color: #ccc;
   cursor: pointer;
+  transition: color 0.3s ease;
 }
 
 .favorite-icon.favorito {
-  color: red;
+  color: #e63946;
+}
+
+.favorite-icon:hover {
+  color: #ff6b6b;
 }
 
 /* 🔘 Botones */
 .acciones {
   display: flex;
-  justify-content: space-around;
-  margin-top: 10px;
+  justify-content: space-between;
+  margin-top: 15px;
 }
 
 .acciones button {
   border: none;
-  padding: 8px 12px;
+  padding: 10px 14px;
   cursor: pointer;
-  border-radius: 5px;
-  transition: 0.3s;
+  border-radius: 8px;
+  transition: 0.3s ease;
+  font-weight: 600;
 }
 
 .acciones button:hover {
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
 .btn-eliminar {
@@ -86,3 +122,4 @@
   background: #4caf50;
   color: white;
 }
+

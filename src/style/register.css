@@ -19,6 +19,9 @@ body {
   display: flex;
   width: 100vw;
   height: 100vh;
+  gap: 25px;
+  padding: 30px;
+  flex: 1;
 }
 
 /* 🖼️ Sección Izquierda (Imagen/Info) */
@@ -66,7 +69,6 @@ body {
 .right-section h2 {
   font-size: 26px;
   color: #2c3e34;
-  margin-bottom: 20px;
   text-align: center;
 }
 
