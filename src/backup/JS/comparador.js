@@ -1,7 +1,7 @@
 import { db } from "../libs/db.js";
 
 window.cargarTiendas = cargarTiendas;
-window.añadirSelectorTienda = añadirSelectorTienda;
+window.anadirSelectorTienda = anadirSelectorTienda;
 window.compararPrecios = compararPrecios;
 window.volverAtras= volverAtras;
 
@@ -98,7 +98,7 @@ async function cargarTiendasAdicionales(selector) {
 
 // ➕ Función para añadir un nuevo selector de tienda
 let contadorTiendas = 3; // Inicializa el contador en "Tienda 3"
-function añadirSelectorTienda() {
+function anadirSelectorTienda() {
   const extraStoresDiv = document.getElementById("extraStores");
 
   const div = document.createElement("div");

@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     gestionarUsuarioAutenticado();
     manejarCookies();
     manejarUsuario();
+    restringirAccesoProductos();
   } catch (error) {
     console.error("Hubo un error durante la inicialización:", error);
   }
@@ -24,7 +25,7 @@ function manejarCookies() {
   function checkCookieExpiration() {
     const cookieData = localStorage.getItem("cookies-aceptadas");
     if (!cookieData) return false;
-    
+
     try {
       const { timestamp } = JSON.parse(cookieData);
       return Date.now() - timestamp <= 24 * 60 * 60 * 1000;
@@ -41,9 +42,12 @@ function manejarCookies() {
   } else {
     banner.style.display = "flex";
     overlay.style.display = "block";
-    
+
     aceptarBtn.addEventListener("click", () => {
-      localStorage.setItem("cookies-aceptadas", JSON.stringify({ accepted: true, timestamp: Date.now() }));
+      localStorage.setItem(
+        "cookies-aceptadas",
+        JSON.stringify({ accepted: true, timestamp: Date.now() })
+      );
       banner.style.display = "none";
       overlay.style.display = "none";
     });
@@ -58,7 +62,9 @@ function manejarCookies() {
 function manejarUsuario() {
   let user = null;
   try {
-    user = JSON.parse(sessionStorage.getItem("user")) || JSON.parse(localStorage.getItem("user"));
+    user =
+      JSON.parse(sessionStorage.getItem("user")) ||
+      JSON.parse(localStorage.getItem("user"));
   } catch (error) {
     console.error("Error al leer los datos del usuario:", error);
   }
@@ -71,29 +77,63 @@ function manejarUsuario() {
   const logout = document.getElementById("logout");
   const deleteAccount = document.getElementById("deleteAccount");
 
-  if (user) {
-    registerLink.style.display = "none";
-    loginLink.style.display = "none";
-    userDropdown.style.display = "inline-block";
-    userName.textContent = `Bienvenido, ${user.name}`;
+  // 🛑 Verificar si los elementos existen antes de modificarlos
+  if (registerLink && loginLink && userDropdown) {
+    if (user) {
+      registerLink.style.display = "none";
+      loginLink.style.display = "none";
+      userDropdown.style.display = "inline-block";
 
-    userName.addEventListener("click", (event) => {
-      event.stopPropagation();
-      userMenu.classList.toggle("show");
-    });
+      if (userName) userName.textContent = `Bienvenido, ${user.name}`;
 
-    logout.addEventListener("click", cerrarSesion);
-    deleteAccount.addEventListener("click", borrarCuenta);
-
-    document.addEventListener("click", (event) => {
-      if (!userDropdown.contains(event.target)) {
-        userMenu.classList.remove("show");
+      if (userName) {
+        userName.addEventListener("click", (event) => {
+          event.stopPropagation();
+          if (userMenu) userMenu.classList.toggle("show");
+        });
       }
+
+      if (logout) logout.addEventListener("click", cerrarSesion);
+      if (deleteAccount) deleteAccount.addEventListener("click", borrarCuenta);
+
+      document.addEventListener("click", (event) => {
+        if (!userDropdown.contains(event.target) && userMenu) {
+          userMenu.classList.remove("show");
+        }
+      });
+    } else {
+      registerLink.style.display = "inline";
+      loginLink.style.display = "inline";
+      userDropdown.style.display = "none";
+    }
+  }
+}
+
+// 🛑 Restringir acceso a "Gestión de Productos"
+function restringirAccesoProductos() {
+  const enlacesProductos = document.querySelectorAll(
+    ".tarjetas .tarjeta a[href='productos.html']"
+  );
+
+  if (enlacesProductos.length > 0) {
+    enlacesProductos.forEach((enlace) => {
+      enlace.addEventListener("click", function (event) {
+        let user = null;
+        try {
+          user =
+            JSON.parse(sessionStorage.getItem("user")) ||
+            JSON.parse(localStorage.getItem("user"));
+        } catch (error) {
+          console.error("Error al leer los datos del usuario:", error);
+        }
+
+        if (!user) {
+          event.preventDefault(); // Bloquea la navegación
+          // Mostrar una alerta para que el usuario sepa que debe iniciar sesión
+          alert("Debes iniciar sesión para acceder a esta sección.");
+        }
+      });
     });
-  } else {
-    registerLink.style.display = "inline";
-    loginLink.style.display = "inline";
-    userDropdown.style.display = "none";
   }
 }
 
@@ -104,7 +144,11 @@ function cerrarSesion() {
 }
 
 function borrarCuenta() {
-  if (confirm("¿Seguro que quieres borrar tu cuenta? Esta acción es irreversible.")) {
+  if (
+    confirm(
+      "¿Seguro que quieres borrar tu cuenta? Esta acción es irreversible."
+    )
+  ) {
     cerrarSesion();
     alert("Tu cuenta ha sido eliminada.");
   }

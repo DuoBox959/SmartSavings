@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Actualizar - ComparaTú</title>
+    <!-- Vinculación al archivo de estilos CSS específico para esta página -->
+    <link rel="stylesheet" href="../style/update.css" />
+    <script src="../libs/pouchdb-9.0.0.min.js"></script>
+    <!-- <script type="module" src="../functions/login.js" defer></script> -->
+  </head>
+  <body>
+    <div class="container">
+      <div class="form-container">
+        <h1>Actualizar datos</h1>
+        <form action="#" method="post">
+            <label for="username">Usuario:</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            placeholder="Actualice su nombre de usuario"
+          />
+
+          <label for="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Actualice su email"
+          />
+
+          <label for="password">Contraseña:</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Actualice su contraseña"
+          />
+
+          <button type="submit">Actualizar datos</button>
+          <p class="register-link">
+            ¿Desea borrar su cuenta? <a href="delete.html">Haga click aquí</a>
+          </p>
+
+          <!-- Botón "Volver Atrás" -->
+          <button type="button" class="back-button" onclick="volverAtras()">
+            Volver Atrás
+          </button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

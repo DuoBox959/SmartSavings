@@ -2,7 +2,7 @@ import { db } from "../libs/db.js";
 
 // Asignar funciones a `window`
 window.cargarTiendas = cargarTiendas;
-window.añadirSelectorTienda = añadirSelectorTienda;
+window.anadirSelectorTienda = anadirSelectorTienda;
 window.compararPrecios = compararPrecios;
 window.volverAtras = volverAtras;
 
@@ -65,7 +65,7 @@ async function cargarTiendas() {
 let contadorTiendas = 3; // Empieza en "Tienda 3"
 const limiteTiendas = 10; // Máximo de 10 tiendas
 
-function añadirSelectorTienda() {
+function anadirSelectorTienda() {
     if (contadorTiendas > limiteTiendas) {
         alert("Has alcanzado el límite máximo de tiendas (10).");
         return;

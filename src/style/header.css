@@ -1,67 +1,67 @@
 /* 🏷️ Encabezado */
 header {
-  display: flex; /* Flexbox para organizar elementos en fila */
-  align-items: center; /* Centra los elementos verticalmente */
-  justify-content: space-between; /* Distribuye los elementos uniformemente */
-  padding: 20px; /* Espaciado interno */
-  background: #a8d5ba; /* Verde oliva suave para un diseño acogedor */
-  color: #2c3e34; /* Verde oscuro para buen contraste */
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  padding: 20px; 
+  background: #a8d5ba; 
+  color: #2c3e34;
 }
 
 /* Estilo del logo (sección izquierda) */
 header .logo h1 {
-  font-size: 1.8em; /* Tamaño adecuado para el logo */
-  font-weight: 700; /* Negrita */
-  margin: 0; /* Elimina márgenes */
-  color: #2c3e34; /* Verde oscuro */
+  font-size: 1.8em; 
+  font-weight: 700; 
+  margin: 0; 
+  color: #2c3e34; 
 }
 
 /* Estilo del eslogan (sección central) */
 header .eslogan {
-  text-align: center; /* Alinea el texto al centro */
-  flex-grow: 1; /* Permite que el eslogan ocupe el espacio sobrante */
+  text-align: center;
+  flex-grow: 1;
 }
 
 header .eslogan .subtitulo {
-  font-size: 1.2em; /* Tamaño menor para subtítulos */
-  margin: 0; /* Elimina márgenes */
-  font-weight: 400; /* Peso estándar */
-  color: #345e4d; /* Verde ligeramente más claro para destacar */
+  font-size: 1.2em;
+  margin: 0; 
+  font-weight: 400; 
+  color: #345e4d; 
 }
 
 /* Estilo de los enlaces (sección derecha) */
 header .acciones {
-  display: flex; /* Alinea los enlaces en fila */
-  gap: 15px; /* Espaciado entre los enlaces */
+  display: flex; 
+  gap: 15px;
 }
 
 header .acciones .enlace {
-  font-size: 1em; /* Tamaño estándar */
-  color: #2c3e34; /* Verde oscuro */
-  text-decoration: none; /* Elimina subrayado */
-  font-weight: 500; /* Peso medio */
-  padding: 5px 10px; /* Espaciado interno */
-  border: 1px solid #2c3e34; /* Borde verde oscuro */
-  border-radius: 5px; /* Bordes redondeados */
-  transition: background 0.3s; /* Transición suave al pasar el mouse */
+  font-size: 1em; 
+  color: #2c3e34;
+  text-decoration: none; 
+  font-weight: 500; 
+  padding: 5px 10px; 
+  border: 1px solid #2c3e34; 
+  border-radius: 5px; 
+  transition: background 0.3s; 
 }
 
 header .acciones .enlace:hover {
-  background: #2c3e34; /* Fondo verde oscuro al pasar el mouse */
-  color: #a8d5ba; /* Texto verde oliva suave */
+  background: #2c3e34; 
+  color: #a8d5ba; 
 }
 
 /* Estilo para el enlace ComparaTú */
 .comparaTu {
-  text-decoration: none; /* Elimina subrayado */
-  color: inherit; /* Usa el color del texto del contenedor */
-  cursor: pointer; /* Muestra la manito para indicar que es clickeable */
-  transition: color 0.3s ease; /* Suaviza la transición de color */
+  text-decoration: none; 
+  color: inherit; 
+  cursor: pointer; 
+  transition: color 0.3s ease;
 }
 
 /* Cambiar color del texto al pasar el ratón */
 .comparaTu:hover {
-  color: #4A90E2; /* Color azulado */
+  color: #4A90E2; 
 }
 
 /* 🔽 Menú desplegable */
@@ -117,7 +117,7 @@ header .acciones .enlace:hover {
 .show {
   opacity: 1;
   transform: translateY(0);
-  max-height: 200px; /* Ajusta según el contenido */
+  max-height: 200px; 
   visibility: visible;
 }
 

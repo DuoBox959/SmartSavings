@@ -1,0 +1,159 @@
+/* 🌟 Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* 🏠 Fondo y estructura */
+  body {
+    font-family: "Roboto", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  /* 📦 Contenedor Principal */
+  .container {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    gap: 25px;
+    padding: 30px;
+    flex: 1;
+  }
+  
+  /* 🖼️ Sección Izquierda (Imagen/Info) */
+  .left-section {
+    width: 50vw;
+    height: 100vh;
+    background: linear-gradient(135deg, #2c3e50, #1c2833);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px;
+  }
+  
+  .left-section h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+  }
+  
+  .left-section p {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  
+  .left-section img {
+    width: 300px;
+    max-width: 80%;
+  }
+  
+  /* 📋 Sección Derecha (Formulario) */
+  .right-section {
+    width: 50vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    background: white;
+  }
+  
+  /* 📌 Estilos del formulario */
+  .right-section h2 {
+    font-size: 26px;
+    color: #2c3e34;
+    text-align: center;
+  }
+  
+  form {
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  /* Inputs */
+  form label {
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #2c3e34;
+  }
+  
+  form input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  /* Efecto al enfocar los inputs */
+  form input:focus {
+    border: 1px solid #78ce9a;
+    box-shadow: 0 0 8px rgba(120, 206, 154, 0.6);
+    outline: none;
+  }
+  
+  /* 🔘 Botón de Continuar */
+  form button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    background: #365a7e;
+    color: white;
+    font-size: 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  form button:hover {
+    background: #1e3c5a;
+    transform: translateY(-2px);
+  }
+  
+  /* 📎 Enlace de inicio de sesión */
+  .login-link {
+    text-align: center;
+    margin-top: 15px;
+  }
+  
+  .login-link a {
+    color: #365a7e;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+  }
+  
+  .login-link a:hover {
+    color: #1e3c5a;
+    text-decoration: underline;
+  }
+  
+  /* 🔙 Botón de Regreso */
+  .back-button {
+    background: #237f27;
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 1em;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 15px;
+    width: 100%;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .back-button:hover {
+    background: #185f1a;
+    transform: translateY(-2px);
+  }

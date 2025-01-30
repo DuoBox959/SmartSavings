@@ -36,9 +36,9 @@ export function gestionarUsuarioAutenticado() {
       });
 
       // Función para abrir la configuración de la cuenta
-      del.addEventListener("click", () => {
-        alert("¡Configuración de la cuenta aún no implementada!");
-      });
+      // del.addEventListener("click", () => {
+      //   alert("¡Configuración de la cuenta aún no implementada!");
+      // });
     } else {
       // Mostrar enlaces de registro e inicio de sesión
       registerLink.style.display = "inline";

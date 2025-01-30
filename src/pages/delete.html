@@ -3,25 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registro - ComparaTú</title>
-    <link rel="stylesheet" href="../style/register.css" />
+    <title>Borrar - ComparaTú</title>
+    <link rel="stylesheet" href="../style/delete.css" />
     <script src="../libs/pouchdb-9.0.0.min.js"></script>
-    <script type="module" src="../functions/register.js" defer></script>
+    <script type="module" src="../functions/delete.js" defer></script>
   </head>
   <body>
     <div class="container">
       <!-- 🖼️ Sección Izquierda -->
       <div class="left-section">
-        <h1>Crea tu cuenta</h1>
+        <h1>Elimina tu cuenta</h1>
         <p>
-          Únete a <strong>ComparaTú</strong> y encuentra las mejores ofertas.
+          Lamentamos que quiera irse de <strong>ComparaTú</strong>. Esperamos
+          que haya tenido una buena experiencia.
         </p>
         <img src="../assets/img/product.webp" alt="Imagen decorativa" />
       </div>
 
       <!-- 📋 Sección Derecha (Formulario) -->
       <div class="right-section">
-        <h2>Regístrate</h2>
+        <h2>Borrar cuenta</h2>
         <form action="#" method="post">
           <label for="name">Nombre:</label>
           <input
@@ -77,12 +78,7 @@
             required
           />
 
-          <button type="submit">Continuar →</button>
-
-          <p class="login-link">
-            ¿Ya tienes cuenta? <a href="login.html">Inicia sesión aquí</a>
-          </p>
-
+          <button type="submit">Borrar cuenta</button>
           <button type="button" class="back-button" onclick="volverAtras()">
             Volver Atrás
           </button>
