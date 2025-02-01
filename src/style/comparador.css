@@ -100,6 +100,37 @@ h1 {
   background-color: #ffffff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+/* 📌 Asegurar que los select adicionales ocupen todo el ancho */
+#extraStores {
+  width: 100%;
+}
+
+/* 📌 Estilo uniforme para los selects adicionales */
+#extraStores select {
+  width: 100% !important; /* 🔹 Forzar que ocupe el mismo ancho que los demás */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1em;
+  background-color: #f9f9f9;
+  margin-bottom: 15px; /* 🔹 Espaciado uniforme entre tiendas */
+}
+
+/* 📌 Asegurar que los labels estén alineados y con buen espaciado */
+#extraStores label {
+  width: 100%;
+  display: block;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+/* 📌 Mejor espaciado entre cada tienda añadida */
+.extra-store {
+  width: 100%;
+  margin-bottom: 15px; /* 🔹 Espacio entre cada tienda */
+}
+
 
 /* 🔙 Botón Volver Atrás */
 .back-button {

@@ -62,30 +62,31 @@ async function cargarTiendas() {
 }
 
 // ➕ Añadir un selector de tienda extra
-let contadorTiendas = 3; // Empieza en "Tienda 3"
+let contadorTiendas = 3; // Inicia en "Tienda 3"
 const limiteTiendas = 10; // Máximo de 10 tiendas
 
 function anadirSelectorTienda() {
     if (contadorTiendas > limiteTiendas) {
-        alert("Has alcanzado el límite máximo de tiendas (10).");
-        return;
+        return; // No permite agregar más de 10 tiendas
     }
 
     const extraStoresDiv = document.getElementById("extraStores");
 
-    // 📌 Contenedor de cada nueva tienda
+    // 📌 Contenedor de la nueva tienda
     const div = document.createElement("div");
-    div.className = "extra-store";  // Clase para mantener estilos
+    div.className = "extra-store";  
+    div.style.width = "100%"; // 🔹 Hace que el contenedor ocupe el 100% del formulario
 
-    // 🏷 Crear la etiqueta con el número correcto de la tienda
+    // 🏷 Crear la etiqueta numerada
     const label = document.createElement("label");
     label.textContent = `Tienda ${contadorTiendas}:`;
     label.setAttribute("for", `tienda${contadorTiendas}`);
 
-    // 🔽 Crear el select con la misma clase y estilos
+    // 🔽 Crear el select con la misma clase
     const select = document.createElement("select");
     select.id = `tienda${contadorTiendas}`;
     select.classList.add("select-tiendas"); // Asegura que tenga la misma clase
+    select.style.width = "100%"; // 🔹 Asegura el mismo ancho que los otros select
     select.innerHTML = '<option value="">Selecciona una tienda</option>';
 
     // 📌 Agregar elementos al formulario
@@ -93,16 +94,26 @@ function anadirSelectorTienda() {
     div.appendChild(select);
     extraStoresDiv.appendChild(div);
 
-    // 🔄 Aplicar Select2 para que tenga el mismo diseño
+    // 🔄 Aplicar Select2 al nuevo select para mantener el estilo
     $(`#${select.id}`).select2({
         placeholder: "Selecciona una opción",
         allowClear: true,
+        width: '100%'  // 🔹 Asegura que mantenga el mismo tamaño que los otros selects
     });
 
-    // 📦 Cargar las tiendas disponibles en el nuevo `<select>`
-    cargarTiendasAdicionales(select);
+    // 📦 Cargar tiendas en el nuevo select (Corrección aquí)
+    if (typeof cargarTiendas === "function") {
+        cargarTiendas(); // Usa la función que ya tienes definida
+    } else {
+        console.error("Error: La función cargarTiendas no está definida.");
+    }
 
-    contadorTiendas++; // 🔥 Incrementar correctamente el contador para la próxima tienda
+    contadorTiendas++; // Incrementar el contador
+
+    // 🚫 Ocultar el botón si se llega al límite de tiendas
+    if (contadorTiendas > limiteTiendas) {
+        document.getElementById("addStoreButton").style.display = "none";
+    }
 }
 
 
