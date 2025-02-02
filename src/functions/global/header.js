@@ -30,15 +30,8 @@ export function gestionarUsuarioAutenticado() {
 
       // Función para cambiar de usuario
       changeUser.addEventListener("click", () => {
-        sessionStorage.removeItem("user");
-        localStorage.removeItem("user");
         window.location.href = "login.html";
       });
-
-      // Función para abrir la configuración de la cuenta
-      // del.addEventListener("click", () => {
-      //   alert("¡Configuración de la cuenta aún no implementada!");
-      // });
     } else {
       // Mostrar enlaces de registro e inicio de sesión
       registerLink.style.display = "inline";

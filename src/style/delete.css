@@ -1,159 +1,201 @@
 /* 🌟 Reset */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  /* 🏠 Fondo y estructura */
-  body {
-    font-family: "Roboto", sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  
-  /* 📦 Contenedor Principal */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Arial", sans-serif;
+}
+
+/* 📦 Contenedor Principal */
+.container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* 🖼️ Sección Izquierda (Imagen/Info) */
+.left-section {
+  width: 50%;
+  height: 100vh;
+  background: url("../assets/img/product.webp") no-repeat center center;
+  background-size: cover; /* 🔹 Asegura que la imagen cubra toda la sección */
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 40px;
+}
+
+/* 📌 Contenedor del texto con fondo oscuro */
+.left-section-text {
+  background: rgba(0, 0, 0, 0.6); /* 🔹 Fondo semitransparente sin eliminar la imagen */
+  padding: 20px 25px;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 80%;
+}
+
+/* 📌 Mejorar visibilidad del texto */
+.left-section h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #ffffff; /* 🔹 Texto blanco */
+  margin-bottom: 10px;
+}
+
+.left-section p {
+  font-size: 1rem;
+  color: #f1f1f1;
+}
+
+.left-section img {
+  width: 250px;
+  max-width: 80%;
+}
+
+/* 📋 Sección Derecha (Formulario) */
+.right-section {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #d4d4d4; /* 🔹 Fondo gris claro como el index */
+  padding: 40px;
+}
+
+/* 📌 Ajuste del título principal */
+.right-section h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #1e3c5a; /* 🔹 Azul oscuro como en el index */
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* 📌 Estilos del formulario */
+form {
+  width: 100%;
+  max-width: 350px;
+}
+
+form label {
+  font-weight: bold;
+  display: block;
+  font-size: 14px;
+  margin: 10px 0 5px;
+  color: #1e3c5a; /* 🔹 Azul oscuro */
+}
+
+/* 📌 Inputs */
+form input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #b0bec5; /* 🔹 Gris claro */
+  border-radius: 5px;
+  font-size: 14px;
+  margin-bottom: 5px;
+  background: #ffffff;
+}
+
+/* 📌 Texto pequeño debajo de los inputs */
+form small {
+  font-size: 12px;
+  color: #666;
+  display: block;
+  margin-bottom: 10px;
+}
+
+/* 🎨 Estilo del botón principal */
+form button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: #237f27; /* 🔹 Verde como en el index */
+  color: white;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background 0.3s ease;
+}
+
+form button:hover {
+  background: #185f1a; /* 🔹 Verde más oscuro */
+}
+
+/* 📌 Ajuste del texto "¿Ya tienes cuenta? Inicia sesión aquí" */
+.login-link {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 1rem;
+}
+
+.login-link a {
+  font-weight: bold;
+  color: #1e3c5a;
+  text-decoration: none;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
+}
+
+/* 🔙 Botón de Regreso */
+.back-button {
+  background: #7bbb95; /* 🔹 Verde del index */
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  width: 100%;
+  transition: all 0.3s ease-in-out;
+}
+
+.back-button:hover {
+  background: #237f27;
+}
+
+/* 📜 Estilo para el texto legal */
+.terms {
+  font-size: 12px;
+  color: #555;
+  text-align: center;
+  margin-top: 20px;
+  line-height: 1.5;
+  max-width: 400px;
+}
+
+/* 🔗 Estilo para los enlaces dentro de términos y condiciones */
+.terms a {
+  font-size: 12px;
+  color: #0366d6;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.terms a:hover {
+  text-decoration: underline;
+}
+
+/* 📱 Responsividad */
+@media (max-width: 768px) {
   .container {
-    display: flex;
-    width: 100vw;
-    height: 100vh;
-    gap: 25px;
-    padding: 30px;
-    flex: 1;
+    flex-direction: column;
   }
-  
-  /* 🖼️ Sección Izquierda (Imagen/Info) */
+
   .left-section {
-    width: 50vw;
-    height: 100vh;
-    background: linear-gradient(135deg, #2c3e50, #1c2833);
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 40px;
+    width: 100%;
+    height: 40vh;
   }
-  
-  .left-section h1 {
-    font-size: 32px;
-    margin-bottom: 10px;
-  }
-  
-  .left-section p {
-    font-size: 18px;
-    margin-bottom: 20px;
-  }
-  
-  .left-section img {
-    width: 300px;
-    max-width: 80%;
-  }
-  
-  /* 📋 Sección Derecha (Formulario) */
+
   .right-section {
-    width: 50vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 40px;
-    background: white;
-  }
-  
-  /* 📌 Estilos del formulario */
-  .right-section h2 {
-    font-size: 26px;
-    color: #2c3e34;
-    text-align: center;
-  }
-  
-  form {
     width: 100%;
-    max-width: 400px;
+    height: 60vh;
   }
-  
-  /* Inputs */
-  form label {
-    font-weight: bold;
-    display: block;
-    margin-top: 10px;
-    font-size: 14px;
-    color: #2c3e34;
-  }
-  
-  form input {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 16px;
-    margin-bottom: 10px;
-    transition: all 0.3s ease-in-out;
-  }
-  
-  /* Efecto al enfocar los inputs */
-  form input:focus {
-    border: 1px solid #78ce9a;
-    box-shadow: 0 0 8px rgba(120, 206, 154, 0.6);
-    outline: none;
-  }
-  
-  /* 🔘 Botón de Continuar */
-  form button {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    background: #365a7e;
-    color: white;
-    font-size: 18px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-  }
-  
-  form button:hover {
-    background: #1e3c5a;
-    transform: translateY(-2px);
-  }
-  
-  /* 📎 Enlace de inicio de sesión */
-  .login-link {
-    text-align: center;
-    margin-top: 15px;
-  }
-  
-  .login-link a {
-    color: #365a7e;
-    text-decoration: none;
-    font-weight: bold;
-    transition: color 0.3s ease;
-  }
-  
-  .login-link a:hover {
-    color: #1e3c5a;
-    text-decoration: underline;
-  }
-  
-  /* 🔙 Botón de Regreso */
-  .back-button {
-    background: #237f27;
-    color: white;
-    border: none;
-    padding: 10px;
-    font-size: 1em;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-top: 15px;
-    width: 100%;
-    transition: all 0.3s ease-in-out;
-  }
-  
-  .back-button:hover {
-    background: #185f1a;
-    transform: translateY(-2px);
-  }
+}

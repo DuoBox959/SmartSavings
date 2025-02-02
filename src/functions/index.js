@@ -1,6 +1,7 @@
 // Importar funciones necesarias
 import { cargarHeaderFooter } from "../functions/global/funciones.js";
 import { gestionarUsuarioAutenticado } from "../functions/global/header.js";
+import { cerrarSesion } from '../functions/global/funciones.js';
 
 // Evento que se ejecuta cuando el DOM se ha cargado completamente
 document.addEventListener("DOMContentLoaded", async () => {
@@ -134,22 +135,5 @@ function restringirAccesoProductos() {
         }
       });
     });
-  }
-}
-
-function cerrarSesion() {
-  sessionStorage.removeItem("user");
-  localStorage.removeItem("user");
-  window.location.href = "index.html";
-}
-
-function borrarCuenta() {
-  if (
-    confirm(
-      "¿Seguro que quieres borrar tu cuenta? Esta acción es irreversible."
-    )
-  ) {
-    cerrarSesion();
-    alert("Tu cuenta ha sido eliminada.");
   }
 }

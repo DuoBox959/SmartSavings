@@ -1,4 +1,5 @@
 import { db } from "../libs/db.js";
+import { volverAtras } from '../functions/global/funciones.js';
 
 // Asignar funciones a `window`
 window.cargarTiendas = cargarTiendas;
@@ -188,9 +189,4 @@ async function compararPrecios() {
         console.error("Error al comparar precios:", err);
         resultadoDiv.innerHTML = '<p style="color:red;">Ocurrió un error al comparar precios.</p>';
     }
-}
-
-// 🔙 Regresar a la página anterior
-function volverAtras() {
-    window.history.back();
 }

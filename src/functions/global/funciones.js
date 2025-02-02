@@ -17,3 +17,15 @@ export async function cargarHeaderFooter() {
     console.error('Hubo un error al cargar el header o footer:', error);
   }
 }
+
+// cerrar sesion
+export function cerrarSesion() {
+  sessionStorage.removeItem("user");
+  localStorage.removeItem("user");
+  window.location.href = "index.html";
+}
+
+// 🔙 Regresar a la página anterior
+ export function volverAtras() {
+  window.location.href = "index.html";
+}

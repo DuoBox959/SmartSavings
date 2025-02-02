@@ -20,4 +20,10 @@
 
 - Pagina configuracion de cuenta
 
-- Mirar porque se borra la session en actualizar y borrar
+- Mirar porque se borra la session en actualizar y borrar (HECHO)
+
+- Mirar diseño de actualizar y borrar
+
+- Mirar porque no se dirige a index.html al cerrar sesion en actualizar y borrar (HECHO)
+
+- Pasar todos los Cerrar sesion y Volver atras a funciones para que el codigo este mejor (HECHO)

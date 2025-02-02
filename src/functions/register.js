@@ -1,10 +1,12 @@
 import { db } from '../libs/dbuser.js';
+import { volverAtras } from '../functions/global/funciones.js';
 
 const registerForm = document.querySelector('form');
 const nameInput = document.getElementById('name');
 const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
 const confirmPasswordInput = document.getElementById('confirm-password');
+window.volverAtras = volverAtras;
 
 registerForm.addEventListener('submit', async (event) => {
   event.preventDefault();
@@ -44,9 +46,3 @@ registerForm.addEventListener('submit', async (event) => {
     alert('Error al registrar el usuario. Por favor, inténtalo de nuevo.');
   }
 });
-
-function volverAtras() {
-  window.location.href = "../pages/index.html"; 
-}
-
-window.volverAtras = volverAtras;

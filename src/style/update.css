@@ -8,8 +8,7 @@
   /* 🎨 Fondo general con efecto */
   body {
     font-family: "Roboto", sans-serif;
-    background: linear-gradient(135deg, #a8d5ba, #7bbb95); /* Degradado suave */
-    display: flex;
+    background: linear-gradient(135deg, #a8d5ba, #7bbb95);
     flex-direction: column;
     justify-content: center;
     align-items: center;

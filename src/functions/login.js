@@ -1,10 +1,14 @@
 // Importa la base de datos y la función de búsqueda desde dbuser.js
 import { db, findUserByEmail } from "../libs/dbuser.js";
+import { volverAtras } from '../functions/global/funciones.js';
 
 // Selecciona los elementos del formulario
 const loginForm = document.querySelector("form");
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
+
+//Para volver atras al darle al boton
+window.volverAtras = volverAtras;
 
 // Agrega un listener al evento submit del formulario
 loginForm.addEventListener("submit", async (event) => {
@@ -47,9 +51,3 @@ loginForm.addEventListener("submit", async (event) => {
     alert("Ocurrió un error al intentar iniciar sesión. Inténtalo nuevamente.");
   }
 });
-
-function volverAtras() {
-  window.location.href = "../pages/index.html";
-}
-
-window.volverAtras = volverAtras;
