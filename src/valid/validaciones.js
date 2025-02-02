@@ -84,4 +84,3 @@ function asignarValoresPredeterminados() {
   $("#precioLote").val(precioLote || "0"); // Predeterminado: "0"
   $("#ubicacionSupermercado").val(ubicacionSupermercado || "-"); // Predeterminado: "-"
 }
-

@@ -16,13 +16,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     const loginLink = document.getElementById("loginLink");
     const userName = document.getElementById("userName");
     const logout = document.getElementById("logout");
-    const userDropdown = document.getElementById("userDropdown"); // Contenedor del dropdown
-    const userMenu = document.getElementById("userMenu"); // Menú desplegable
+    const userDropdown = document.getElementById("userDropdown");
+    const userMenu = document.getElementById("userMenu");
 
     // Obtener datos del usuario desde sessionStorage o localStorage
     let user =
       JSON.parse(sessionStorage.getItem("user")) ||
-      JSON.parse(localStorage.getItem("user")); // Primero intenta en sessionStorage
+      JSON.parse(localStorage.getItem("user"));
 
     if (user) {
       // Usuario logueado: ocultar los enlaces de "Registrarse" e "Iniciar Sesión"
@@ -37,21 +37,21 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       // Alternar el menú desplegable al hacer clic en el nombre de usuario
       userName.addEventListener("click", (event) => {
-        event.stopPropagation(); // Evita que el evento se propague y cierre el menú inmediatamente
-        userMenu.classList.toggle("show"); // Activa o desactiva el dropdown
+        event.stopPropagation();
+        userMenu.classList.toggle("show");
       });
 
       // Cerrar sesión cuando se haga clic en "Cerrar Sesión"
       logout.addEventListener("click", () => {
-        sessionStorage.removeItem("user"); // Elimina de sessionStorage
-        localStorage.removeItem("user"); // Elimina de localStorage por si acaso
-        window.location.href = "index.html"; // Redirige a la página de inicio
+        sessionStorage.removeItem("user");
+        localStorage.removeItem("user");
+        window.location.href = "index.html";
       });
 
       // Cerrar el menú si se hace clic fuera del dropdown
       document.addEventListener("click", (event) => {
         if (!userDropdown.contains(event.target)) {
-          userMenu.classList.remove("show"); // Cierra el dropdown si haces clic fuera
+          userMenu.classList.remove("show");
         }
       });
     } else {

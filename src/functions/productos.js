@@ -23,8 +23,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const loginLink = document.getElementById("loginLink");
     const userName = document.getElementById("userName");
     const logout = document.getElementById("logout");
-    const userDropdown = document.getElementById("userDropdown"); // Contenedor del dropdown
-    const userMenu = document.getElementById("userMenu"); // Menú desplegable
+    const userDropdown = document.getElementById("userDropdown");
+    const userMenu = document.getElementById("userMenu");
 
     // Obtener datos del usuario desde sessionStorage o localStorage
     let user =
@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 async function cargarProductos() {
   try {
-    const productosContainer = document.getElementById("productos-container"); 
+    const productosContainer = document.getElementById("productos-container");
     productosContainer.innerHTML = ""; // Limpiar el contenedor antes de actualizar
 
     const result = await db.allDocs({ include_docs: true });
@@ -90,13 +90,21 @@ async function cargarProductos() {
       const productoHTML = `
         <div class="product-card">
             <span class="favorite-icon" onclick="toggleFavorito(this)">❤️</span>
-            <img src="${producto.imagen || 'default.jpg'}" alt="${producto.nombre}">
+            <img src="${producto.imagen || "default.jpg"}" alt="${
+        producto.nombre
+      }">
             <h3>${producto.nombre || "Producto sin nombre"}</h3>
             <p class="marca">${producto.marca || "Marca desconocida"}</p>
-            <p class="precio">desde ${producto.precioUnidad ? `${producto.precioUnidad} €` : "0 €"}</p>
+            <p class="precio">desde ${
+              producto.precioUnidad ? `${producto.precioUnidad} €` : "0 €"
+            }</p>
             <div class="acciones">
-                <button onclick="editarProducto('${producto._id}')">✏️ Editar</button>
-                <button class="btn-eliminar" onclick="eliminarProducto('${producto._id}')">🗑️ Eliminar</button>
+                <button onclick="editarProducto('${
+                  producto._id
+                }')">✏️ Editar</button>
+                <button class="btn-eliminar" onclick="eliminarProducto('${
+                  producto._id
+                }')">🗑️ Eliminar</button>
             </div>
         </div>
       `;

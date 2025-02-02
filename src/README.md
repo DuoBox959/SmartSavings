@@ -14,9 +14,9 @@
 
 -QUIERO PONER TAMBIEN A CUANTO SE VENDIA EL PRODUCTO OTROS AÑOS ANTERIORES MAS SU PESO PORQUE LAS MARCAS NO LAS QUIEREN COLAR COMO DORITOS QUE DISMINUYO -100 GR DE SU PAQUETE PERO SE MANTUVO EN EL PRECIO, ENGAÑANDONOS Y LLEVANDOSE IGUAL DE BENEFICIOS.
 
-- Actualizar Usuario (Pendiente)
+- Actualizar Usuario (Hecho)
 
-- Borrar Usuario (Pendiente)
+- Borrar Usuario (Hecho)
 
 - Pagina configuracion de cuenta
 
@@ -27,3 +27,5 @@
 - Mirar porque no se dirige a index.html al cerrar sesion en actualizar y borrar (HECHO)
 
 - Pasar todos los Cerrar sesion y Volver atras a funciones para que el codigo este mejor (HECHO)
+
+- Arreglar la insercion del registro.js (Hecho)

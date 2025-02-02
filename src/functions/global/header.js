@@ -1,5 +1,7 @@
 export function gestionarUsuarioAutenticado() {
-  let user = JSON.parse(sessionStorage.getItem("user")) || JSON.parse(localStorage.getItem("user")); // Primero intenta en sessionStorage
+  let user =
+    JSON.parse(sessionStorage.getItem("user")) ||
+    JSON.parse(localStorage.getItem("user")); // Primero intenta en sessionStorage
 
   const registerLink = document.getElementById("registerLink");
   const loginLink = document.getElementById("loginLink");
@@ -9,9 +11,17 @@ export function gestionarUsuarioAutenticado() {
   const changeUser = document.getElementById("changeUser");
   const del = document.getElementById("delete");
 
-  console.log(user);  // Verifica si el usuario está correctamente cargado
+  console.log(user); // Verifica si el usuario está correctamente cargado
 
-  if (registerLink && loginLink && userMenu && userName && logout && changeUser && del) {
+  if (
+    registerLink &&
+    loginLink &&
+    userMenu &&
+    userName &&
+    logout &&
+    changeUser &&
+    del
+  ) {
     if (user) {
       // Ocultar enlaces de registro e inicio de sesión
       registerLink.style.display = "none";
@@ -25,7 +35,7 @@ export function gestionarUsuarioAutenticado() {
       logout.addEventListener("click", () => {
         sessionStorage.removeItem("user");
         localStorage.removeItem("user");
-        window.location.reload();  // Recarga la página después de cerrar sesión
+        window.location.reload(); // Recarga la página después de cerrar sesión
       });
 
       // Función para cambiar de usuario

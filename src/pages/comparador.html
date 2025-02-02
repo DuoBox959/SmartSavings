@@ -1,51 +1,59 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Comparador de Precios</title>
 
     <!-- Estilos CSS -->
-    <link rel="stylesheet" href="../style/comparador.css">
-    <link rel="stylesheet" href="../style/responsivo.css">
+    <link rel="stylesheet" href="../style/comparador.css" />
+    <link rel="stylesheet" href="../style/responsivo.css" />
 
     <!-- Select2 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css"
+      rel="stylesheet"
+    />
 
     <!-- PouchDB -->
     <script src="../libs/pouchdb-9.0.0.min.js"></script>
-</head>
-<body>
-
+  </head>
+  <body>
     <h1>Comparador de Precios</h1>
 
     <form id="comparadorForm">
-        <!-- Selector de productos con Select2 -->
-        <label for="producto">Producto:</label>
-        <select id="producto" class="select-tiendas" onchange="cargarTiendas()">
-            <option value="">Selecciona un producto</option>
-        </select>
+      <!-- Selector de productos con Select2 -->
+      <label for="producto">Producto:</label>
+      <select id="producto" class="select-tiendas" onchange="cargarTiendas()">
+        <option value="">Selecciona un producto</option>
+      </select>
 
-        <!-- Selector para la primera tienda -->
-        <label for="tienda1">Tienda 1:</label>
-        <select id="tienda1" class="select-tiendas">
-            <option value="">Selecciona una tienda</option>
-        </select>
+      <!-- Selector para la primera tienda -->
+      <label for="tienda1">Tienda 1:</label>
+      <select id="tienda1" class="select-tiendas">
+        <option value="">Selecciona una tienda</option>
+      </select>
 
-        <!-- Selector para la segunda tienda -->
-        <label for="tienda2">Tienda 2:</label>
-        <select id="tienda2" class="select-tiendas">
-            <option value="">Selecciona una tienda</option>
-        </select>
+      <!-- Selector para la segunda tienda -->
+      <label for="tienda2">Tienda 2:</label>
+      <select id="tienda2" class="select-tiendas">
+        <option value="">Selecciona una tienda</option>
+      </select>
 
-        <!-- Botón para añadir más tiendas -->
-        <button type="button" id="addStoreButton" onclick="anadirSelectorTienda()">+</button>
+      <!-- Botón para añadir más tiendas -->
+      <button
+        type="button"
+        id="addStoreButton"
+        onclick="anadirSelectorTienda()"
+      >
+        +
+      </button>
 
-        <!-- Contenedor para más tiendas -->
-        <div id="extraStores"></div>
+      <!-- Contenedor para más tiendas -->
+      <div id="extraStores"></div>
 
-        <!-- Botón para comparar -->
-        <button type="button" onclick="compararPrecios()">Comparar</button>
+      <!-- Botón para comparar -->
+      <button type="button" onclick="compararPrecios()">Comparar</button>
     </form>
 
     <!-- Resultado de la comparación -->
@@ -58,6 +66,5 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
     <script type="module" src="../functions/comparador.js"></script>
-
-</body>
+  </body>
 </html>

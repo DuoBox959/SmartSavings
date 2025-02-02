@@ -1,7 +1,7 @@
 // Importar funciones necesarias
 import { cargarHeaderFooter } from "../functions/global/funciones.js";
 import { gestionarUsuarioAutenticado } from "../functions/global/header.js";
-import { cerrarSesion } from '../functions/global/funciones.js';
+import { cerrarSesion } from "../functions/global/funciones.js";
 
 // Evento que se ejecuta cuando el DOM se ha cargado completamente
 document.addEventListener("DOMContentLoaded", async () => {

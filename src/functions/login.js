@@ -1,6 +1,6 @@
 // Importa la base de datos y la función de búsqueda desde dbuser.js
 import { db, findUserByEmail } from "../libs/dbuser.js";
-import { volverAtras } from '../functions/global/funciones.js';
+import { volverAtras } from "../functions/global/funciones.js";
 
 // Selecciona los elementos del formulario
 const loginForm = document.querySelector("form");
