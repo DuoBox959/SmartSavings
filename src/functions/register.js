@@ -11,9 +11,9 @@ window.volverAtras = volverAtras;
 registerForm.addEventListener('submit', async (event) => {
   event.preventDefault();
 
-  const username = usernameInput.value;
-  const email = emailInput.value;
-  const password = passwordInput.value;
+  const username = usernameInput.value.trim();
+  const email = emailInput.value.trim();
+  const password = passwordInput.value.trim();
 
   // Validación de campos
   if (!username || !email || !password) {
@@ -32,7 +32,12 @@ registerForm.addEventListener('submit', async (event) => {
 
     await db.put(newUser);
 
-    alert('Usuario registrado correctamente.');
+    // Guardar el usuario en sessionStorage para mantenerlo autenticado
+    sessionStorage.setItem('user', JSON.stringify(newUser));
+
+    alert('Usuario registrado correctamente. Redirigiendo al inicio...');
+    
+    // Redirigir al index ya logueado
     window.location.href = 'index.html';
   } catch (error) {
     console.error('Error al registrar el usuario:', error);

@@ -1,31 +1,18 @@
--PONER EL CAMPO FECHA DE REGISTRO EN LA BD DE LOS USUARIOS.
+Añadimos creadoPor → Relaciona el producto con el usuario que lo registró.
+✅ El historialProducto es una lista → Guarda cambios automáticos con el tiempo.
+✅ El biografiaProducto es una lista separada → Permite que el usuario agregue datos manualmente. Añadimos rol → Ahora los usuarios tienen permisos (admin, usuario, invitado).
+✅ El productosCreados guarda los IDs de los productos que subió.
+✅ password encriptado → Debería almacenarse hasheado para seguridad.
+-PONER DESCRIPCION EN LA BD DE PRODUCTOS PARA AÑADIR ETIQUETAS O PEQUEÑAS DESCRIPCIONES PARA SABER SI ESE PRODUCTO LLEVA GLUTEN, LACTOSA O CUALQUIER COSA QUE AL HUMANO ALERGICO LE PUEDE AFECTAR. HECHO¿?¿?¿?
 
 -ACTUALIZAR INTERFAZ DE PRODUCTOS.HTML Y QUE QUEDE MEJOR QUE IDEALO
 
 -¡¡PONER LA BASE DE DATO PUBLICA DE TAL MANERA QUE RUBE Y YO PODAMOS ACCEDER A LA MISMA(IMPORTANNTE)!! CUANDO SE HAGA ESO HACEMOS UN LOGIN PARA LA INTRANET QUE SOLO SE META DETERMINADOS USUARIOS AUTORIZADOS NO SE SI EN ESO VAMOS A TENER QUE PONER ROLES EN LA TABLA DE USUARIOS. Y LUEGO DE ESO PONER UN CAPCHAT, YA SEA EL DEL MISMO GOOGLE O UNO NUESTRO MAS CREATIVO.
 
--AÑADIR EN EL COMPARADOR EL PESO Y PRECIO DE LOS PRODUCTOS OTROS AÑOS Y YA VEREMOS SI CREAR ALGO EN LA BD QUE GUARDE ESO.
-
--AÑADIR CHATBOT PARA QUE LA BUSQUEDA SEA MAS FACIL QUE LA BARRA DEL BUSCADOR Y ASI PUEDES INTERACTUAR UN POCO CON LA IA.
-
 -AÑADIR LOGIN EN INTRANET PARA QUE SOLO ENTRE LOS ADMINISTRADORES Y ROL A LOS USUARIOS SI ES NECESARIO PARA DECLARAR QUIEN ES ADMIN Y QUIEN NO
-
--PONER DESCRIPCION EN LA BD DE PRODUCTOS PARA AÑADIR ETIQUETAS O PEQUEÑAS DESCRIPCIONES PARA SABER SI ESE PRODUCTO LLEVA GLUTEN, LACTOSA O CUALQUIER COSA QUE AL HUMANO ALERGICO LE PUEDE AFECTAR.
-
--QUIERO PONER TAMBIEN A CUANTO SE VENDIA EL PRODUCTO OTROS AÑOS ANTERIORES MAS SU PESO PORQUE LAS MARCAS NO LAS QUIEREN COLAR COMO DORITOS QUE DISMINUYO -100 GR DE SU PAQUETE PERO SE MANTUVO EN EL PRECIO, ENGAÑANDONOS Y LLEVANDOSE IGUAL DE BENEFICIOS.
-
-- Actualizar Usuario (Hecho)
-
-- Borrar Usuario (Hecho)
 
 - Pagina configuracion de cuenta
 
-- Mirar porque se borra la session en actualizar y borrar (HECHO)
-
 - Mirar diseño de actualizar y borrar
 
-- Mirar porque no se dirige a index.html al cerrar sesion en actualizar y borrar (HECHO)
-
-- Pasar todos los Cerrar sesion y Volver atras a funciones para que el codigo este mejor (HECHO)
-
-- Arreglar la insercion del registro.js (Hecho)
+- Corregir comparador de precios ya que cuando añadimos nueva tienda no me da opcion a comparar ningnu producto en tienda 3

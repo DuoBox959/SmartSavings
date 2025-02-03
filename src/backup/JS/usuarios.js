@@ -1,10 +1,9 @@
-import { db } from "../../libs/dbuser.js"; // ✅ Asegúrate de que `dbuser.js` existe
+import { db } from "../../libs/dbuser.js"; // Asegúrate de que `dbuser.js` existe
 
-// 🔹 Variables globales
+// Variables globales
 let usuariosTable;
 let usuariosCache = [];
 
-// 🔹 Iniciar DataTable y cargar usuarios cuando el documento esté listo
 $(document).ready(() => {
     usuariosTable = $("#usuariosTable").DataTable({
         destroy: true,
@@ -20,36 +19,34 @@ $(document).ready(() => {
         ]
     });
 
-    cargarUsuarios(); // ✅ Ahora se llama correctamente
+    cargarUsuarios();
 });
 
-// 🟢 **Cargar usuarios en la tabla**
+// 🟢 Cargar usuarios en la tabla
 async function cargarUsuarios() {
     try {
         const result = await db.allDocs({ include_docs: true });
-        usuariosCache = result.rows.map(row => row.doc);
+        usuariosCache = result.rows.map((row) => row.doc);
 
         usuariosTable.clear();
-
         usuariosCache.forEach((usuario) => {
             usuariosTable.row.add([
                 usuario._id,
-                usuario.name || "Sin nombre",
-                usuario.email || "Sin email",
-                usuario.rol || "usuario",
+                usuario.name || "",
+                usuario.email || "",
+                usuario.rol || "usuario", // Si no tiene rol, asigna "usuario"
                 usuario.estado || "activo",
                 usuario.fechaRegistro ? formatearFecha(usuario.fechaRegistro) : "Sin fecha",
                 accionesHTML(usuario._id),
             ]);
         });
-
         usuariosTable.draw();
     } catch (err) {
-        console.error("❌ Error cargando usuarios:", err);
+        console.error("Error cargando usuarios:", err);
     }
 }
 
-// 🟢 **Acciones de editar y eliminar**
+// 🟢 Acciones de editar y eliminar
 function accionesHTML(id) {
     return `
         <button onclick="editarUsuario('${id}')">✏️ Editar</button>
@@ -57,7 +54,7 @@ function accionesHTML(id) {
     `;
 }
 
-// 🟢 **Mostrar formulario para agregar usuario**
+// 🟢 Mostrar formulario para agregar usuario
 function mostrarFormularioAgregar() {
     $("#formTitulo").text("Añadir Usuario");
     $("#usuarioID, #nombreUsuario, #emailUsuario, #passwordUsuario").val("");
@@ -66,23 +63,20 @@ function mostrarFormularioAgregar() {
     $("#formularioUsuario").show();
 }
 
-// 🟢 **Guardar cambios desde el formulario**
+// 🟢 Guardar cambios desde el formulario
 async function guardarCambiosDesdeFormulario() {
     const id = $("#usuarioID").val();
     const nombre = $("#nombreUsuario").val();
     const email = $("#emailUsuario").val();
-    let password = $("#passwordUsuario").val();
+    const password = $("#passwordUsuario").val();
     const rol = $("#rolUsuario").val();
     const estado = $("#estadoUsuario").val();
     const fechaRegistro = new Date().toISOString();
 
     if (!nombre || !email || !password) {
-        alert("⚠️ Todos los campos son obligatorios.");
+        alert("Todos los campos son obligatorios.");
         return;
     }
-
-    // ✅ Encriptar contraseña con SHA-256
-    password = CryptoJS.SHA256(password).toString();
 
     let doc;
     if (id) {
@@ -90,7 +84,7 @@ async function guardarCambiosDesdeFormulario() {
             const existingDoc = await db.get(id);
             doc = { ...existingDoc, name: nombre, email, password, rol, estado };
         } catch (err) {
-            console.error("❌ Error obteniendo el usuario:", err);
+            console.error("Error obteniendo el usuario:", err);
             return;
         }
     } else {
@@ -102,7 +96,6 @@ async function guardarCambiosDesdeFormulario() {
             rol,
             estado,
             fechaRegistro,
-            productosCreados: [], // ✅ Agregar campo vacío por defecto
         };
     }
 
@@ -111,17 +104,17 @@ async function guardarCambiosDesdeFormulario() {
         cargarUsuarios();
         cerrarFormulario();
     } catch (err) {
-        console.error("❌ Error guardando usuario:", err);
+        console.error("Error guardando usuario:", err);
     }
 }
 
-// 🟢 **Generar un ID único**
+// 🟢 Generar un ID único
 async function asignarIDDisponible() {
     const timestamp = new Date().getTime();
     return `user-${timestamp}`;
 }
 
-// 🟢 **Formatear fecha de registro**
+// 🟢 Formatear fecha de registro
 function formatearFecha(fechaISO) {
     const fecha = new Date(fechaISO);
     return fecha.toLocaleDateString("es-ES", {
@@ -131,7 +124,7 @@ function formatearFecha(fechaISO) {
     });
 }
 
-// 🟢 **Editar un usuario**
+// 🟢 Editar un usuario
 function editarUsuario(id) {
     const usuario = usuariosCache.find((u) => u._id === id);
     if (!usuario) return;
@@ -146,7 +139,7 @@ function editarUsuario(id) {
     $("#formularioUsuario").show();
 }
 
-// 🟢 **Eliminar un usuario**
+// 🟢 Eliminar un usuario
 async function eliminarUsuario(id) {
     const usuario = usuariosCache.find((u) => u._id === id);
     if (!usuario) return;
@@ -156,19 +149,18 @@ async function eliminarUsuario(id) {
             await db.remove(usuario);
             cargarUsuarios();
         } catch (err) {
-            console.error("❌ Error eliminando usuario:", err);
+            console.error("Error eliminando usuario:", err);
         }
     }
 }
 
-// 🟢 **Funciones globales para el HTML**
+// 🟢 Funciones globales para el HTML
 window.editarUsuario = editarUsuario;
 window.eliminarUsuario = eliminarUsuario;
 window.mostrarFormularioAgregar = mostrarFormularioAgregar;
 window.guardarCambiosDesdeFormulario = guardarCambiosDesdeFormulario;
 window.cerrarFormulario = cerrarFormulario;
 window.volverAtras = volverAtras;
-window.cargarUsuarios = cargarUsuarios; // ✅ Hacerla accesible globalmente
 
 function volverAtras() {
     window.location.href = "../html/intranet.html";

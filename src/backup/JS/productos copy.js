@@ -84,17 +84,22 @@ async function guardarCambiosDesdeFormulario() {
   const unidadPeso = $("#unidadPeso").val();
   const supermercado = $("#nombreSupermercado").val();
   const ubicacion = $("#ubicacionSupermercado").val();
-  const descripcion = $("#descripcionProducto").val(); // ✅ Nueva descripción
-  const usuarioActual = JSON.parse(localStorage.getItem("usuarioActual")) || {}; // ✅ Obtener usuario actual
-
   const añoActual = new Date().getFullYear();
   const mesActual = new Intl.DateTimeFormat("es-ES", { month: "long" }).format(new Date());
+
+  const imgFile = document.getElementById("imgProducto").files[0];
+  let imgBase64 = "";
+  if (imgFile) {
+    imgBase64 = await convertirImagenABase64(imgFile);
+  }
 
   let doc;
   if (id) {
     try {
       const existingDoc = await db.get(id);
+
       if (!existingDoc.historialProducto) existingDoc.historialProducto = [];
+      if (!existingDoc.biografiaProducto) existingDoc.biografiaProducto = [];
 
       const ultimoRegistro = existingDoc.historialProducto.find(h => h.año === añoActual && h.mes === mesActual);
       if (!ultimoRegistro || ultimoRegistro.precioUnidad !== precioUnidad || ultimoRegistro.peso !== peso) {
@@ -111,11 +116,11 @@ async function guardarCambiosDesdeFormulario() {
         unidadPeso,
         supermercado,
         ubicacion,
-        descripcion, // ✅ Guardar descripción
-        ultimaModificacion: new Date().toISOString(),
+        img: imgBase64 || existingDoc.img,
+        ultimaModificacion: formatearFecha(new Date()),
       };
     } catch (err) {
-      console.error("Error obteniendo producto:", err);
+      console.error("Error obteniendo el documento existente:", err);
       return;
     }
   } else {
@@ -129,22 +134,11 @@ async function guardarCambiosDesdeFormulario() {
       unidadPeso,
       supermercado,
       ubicacion,
-      descripcion, // ✅ Nueva descripción
-      ultimaModificacion: new Date().toISOString(),
+      img: imgBase64,
+      ultimaModificacion: formatearFecha(new Date()),
       historialProducto: [{ año: añoActual, mes: mesActual, precioUnidad, peso }],
-      biografiaProducto: [],
-      creadoPor: usuarioActual._id || "desconocido", // ✅ Relacionamos producto con usuario
+      biografiaProducto: []
     };
-    
-    // ✅ Guardar el ID en productosCreados del usuario
-    try {
-      const usuario = await db.get(usuarioActual._id);
-      usuario.productosCreados = usuario.productosCreados || [];
-      usuario.productosCreados.push(doc._id);
-      await db.put(usuario);
-    } catch (err) {
-      console.error("Error actualizando usuario con productos creados:", err);
-    }
   }
 
   try {
@@ -155,7 +149,6 @@ async function guardarCambiosDesdeFormulario() {
     console.error("Error guardando producto:", err);
   }
 }
-
 
 // 🟢 Añadir datos manuales a la biografía del producto
 async function agregarBiografiaProducto() {
