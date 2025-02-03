@@ -33,7 +33,7 @@ registerForm.addEventListener('submit', async (event) => {
     await db.put(newUser);
 
     alert('Usuario registrado correctamente.');
-    window.location.href = 'login.html';
+    window.location.href = 'index.html';
   } catch (error) {
     console.error('Error al registrar el usuario:', error);
     alert('Error al registrar el usuario. Por favor, inténtalo de nuevo.');

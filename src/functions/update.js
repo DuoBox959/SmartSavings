@@ -1,5 +1,5 @@
 // Importar funciones necesarias
-import { cargarHeaderFooter } from "../functions/global/funciones.js";
+// import { cargarHeaderFooter } from "../functions/global/funciones.js";
 import { gestionarUsuarioAutenticado } from "../functions/global/header.js";
 import { cerrarSesion, volverAtras } from '../functions/global/funciones.js';
 import { db, findUserByEmail } from '../libs/dbuser.js'; // Importar la base de datos y la función de búsqueda
@@ -10,7 +10,7 @@ window.volverAtras = volverAtras;
 // Evento que se ejecuta cuando el DOM se ha cargado completamente
 document.addEventListener("DOMContentLoaded", async () => {
   try {
-    await cargarHeaderFooter();
+    // await cargarHeaderFooter();
     gestionarUsuarioAutenticado();
     manejarUsuario();
     configurarFormulario(); // Configurar la lógica del formulario
