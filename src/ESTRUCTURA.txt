@@ -1,63 +1,1053 @@
-🚀 Resumen General
-📦 COMPARAPRECIO/
-┣ 📂 src/
-┃ ┣ 📂 assets/
-┃ ┣ 📂 backup/
-┃ ┣ 📂 functions/
-┃ ┃ ┣ 📂 global/
-┃ ┃ ┃ ┣ 📄 funciones.js
-┃ ┃ ┃ ┣ 📄 header.js
-┃ ┃ ┃ ┣ 📄 comparador.js
-┃ ┃ ┣ 📄 index.js
-┃ ┃ ┣ 📄 login.js
-┃ ┃ ┣ 📄 politicas.js
-┃ ┃ ┣ 📄 productos.js
-┃ ┃ ┣ 📄 register.js
-┃ ┣ 📂 intranet/
-┃ ┃ ┣ 📂 css/
-┃ ┃ ┃ ┣ 📄 intranet.css
-┃ ┃ ┃ ┣ 📄 producto.css
-┃ ┃ ┃ ┣ 📄 usuarios.css
-┃ ┃ ┣ 📂 html/
-┃ ┃ ┃ ┣ 📄 intranet.html
-┃ ┃ ┃ ┣ 📄 productos.html
-┃ ┃ ┃ ┣ 📄 usuarios.html
-┃ ┃ ┣ 📂 js/
-┃ ┃ ┃ ┣ 📄 intranet.js
-┃ ┃ ┃ ┣ 📄 productos.js
-┃ ┃ ┃ ┣ 📄 usuarios.js
-┃ ┃ ┣ 📂 libs/
-┃ ┃ ┃ ┣ 📄 db.js
-┃ ┃ ┃ ┣ 📄 dbuser.js
-┃ ┃ ┃ ┣ 📄 pouchdb-9.0.0.min.js
-┃ ┣ 📂 pages/
-┃ ┃ ┣ 📂 global/
-┃ ┃ ┃ ┣ 📄 footer.html
-┃ ┃ ┃ ┣ 📄 header.html
-┃ ┃ ┃ ┣ 📄 avisoLegal.html
-┃ ┃ ┃ ┣ 📄 comparador.html
-┃ ┃ ┃ ┣ 📄 index.html
-┃ ┃ ┃ ┣ 📄 login.html
-┃ ┃ ┃ ┣ 📄 politicacookies.html
-┃ ┃ ┃ ┣ 📄 politicaprivacidad.html
-┃ ┃ ┃ ┣ 📄 productos.html
-┃ ┃ ┃ ┣ 📄 register.html
-┃ ┃ ┃ ┣ 📄 terminoscondiciones.html
-┃ ┣ 📂 style/
-┃ ┃ ┣ 📂 global/
-┃ ┃ ┃ ┣ 📄 comparador.css
-┃ ┃ ┃ ┣ 📄 footer.css
-┃ ┃ ┃ ┣ 📄 header.css
-┃ ┃ ┃ ┣ 📄 index.css
-┃ ┃ ┃ ┣ 📄 login.css
-┃ ┃ ┃ ┣ 📄 politicas.css
-┃ ┃ ┃ ┣ 📄 producto.css
-┃ ┃ ┃ ┣ 📄 register.css
-┃ ┃ ┃ ┣ 📄 responsivo.css
-┃ ┣ 📂 valid/
-┃ ┃ ┣ 📄 validaciones.js
-┣ 📄 package.json
-┣ 📄 package-lock.json
-┣ 📄 README.md
-┣ 📄 ESTRUCTURA.txt
+📂 Estructura del Proyecto
+Tu proyecto tiene dos directorios principales:
 
+node_modules/ → Contiene todas las dependencias instaladas con npm install.
+src/ → Contiene el código fuente de tu aplicación.
+📌 Detalles de cada carpeta
+🔹 Carpeta raíz (/)
+Estos son los archivos más importantes en la raíz del proyecto:
+
+.env → Archivo de configuración de variables de entorno.
+.gitignore → Define qué archivos deben ignorarse en Git.
+package.json → Lista las dependencias del proyecto.
+server.js → Archivo principal del servidor (posiblemente un backend en Node.js).
+🔹 Carpeta node_modules/
+Contiene todas las dependencias de npm.
+No es necesario modificar estos archivos manualmente.
+🔹 Carpeta src/ (Código Fuente)
+Contiene el código organizado en varias subcarpetas:
+
+📁 assets/ → Recursos estáticos
+fonts/ → Fuentes utilizadas.
+icons/ → Íconos (icon1.webp, icon2.webp).
+img/ → Imágenes (product.webp).
+📁 backup/ → Archivos de respaldo
+CSS/ → Archivos de estilos antiguos (comparador_BU.css, index_BU.css).
+HTML/ → Versiones anteriores de HTML (comparador_BU.html).
+JS/ → Scripts (comparador.js, db.js).
+📁 functions/ → Funciones de backend
+global/ → Funciones generales como chatbot.js, funciones.js.
+Otros archivos incluyen comparador.js, delete.js, productos.js, etc.
+📁 intranet/ → Código para la intranet
+css/ → Estilos (intranet.css, usuarios.css).
+html/ → Páginas de la intranet (intranet.html, usuarios.html).
+js/ → Scripts para manejar la lógica (intranet.js, productos.js).
+📁 libs/ → Librerías utilizadas
+db.js, dbuser.js → Módulos de base de datos.
+pouchdb-9.0.0.min.js → Una librería externa.
+📁 pages/ → Páginas de la web
+global/ → Elementos compartidos (chatbot.html, footer.html, header.html).
+Otras páginas como index.html, login.html, productos.html, register.html, etc.
+📁 style/ → Estilos CSS
+Archivos como comparador.css, login.css, producto.css, responsivo.css, etc.
+global/ → Estilos compartidos (chatbot.css).
+📁 valid/ → Validaciones
+validaciones.js → Archivo con funciones de validación.
+
+
+
+
+ +---hasown
+|   |   |   .eslintrc
+|   |   |   .nycrc
+|   |   |   CHANGELOG.md
+|   |   |   index.d.ts
+|   |   |   index.js
+|   |   |   LICENSE
+|   |   |   package.json
+|   |   |   README.md
+|   |   |   tsconfig.json
+|   |   |
+|   |   \---.github
+|   |           FUNDING.yml
+|   |
+|   +---http-errors
+|   |       HISTORY.md
+|   |       index.js
+|   |       LICENSE
+|   |       package.json
+|   |       README.md
+|   |
+|   +---https-proxy-agent
+|   |   |   package.json
+|   |   |   README.md
+|   |   |
+|   |   \---dist
+|   |           agent.d.ts
+|   |           agent.js
+|   |           agent.js.map
+|   |           index.d.ts
+|   |           index.js
+|   |           index.js.map
+|   |           parse-proxy-response.d.ts
+|   |           parse-proxy-response.js
+|   |           parse-proxy-response.js.map
+|   |
+|   +---iconv-lite
+|   |   |   Changelog.md
+|   |   |   LICENSE
+|   |   |   package.json
+|   |   |   README.md
+|   |   |
+|   |   +---encodings
+|   |   |   |   dbcs-codec.js
+|   |   |   |   dbcs-data.js
+|   |   |   |   index.js
+|   |   |   |   internal.js
+|   |   |   |   sbcs-codec.js
+|   |   |   |   sbcs-data-generated.js
+|   |   |   |   sbcs-data.js
+|   |   |   |   utf16.js
+|   |   |   |   utf7.js
+|   |   |   |
+|   |   |   \---tables
+|   |   |           big5-added.json
+|   |   |           cp936.json
+|   |   |           cp949.json
+|   |   |           cp950.json
+|   |   |           eucjp.json
+|   |   |           gb18030-ranges.json
+|   |   |           gbk-added.json
+|   |   |           shiftjis.json
+|   |   |
+|   |   \---lib
+|   |           bom-handling.js
+|   |           extend-node.js
+|   |           index.d.ts
+|   |           index.js
+|   |           streams.js
+|   |
+|   +---inflight
+|   |       inflight.js
+|   |       LICENSE
+|   |       package.json
+|   |       README.md
+|   |
+|   +---inherits
+|   |       inherits.js
+|   |       inherits_browser.js
+|   |       LICENSE
+|   |       package.json
+|   |       README.md
+|   |
+|   +---ipaddr.js
+|   |   |   ipaddr.min.js
+|   |   |   LICENSE
+|   |   |   package.json
+|   |   |   README.md
+|   |   |
+|   |   \---lib
+|   |           ipaddr.js
+|   |           ipaddr.js.d.ts
+|   |
+|   +---is-fullwidth-code-point
+|   |       index.d.ts
+|   |       index.js
+|   |       license
+|   |       package.json
+|   |       readme.md
+|   |
+|   +---make-dir
+|   |   |   index.d.ts
+|   |   |   index.js
+|   |   |   license
+|   |   |   package.json
+|   |   |   readme.md
+|   |   |
+|   |   \---node_modules
+|   |       +---.bin
+|   |       |       semver
+|   |       |       semver.cmd
+|   |       |       semver.ps1
+|   |       |
+|   |       \---semver
+|   |           |   LICENSE
+|   |           |   package.json
+|   |           |   range.bnf
+|   |           |   README.md
+|   |           |   semver.js
+|   |           |
+|   |           \---bin
+|   |                   semver.js
+|   |
+|   +---math-intrinsics
+|   |   |   .eslintrc
+|   |   |   abs.d.ts
+|   |   |   abs.js
+|   |   |   CHANGELOG.md
+|   |   |   floor.d.ts
+|   |   |   floor.js
+|   |   |   isFinite.d.ts
+|   |   |   isFinite.js
+|   |   |   isInteger.d.ts
+|   |   |   isInteger.js
+|   |   |   isNaN.d.ts
+|   |   |   isNaN.js
+|   |   |   isNegativeZero.d.ts
+|   |   |   isNegativeZero.js
+|   |   |   LICENSE
+|   |   |   max.d.ts
+|   |   |   max.js
+|   |   |   min.d.ts
+|   |   |   min.js
+|   |   |   mod.d.ts
+|   |   |   mod.js
+|   |   |   package.json
+|   |   |   pow.d.ts
+|   |   |   pow.js
+|   |   |   README.md
+|   |   |   round.d.ts
+|   |   |   round.js
+|   |   |   sign.d.ts
+|   |   |   sign.js
+|   |   |   tsconfig.json
+|   |   |
+|   |   +---.github
+|   |   |       FUNDING.yml
+|   |   |
+|   |   +---constants
+|   |   |       maxArrayLength.d.ts
+|   |   |       maxArrayLength.js
+|   |   |       maxSafeInteger.d.ts
+|   |   |       maxSafeInteger.js
+|   |   |       maxValue.d.ts
+|   |   |       maxValue.js
+|   |   |
+|   |   \---test
+|   |           index.js
+|   |
+|   +---media-typer
+|   |       HISTORY.md
+|   |       index.js
+|   |       LICENSE
+|   |       package.json
+|   |       README.md
+|   |
+|   +---merge-descriptors
+|   |       HISTORY.md
+|   |       index.js
+|   |       LICENSE
+|   |       package.json
+|   |       README.md
+|   |
+|   +---methods
+|   |       HISTORY.md
+|   |       index.js
+|   |       LICENSE
+|   |       package.json
+|   |       README.md
+|   |
+|   +---mime
+|   |   |   .npmignore
+|   |   |   CHANGELOG.md
+|   |   |   cli.js
+|   |   |   LICENSE
+|   |   |   mime.js
+|   |   |   package.json
+|   |   |   README.md
+|   |   |   types.json
+|   |   |
+|   |   \---src
+|   |           build.js
+|   |           test.js
+|   |
+|   +---mime-db
+|   |       db.json
+|   |       HISTORY.md
+|   |       index.js
+|   |       LICENSE
+|   |       package.json
+|   |       README.md
+|   |
+|   +---mime-types
+|   |       HISTORY.md
+|   |       index.js
+|   |       LICENSE
+|   |       package.json
+|   |       README.md
+|   |
+|   +---minimatch
+|   |       LICENSE
+|   |       minimatch.js
+|   |       package.json
+|   |       README.md
+|   |
+|   +---minipass
+|   |       index.d.ts
+|   |       index.js
+|   |       index.mjs
+|   |       LICENSE
+|   |       package.json
+|   |       README.md
+|   |
+|   +---minizlib
+|   |   |   constants.js
+|   |   |   index.js
+|   |   |   LICENSE
+|   |   |   package.json
+|   |   |   README.md
+|   |   |
+|   |   \---node_modules
+|   |       \---minipass
+|   |               index.d.ts
+|   |               index.js
+|   |               LICENSE
+|   |               package.json
+|   |               README.md
+|   |
+|   +---mkdirp
+|   |   |   CHANGELOG.md
+|   |   |   index.js
+|   |   |   LICENSE
+|   |   |   package.json
+|   |   |   readme.markdown
+|   |   |
+|   |   +---bin
+|   |   |       cmd.js
+|   |   |
+|   |   \---lib
+|   |           find-made.js
+|   |           mkdirp-manual.js
+|   |           mkdirp-native.js
+|   |           opts-arg.js
+|   |           path-arg.js
+|   |           use-native.js
+|   |
+|   +---ms
+|   |       index.js
+|   |       license.md
+|   |       package.json
+|   |       readme.md
+|   |
+|   +---negotiator
+|   |   |   HISTORY.md
+|   |   |   index.js
+|   |   |   LICENSE
+|   |   |   package.json
+|   |   |   README.md
+|   |   |
+|   |   \---lib
+|   |           charset.js
+|   |           encoding.js
+|   |           language.js
+|   |           mediaType.js
+|   |
+|   +---node-addon-api
+|   |   |   common.gypi
+|   |   |   except.gypi
+|   |   |   index.js
+|   |   |   LICENSE.md
+|   |   |   napi-inl.deprecated.h
+|   |   |   napi-inl.h
+|   |   |   napi.h
+|   |   |   node_api.gyp
+|   |   |   noexcept.gypi
+|   |   |   nothing.c
+|   |   |   package-support.json
+|   |   |   package.json
+|   |   |   README.md
+|   |   |
+|   |   \---tools
+|   |           check-napi.js
+|   |           clang-format.js
+|   |           conversion.js
+|   |           eslint-format.js
+|   |           README.md
+|   |
+|   +---node-fetch
+|   |   |   browser.js
+|   |   |   LICENSE.md
+|   |   |   package.json
+|   |   |   README.md
+|   |   |
+|   |   \---lib
+|   |           index.es.js
+|   |           index.js
+|   |           index.mjs
+|   |
+|   +---nopt
+|   |   |   CHANGELOG.md
+|   |   |   LICENSE
+|   |   |   package.json
+|   |   |   README.md
+|   |   |
+|   |   +---bin
+|   |   |       nopt.js
+|   |   |
+|   |   \---lib
+|   |           nopt.js
+|   |
+|   +---npmlog
+|   |       LICENSE
+|   |       log.js
+|   |       package.json
+|   |       README.md
+|   |
+|   +---object-assign
+|   |       index.js
+|   |       license
+|   |       package.json
+|   |       readme.md
+|   |
+|   +---object-inspect
+|   |   |   .eslintrc
+|   |   |   .nycrc
+|   |   |   CHANGELOG.md
+|   |   |   index.js
+|   |   |   LICENSE
+|   |   |   package-support.json
+|   |   |   package.json
+|   |   |   readme.markdown
+|   |   |   test-core-js.js
+|   |   |   util.inspect.js
+|   |   |
+|   |   +---.github
+|   |   |       FUNDING.yml
+|   |   |
+|   |   +---example
+|   |   |       all.js
+|   |   |       circular.js
+|   |   |       fn.js
+|   |   |       inspect.js
+|   |   |
+|   |   \---test
+|   |       |   bigint.js
+|   |       |   circular.js
+|   |       |   deep.js
+|   |       |   element.js
+|   |       |   err.js
+|   |       |   fakes.js
+|   |       |   fn.js
+|   |       |   global.js
+|   |       |   has.js
+|   |       |   holes.js
+|   |       |   indent-option.js
+|   |       |   inspect.js
+|   |       |   lowbyte.js
+|   |       |   number.js
+|   |       |   quoteStyle.js
+|   |       |   toStringTag.js
+|   |       |   undef.js
+|   |       |   values.js
+|   |       |
+|   |       \---browser
+|   |               dom.js
+|   |
+|   +---on-finished
+|   |       HISTORY.md
+|   |       index.js
+|   |       LICENSE
+|   |       package.json
+|   |       README.md
+|   |
+|   +---once
+|   |       LICENSE
+|   |       once.js
+|   |       package.json
+|   |       README.md
+|   |
+|   +---parseurl
+|   |       HISTORY.md
+|   |       index.js
+|   |       LICENSE
+|   |       package.json
+|   |       README.md
+|   |
+|   +---path-is-absolute
+|   |       index.js
+|   |       license
+|   |       package.json
+|   |       readme.md
+|   |
+|   +---path-to-regexp
+|   |       index.js
+|   |       LICENSE
+|   |       package.json
+|   |       Readme.md
+|   |
+|   +---proxy-addr
+|   |       HISTORY.md
+|   |       index.js
+|   |       LICENSE
+|   |       package.json
+|   |       README.md
+|   |
+|   +---qs
+|   |   |   .editorconfig
+|   |   |   .eslintrc
+|   |   |   .nycrc
+|   |   |   CHANGELOG.md
+|   |   |   LICENSE.md
+|   |   |   package.json
+|   |   |   README.md
+|   |   |
+|   |   +---.github
+|   |   |       FUNDING.yml
+|   |   |
+|   |   +---dist
+|   |   |       qs.js
+|   |   |
+|   |   +---lib
+|   |   |       formats.js
+|   |   |       index.js
+|   |   |       parse.js
+|   |   |       stringify.js
+|   |   |       utils.js
+|   |   |
+|   |   \---test
+|   |           empty-keys-cases.js
+|   |           parse.js
+|   |           stringify.js
+|   |           utils.js
+|   |
+|   +---range-parser
+|   |       HISTORY.md
+|   |       index.js
+|   |       LICENSE
+|   |       package.json
+|   |       README.md
+|   |
+|   +---raw-body
+|   |       HISTORY.md
+|   |       index.d.ts
+|   |       index.js
+|   |       LICENSE
+|   |       package.json
+|   |       README.md
+|   |       SECURITY.md
+|   |
+|   +---readable-stream
+|   |   |   CONTRIBUTING.md
+|   |   |   errors-browser.js
+|   |   |   errors.js
+|   |   |   experimentalWarning.js
+|   |   |   GOVERNANCE.md
+|   |   |   LICENSE
+|   |   |   package.json
+|   |   |   readable-browser.js
+|   |   |   readable.js
+|   |   |   README.md
+|   |   |
+|   |   \---lib
+|   |       |   _stream_duplex.js
+|   |       |   _stream_passthrough.js
+|   |       |   _stream_readable.js
+|   |       |   _stream_transform.js
+|   |       |   _stream_writable.js
+|   |       |
+|   |       \---internal
+|   |           \---streams
+|   |                   async_iterator.js
+|   |                   buffer_list.js
+|   |                   destroy.js
+|   |                   end-of-stream.js
+|   |                   from-browser.js
+|   |                   from.js
+|   |                   pipeline.js
+|   |                   state.js
+|   |                   stream-browser.js
+|   |                   stream.js
+|   |
+|   +---rimraf
+|   |       bin.js
+|   |       CHANGELOG.md
+|   |       LICENSE
+|   |       package.json
+|   |       README.md
+|   |       rimraf.js
+|   |
+|   +---safe-buffer
+|   |       index.d.ts
+|   |       index.js
+|   |       LICENSE
+|   |       package.json
+|   |       README.md
+|   |
+|   +---safer-buffer
+|   |       dangerous.js
+|   |       LICENSE
+|   |       package.json
+|   |       Porting-Buffer.md
+|   |       Readme.md
+|   |       safer.js
+|   |       tests.js
+|   |
+|   +---semver
+|   |   |   index.js
+|   |   |   LICENSE
+|   |   |   package.json
+|   |   |   preload.js
+|   |   |   range.bnf
+|   |   |   README.md
+|   |   |
+|   |   +---bin
+|   |   |       semver.js
+|   |   |
+|   |   +---classes
+|   |   |       comparator.js
+|   |   |       index.js
+|   |   |       range.js
+|   |   |       semver.js
+|   |   |
+|   |   +---functions
+|   |   |       clean.js
+|   |   |       cmp.js
+|   |   |       coerce.js
+|   |   |       compare-build.js
+|   |   |       compare-loose.js
+|   |   |       compare.js
+|   |   |       diff.js
+|   |   |       eq.js
+|   |   |       gt.js
+|   |   |       gte.js
+|   |   |       inc.js
+|   |   |       lt.js
+|   |   |       lte.js
+|   |   |       major.js
+|   |   |       minor.js
+|   |   |       neq.js
+|   |   |       parse.js
+|   |   |       patch.js
+|   |   |       prerelease.js
+|   |   |       rcompare.js
+|   |   |       rsort.js
+|   |   |       satisfies.js
+|   |   |       sort.js
+|   |   |       valid.js
+|   |   |
+|   |   +---internal
+|   |   |       constants.js
+|   |   |       debug.js
+|   |   |       identifiers.js
+|   |   |       lrucache.js
+|   |   |       parse-options.js
+|   |   |       re.js
+|   |   |
+|   |   \---ranges
+|   |           gtr.js
+|   |           intersects.js
+|   |           ltr.js
+|   |           max-satisfying.js
+|   |           min-satisfying.js
+|   |           min-version.js
+|   |           outside.js
+|   |           simplify.js
+|   |           subset.js
+|   |           to-comparators.js
+|   |           valid.js
+|   |
+|   +---send
+|   |   |   HISTORY.md
+|   |   |   index.js
+|   |   |   LICENSE
+|   |   |   package.json
+|   |   |   README.md
+|   |   |   SECURITY.md
+|   |   |
+|   |   \---node_modules
+|   |       +---debug
+|   |       |   |   .coveralls.yml
+|   |       |   |   .eslintrc
+|   |       |   |   .npmignore
+|   |       |   |   .travis.yml
+|   |       |   |   CHANGELOG.md
+|   |       |   |   component.json
+|   |       |   |   karma.conf.js
+|   |       |   |   LICENSE
+|   |       |   |   Makefile
+|   |       |   |   node.js
+|   |       |   |   package.json
+|   |       |   |   README.md
+|   |       |   |
+|   |       |   +---node_modules
+|   |       |   |   \---ms
+|   |       |   |           index.js
+|   |       |   |           license.md
+|   |       |   |           package.json
+|   |       |   |           readme.md
+|   |       |   |
+|   |       |   \---src
+|   |       |           browser.js
+|   |       |           debug.js
+|   |       |           index.js
+|   |       |           inspector-log.js
+|   |       |           node.js
+|   |       |
+|   |       \---encodeurl
+|   |               HISTORY.md
+|   |               index.js
+|   |               LICENSE
+|   |               package.json
+|   |               README.md
+|   |
+|   +---serve-static
+|   |       HISTORY.md
+|   |       index.js
+|   |       LICENSE
+|   |       package.json
+|   |       README.md
+|   |
+|   +---set-blocking
+|   |       CHANGELOG.md
+|   |       index.js
+|   |       LICENSE.txt
+|   |       package.json
+|   |       README.md
+|   |
+|   +---setprototypeof
+|   |   |   index.d.ts
+|   |   |   index.js
+|   |   |   LICENSE
+|   |   |   package.json
+|   |   |   README.md
+|   |   |
+|   |   \---test
+|   |           index.js
+|   |
+|   +---side-channel
+|   |   |   .editorconfig
+|   |   |   .eslintrc
+|   |   |   .nycrc
+|   |   |   CHANGELOG.md
+|   |   |   index.d.ts
+|   |   |   index.js
+|   |   |   LICENSE
+|   |   |   package.json
+|   |   |   README.md
+|   |   |   tsconfig.json
+|   |   |
+|   |   +---.github
+|   |   |       FUNDING.yml
+|   |   |
+|   |   \---test
+|   |           index.js
+|   |
+|   +---side-channel-list
+|   |   |   .editorconfig
+|   |   |   .eslintrc
+|   |   |   .nycrc
+|   |   |   CHANGELOG.md
+|   |   |   index.d.ts
+|   |   |   index.js
+|   |   |   LICENSE
+|   |   |   list.d.ts
+|   |   |   package.json
+|   |   |   README.md
+|   |   |   tsconfig.json
+|   |   |
+|   |   +---.github
+|   |   |       FUNDING.yml
+|   |   |
+|   |   \---test
+|   |           index.js
+|   |
+|   +---side-channel-map
+|   |   |   .editorconfig
+|   |   |   .eslintrc
+|   |   |   .nycrc
+|   |   |   CHANGELOG.md
+|   |   |   index.d.ts
+|   |   |   index.js
+|   |   |   LICENSE
+|   |   |   package.json
+|   |   |   README.md
+|   |   |   tsconfig.json
+|   |   |
+|   |   +---.github
+|   |   |       FUNDING.yml
+|   |   |
+|   |   \---test
+|   |           index.js
+|   |
+|   +---side-channel-weakmap
+|   |   |   .editorconfig
+|   |   |   .eslintrc
+|   |   |   .nycrc
+|   |   |   CHANGELOG.md
+|   |   |   index.d.ts
+|   |   |   index.js
+|   |   |   LICENSE
+|   |   |   package.json
+|   |   |   README.md
+|   |   |   tsconfig.json
+|   |   |
+|   |   +---.github
+|   |   |       FUNDING.yml
+|   |   |
+|   |   \---test
+|   |           index.js
+|   |
+|   +---signal-exit
+|   |       index.js
+|   |       LICENSE.txt
+|   |       package.json
+|   |       README.md
+|   |       signals.js
+|   |
+|   +---statuses
+|   |       codes.json
+|   |       HISTORY.md
+|   |       index.js
+|   |       LICENSE
+|   |       package.json
+|   |       README.md
+|   |
+|   +---string-width
+|   |       index.d.ts
+|   |       index.js
+|   |       license
+|   |       package.json
+|   |       readme.md
+|   |
+|   +---string_decoder
+|   |   |   LICENSE
+|   |   |   package.json
+|   |   |   README.md
+|   |   |
+|   |   \---lib
+|   |           string_decoder.js
+|   |
+|   +---strip-ansi
+|   |       index.d.ts
+|   |       index.js
+|   |       license
+|   |       package.json
+|   |       readme.md
+|   |
+|   +---tar
+|   |   |   index.js
+|   |   |   LICENSE
+|   |   |   package.json
+|   |   |   README.md
+|   |   |
+|   |   \---lib
+|   |           create.js
+|   |           extract.js
+|   |           get-write-flag.js
+|   |           header.js
+|   |           high-level-opt.js
+|   |           large-numbers.js
+|   |           list.js
+|   |           mkdir.js
+|   |           mode-fix.js
+|   |           normalize-unicode.js
+|   |           normalize-windows-path.js
+|   |           pack.js
+|   |           parse.js
+|   |           path-reservations.js
+|   |           pax.js
+|   |           read-entry.js
+|   |           replace.js
+|   |           strip-absolute-path.js
+|   |           strip-trailing-slashes.js
+|   |           types.js
+|   |           unpack.js
+|   |           update.js
+|   |           warn-mixin.js
+|   |           winchars.js
+|   |           write-entry.js
+|   |
+|   +---toidentifier
+|   |       HISTORY.md
+|   |       index.js
+|   |       LICENSE
+|   |       package.json
+|   |       README.md
+|   |
+|   +---tr46
+|   |   |   .npmignore
+|   |   |   index.js
+|   |   |   package.json
+|   |   |
+|   |   \---lib
+|   |           .gitkeep
+|   |           mappingTable.json
+|   |
+|   +---type-is
+|   |       HISTORY.md
+|   |       index.js
+|   |       LICENSE
+|   |       package.json
+|   |       README.md
+|   |
+|   +---unpipe
+|   |       HISTORY.md
+|   |       index.js
+|   |       LICENSE
+|   |       package.json
+|   |       README.md
+|   |
+|   +---util-deprecate
+|   |       browser.js
+|   |       History.md
+|   |       LICENSE
+|   |       node.js
+|   |       package.json
+|   |       README.md
+|   |
+|   +---utils-merge
+|   |       .npmignore
+|   |       index.js
+|   |       LICENSE
+|   |       package.json
+|   |       README.md
+|   |
+|   +---vary
+|   |       HISTORY.md
+|   |       index.js
+|   |       LICENSE
+|   |       package.json
+|   |       README.md
+|   |
+|   +---webidl-conversions
+|   |   |   LICENSE.md
+|   |   |   package.json
+|   |   |   README.md
+|   |   |
+|   |   \---lib
+|   |           index.js
+|   |
+|   +---whatwg-url
+|   |   |   LICENSE.txt
+|   |   |   package.json
+|   |   |   README.md
+|   |   |
+|   |   \---lib
+|   |           public-api.js
+|   |           URL-impl.js
+|   |           url-state-machine.js
+|   |           URL.js
+|   |           utils.js
+|   |
+|   +---wide-align
+|   |       align.js
+|   |       LICENSE
+|   |       package.json
+|   |       README.md
+|   |
+|   +---wrappy
+|   |       LICENSE
+|   |       package.json
+|   |       README.md
+|   |       wrappy.js
+|   |
+|   \---yallist
+|           iterator.js
+|           LICENSE
+|           package.json
+|           README.md
+|           yallist.js
+|
+\---src
+    |   ESTRUCTURA.txt
+    |   README.md
+    |
+    +---assets
+    |   +---fonts
+    |   +---icons
+    |   |       icon1.webp
+    |   |       icon2.webp
+    |   |
+    |   \---img
+    |           product.webp
+    |
+    +---backup
+    |   +---CSS
+    |   |       comparador_BU.css
+    |   |       index_BU.css
+    |   |       login.css
+    |   |       producto.css
+    |   |
+    |   +---HTML
+    |   |       comparador.html
+    |   |       comparador_BU.html
+    |   |       index.html
+    |   |       login.html
+    |   |       productos.html
+    |   |
+    |   \---JS
+    |           comparador.js
+    |           db.js
+    |           dbuser.js
+    |           index.js
+    |           productos.js
+    |           validaciones_BU.js
+    |
+    +---functions
+    |   |   comparador.js
+    |   |   delete.js
+    |   |   index.js
+    |   |   login.js
+    |   |   politicas.js
+    |   |   productos.js
+    |   |   register.js
+    |   |   update.js
+    |   |
+    |   \---global
+    |           chatbot.js
+    |           funciones.js
+    |           header.js
+    |
+    +---intranet
+    |   +---css
+    |   |       intranet.css
+    |   |       producto.css
+    |   |       usuarios.css
+    |   |
+    |   +---html
+    |   |       intranet.html
+    |   |       productos.html
+    |   |       usuarios.html
+    |   |
+    |   \---js
+    |           intranet.js
+    |           productos.js
+    |           usuarios.js
+    |
+    +---libs
+    |       db.js
+    |       dbuser.js
+    |       pouchdb-9.0.0.min.js
+    |
+    +---pages
+    |   |   avisolegal.html
+    |   |   comparador.html
+    |   |   delete.html
+    |   |   index.html
+    |   |   login.html
+    |   |   politicacookies.html
+    |   |   politicaprivacidad.html
+    |   |   productos.html
+    |   |   register.html
+    |   |   terminoscondiciones.html
+    |   |   update.html
+    |   |
+    |   \---global
+    |           chatbot.html
+    |           footer.html
+    |           header.html
+    |
+    +---style
+    |   |   comparador.css
+    |   |   delete.css
+    |   |   footer.css
+    |   |   header.css
+    |   |   index.css
+    |   |   login.css
+    |   |   politicas.css
+    |   |   producto.css
+    |   |   register.css
+    |   |   responsivo.css
+    |   |   update.css
+    |   |
+    |   \---global
+    |           chatbot.css
+    |
+    \---valid
+    |           chatbot.css
+    |
+    |           chatbot.css
+    |           chatbot.css
+    |
+    \---valid
+            validaciones.js

@@ -71,79 +71,7 @@ async function cargarProductos() {
   }
 }
 
-<<<<<<< HEAD
-// 🟢 Asegurar que todos los productos tienen el campo "peso"
-async function actualizarCampoPeso() {
-  try {
-    const result = await db.allDocs({ include_docs: true });
-    const productos = result.rows.map((row) => row.doc);
-
-    for (const producto of productos) {
-      if (!producto.hasOwnProperty("peso")) {
-        producto.peso = 0;
-        producto.unidadPeso = "kg";
-        await db.put(producto);
-      }
-    }
-    console.log('Campo "peso" actualizado.');
-    cargarProductos();
-  } catch (err) {
-    console.error('Error actualizando campo "peso":', err);
-  }
-}
-
-// 🟢 Asegurar que todos los productos tienen el campo "img"
-async function actualizarCampoImg() {
-  try {
-    const result = await db.allDocs({ include_docs: true });
-    const productos = result.rows.map((row) => row.doc);
-
-    for (const producto of productos) {
-      if (!producto.hasOwnProperty("img")) {
-        producto.img = "";
-        await db.put(producto);
-      }
-    }
-    console.log('Campo "img" actualizado.');
-    cargarProductos();
-  } catch (err) {
-    console.error('Error actualizando campo "img":', err);
-  }
-}
-
-// 🟢 Acciones de editar y eliminar
-function accionesHTML(id) {
-  return `
-    <button onclick="editarProducto('${id}')">Editar</button>
-    <button class="btn-eliminar" onclick="eliminarProducto('${id}')">Eliminar</button>
-  `;
-}
-
-// 🟢 Mostrar formulario para agregar producto
-function mostrarFormularioAgregar() {
-  $("#formTitulo").text("Agregar Producto");
-  $("#productoID, #nombreProducto, #marcaProducto, #precioUnidad, #precioLote, #pesoProducto, #nombreSupermercado, #ubicacionSupermercado").val("");
-  $("#unidadPeso").val("kg");
-  $("#imgProducto").val(""); // Limpiar el input de imagen
-  $("#formularioProducto").show();
-}
-
-// 🗓️ Formatear fecha en formato legible (dd/mm/yyyy hh:mm:ss)
-function formatearFecha(fecha) {
-  const dia = String(fecha.getDate()).padStart(2, '0');
-  const mes = String(fecha.getMonth() + 1).padStart(2, '0');
-  const anio = fecha.getFullYear();
-  const horas = String(fecha.getHours()).padStart(2, '0');
-  const minutos = String(fecha.getMinutes()).padStart(2, '0');
-  const segundos = String(fecha.getSeconds()).padStart(2, '0');
-
-  return `${dia}/${mes}/${anio} ${horas}:${minutos}:${segundos}`;
-}
-
-// 🟢 Guardar cambios desde el formulario
-=======
 // 🟢 Guardar cambios en producto y actualizar historial
->>>>>>> 67180a54b4ccf8b7b56c5351fa5c24a87e1231c8
 async function guardarCambiosDesdeFormulario() {
   if (!validarCamposFormulario()) return;
 
@@ -156,17 +84,22 @@ async function guardarCambiosDesdeFormulario() {
   const unidadPeso = $("#unidadPeso").val();
   const supermercado = $("#nombreSupermercado").val();
   const ubicacion = $("#ubicacionSupermercado").val();
-  const descripcion = $("#descripcionProducto").val(); // ✅ Nueva descripción
-  const usuarioActual = JSON.parse(localStorage.getItem("usuarioActual")) || {}; // ✅ Obtener usuario actual
-
   const añoActual = new Date().getFullYear();
   const mesActual = new Intl.DateTimeFormat("es-ES", { month: "long" }).format(new Date());
+
+  const imgFile = document.getElementById("imgProducto").files[0];
+  let imgBase64 = "";
+  if (imgFile) {
+    imgBase64 = await convertirImagenABase64(imgFile);
+  }
 
   let doc;
   if (id) {
     try {
       const existingDoc = await db.get(id);
+
       if (!existingDoc.historialProducto) existingDoc.historialProducto = [];
+      if (!existingDoc.biografiaProducto) existingDoc.biografiaProducto = [];
 
       const ultimoRegistro = existingDoc.historialProducto.find(h => h.año === añoActual && h.mes === mesActual);
       if (!ultimoRegistro || ultimoRegistro.precioUnidad !== precioUnidad || ultimoRegistro.peso !== peso) {
@@ -183,11 +116,11 @@ async function guardarCambiosDesdeFormulario() {
         unidadPeso,
         supermercado,
         ubicacion,
-        descripcion, // ✅ Guardar descripción
-        ultimaModificacion: new Date().toISOString(),
+        img: imgBase64 || existingDoc.img,
+        ultimaModificacion: formatearFecha(new Date()),
       };
     } catch (err) {
-      console.error("Error obteniendo producto:", err);
+      console.error("Error obteniendo el documento existente:", err);
       return;
     }
   } else {
@@ -201,22 +134,11 @@ async function guardarCambiosDesdeFormulario() {
       unidadPeso,
       supermercado,
       ubicacion,
-      descripcion, // ✅ Nueva descripción
-      ultimaModificacion: new Date().toISOString(),
+      img: imgBase64,
+      ultimaModificacion: formatearFecha(new Date()),
       historialProducto: [{ año: añoActual, mes: mesActual, precioUnidad, peso }],
-      biografiaProducto: [],
-      creadoPor: usuarioActual._id || "desconocido", // ✅ Relacionamos producto con usuario
+      biografiaProducto: []
     };
-    
-    // ✅ Guardar el ID en productosCreados del usuario
-    try {
-      const usuario = await db.get(usuarioActual._id);
-      usuario.productosCreados = usuario.productosCreados || [];
-      usuario.productosCreados.push(doc._id);
-      await db.put(usuario);
-    } catch (err) {
-      console.error("Error actualizando usuario con productos creados:", err);
-    }
   }
 
   try {
@@ -227,7 +149,6 @@ async function guardarCambiosDesdeFormulario() {
     console.error("Error guardando producto:", err);
   }
 }
-
 
 // 🟢 Añadir datos manuales a la biografía del producto
 async function agregarBiografiaProducto() {

@@ -1,6 +1,7 @@
 import { db } from "../libs/db.js";
 import { cargarHeaderFooter } from "../functions/global/funciones.js";
 import { gestionarUsuarioAutenticado } from "../functions/global/header.js";
+import { volverAtras } from "../functions/global/funciones.js";
 
 let productosCache = [];
 
