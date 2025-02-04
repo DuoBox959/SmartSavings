@@ -11,19 +11,14 @@ Añadimos creadoPor → Relaciona el producto con el usuario que lo registró.
 
 -AÑADIR LOGIN EN INTRANET PARA QUE SOLO ENTRE LOS ADMINISTRADORES Y ROL A LOS USUARIOS SI ES NECESARIO PARA DECLARAR QUIEN ES ADMIN Y QUIEN NO
 
-<<<<<<< HEAD
 -PONER DESCRIPCION EN LA BD DE PRODUCTOS PARA AÑADIR ETIQUETAS O PEQUEÑAS DESCRIPCIONES PARA SABER SI ESE PRODUCTO LLEVA GLUTEN, LACTOSA O CUALQUIER COSA QUE AL HUMANO ALERGICO LE PUEDE AFECTAR.
 
 -QUIERO PONER TAMBIEN A CUANTO SE VENDIA EL PRODUCTO OTROS AÑOS ANTERIORES MAS SU PESO PORQUE LAS MARCAS NO LAS QUIEREN COLAR COMO DORITOS QUE DISMINUYO -100 GR DE SU PAQUETE PERO SE MANTUVO EN EL PRECIO, ENGAÑANDONOS Y LLEVANDOSE IGUAL DE BENEFICIOS.
 
-
-=======
->>>>>>> 67180a54b4ccf8b7b56c5351fa5c24a87e1231c8
 - Pagina configuracion de cuenta
 
 - Mirar diseño de actualizar y borrar
 
-<<<<<<< HEAD
 - Modificar diseño chatbot
 
 - Mirar el boton de actualizar datos
@@ -33,6 +28,7 @@ Añadimos creadoPor → Relaciona el producto con el usuario que lo registró.
 - Mirar Boton editar productos Intranet (Hecho)
 
 - Mirar boton registro productos intranet (pendiente)
-=======
+
+- Mirar los fallos nuevos de productos de intranet
+
 - Corregir comparador de precios ya que cuando añadimos nueva tienda no me da opcion a comparar ningnu producto en tienda 3
->>>>>>> 67180a54b4ccf8b7b56c5351fa5c24a87e1231c8
