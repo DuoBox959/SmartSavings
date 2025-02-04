@@ -29,6 +29,6 @@ Añadimos creadoPor → Relaciona el producto con el usuario que lo registró.
 
 - Mirar boton registro productos intranet (pendiente)
 
-- Mirar los fallos nuevos de productos de intranet
+- Mirar los fallos nuevos de productos de intranet (Hecho)
 
 - Corregir comparador de precios ya que cuando añadimos nueva tienda no me da opcion a comparar ningnu producto en tienda 3
