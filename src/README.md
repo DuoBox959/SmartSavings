@@ -14,18 +14,17 @@
 
 -QUIERO PONER TAMBIEN A CUANTO SE VENDIA EL PRODUCTO OTROS AÑOS ANTERIORES MAS SU PESO PORQUE LAS MARCAS NO LAS QUIEREN COLAR COMO DORITOS QUE DISMINUYO -100 GR DE SU PAQUETE PERO SE MANTUVO EN EL PRECIO, ENGAÑANDONOS Y LLEVANDOSE IGUAL DE BENEFICIOS.
 
-- Actualizar Usuario (Hecho)
-
-- Borrar Usuario (Hecho)
 
 - Pagina configuracion de cuenta
 
-- Mirar porque se borra la session en actualizar y borrar (HECHO)
-
 - Mirar diseño de actualizar y borrar
 
-- Mirar porque no se dirige a index.html al cerrar sesion en actualizar y borrar (HECHO)
+- Modificar diseño chatbot
 
-- Pasar todos los Cerrar sesion y Volver atras a funciones para que el codigo este mejor (HECHO)
+- Mirar el boton de actualizar datos
 
-- Arreglar la insercion del registro.js (Hecho)
+- Mirar botones de editar y eliminar productos
+
+- Mirar Boton editar productos Intranet (Hecho)
+
+- Mirar boton registro productos intranet (pendiente)
