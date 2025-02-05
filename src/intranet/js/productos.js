@@ -32,6 +32,7 @@ async function cargarProductos() {
         producto.img
           ? `<img src="${producto.img}" alt="Producto" style="width: 50px; height: 50px; object-fit: cover;" />`
           : "Sin imagen",
+        producto.descripcion || "Sin descripción", 
         accionesHTML(producto._id),
       ]);
     });
