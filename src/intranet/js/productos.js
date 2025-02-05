@@ -29,6 +29,8 @@ async function cargarProductos() {
         producto.ultimaModificacion || "Sin fecha",
         producto.supermercado || "",
         producto.ubicacion || "",
+        `<button onclick="verHistorial('${producto._id}')">Ver Historial</button>`, // 🟢 Botón para historial
+        producto.biografia || "Sin biografía", // 🟢 Mostrar la biografía directamente
         producto.img
           ? `<img src="${producto.img}" alt="Producto" style="width: 50px; height: 50px; object-fit: cover;" />`
           : "Sin imagen",
@@ -80,6 +82,43 @@ async function actualizarCampoImg() {
     console.error('Error actualizando campo "img":', err);
   }
 }
+// 🟢 Asegurar que todos los productos tienen el campo "historial"
+async function actualizarCampoHistorial() {
+  try {
+    const result = await db.allDocs({ include_docs: true });
+    const productos = result.rows.map((row) => row.doc);
+
+    for (const producto of productos) {
+      if (!producto.hasOwnProperty("historial")) {
+        producto.historial = []; // Inicializamos como un array vacío
+        await db.put(producto);
+      }
+    }
+    console.log('Campo "historial" actualizado.');
+    cargarProductos();
+  } catch (err) {
+    console.error('Error actualizando campo "historial":', err);
+  }
+}
+
+// 🟢 Asegurar que todos los productos tienen el campo "biografia"
+async function actualizarCampoBiografia() {
+  try {
+    const result = await db.allDocs({ include_docs: true });
+    const productos = result.rows.map((row) => row.doc);
+
+    for (const producto of productos) {
+      if (!producto.hasOwnProperty("biografia")) {
+        producto.biografia = "Sin biografía"; // Inicializamos con un texto predeterminado
+        await db.put(producto);
+      }
+    }
+    console.log('Campo "biografia" actualizado.');
+    cargarProductos();
+  } catch (err) {
+    console.error('Error actualizando campo "biografia":', err);
+  }
+}
 
 // 🟢 Acciones de editar y eliminar
 function accionesHTML(id) {
@@ -123,7 +162,7 @@ async function guardarCambiosDesdeFormulario() {
   const unidadPeso = $("#unidadPeso").val();
   const supermercado = $("#nombreSupermercado").val();
   const ubicacion = $("#ubicacionSupermercado").val();
-
+  
   // Convertir imagen a Base64
   const imgFile = document.getElementById("imgProducto").files[0];
   let imgBase64 = "";
@@ -145,6 +184,8 @@ async function guardarCambiosDesdeFormulario() {
         unidadPeso,
         supermercado,
         ubicacion,
+        biografia,
+        historial: [{ fecha: formatearFecha(new Date()), precioUnidad, precioLote, peso }], // 🟢 Iniciar historial
         img: imgBase64, 
         ultimaModificacion: formatearFecha(new Date()),
       };
@@ -175,6 +216,24 @@ async function guardarCambiosDesdeFormulario() {
   } catch (err) {
     console.error("Error guardando producto:", err);
   }
+}
+function verHistorial(id) {
+  const producto = productosCache.find(p => p._id === id);
+  if (!producto) return;
+
+  let historialHTML = "<h3>Historial de Precios y Pesos</h3><ul>";
+
+  producto.historial.forEach(entry => {
+    historialHTML += `<li>${entry.fecha} - Precio Unidad: ${entry.precioUnidad} €, Precio Lote: ${entry.precioLote} €, Peso: ${entry.peso} ${producto.unidadPeso}</li>`;
+  });
+
+  historialHTML += "</ul>";
+
+  Swal.fire({
+    title: `Historial de ${producto.nombre}`,
+    html: historialHTML,
+    confirmButtonText: "Cerrar"
+  });
 }
 
 // 🟢 Convertir imagen a Base64

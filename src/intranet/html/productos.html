@@ -14,6 +14,8 @@
     <script src="../../libs/pouchdb-9.0.0.min.js"></script>
     <script type="module" src="../js/productos.js"></script>
     <script src="../../valid/validaciones.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 
 <body>
@@ -46,8 +48,8 @@
           <th>Última Modificación</th>
           <th>Supermercado</th>
           <th>Ubicación</th>
-          <!-- <th>Historial del Producto</th> -->
-          <!-- <th>Biografía del Producto</th> -->
+          <th>Historial del Producto</th> 
+          <th>Biografía del Producto</th> 
           <th>Imagen</th>
           <th>Descripción</th>
           <th>Acciones</th>
@@ -90,7 +92,9 @@
 
       <label for="ubicacionSupermercado">Ubicación:</label>
       <input type="text" id="ubicacionSupermercado" /><br />
-
+      <label for="biografiaProducto">Biografía del Producto:</label>
+      <textarea id="biografiaProducto" rows="3" placeholder="Ejemplo: Historia del producto..."></textarea><br />
+      
       <label for="imgProducto">Imagen del Producto:</label>
       <input type="file" id="imgProducto" accept="image/*" /><br />
 
