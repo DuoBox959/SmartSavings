@@ -1,0 +1,118 @@
+/* 🌟 Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Arial", sans-serif;
+}
+
+/* 🎨 Fondo general con el color del index */
+body {
+  background: #a8d5ba; /* Verde claro del index */
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* 📌 Contenedor principal */
+.container {
+  text-align: center;
+}
+
+/* 📝 Formulario */
+.form-container {
+  background: #ececec; /* Fondo claro como el index */
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  width: 320px;
+  margin-top: 10px;
+  color: #333; /* Color de texto oscuro */
+}
+
+/* 🏷️ Títulos */
+h1 {
+  font-size: 22px;
+  color: #2c3e34;
+  margin-bottom: 15px;
+}
+
+/* 📌 Inputs */
+form label {
+  display: block;
+  text-align: left;
+  font-size: 14px;
+  color: #2c3e34;
+  margin: 10px 0 5px;
+}
+
+form input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #ffffff;
+  color: #333;
+  font-size: 14px;
+}
+
+form input:focus {
+  border-color: #78ce9a; /* Verde del index */
+  outline: none;
+}
+
+/* 🎯 Botón de inicio de sesión */
+button[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  background: #365a7e; /* Azul oscuro del index */
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background: #0854ab;
+}
+
+/* 📎 Enlace de registro */
+.register-link {
+  margin-top: 10px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.register-link a {
+  color: #365a7e;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+}
+
+/* 🔙 Botón de regreso */
+.back-button {
+  background: #237f27;
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  width: 100%;
+  transition: all 0.3s ease-in-out;
+}
+
+.back-button:hover {
+  background: #185f1a;
+}

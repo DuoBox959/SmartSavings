@@ -1,9 +1,5 @@
 Añadimos creadoPor → Relaciona el producto con el usuario que lo registró.
-✅ El historialProducto es una lista → Guarda cambios automáticos con el tiempo.
-✅ El biografiaProducto es una lista separada → Permite que el usuario agregue datos manualmente. Añadimos rol → Ahora los usuarios tienen permisos (admin, usuario, invitado).
-✅ El productosCreados guarda los IDs de los productos que subió.
-✅ password encriptado → Debería almacenarse hasheado para seguridad.
--PONER DESCRIPCION EN LA BD DE PRODUCTOS PARA AÑADIR ETIQUETAS O PEQUEÑAS DESCRIPCIONES PARA SABER SI ESE PRODUCTO LLEVA GLUTEN, LACTOSA O CUALQUIER COSA QUE AL HUMANO ALERGICO LE PUEDE AFECTAR. HECHO¿?¿?¿?
+
 
 -ACTUALIZAR INTERFAZ DE PRODUCTOS.HTML Y QUE QUEDE MEJOR QUE IDEALO
 

@@ -217,6 +217,7 @@ async function guardarCambiosDesdeFormulario() {
     console.error("Error guardando producto:", err);
   }
 }
+
 function verHistorial(id) {
   const producto = productosCache.find(p => p._id === id);
   if (!producto) return;
