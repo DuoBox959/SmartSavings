@@ -19,7 +19,7 @@ Añadimos creadoPor → Relaciona el producto con el usuario que lo registró.
 
 - Mirar diseño de actualizar y borrar
 
-- Modificar diseño chatbot
+- Modificar diseño chatbot (Hecho)
 
 - Mirar el boton de actualizar datos
 
@@ -27,7 +27,11 @@ Añadimos creadoPor → Relaciona el producto con el usuario que lo registró.
 
 - Mirar Boton editar productos Intranet (Hecho)
 
+- Mirar Boton borrar productos Intranet (Hecho)
+
 - Mirar boton registro productos intranet (pendiente)
+
+- Mirar boton ver historial intranet (Esta en el js todo) (Pendiente)
 
 - Mirar los fallos nuevos de productos de intranet (Hecho)
 

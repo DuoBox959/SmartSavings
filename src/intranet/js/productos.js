@@ -7,8 +7,10 @@ let productosCache = [];
 $(document).ready(() => {
   productosTable = $("#productosTable").DataTable();
   cargarProductos();
-  actualizarCampoPeso(); // Asegurar que todos los productos tienen campo "peso"
-  actualizarCampoImg();  // Asegurar que todos los productos tienen campo "img"
+  actualizarCampoPeso();
+  actualizarCampoImg(); 
+  actualizarCampoHistorial();
+  actualizarCampoBiografia(); 
 });
 
 // 🟢 Cargar productos en la tabla
@@ -162,10 +164,13 @@ async function guardarCambiosDesdeFormulario() {
   const unidadPeso = $("#unidadPeso").val();
   const supermercado = $("#nombreSupermercado").val();
   const ubicacion = $("#ubicacionSupermercado").val();
-  
-  // Convertir imagen a Base64
+  const biografia = $("#biografiaProducto").val(); 
+  const descripcion = $("#descripcionProducto").val();
+
+  // Convertir imagen a Base64 solo si hay una nueva imagen
   const imgFile = document.getElementById("imgProducto").files[0];
   let imgBase64 = "";
+
   if (imgFile) {
     imgBase64 = await convertirImagenABase64(imgFile);
   }
@@ -184,16 +189,29 @@ async function guardarCambiosDesdeFormulario() {
         unidadPeso,
         supermercado,
         ubicacion,
-        biografia,
-        historial: [{ fecha: formatearFecha(new Date()), precioUnidad, precioLote, peso }], // 🟢 Iniciar historial
-        img: imgBase64, 
+        biografia: biografia || existingDoc.biografia || "Sin biografía", // ✅ Mantener biografía existente si no se actualiza
+        historial: existingDoc.historial || [], // ✅ Asegurar que haya un historial existente
         ultimaModificacion: formatearFecha(new Date()),
+        descripcion
       };
+
+      // ✅ Añadir al historial en lugar de sobrescribirlo
+      doc.historial.push({
+        fecha: formatearFecha(new Date()),
+        precioUnidad,
+        precioLote,
+        peso,
+      });
+
+      // ✅ Mantener imagen existente si no se carga una nueva
+      doc.img = imgBase64 || existingDoc.img || "";
+
     } catch (err) {
       console.error("Error obteniendo el documento existente:", err);
       return;
     }
   } else {
+    // ✅ Si es un nuevo producto
     doc = {
       _id: await asignarIDDisponible(),
       nombre,
@@ -204,7 +222,14 @@ async function guardarCambiosDesdeFormulario() {
       unidadPeso,
       supermercado,
       ubicacion,
-      img: imgBase64, 
+      biografia: biografia || "Sin biografía",
+      historial: [{
+        fecha: formatearFecha(new Date()),
+        precioUnidad,
+        precioLote,
+        peso,
+      }],
+      img: imgBase64,
       ultimaModificacion: formatearFecha(new Date()),
     };
   }
@@ -217,15 +242,20 @@ async function guardarCambiosDesdeFormulario() {
     console.error("Error guardando producto:", err);
   }
 }
+
 function verHistorial(id) {
   const producto = productosCache.find(p => p._id === id);
   if (!producto) return;
 
   let historialHTML = "<h3>Historial de Precios y Pesos</h3><ul>";
 
-  producto.historial.forEach(entry => {
-    historialHTML += `<li>${entry.fecha} - Precio Unidad: ${entry.precioUnidad} €, Precio Lote: ${entry.precioLote} €, Peso: ${entry.peso} ${producto.unidadPeso}</li>`;
-  });
+  if (producto.historial && producto.historial.length > 0) {
+    producto.historial.forEach(entry => {
+      historialHTML += `<li>${entry.fecha} - Precio Unidad: ${entry.precioUnidad} €, Precio Lote: ${entry.precioLote} €, Peso: ${entry.peso} ${producto.unidadPeso}</li>`;
+    });
+  } else {
+    historialHTML += "<li>Sin historial disponible.</li>";
+  }
 
   historialHTML += "</ul>";
 
@@ -261,7 +291,12 @@ function editarProducto(id) {
   $("#unidadPeso").val(producto.unidadPeso || "kg");
   $("#nombreSupermercado").val(producto.supermercado || "");
   $("#ubicacionSupermercado").val(producto.ubicacion || "");
-  $("#imgProducto").val(""); // No se puede previsualizar un Base64 en input file
+  $("#biografiaProducto").val(producto.biografia || "");
+
+  // ✅ Previsualización de imagen existente
+  if (producto.img) {
+    $("#formTitulo").after(`<img src="${producto.img}" alt="Producto" style="width: 100px; height: 100px; object-fit: cover;" />`);
+  }
 
   $("#formularioProducto").show();
 }
