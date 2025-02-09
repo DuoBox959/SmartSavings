@@ -1,296 +1,303 @@
-/* 🌐 Estilo General */
+/* ============================
+   🎨 1. ESTILOS GENERALES
+============================ */
 body {
-  font-family: "Arial", sans-serif; /* Fuente legible y estándar */
+  font-family: "Arial", sans-serif;
   background: #a8d5ba;
-  color: #333;  /* Texto blanco para buen contraste */
-  margin: 0; /* Elimina márgenes por defecto */
-  padding: 0; /* Elimina relleno por defecto */
-  text-align: center; /* Centra el texto horizontalmente */
+  color: #333;
+  margin: 0;
+  padding: 0;
+  text-align: center;
 }
 
-/* 🏷️ Títulos */
+/* Encabezado */
 h1 {
-  font-size: 2.5em; /* Tamaño destacado del título */
-  margin-top: 20px; /* Espaciado superior */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); /* Sombra elegante */
+  font-size: 2.5em;
+  margin-top: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
 }
 
-/* 🔘 Botones Generales */
+/* ============================
+   🔘 2. BOTONES GENERALES
+============================ */
 button {
-  background-color: #365a7e; /* Azul vibrante */
-  color: white; /* Texto blanco */
-  border: none; /* Sin bordes */
-  padding: 10px 20px; /* Tamaño cómodo para clics */
-  font-size: 1em; /* Texto estándar */
-  border-radius: 5px; /* Bordes redondeados */
-  cursor: pointer; /* Indica clics */
-  margin-bottom: 20px; /* Espaciado inferior */
-  transition: background-color 0.3s ease, transform 0.2s ease; /* Transiciones suaves */
+  background-color: #365a7e;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1em;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
 }
 
 button:hover {
-  background-color: #0854ab; /* Azul más oscuro al pasar el cursor */
-  transform: scale(1.05); /* Aumenta ligeramente el tamaño al pasar el cursor */
+  background-color: #0854ab;
+  transform: scale(1.05);
 }
 
-/* 🔙 Botón de Regreso */
+/* Botón de Regreso */
 .back-button {
-  background-color: #237f27; /* Verde para diferenciarlo */
-  color: white; /* Texto blanco */
-  border: none; /* Sin bordes */
-  padding: 10px 15px; /* Tamaño cómodo */
-  font-size: 1em; /* Texto estándar */
-  border-radius: 5px; /* Bordes redondeados */
-  cursor: pointer; /* Indica clics */
-  margin-top: 20px; /* Espaciado superior */
-  transition: background-color 0.3s ease; /* Transición suave */
+  background-color: #237f27;
 }
 
 .back-button:hover {
-  background-color: #388e3c; /* Verde más oscuro al pasar el cursor */
+  background-color: #388e3c;
 }
 
-/* 📊 Estilo de la Tabla */
+/* ============================
+   📊 3. ESTILOS PARA LA TABLA
+============================ */
 table.dataTable {
-  width: 100%; /* Ocupa todo el ancho disponible */
-  background-color: #ffffff; /* Fondo blanco */
-  border-collapse: collapse; /* Elimina bordes duplicados */
-  color: #333; /* Texto oscuro */
-  margin: 0 auto; /* Centra la tabla horizontalmente */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para resaltar */
+  width: 100%;
+  background-color: #ffffff;
+  border-collapse: collapse;
+  color: #333;
+  margin: 0 auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+/* 📌 Ajuste del contenedor de la tabla */
+/* ESTO ES LO QUE PONE EL FONDO BLANCO DE ATRAS DE LA TABLA .dataTables_wrapper {
+  width: 95%; 
+  margin: 20px auto; 
+  background: white; 
+  padding: 20px; 
+  border-radius: 10px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+} */
 
-/* Encabezados de la Tabla */
+/* Encabezados */
 table.dataTable thead th {
-  background-color: #365a7e;; /* Fondo azul */
-  color: white; /* Texto blanco */
-  padding: 10px; /* Espaciado interno */
-  text-align: center; /* Texto centrado */
-  font-size: 1em; /* Tamaño estándar */
+  background-color: #365a7e;
+  color: white;
+  padding: 12px;
+  text-align: center;
+  font-size: 1em;
 }
 
-/* Celdas del Cuerpo de la Tabla */
+/* Celdas */
 table.dataTable tbody td {
-  padding: 10px; /* Espaciado interno */
-  text-align: center; /* Centra el texto */
-  font-size: 0.9em; /* Tamaño ligeramente reducido */
+  padding: 10px;
+  text-align: center;
+  font-size: 0.9em;
 }
 
-/* Fila Alternada */
+/* Filas alternas */
 table.dataTable tbody tr:nth-child(even) {
-  background-color: #f9f9f9; /* Fondo gris claro para filas pares */
+  background-color: #f9f9f9;
 }
 
-/* Fila en Hover */
+/* Hover */
 table.dataTable tbody tr:hover {
-  background-color: #e3f2fd; /* Azul claro al pasar el cursor */
+  background-color: #e3f2fd;
 }
 
-/* 🔍 Controles de la Tabla */
+/* ============================
+   🛠️ 4. CONTROLES DE TABLA
+============================ */
 .dataTables_length,
 .dataTables_filter {
-  color: #333; /* Texto oscuro */
-  font-size: 1em; /* Tamaño estándar */
-  margin-bottom: 10px; /* Espaciado inferior */
+  font-size: 1em;
+  margin-bottom: 10px;
 }
 
 .dataTables_filter label,
 .dataTables_length label {
-  color: #333; /* Texto oscuro */
+  color: #333;
 }
 
-/* 💾 Envolvente de la Tabla */
-.dataTables_wrapper {
-  width: 90%; /* Ocupa el 90% del ancho */
-  margin: 0 auto; /* Centra horizontalmente */
-  background: white; /* Fondo blanco */
-  border-radius: 10px; /* Bordes redondeados */
-  padding: 20px; /* Espaciado interno */
-}
-
-.dataTables_length {
-  float: left; /* Alinea a la izquierda */
-}
-
-.dataTables_filter {
-  float: right; /* Alinea a la derecha */
-}
-
-/* ⚠️ Aviso */
+/* ============================
+   🔔 5. AVISO O NOTIFICACIONES
+============================ */
 #aviso {
-  background-color: #ffeeba; /* Fondo amarillo claro */
-  color: #856404; /* Texto marrón */
-  border: 1px solid #f5c6cb; /* Borde rojo claro */
-  padding: 10px; /* Espaciado interno */
-  margin-bottom: 20px; /* Espaciado inferior */
-  border-radius: 5px; /* Bordes redondeados */
-  font-size: 14px; /* Tamaño estándar */
+  background-color: #ffeeba;
+  color: #856404;
+  border: 1px solid #f5c6cb;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  font-size: 14px;
 }
 
-/* 🌐 Estilo Responsive */
-
-/* 📱 Para pantallas pequeñas: móviles (máximo 576px de ancho) */
-@media (max-width: 576px) {
-  body {
-    font-size: 0.9em; /* Reduce el tamaño general del texto */
-  }
-
-  h1 {
-    font-size: 1.8em; /* Ajusta el tamaño del título */
-  }
-
-  table.dataTable {
-    font-size: 0.8em; /* Reduce el tamaño del texto */
-  }
-
-  .dataTables_wrapper {
-    padding: 10px; /* Reduce relleno interno */
-  }
-}
-
-/* 📲 Tablet (máximo 768px de ancho) */
-@media (max-width: 768px) {
-  body {
-    font-size: 1em; /* Texto estándar */
-  }
-
-  h1 {
-    font-size: 2em; /* Tamaño del título */
-  }
-
-  table.dataTable {
-    font-size: 0.9em; /* Ajusta el texto */
-  }
-
-  .dataTables_wrapper {
-    padding: 15px; /* Ajusta el relleno */
-  }
-}
-
-/* 💻 Pantallas medianas (máximo 992px de ancho) */
-@media (max-width: 992px) {
-  body {
-    font-size: 1.1em; /* Tamaño ligeramente mayor */
-  }
-
-  h1 {
-    font-size: 2.2em; /* Título más grande */
-  }
-
-  table.dataTable {
-    font-size: 1em; /* Texto estándar */
-  }
-
-  .dataTables_wrapper {
-    padding: 20px; /* Mantén un relleno cómodo */
-  }
-}
-
-/* 🖥️ Pantallas grandes (mínimo 993px de ancho) */
-@media (min-width: 993px) {
-  body {
-    font-size: 1.2em; /* Texto ligeramente más grande */
-  }
-
-  h1 {
-    font-size: 2.5em; /* Tamaño del título */
-  }
-
-  table.dataTable {
-    font-size: 1em; /* Texto estándar */
-  }
-
-  .dataTables_wrapper {
-    padding: 25px; /* Espaciado amplio */
-  }
-}
-
-/* 🌐 Estilo del Formulario */
+/* ============================
+   📋 6. FORMULARIO DE PRODUCTOS
+============================ */
 #formularioProducto {
-  display: none; /* Inicialmente oculto */
-  background: white; /* Fondo blanco para contraste */
-  color: #333; /* Texto oscuro */
-  border-radius: 10px; /* Bordes redondeados */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para resaltar */
-  width: 90%; /* Ancho proporcional */
-  max-width: 600px; /* Máximo ancho */
-  margin: 20px auto; /* Centra horizontalmente */
-  padding: 20px; /* Espaciado interno */
-  text-align: left; /* Alinea a la izquierda */
+  display: none;
+  background: white;
+  color: #333;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  text-align: left;
 }
 
-/* Título del Formulario */
 #formularioProducto h2 {
-  font-size: 1.8em; /* Tamaño destacado */
-  margin-bottom: 20px; /* Espaciado inferior */
-  text-align: center; /* Centra el texto */
-  color: #1976d2; /* Azul vibrante */
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Sombra ligera */
+  font-size: 1.8em;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #1976d2;
 }
 
-/* Campos y Botones del Formulario */
 #formularioProducto input,
 #formularioProducto select {
-  width: 100%; /* Todo el ancho disponible */
-  padding: 10px; /* Espaciado interno */
-  margin-bottom: 15px; /* Espaciado inferior */
-  font-size: 1em; /* Texto estándar */
-  border: 1px solid #ccc; /* Bordes claros */
-  border-radius: 5px; /* Bordes redondeados */
-  box-sizing: border-box; /* Incluye relleno */
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
-#formularioProducto select {
-  background: #f9f9f9; /* Fondo claro */
-  cursor: pointer; /* Cursor interactivo */
-}
-
+/* Botones del Formulario */
 #formularioProducto button {
-  width: 48%; /* Ancho compartido */
-  padding: 10px; /* Tamaño cómodo */
-  font-size: 1em; /* Texto estándar */
-  margin: 5px 1%; /* Espaciado */
-  border-radius: 5px; /* Bordes redondeados */
-  border: none; /* Sin bordes */
-  cursor: pointer; /* Indica interacción */
-  transition: background-color 0.3s ease, transform 0.2s ease; /* Transiciones suaves */
+  width: 48%;
+  padding: 10px;
+  font-size: 1em;
+  margin: 5px 1%;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s ease;
 }
 
-/* Botón Guardar */
+/* Guardar */
 #formularioProducto button:nth-child(1) {
-  background-color: #4caf50; /* Verde */
-  color: white; /* Texto blanco */
+  background-color: #4caf50;
 }
 
 #formularioProducto button:nth-child(1):hover {
-  background-color: #388e3c; /* Verde más oscuro */
-  transform: scale(1.05); /* Aumenta en hover */
+  background-color: #388e3c;
+  transform: scale(1.05);
 }
 
-/* Botón Cancelar */
+/* Cancelar */
 #formularioProducto button:nth-child(2) {
-  background-color: #ba3d33; /* Rojo */
-  color: white; /* Texto blanco */
+  background-color: #ba3d33;
 }
 
 #formularioProducto button:nth-child(2):hover {
-  background-color: #d32f2f; /* Rojo más oscuro */
-  transform: scale(1.05); /* Aumenta en hover */
+  background-color: #d32f2f;
+  transform: scale(1.05);
 }
 
-/* ⚙️ Botones adicionales */
+/* ============================
+   🗑️ 7. BOTONES ADICIONALES
+============================ */
+/* Botón Editar (Azul) */
+.btn-accion {
+  display: inline-flex; /* Mantiene icono y texto en la misma línea */
+  align-items: center;  /* Alinea verticalmente */
+  justify-content: center;
+  gap: 6px; /* Espacio entre icono y texto */
+  padding: 8px 12px;
+  font-size: 1em;
+  font-weight: bold;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap; /* Evita que el texto pase a otra línea */
+}
+.btn-editar {
+  background-color: #365a7e;
+  transform: scale(1.05);
+}
+
+.btn-editar:hover {
+  background-color: #0854ab;
+  transform: scale(1.05);
+}
 .btn-eliminar {
-  background-color: #ba3d33; /* Rojo */
-  color: white; /* Texto blanco */
-  border: none; /* Sin bordes */
-  padding: 10px 20px; /* Tamaño cómodo */
-  font-size: 1em; /* Texto estándar */
-  border-radius: 5px; /* Bordes redondeados */
-  cursor: pointer; /* Cursor interactivo */
-  transition: background-color 0.3s ease, transform 0.2s ease; /* Transición suave */
+  background-color: #ba3d33;
+  color: white;
+  padding: 10px 20px;
+  font-size: 1em;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s ease;
 }
 
 .btn-eliminar:hover {
-  background-color: #d32f2f; /* Rojo más oscuro en hover */
-  transform: scale(1.05); /* Efecto de hover */
+  background-color: #d32f2f;
+  transform: scale(1.05);
+}
+
+/* ============================
+   📱 8. ESTILOS RESPONSIVE
+============================ */
+@media (max-width: 576px) {
+  body {
+    font-size: 0.9em;
+  }
+
+  h1 {
+    font-size: 1.8em;
+  }
+
+  table.dataTable {
+    font-size: 0.8em;
+  }
+
+  .dataTables_wrapper {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    font-size: 1em;
+  }
+
+  h1 {
+    font-size: 2em;
+  }
+
+  table.dataTable {
+    font-size: 0.9em;
+  }
+
+  .dataTables_wrapper {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 992px) {
+  body {
+    font-size: 1.1em;
+  }
+
+  h1 {
+    font-size: 2.2em;
+  }
+
+  table.dataTable {
+    font-size: 1em;
+  }
+
+  .dataTables_wrapper {
+    padding: 20px;
+  }
+}
+
+@media (min-width: 993px) {
+  body {
+    font-size: 1.2em;
+  }
+
+  h1 {
+    font-size: 2.5em;
+  }
+
+  table.dataTable {
+    font-size: 1em;
+  }
+
+  .dataTables_wrapper {
+    padding: 25px;
+  }
 }
