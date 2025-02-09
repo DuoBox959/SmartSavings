@@ -1,8 +1,8 @@
 /* 🌐 Estilo General */
 body {
-    font-family: "Arial", sans-serif; /* Fuente estándar */
-    background: #a8d5ba; /* Color de fondo igual al de productos */
-    color: #333; /* Color de texto */
+    font-family: "Arial", sans-serif; 
+    background: #a8d5ba; 
+    color: #333;
     margin: 0;
     padding: 0;
     text-align: center;
@@ -12,12 +12,12 @@ body {
   h1 {
     font-size: 2.5em;
     margin-top: 20px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); /* Sombra elegante */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
   }
   
   /* 🔘 Botones Generales */
   button {
-    background-color: #365a7e; /* Azul vibrante */
+    background-color: #365a7e;
     color: white;
     border: none;
     padding: 10px 20px;

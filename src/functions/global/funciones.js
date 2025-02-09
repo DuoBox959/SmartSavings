@@ -1,13 +1,13 @@
 export async function cargarHeaderFooter() {
   try {
-    const headerResponse = await fetch("../pages/global/header.html");
+    const headerResponse = await fetch("/src/pages/global/header.html");
     if (!headerResponse.ok) {
       throw new Error("Error al cargar el header");
     }
     const headerData = await headerResponse.text();
     document.getElementById("header").innerHTML = headerData;
 
-    const footerResponse = await fetch("../pages/global/footer.html");
+    const footerResponse = await fetch("/src/pages/global/footer.html");
     if (!footerResponse.ok) {
       throw new Error("Error al cargar el footer");
     }

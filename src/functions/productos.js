@@ -4,6 +4,7 @@ import { gestionarUsuarioAutenticado } from "../functions/global/header.js";
 import { volverAtras } from "../functions/global/funciones.js";
 
 let productosCache = [];
+window.volverAtras = volverAtras;
 
 $(document).ready(() => {
   cargarProductos();
@@ -91,21 +92,19 @@ async function cargarProductos() {
       const productoHTML = `
         <div class="product-card">
             <span class="favorite-icon" onclick="toggleFavorito(this)">❤️</span>
-            <img src="${producto.imagen || "default.jpg"}" alt="${
-        producto.nombre
-      }">
+            <img src="${producto.img || "default.jpg"}" alt="${producto.nombre || "Producto sin nombre"}">
             <h3>${producto.nombre || "Producto sin nombre"}</h3>
             <p class="marca">${producto.marca || "Marca desconocida"}</p>
-            <p class="precio">desde ${
-              producto.precioUnidad ? `${producto.precioUnidad} €` : "0 €"
-            }</p>
+            <p class="precio">Desde ${producto.precioUnidad ? `${producto.precioUnidad} €` : "0 €"}</p>
+            <p class="precio-lote">Lote: ${producto.precioLote ? `${producto.precioLote} €` : "0 €"}</p>
+            <p class="peso">Peso: ${producto.peso ? `${producto.peso} ${producto.unidadPeso || "kg"}` : "0 kg"}</p>
+            <p class="supermercado">Supermercado: ${producto.supermercado || "No especificado"}</p>
+            <p class="ubicacion">Ubicación: ${producto.ubicacion || "No disponible"}</p>
+            <p class="biografia">${producto.biografia || "Sin biografía"}</p>
+            <p class="descripcion">${producto.descripcion || "Sin descripción"}</p>
             <div class="acciones">
-                <button onclick="editarProducto('${
-                  producto._id
-                }')">✏️ Editar</button>
-                <button class="btn-eliminar" onclick="eliminarProducto('${
-                  producto._id
-                }')">🗑️ Eliminar</button>
+                <button class="btn-editar" onclick="editarProducto('${producto._id}')">✏️ Editar</button>
+                <button class="btn-eliminar" onclick="eliminarProducto('${producto._id}')">🗑️ Eliminar</button>
             </div>
         </div>
       `;
@@ -146,5 +145,4 @@ window.eliminarProducto = eliminarProducto;
 window.mostrarFormularioAgregar = mostrarFormularioAgregar;
 window.guardarCambiosDesdeFormulario = guardarCambiosDesdeFormulario;
 window.cerrarFormulario = cerrarFormulario;
-window.volverAtras = volverAtras;
 window.toggleFavorito = toggleFavorito;

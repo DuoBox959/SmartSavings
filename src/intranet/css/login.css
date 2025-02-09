@@ -8,7 +8,7 @@
 
 /* 🎨 Fondo general con el color del index */
 body {
-  background: #a8d5ba; /* Verde claro del index */
+  background: #a8d5ba;
   color: white;
   display: flex;
   flex-direction: column;
@@ -24,13 +24,13 @@ body {
 
 /* 📝 Formulario */
 .form-container {
-  background: #ececec; /* Fondo claro como el index */
+  background: #ececec;
   padding: 25px;
   border-radius: 10px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
   width: 320px;
   margin-top: 10px;
-  color: #333; /* Color de texto oscuro */
+  color: #333;
 }
 
 /* 🏷️ Títulos */
@@ -60,7 +60,7 @@ form input {
 }
 
 form input:focus {
-  border-color: #78ce9a; /* Verde del index */
+  border-color: #78ce9a;
   outline: none;
 }
 
@@ -68,7 +68,7 @@ form input:focus {
 button[type="submit"] {
   width: 100%;
   padding: 10px;
-  background: #365a7e; /* Azul oscuro del index */
+  background: #365a7e;
   border: none;
   border-radius: 5px;
   color: white;

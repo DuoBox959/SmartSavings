@@ -103,6 +103,9 @@ function configurarFormulario() {
         localStorage.setItem("user", JSON.stringify(updatedUser));
 
         alert("Datos actualizados correctamente.");
+        
+        // Redirigir al index ya logueado
+        window.location.href = 'index.html';
       } else {
         console.error("Usuario no encontrado en la base de datos.");
       }

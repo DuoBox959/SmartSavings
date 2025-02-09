@@ -61,17 +61,33 @@ function validarCamposFormulario() {
 }
 // Asigna un nuevo ID disponible basado en los IDs existentes
 async function asignarIDDisponible() {
-  const idsExistentes = productosCache
-    .map((p) => parseInt(p._id))
-    .filter(Number.isInteger);
-  const idsDisponibles = Array.from(
-    { length: Math.max(...idsExistentes, 0) + 1 },
-    (_, i) => i + 1
-  ).filter((id) => !idsExistentes.includes(id));
-  return idsDisponibles.length > 0
-    ? idsDisponibles[0].toString()
-    : (idsExistentes.length + 1).toString();
+  try {
+    // 🔍 Obtener todos los documentos desde la base de datos
+    const result = await db.allDocs({ include_docs: true });
+
+    // 🔢 Extraer IDs existentes y convertirlos a números enteros
+    const idsExistentes = result.rows
+      .map((row) => parseInt(row.doc._id)) // Convertir `_id` a número
+      .filter(Number.isInteger) // Filtrar solo valores enteros válidos
+      .sort((a, b) => a - b); // Ordenar de menor a mayor
+
+    if (idsExistentes.length === 0) return "1"; // Si no hay productos, empezar en "1"
+
+    // 🔎 Buscar el primer ID libre en la secuencia
+    for (let i = 0; i < idsExistentes.length; i++) {
+      if (idsExistentes[i] !== i + 1) {
+        return (i + 1).toString(); // Devuelve el primer ID faltante
+      }
+    }
+
+    // Si no hay huecos, asignar el siguiente número disponible
+    return (idsExistentes[idsExistentes.length - 1] + 1).toString();
+  } catch (error) {
+    console.error("❌ Error obteniendo ID disponible:", error);
+    return "1"; // Si hay error, evitar que falle el código
+  }
 }
+
 // 🔧 Asignar valores predeterminados a los campos opcionales
 function asignarValoresPredeterminados() {
   // Obtener valores actuales de los campos opcionales

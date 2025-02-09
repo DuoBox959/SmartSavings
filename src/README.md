@@ -13,22 +13,30 @@ Añadimos creadoPor → Relaciona el producto con el usuario que lo registró.
 
 - Pagina configuracion de cuenta
 
-- Mirar diseño de actualizar y borrar
+- Mirar diseño de actualizar y borrar (Hecho)
 
-- Modificar diseño chatbot (Hecho)
+- Mirar el boton de actualizar datos (Hecho)
 
-- Mirar el boton de actualizar datos
+- Mirar diseño de productos (Hecho)
+
+- Mirar diseño de boton atras de productos( Hecho)
 
 - Mirar botones de editar y eliminar productos
 
-- Mirar Boton editar productos Intranet (Hecho)
-
-- Mirar Boton borrar productos Intranet (Hecho)
+- Mirar boton volver atras de productos (Hecho)
 
 - Mirar boton registro productos intranet (pendiente)
 
-- Mirar boton ver historial intranet (Esta en el js todo) (Pendiente)
-
-- Mirar los fallos nuevos de productos de intranet (Hecho)
+- Mirar boton ver historial intranet (Esta en el js todo)
 
 - Corregir comparador de precios ya que cuando añadimos nueva tienda no me da opcion a comparar ningnu producto en tienda 3
+
+- Mirar estilo de login (Hecho)
+
+- Mirar estilo de registrate y borrar (Hecho)
+
+- Cambiar estilo de borrar (Hecho)
+
+- Mover paginas legales a global (Hecho)
+
+- Cargar mas datos en productos(Hecho)

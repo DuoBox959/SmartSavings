@@ -9,7 +9,8 @@
 /* 📦 Contenedor Principal */
 .container {
   display: flex;
-  width: 100vw;
+  width: 100%;
+  min-width: 100vw;
   height: 100vh;
 }
 
@@ -18,7 +19,7 @@
   width: 50%;
   height: 100vh;
   background: url("../assets/img/product.webp") no-repeat center center;
-  background-size: cover; /* 🔹 Asegura que la imagen cubra toda la sección */
+  background-size: cover; 
   color: white;
   display: flex;
   flex-direction: column;
@@ -30,7 +31,7 @@
 
 /* 📌 Contenedor del texto con fondo oscuro */
 .left-section-text {
-  background: rgba(0, 0, 0, 0.6); /* 🔹 Fondo semitransparente sin eliminar la imagen */
+  background: rgba(0, 0, 0, 0.6); 
   padding: 20px 25px;
   border-radius: 10px;
   text-align: center;
@@ -41,7 +42,7 @@
 .left-section h1 {
   font-size: 2rem;
   font-weight: bold;
-  color: #ffffff; /* 🔹 Texto blanco */
+  color: #ffffff; 
   margin-bottom: 10px;
 }
 
@@ -62,7 +63,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: #d4d4d4; /* 🔹 Fondo gris claro como el index */
+  background: #d4d4d4; 
   padding: 40px;
 }
 
@@ -70,7 +71,7 @@
 .right-section h2 {
   font-size: 2rem;
   font-weight: bold;
-  color: #1e3c5a; /* 🔹 Azul oscuro como en el index */
+  color: #1e3c5a; 
   text-align: center;
   margin-bottom: 20px;
 }
@@ -86,14 +87,14 @@ form label {
   display: block;
   font-size: 14px;
   margin: 10px 0 5px;
-  color: #1e3c5a; /* 🔹 Azul oscuro */
+  color: #1e3c5a;
 }
 
 /* 📌 Inputs */
 form input {
   width: 100%;
   padding: 10px;
-  border: 1px solid #b0bec5; /* 🔹 Gris claro */
+  border: 1px solid #b0bec5; 
   border-radius: 5px;
   font-size: 14px;
   margin-bottom: 5px;
@@ -113,7 +114,7 @@ form button {
   width: 100%;
   padding: 12px;
   border: none;
-  background: #237f27; /* 🔹 Verde como en el index */
+  background: #237f27; 
   color: white;
   font-size: 16px;
   border-radius: 5px;
@@ -123,7 +124,7 @@ form button {
 }
 
 form button:hover {
-  background: #185f1a; /* 🔹 Verde más oscuro */
+  background: #185f1a; 
 }
 
 /* 📌 Ajuste del texto "¿Ya tienes cuenta? Inicia sesión aquí" */
@@ -145,7 +146,7 @@ form button:hover {
 
 /* 🔙 Botón de Regreso */
 .back-button {
-  background: #7bbb95; /* 🔹 Verde del index */
+  background: #7bbb95; 
   color: white;
   border: none;
   padding: 10px;

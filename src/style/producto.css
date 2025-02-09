@@ -25,22 +25,24 @@ body {
   flex: 1;
 }
 
-/* 🎴 Tarjeta de producto */
+/* 🎴 Tarjeta de producto - Estilo mejorado */
 .product-card {
-  background: white;
-  color: #222;
-  border-radius: 12px;
-  width: 260px;
-  padding: 20px;
+  background: #ffffff;
+  color: #333;
+  border-radius: 16px;
+  width: 300px;
+  padding: 24px;
   text-align: center;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
   position: relative;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
 }
 
 .product-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-8px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
 }
 
 /* 🖼️ Imagen del producto */
@@ -51,36 +53,61 @@ body {
 }
 
 .product-card:hover img {
-  transform: scale(1.05);
+  transform: scale(1.08);
 }
 
 /* 📛 Nombre del producto */
 .product-card h3 {
-  font-size: 20px;
-  margin: 12px 0;
-  font-weight: 600;
+  font-size: 22px;
+  margin: 14px 0;
+  font-weight: 700;
+  color: #222;
 }
 
 /* 🏷️ Marca */
 .product-card .marca {
-  font-size: 14px;
-  color: #777;
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 4px;
 }
 
 /* 💰 Precio */
 .product-card .precio {
-  color: #e63946;
+  color: #d32f2f;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 22px;
+  margin-top: 8px;
+}
+
+.product-card .precio-lote {
+  font-size: 18px;
+  color: #d84315;
+  font-weight: 600;
+  margin: 6px;
+}
+
+/* ⚖️ Peso y Ubicación */
+.product-card .peso, .product-card .supermercado, .product-card .ubicacion {
+  font-size: 16px;
+  color: #555;
+  margin: 6px 0;
+}
+
+/* 📝 Descripción y Biografía */
+.product-card .biografia, .product-card .descripcion {
+  font-size: 15px;
+  color: #444;
+  margin-top: 6px;
+  line-height: 1.4;
 }
 
 /* ❤️ Icono de favorito */
 .favorite-icon {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  font-size: 26px;
-  color: #ccc;
+  top: 14px;
+  right: 14px;
+  font-size: 28px;
+  color: #bbb;
   cursor: pointer;
   transition: color 0.3s ease;
 }
@@ -90,27 +117,28 @@ body {
 }
 
 .favorite-icon:hover {
-  color: #ff6b6b;
+  color: #ff5252;
 }
 
 /* 🔘 Botones */
 .acciones {
   display: flex;
   justify-content: space-between;
-  margin-top: 15px;
+  margin-top: 20px;
 }
 
 .acciones button {
   border: none;
-  padding: 10px 14px;
+  padding: 12px 16px;
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: 10px;
   transition: 0.3s ease;
   font-weight: 600;
+  font-size: 14px;
 }
 
 .acciones button:hover {
-  opacity: 0.9;
+  opacity: 0.85;
 }
 
 .btn-eliminar {
@@ -119,9 +147,11 @@ body {
 }
 
 .btn-editar {
-  background: #4caf50;
+  background: #388e3c;
   color: white;
 }
+
+
 
 /* 🔙 Botón Volver Atrás */
 .back-button {
@@ -130,12 +160,12 @@ body {
   border: none;
   padding: 10px 15px;
   font-size: 1em;
-  border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
   margin-top: 20px;
 }
 
+/* Al pasar el cursor */
 .back-button:hover {
   background-color: #388e3c;
 }
