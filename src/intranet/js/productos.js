@@ -1,20 +1,11 @@
-/************************************
- * IMPORTACIONES Y VARIABLES GLOBALES
- ************************************/
 import { db } from "../../libs/db.js";
 
 // Variables globales
 let productosCache = [];
 let productosTable; 
 
-<<<<<<< HEAD
 window.productosCache = productosCache;  // <-- ahora sí lo expones en window
 
-=======
-/************************************
- * INICIALIZACIÓN AL CARGAR EL DOM
- ************************************/
->>>>>>> 6a7661faeddb981a0a09392ec68f7456848aa983
 // Cuando el DOM esté listo:
 $(document).ready(() => {
   // 1. Inicializamos la DataTable con la opción responsive
@@ -33,13 +24,6 @@ $(document).ready(() => {
   actualizarCampoBiografia();
 });
 
-<<<<<<< HEAD
-=======
-/************************************
- * FUNCIONES PRINCIPALES PARA CARGAR Y ACTUALIZAR DATOS
- ************************************/
-
->>>>>>> 6a7661faeddb981a0a09392ec68f7456848aa983
 /**
  * Cargar los productos desde la base de datos y rellenar la DataTable.
  */
@@ -190,13 +174,6 @@ async function actualizarCampoBiografia() {
   }
 }
 
-<<<<<<< HEAD
-=======
-/************************************
- * FUNCIONES DE UTILIDAD (HELPERS)
- ************************************/
-
->>>>>>> 6a7661faeddb981a0a09392ec68f7456848aa983
 /**
  * Devuelve la estructura de botones HTML para editar y eliminar un producto.
  * @param {string} id - El ID del producto
@@ -244,13 +221,6 @@ function formatearFecha(fecha) {
   return `${dia}/${mes}/${anio} ${horas}:${minutos}:${segundos}`;
 }
 
-<<<<<<< HEAD
-=======
-/************************************
- * FUNCIONES PARA MANIPULACIÓN DE PRODUCTOS (CRUD)
- ************************************/
-
->>>>>>> 6a7661faeddb981a0a09392ec68f7456848aa983
 /**
  * Despliega el formulario para agregar un producto nuevo,
  * limpiando los campos de edición.
@@ -269,7 +239,6 @@ function mostrarFormularioAgregar() {
  * usando la información del formulario.
  */
 async function guardarCambiosDesdeFormulario() {
-<<<<<<< HEAD
   // 🔍 Validamos los campos antes de continuar
   if (!validarCamposFormulario()) return;
 
@@ -277,20 +246,10 @@ async function guardarCambiosDesdeFormulario() {
   const id = $("#productoID").val().trim();
   const nombre = $("#nombreProducto").val().trim();
   const marca = $("#marcaProducto").val().trim();
-=======
-  // Primero, validamos los campos con tu función custom de validación (si la tienes).
-  if (!validarCamposFormulario()) return;
-
-  // Obtenemos valores del formulario
-  const id = $("#productoID").val();
-  const nombre = $("#nombreProducto").val();
-  const marca = $("#marcaProducto").val();
->>>>>>> 6a7661faeddb981a0a09392ec68f7456848aa983
   const precioUnidad = parseFloat($("#precioUnidad").val()) || 0;
   const precioLote = parseFloat($("#precioLote").val()) || 0;
   const peso = parseFloat($("#pesoProducto").val()) || 0;
   const unidadPeso = $("#unidadPeso").val();
-<<<<<<< HEAD
   const supermercado = $("#nombreSupermercado").val().trim();
   const ubicacion = $("#ubicacionSupermercado").val().trim();
   const biografia = $("#biografiaProducto").val().trim() || "Sin biografía";
@@ -300,29 +259,12 @@ async function guardarCambiosDesdeFormulario() {
   let imgBase64 = "";
   const imgFile = document.getElementById("imgProducto").files[0];
   if (imgFile) imgBase64 = await convertirImagenABase64(imgFile);
-=======
-  const supermercado = $("#nombreSupermercado").val();
-  const ubicacion = $("#ubicacionSupermercado").val();
-  const biografia = $("#biografiaProducto").val();
-  const descripcion = $("#descripcionProducto").val();
-
-  // Convertir imagen a Base64 (solo si se selecciona un archivo nuevo)
-  const imgFile = document.getElementById("imgProducto").files[0];
-  let imgBase64 = "";
-  if (imgFile) {
-    imgBase64 = await convertirImagenABase64(imgFile);
-  }
->>>>>>> 6a7661faeddb981a0a09392ec68f7456848aa983
 
   // Variable para el documento a guardar
   let doc;
 
   if (id) {
-<<<<<<< HEAD
     // 🔄 **EDITAR PRODUCTO EXISTENTE**
-=======
-    // EDITAR PRODUCTO EXISTENTE
->>>>>>> 6a7661faeddb981a0a09392ec68f7456848aa983
     try {
       const existingDoc = await db.get(id); // 🔍 Obtener el documento actual
       console.log("📄 Documento existente obtenido:", existingDoc); // DEPURACIÓN
@@ -337,13 +279,8 @@ async function guardarCambiosDesdeFormulario() {
         unidadPeso,
         supermercado,
         ubicacion,
-<<<<<<< HEAD
         biografia,
         descripcion,
-=======
-        biografia: biografia || existingDoc.biografia || "Sin biografía",
-        historial: existingDoc.historial || [],
->>>>>>> 6a7661faeddb981a0a09392ec68f7456848aa983
         ultimaModificacion: formatearFecha(new Date()),
         img: imgBase64 || existingDoc.img || "",
         historial: [
@@ -357,26 +294,11 @@ async function guardarCambiosDesdeFormulario() {
         ],
       };
 
-<<<<<<< HEAD
-=======
-      // Añadir nueva entrada al historial
-      doc.historial.push({
-        fecha: formatearFecha(new Date()),
-        precioUnidad,
-        precioLote,
-        peso,
-      });
-
-      // Mantener o actualizar imagen
-      doc.img = imgBase64 || existingDoc.img || "";
-
->>>>>>> 6a7661faeddb981a0a09392ec68f7456848aa983
     } catch (err) {
       console.error("❌ Error obteniendo el documento existente:", err);
       return;
     }
   } else {
-<<<<<<< HEAD
     // 🆕 **CREAR UN PRODUCTO NUEVO**
     console.log("🆕 Creando un nuevo producto...");
     
@@ -384,9 +306,6 @@ async function guardarCambiosDesdeFormulario() {
     const nuevoId = await asignarIDDisponible(); // 🔥 Obtener ID correcto
     console.log("📌 Nuevo ID asignado:", nuevoId); // DEPURACIÓN
 
-=======
-    // CREAR UN PRODUCTO NUEVO
->>>>>>> 6a7661faeddb981a0a09392ec68f7456848aa983
     doc = {
       _id: nuevoId,
       nombre,
@@ -397,7 +316,6 @@ async function guardarCambiosDesdeFormulario() {
       unidadPeso,
       supermercado,
       ubicacion,
-<<<<<<< HEAD
       biografia,
       descripcion,
       ultimaModificacion: formatearFecha(new Date()),
@@ -414,39 +332,14 @@ async function guardarCambiosDesdeFormulario() {
   }
 
   // 📥 **Guardar en la base de datos**
-=======
-      biografia: biografia || "Sin biografía",
-      historial: [
-        {
-          fecha: formatearFecha(new Date()),
-          precioUnidad,
-          precioLote,
-          peso,
-        },
-      ],
-      img: imgBase64,
-      ultimaModificacion: formatearFecha(new Date()),
-      descripcion
-    };
-  }
-
-  // Guardar en la base de datos
->>>>>>> 6a7661faeddb981a0a09392ec68f7456848aa983
   try {
     console.log("📥 Intentando guardar en db.put:", doc); // DEPURACIÓN
     await db.put(doc);
-<<<<<<< HEAD
     console.log("✅ Producto guardado correctamente.");
 
     cargarProductos(); // 🔄 Recargar la tabla de productos
     cerrarFormulario(); // 🏁 Cerrar el formulario
 
-=======
-    // Recargar productos en la tabla
-    cargarProductos();
-    // Cerrar el formulario
-    cerrarFormulario();
->>>>>>> 6a7661faeddb981a0a09392ec68f7456848aa983
   } catch (err) {
     console.error("❌ Error guardando producto:", err);
 
@@ -563,13 +456,6 @@ async function eliminarProducto(id) {
   }
 }
 
-<<<<<<< HEAD
-=======
-/************************************
- * FUNCIONES DE NAVEGACIÓN Y FORMULARIO
- ************************************/
-
->>>>>>> 6a7661faeddb981a0a09392ec68f7456848aa983
 /**
  * Cierra el formulario de agregar/editar sin guardar.
  */
@@ -587,20 +473,9 @@ function volverAtras() {
   window.location.href = "../html/intranet.html";
 }
 
-<<<<<<< HEAD
-=======
-/************************************
- * EXPOSICIÓN DE FUNCIONES EN EL OBJETO GLOBAL (WINDOW)
- * Para que puedan ser llamadas desde el HTML
- ************************************/
->>>>>>> 6a7661faeddb981a0a09392ec68f7456848aa983
 window.editarProducto = editarProducto;
 window.eliminarProducto = eliminarProducto;
 window.mostrarFormularioAgregar = mostrarFormularioAgregar;
 window.guardarCambiosDesdeFormulario = guardarCambiosDesdeFormulario;
 window.cerrarFormulario = cerrarFormulario;
 window.volverAtras = volverAtras;
-<<<<<<< HEAD
-
-=======
->>>>>>> 6a7661faeddb981a0a09392ec68f7456848aa983
