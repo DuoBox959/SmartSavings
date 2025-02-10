@@ -4,8 +4,11 @@
 import { db } from "../../libs/db.js";
 
 // Variables globales
-let productosTable;
 let productosCache = [];
+let productosTable; 
+
+window.productosCache = productosCache;  // <-- ahora sí lo expones en window
+
 
 /************************************
  * INICIALIZACIÓN AL CARGAR EL DOM
@@ -255,36 +258,35 @@ function mostrarFormularioAgregar() {
  * usando la información del formulario.
  */
 async function guardarCambiosDesdeFormulario() {
-  // Primero, validamos los campos con tu función custom de validación (si la tienes).
+  // 🔍 Validamos los campos antes de continuar
   if (!validarCamposFormulario()) return;
 
-  // Obtenemos valores del formulario
-  const id = $("#productoID").val();
-  const nombre = $("#nombreProducto").val();
-  const marca = $("#marcaProducto").val();
+  // 🏷️ Obtenemos valores del formulario
+  const id = $("#productoID").val().trim();
+  const nombre = $("#nombreProducto").val().trim();
+  const marca = $("#marcaProducto").val().trim();
   const precioUnidad = parseFloat($("#precioUnidad").val()) || 0;
   const precioLote = parseFloat($("#precioLote").val()) || 0;
   const peso = parseFloat($("#pesoProducto").val()) || 0;
   const unidadPeso = $("#unidadPeso").val();
-  const supermercado = $("#nombreSupermercado").val();
-  const ubicacion = $("#ubicacionSupermercado").val();
-  const biografia = $("#biografiaProducto").val();
-  const descripcion = $("#descripcionProducto").val();
+  const supermercado = $("#nombreSupermercado").val().trim();
+  const ubicacion = $("#ubicacionSupermercado").val().trim();
+  const biografia = $("#biografiaProducto").val().trim() || "Sin biografía";
+  const descripcion = $("#descripcionProducto").val().trim() || "Sin descripción";
 
-  // Convertir imagen a Base64 (solo si se selecciona un archivo nuevo)
-  const imgFile = document.getElementById("imgProducto").files[0];
+  // 📸 Convertir imagen a Base64 si se ha seleccionado una
   let imgBase64 = "";
-  if (imgFile) {
-    imgBase64 = await convertirImagenABase64(imgFile);
-  }
+  const imgFile = document.getElementById("imgProducto").files[0];
+  if (imgFile) imgBase64 = await convertirImagenABase64(imgFile);
 
-  // Variable para el documento a guardar
   let doc;
 
   if (id) {
-    // EDITAR PRODUCTO EXISTENTE
+    // 🔄 **EDITAR PRODUCTO EXISTENTE**
     try {
-      const existingDoc = await db.get(id);
+      const existingDoc = await db.get(id); // 🔍 Obtener el documento actual
+      console.log("📄 Documento existente obtenido:", existingDoc); // DEPURACIÓN
+
       doc = {
         ...existingDoc,
         nombre,
@@ -295,31 +297,35 @@ async function guardarCambiosDesdeFormulario() {
         unidadPeso,
         supermercado,
         ubicacion,
-        biografia: biografia || existingDoc.biografia || "Sin biografía",
-        historial: existingDoc.historial || [],
+        biografia,
+        descripcion,
         ultimaModificacion: formatearFecha(new Date()),
-        descripcion
+        img: imgBase64 || existingDoc.img || "",
+        historial: [
+          ...(existingDoc.historial || []),
+          {
+            fecha: formatearFecha(new Date()),
+            precioUnidad,
+            precioLote,
+            peso,
+          },
+        ],
       };
 
-      // Añadir nueva entrada al historial
-      doc.historial.push({
-        fecha: formatearFecha(new Date()),
-        precioUnidad,
-        precioLote,
-        peso,
-      });
-
-      // Mantener o actualizar imagen
-      doc.img = imgBase64 || existingDoc.img || "";
-
     } catch (err) {
-      console.error("Error obteniendo el documento existente:", err);
+      console.error("❌ Error obteniendo el documento existente:", err);
       return;
     }
   } else {
-    // CREAR UN PRODUCTO NUEVO
+    // 🆕 **CREAR UN PRODUCTO NUEVO**
+    console.log("🆕 Creando un nuevo producto...");
+    
+    await cargarProductos(); // 🔄 Asegurar que `productosCache` está actualizado
+    const nuevoId = await asignarIDDisponible(); // 🔥 Obtener ID correcto
+    console.log("📌 Nuevo ID asignado:", nuevoId); // DEPURACIÓN
+
     doc = {
-      _id: await asignarIDDisponible(),
+      _id: nuevoId,
       nombre,
       marca,
       precioUnidad,
@@ -328,7 +334,10 @@ async function guardarCambiosDesdeFormulario() {
       unidadPeso,
       supermercado,
       ubicacion,
-      biografia: biografia || "Sin biografía",
+      biografia,
+      descripcion,
+      ultimaModificacion: formatearFecha(new Date()),
+      img: imgBase64,
       historial: [
         {
           fecha: formatearFecha(new Date()),
@@ -337,21 +346,44 @@ async function guardarCambiosDesdeFormulario() {
           peso,
         },
       ],
-      img: imgBase64,
-      ultimaModificacion: formatearFecha(new Date()),
-      descripcion
     };
   }
 
-  // Guardar en la base de datos
+  // 📥 **Guardar en la base de datos**
   try {
+    console.log("📥 Intentando guardar en db.put:", doc); // DEPURACIÓN
     await db.put(doc);
-    // Recargar productos en la tabla
-    cargarProductos();
-    // Cerrar el formulario
-    cerrarFormulario();
+    console.log("✅ Producto guardado correctamente.");
+
+    cargarProductos(); // 🔄 Recargar la tabla de productos
+    cerrarFormulario(); // 🏁 Cerrar el formulario
+
   } catch (err) {
-    console.error("Error guardando producto:", err);
+    console.error("❌ Error guardando producto:", err);
+
+    // ⚠️ **Si hay un conflicto (409), intentamos resolverlo**
+    if (err.status === 409) {
+      console.warn("⚠️ Conflicto detectado. Recuperando última versión...");
+
+      try {
+        const latestDoc = await db.get(doc._id);
+        console.log("📄 Última versión obtenida:", latestDoc);
+
+        // 🔄 Fusionar datos sin sobrescribir información
+        const mergedDoc = {
+          ...latestDoc, // Mantiene el _rev más reciente
+          ...doc, // Aplica los cambios del formulario
+          historial: [...(latestDoc.historial || []), ...(doc.historial || [])], // Combina historiales
+        };
+
+        console.log("📥 Documento fusionado antes de guardar:", mergedDoc);
+        await db.put(mergedDoc);
+        console.log("✅ Producto guardado después del conflicto.");
+        
+      } catch (retryErr) {
+        console.error("❌ Error al intentar resolver el conflicto:", retryErr);
+      }
+    }
   }
 }
 
