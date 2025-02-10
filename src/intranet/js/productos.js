@@ -1,10 +1,8 @@
 import { db } from "../../libs/db.js";
-
 // Variables globales
 let productosCache = [];
 let productosTable; 
 
-window.productosCache = productosCache;  // <-- ahora sí lo expones en window
 
 
 
@@ -242,7 +240,7 @@ function mostrarFormularioAgregar() {
  */
 async function guardarCambiosDesdeFormulario() {
   // 🔍 Validamos los campos antes de continuar
-  if (!validarCamposFormulario()) return;
+  // if (!validarCamposFormulario()) return;
 
   // 🏷️ Obtenemos valores del formulario
   const id = $("#productoID").val().trim();
@@ -473,7 +471,9 @@ function cerrarFormulario() {
 function volverAtras() {
   window.location.href = "../html/intranet.html";
 }
-
+window.db = db;
+window.productosCache = productosCache;  // <-- ahora sí lo expones en window
+// window.validarCamposFormulario = validarCamposFormulario;
 window.editarProducto = editarProducto;
 window.eliminarProducto = eliminarProducto;
 window.mostrarFormularioAgregar = mostrarFormularioAgregar;
