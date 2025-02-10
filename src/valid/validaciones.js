@@ -90,9 +90,6 @@ async function asignarIDDisponible() {
   }
 }
 
-
-
-
 // 🔧 Asignar valores predeterminados a los campos opcionales
 function asignarValoresPredeterminados() {
   // Obtener valores actuales de los campos opcionales

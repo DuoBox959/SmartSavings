@@ -1,6 +1,3 @@
-/************************************
- * IMPORTACIONES Y VARIABLES GLOBALES
- ************************************/
 import { db } from "../../libs/db.js";
 
 // Variables globales
@@ -10,9 +7,7 @@ let productosTable;
 window.productosCache = productosCache;  // <-- ahora sí lo expones en window
 
 
-/************************************
- * INICIALIZACIÓN AL CARGAR EL DOM
- ************************************/
+
 // Cuando el DOM esté listo:
 $(document).ready(() => {
   // 1. Inicializamos la DataTable con la opción responsive
@@ -30,10 +25,6 @@ $(document).ready(() => {
   actualizarCampoHistorial();
   actualizarCampoBiografia();
 });
-
-/************************************
- * FUNCIONES PRINCIPALES PARA CARGAR Y ACTUALIZAR DATOS
- ************************************/
 
 /**
  * Cargar los productos desde la base de datos y rellenar la DataTable.
@@ -185,10 +176,6 @@ async function actualizarCampoBiografia() {
   }
 }
 
-/************************************
- * FUNCIONES DE UTILIDAD (HELPERS)
- ************************************/
-
 /**
  * Devuelve la estructura de botones HTML para editar y eliminar un producto.
  * @param {string} id - El ID del producto
@@ -235,10 +222,6 @@ function formatearFecha(fecha) {
 
   return `${dia}/${mes}/${anio} ${horas}:${minutos}:${segundos}`;
 }
-
-/************************************
- * FUNCIONES PARA MANIPULACIÓN DE PRODUCTOS (CRUD)
- ************************************/
 
 /**
  * Despliega el formulario para agregar un producto nuevo,
@@ -474,10 +457,6 @@ async function eliminarProducto(id) {
   }
 }
 
-/************************************
- * FUNCIONES DE NAVEGACIÓN Y FORMULARIO
- ************************************/
-
 /**
  * Cierra el formulario de agregar/editar sin guardar.
  */
@@ -495,10 +474,6 @@ function volverAtras() {
   window.location.href = "../html/intranet.html";
 }
 
-/************************************
- * EXPOSICIÓN DE FUNCIONES EN EL OBJETO GLOBAL (WINDOW)
- * Para que puedan ser llamadas desde el HTML
- ************************************/
 window.editarProducto = editarProducto;
 window.eliminarProducto = eliminarProducto;
 window.mostrarFormularioAgregar = mostrarFormularioAgregar;

@@ -30,7 +30,7 @@ body {
 
 /* 📌 Lista del menú */
 .sidebar ul {
-    list-style: none; /* ❌ Quitar los puntos de la lista */
+    list-style: none;
     padding: 0;
     margin: 0;
 }
@@ -44,7 +44,7 @@ body {
 
 /* 📌 Enlaces del menú */
 .sidebar ul li a {
-    color: white;  /* ✅ Texto blanco */
+    color: white; 
     text-decoration: none;
     display: flex;
     align-items: center;
@@ -66,7 +66,7 @@ body {
 .toggle-sidebar {
     position: fixed;
     top: 15px;
-    left: 260px; /* Se alinea con el sidebar */
+    left: 260px;
     background: white;
     border: none;
     font-size: 20px;
@@ -91,7 +91,7 @@ body {
 }
 
 .toggle-sidebar.hidden {
-    left: 10px; /* Mover solo el botón a la izquierda */
+    left: 10px;
 }
 
 .main-content.full-width {

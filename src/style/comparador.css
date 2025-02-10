@@ -31,7 +31,7 @@ h1 {
   align-items: center;
   width: 400px;
   max-width: 90%;
-  gap: 15px; /* 🔹 Espacio uniforme entre elementos */
+  gap: 15px;
 }
 
 /* 📌 Estilos de etiquetas */
@@ -107,13 +107,13 @@ h1 {
 
 /* 📌 Estilo uniforme para los selects adicionales */
 #extraStores select {
-  width: 100% !important; /* 🔹 Forzar que ocupe el mismo ancho que los demás */
+  width: 100% !important;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 1em;
   background-color: #f9f9f9;
-  margin-bottom: 15px; /* 🔹 Espaciado uniforme entre tiendas */
+  margin-bottom: 15px;
 }
 
 /* 📌 Asegurar que los labels estén alineados y con buen espaciado */
@@ -128,7 +128,7 @@ h1 {
 /* 📌 Mejor espaciado entre cada tienda añadida */
 .extra-store {
   width: 100%;
-  margin-bottom: 15px; /* 🔹 Espacio entre cada tienda */
+  margin-bottom: 15px;
 }
 
 
