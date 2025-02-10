@@ -1,0 +1,90 @@
+/* 🌟 Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 🌐 General */
+body {
+  font-family: "Roboto", sans-serif;
+  background: #cecfcfe8;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  align-items: center; /* Centra el contenido en el eje horizontal */
+}
+
+#header, #footer {
+  width: 100%; /* Asegura que el header y footer ocupen todo el ancho */
+}
+
+.container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 100%;
+  margin-top: 20px; /* Espacio desde el header */
+  margin-bottom: 20px; /* Espacio hasta el footer */
+}
+
+section {
+  padding: 15px;
+  border-radius: 8px;
+  background: #f9f9f9;
+}
+
+h2 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #444;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
+input, select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  margin-top: 5px;
+}
+
+input[type="checkbox"] {
+  width: auto;
+  margin-right: 5px;
+}
+
+.btn {
+  display: block;
+  text-align: center;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.actualizar {
+  background: #4CAF50;
+  color: white;
+}
+
+.eliminar {
+  background: #E53935;
+  color: white;
+}
+

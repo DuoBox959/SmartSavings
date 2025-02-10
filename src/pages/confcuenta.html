@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>confcuenta</title>
+    <!-- Vinculación de archivos CSS -->
+    <link rel="stylesheet" href="../style/global/header.css" />
+    <link rel="stylesheet" href="../style/confcuenta.css" />
+    <link rel="stylesheet" href="../style/global/footer.css" />
+
+    <!-- Librerías y scripts necesarios -->
+    <!-- jQuery: Facilita manipulación del DOM y AJAX -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- PouchDB: Manejo de bases de datos locales en el navegador -->
+    <script src="../libs/pouchdb-9.0.0.min.js"></script>
+    <!-- Funciones específicas para la gestión de productos -->
+    <script type="module" src="../functions/confcuenta.js"></script>
+    <!-- Validaciones personalizadas para los formularios -->
+    <script src="../valid/validaciones.js"></script>
+</head>
+<body>
+     <!-- 🧩 Aquí se cargará el header dinámico -->
+     <div id="header"></div>
+     <div class="container">
+        <section class="configuracion">
+            <h2>Información Personal</h2>
+            <label>Nombre: <input type="text" id="nombre" placeholder="Tu nombre"></label>
+            <label>Apellidos: <input type="text" id="apellidos" placeholder="Tus apellidos"></label>
+            <label>Nombre de Usuario: <input type="text" id="usuario" placeholder="Tu nombre de usuario"></label>
+            <label>Fecha de Nacimiento: <input type="date" id="fecha-nacimiento"></label>
+        </section>
+        
+        <section class="seguridad">
+            <h2>Seguridad</h2>
+            <label>Contraseña: <input type="password" id="password" placeholder="Nueva contraseña"></label>
+        </section>
+        
+        <section class="preferencias">
+            <h2>Preferencias</h2>
+            <label>Idioma: 
+                <select id="idioma">
+                    <option value="es">Español</option>
+                    <option value="en">Inglés</option>
+                </select>
+            </label>
+            <label>Zona Horaria: <input type="text" id="zona-horaria" placeholder="Ej. UTC-5"></label>
+            <label>
+                <input type="checkbox" id="notificaciones"> Recibir notificaciones por correo
+            </label>
+        </section>
+        
+        <section class="cuenta">
+            <h2>Gestión de Cuenta</h2>
+            <a href="actualizar_cuenta.html" class="btn actualizar">Actualizar Cuenta</a>
+            <a href="borrar_cuenta.html" class="btn eliminar">Borrar Cuenta</a>
+        </section>
+    </div>
+
+     <!-- 🧩 Aquí se cargará el footer dinámico -->
+    <div id="footer"></div>
+    
+</body>
+</html>

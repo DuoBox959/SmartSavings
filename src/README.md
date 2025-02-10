@@ -11,32 +11,16 @@ Añadimos creadoPor → Relaciona el producto con el usuario que lo registró.
 
 -QUIERO PONER TAMBIEN A CUANTO SE VENDIA EL PRODUCTO OTROS AÑOS ANTERIORES MAS SU PESO PORQUE LAS MARCAS NO LAS QUIEREN COLAR COMO DORITOS QUE DISMINUYO -100 GR DE SU PAQUETE PERO SE MANTUVO EN EL PRECIO, ENGAÑANDONOS Y LLEVANDOSE IGUAL DE BENEFICIOS.
 
-- Pagina configuracion de cuenta
+- Rediseñar la pagina de configuracion de cuenta
 
-- Mirar diseño de actualizar y borrar (Hecho)
+- Programar la pagina de configuracion de cuenta por js
 
-- Mirar el boton de actualizar datos (Hecho)
-
-- Mirar diseño de productos (Hecho)
-
-- Mirar diseño de boton atras de productos( Hecho)
+- Cambiar las opciones del usuario header para acceder a la configuracion de cuenta.
 
 - Mirar botones de editar y eliminar productos
-
-- Mirar boton volver atras de productos (Hecho)
 
 - Mirar boton registro productos intranet (pendiente)
 
 - Mirar boton ver historial intranet (Esta en el js todo)
 
 - Corregir comparador de precios ya que cuando añadimos nueva tienda no me da opcion a comparar ningnu producto en tienda 3
-
-- Mirar estilo de login (Hecho)
-
-- Mirar estilo de registrate y borrar (Hecho)
-
-- Cambiar estilo de borrar (Hecho)
-
-- Mover paginas legales a global (Hecho)
-
-- Cargar mas datos en productos(Hecho)
