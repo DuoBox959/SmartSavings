@@ -43,6 +43,8 @@
    - Permitir modificar datos personales.
    - Opción para cambiar la contraseña.
    - Ajustes de preferencias.
+   - Rediseñar configuracion cuenta
+   - Programar configuracion cuenta
 
 9. **Correcciones en la Intranet**
    - Revisar botón "Ver Historial" en la intranet (corregir en el JS).
