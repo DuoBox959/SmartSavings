@@ -1,70 +1,67 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comparador de Precios</title>
 
-    <!-- Estilos CSS -->
-    <link rel="stylesheet" href="../style/comparador.css" />
-    <link rel="stylesheet" href="../style/responsivo.css" />
+    <!-- ✅ Estilos CSS -->
+    <link rel="stylesheet" href="../style/comparador.css">
+    <link rel="stylesheet" href="../style/responsivo.css">
 
-    <!-- Select2 CSS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css"
-      rel="stylesheet"
-    />
+    <!-- ✅ Estilos para Select2 (mejorador de selects) -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet">
 
-    <!-- PouchDB -->
+    <!-- ✅ Librería PouchDB (para base de datos local) -->
     <script src="../libs/pouchdb-9.0.0.min.js"></script>
-  </head>
-  <body>
+</head>
+<body>
+
     <h1>Comparador de Precios</h1>
 
+    <!-- 📌 Formulario de comparación de precios -->
     <form id="comparadorForm">
-      <!-- Selector de productos con Select2 -->
-      <label for="producto">Producto:</label>
-      <select id="producto" class="select-tiendas" onchange="cargarTiendas()">
-        <option value="">Selecciona un producto</option>
-      </select>
 
-      <!-- Selector para la primera tienda -->
-      <label for="tienda1">Tienda 1:</label>
-      <select id="tienda1" class="select-tiendas">
-        <option value="">Selecciona una tienda</option>
-      </select>
+        <!-- 🔹 Selector de productos -->
+        <label for="producto">Producto:</label>
+        <select id="producto" class="select-tiendas" onchange="cargarTiendas()">
+            <option value="">Selecciona un producto</option>
+        </select>
 
-      <!-- Selector para la segunda tienda -->
-      <label for="tienda2">Tienda 2:</label>
-      <select id="tienda2" class="select-tiendas">
-        <option value="">Selecciona una tienda</option>
-      </select>
+        <!-- 🔹 Selector de la primera tienda -->
+        <label for="tienda1">Tienda 1:</label>
+        <select id="tienda1" class="select-tiendas">
+            <option value="">Selecciona una tienda</option>
+        </select>
 
-      <!-- Botón para añadir más tiendas -->
-      <button
-        type="button"
-        id="addStoreButton"
-        onclick="anadirSelectorTienda()"
-      >
-        +
-      </button>
+        <!-- 🔹 Selector de la segunda tienda -->
+        <label for="tienda2">Tienda 2:</label>
+        <select id="tienda2" class="select-tiendas">
+            <option value="">Selecciona una tienda</option>
+        </select>
 
-      <!-- Contenedor para más tiendas -->
-      <div id="extraStores"></div>
+        <!-- 🔹 Botón para agregar más tiendas dinámicamente -->
+        <button type="button" id="addStoreButton" onclick="anadirSelectorTienda()">+</button>
 
-      <!-- Botón para comparar -->
-      <button type="button" onclick="compararPrecios()">Comparar</button>
+        <!-- 📌 Contenedor donde se añadirán más tiendas dinámicamente -->
+        <div id="extraStores"></div>
+
+        <!-- 🔹 Botón para ejecutar la comparación -->
+        <button type="button" onclick="compararPrecios()">Comparar</button>
     </form>
 
-    <!-- Resultado de la comparación -->
+    <!-- 📌 Contenedor para mostrar los resultados de la comparación -->
     <div id="resultadoComparacion"></div>
 
-    <!-- Botón de regreso -->
+    <!-- 🔙 Botón para regresar a la página anterior -->
     <button class="back-button" onclick="volverAtras()">Volver Atrás</button>
 
-    <!-- Carga de JavaScript -->
+    <!-- ✅ Scripts necesarios -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
+    <!-- ✅ Archivo JS principal que maneja la lógica del comparador -->
     <script type="module" src="../functions/comparador.js"></script>
-  </body>
+
+</body>
 </html>

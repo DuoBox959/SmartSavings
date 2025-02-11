@@ -1,121 +1,80 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <!-- Definimos el estándar HTML5 -->
-    <meta charset="UTF-8" />
-    <!-- Hacemos que el diseño sea responsive para dispositivos móviles -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Título de la página que se muestra en la pestaña del navegador -->
-    <title>Politica de Privacidad</title>
+<head>
+    <!-- ✅ Configuración básica del documento -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Política de Privacidad</title>
 
-    <!-- Importación de fuentes externas desde Google Fonts -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
-    <!-- Vinculación al archivo de estilos CSS específico para esta página -->
-    <link rel="stylesheet" href="../../style/global/header.css" />
-    <link rel="stylesheet" href="../../style/global/politicas.css" />
-    <link rel="stylesheet" href="../../style/global/footer.css" />
+    <!-- ✅ Importación de fuentes desde Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- ✅ Vinculación de archivos CSS -->
+    <link rel="stylesheet" href="../../style/global/header.css">  <!-- Estilos del header -->
+    <link rel="stylesheet" href="../../style/global/politicas.css">  <!-- Estilos generales de políticas -->
+    <link rel="stylesheet" href="../../style/global/footer.css">  <!-- Estilos del footer -->
+
+    <!-- ✅ Archivo JS para funcionalidades relacionadas con políticas -->
     <script src="../../functions/politicas.js" type="module" defer></script>
-  </head>
-  <body>
-    <!-- 🧩 Aquí se cargará el header dinámico -->
+</head>
+<body>
+
+    <!-- 🧩 Carga del header dinámico -->
     <div id="header"></div>
+
+    <!-- 📌 Contenedor principal -->
     <div class="container">
-      <div class="politicas">
-        <h2>Política de Privacidad</h2>
-        <p>
-          En <strong>ComparaTu</strong>, respetamos y protegemos la privacidad
-          de nuestros usuarios. Esta política describe cómo recopilamos,
-          utilizamos y protegemos tu información personal al interactuar con
-          nuestra plataforma. Al utilizar este sitio, aceptas las prácticas
-          descritas a continuación.
-        </p>
+        <div class="politicas">
 
-        <h3>1. Información que Recopilamos</h3>
-        <ul>
-          <li>
-            <strong>Datos personales proporcionados por el usuario:</strong> Al
-            registrarte, suscribirte a boletines o contactarnos, puedes
-            proporcionarnos información como tu nombre, dirección de correo
-            electrónico y otros detalles relevantes.
-          </li>
-          <li>
-            <strong>Datos de navegación:</strong> Recopilamos información sobre
-            tu interacción con nuestro sitio, como direcciones IP, tipo de
-            navegador, páginas visitadas y duración de las visitas. Esto nos
-            ayuda a mejorar la experiencia del usuario.
-          </li>
-          <li>
-            <strong>Cookies:</strong> Utilizamos cookies para optimizar el
-            rendimiento del sitio y ofrecer contenido personalizado. Puedes
-            gestionar tus preferencias de cookies en cualquier momento.
-          </li>
-        </ul>
+            <h2>Política de Privacidad</h2>
+            <p>
+                En <strong>ComparaTú</strong>, respetamos y protegemos la privacidad de nuestros usuarios. 
+                Esta política describe cómo recopilamos, utilizamos y protegemos tu información personal 
+                al interactuar con nuestra plataforma.
+            </p>
 
-        <h3>2. Uso de la Información</h3>
-        <ul>
-          <li>
-            Proporcionar y mejorar nuestros servicios, asegurando que la
-            información ofrecida sea relevante y precisa.
-          </li>
-          <li>
-            Personalizar tu experiencia, mostrándote contenido adaptado a tus
-            intereses y preferencias.
-          </li>
-          <li>
-            Comunicarnos contigo en relación con actualizaciones, ofertas o
-            cambios en nuestras políticas, siempre con tu consentimiento previo
-            cuando sea necesario.
-          </li>
-        </ul>
+            <!-- 🔹 Sección: Información recopilada -->
+            <h3>1. Información que Recopilamos</h3>
+            <ul>
+                <li><strong>Datos personales:</strong> Nombre, correo electrónico y otros datos proporcionados por el usuario.</li>
+                <li><strong>Datos de navegación:</strong> Información sobre cómo interactúas con nuestra plataforma.</li>
+                <li><strong>Cookies:</strong> Se utilizan para mejorar la experiencia del usuario.</li>
+            </ul>
 
-        <h3>3. Protección de la Información</h3>
-        <ul>
-          <li>
-            Implementamos medidas técnicas y organizativas adecuadas para
-            proteger tu información frente a accesos no autorizados, pérdida o
-            divulgación indebida.
-          </li>
-          <li>
-            Sólo compartimos tus datos con terceros cuando sea estrictamente
-            necesario para prestar nuestros servicios o cuando lo exija la ley.
-          </li>
-          <li>
-            Mantenemos tus datos únicamente durante el tiempo necesario para
-            cumplir con los propósitos descritos en esta política, salvo que la
-            ley exija un periodo mayor.
-          </li>
-        </ul>
+            <!-- 🔹 Sección: Uso de la información -->
+            <h3>2. Uso de la Información</h3>
+            <ul>
+                <li>Proporcionar y mejorar nuestros servicios.</li>
+                <li>Personalizar la experiencia del usuario.</li>
+                <li>Comunicarnos contigo respecto a actualizaciones y ofertas.</li>
+            </ul>
 
-        <h3>4. Derechos del Usuario</h3>
-        <ul>
-          <li>
-            Acceder, rectificar o eliminar tus datos personales en cualquier
-            momento.
-          </li>
-          <li>
-            Retirar tu consentimiento para el tratamiento de tus datos, sin que
-            esto afecte la legalidad del tratamiento basado en el consentimiento
-            previo.
-          </li>
-          <li>
-            Presentar una reclamación ante la autoridad de protección de datos
-            correspondiente si consideras que tus derechos han sido vulnerados.
-          </li>
-        </ul>
+            <!-- 🔹 Sección: Protección de datos -->
+            <h3>3. Protección de la Información</h3>
+            <ul>
+                <li>Implementamos medidas de seguridad adecuadas.</li>
+                <li>No compartimos datos personales con terceros sin consentimiento.</li>
+                <li>Conservamos los datos solo por el tiempo necesario.</li>
+            </ul>
 
-        <h3>5. Cambios en la Política de Privacidad</h3>
-        <p>
-          Nos reservamos el derecho de modificar esta política en cualquier
-          momento para reflejar cambios en nuestras prácticas o en la
-          legislación aplicable. Te notificaremos de cualquier actualización
-          significativa mediante los canales adecuados.
-        </p>
-      </div>
+            <!-- 🔹 Sección: Derechos del usuario -->
+            <h3>4. Derechos del Usuario</h3>
+            <ul>
+                <li>Acceder, rectificar o eliminar tus datos personales.</li>
+                <li>Retirar el consentimiento para el tratamiento de datos.</li>
+                <li>Presentar una reclamación ante la autoridad de protección de datos.</li>
+            </ul>
+
+            <!-- 🔹 Sección: Cambios en la política -->
+            <h3>5. Cambios en la Política de Privacidad</h3>
+            <p>Nos reservamos el derecho de modificar esta política en cualquier momento.</p>
+
+        </div>
     </div>
-    <!-- 🧩 Aquí se cargará el footer dinámico -->
+
+    <!-- 🧩 Carga del footer dinámico -->
     <div id="footer"></div>
-  </body>
+
+</body>
 </html>

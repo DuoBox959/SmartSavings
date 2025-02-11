@@ -1,35 +1,34 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <!-- ✅ A. Configuración del Documento -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Gestión de Usuarios</title>
 
-    <!-- Estilos -->
+    <!-- ✅ B. Vinculación de Archivos CSS -->
     <link rel="stylesheet" href="../css/usuarios.css">
 
-    <!-- Librerías necesarias -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-    <script src="../../libs/pouchdb-9.0.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script> <!-- 🔐 Para encriptar contraseñas -->
-
-    <!-- Script de usuarios -->
-    <script type="module" src="../js/usuarios.js"></script>
+    <!-- ✅ C. Librerías y Scripts Necesarios -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  <!-- jQuery -->
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>  <!-- DataTables -->
+    <script src="../../libs/pouchdb-9.0.0.min.js"></script>  <!-- PouchDB -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>  <!-- 🔐 Para encriptar contraseñas -->
+    <script type="module" src="../js/usuarios.js"></script>  <!-- Lógica de gestión de usuarios -->
 </head>
 <body>
-    <!-- 🔔 Aviso -->
-    <div id="aviso">
+
+    <!-- 🏷️ D. Aviso de Información -->
+    <div id="aviso" class="aviso-importante">
         <strong>Aviso:</strong> La base de datos es pública y los datos pueden estar desactualizados.
     </div>
 
-    <!-- 🏷️ Título -->
+    <!-- 📌 E. Título y Botón Agregar -->
     <h1>Gestión de Usuarios</h1>
-
-    <!-- Botón para agregar un usuario -->
     <button onclick="mostrarFormularioAgregar()">Añadir Usuario</button>
 
-    <!-- 📊 Tabla de Usuarios -->
+    <!-- 📊 F. Tabla de Usuarios -->
     <table id="usuariosTable" class="display">
         <thead>
             <tr>
@@ -45,41 +44,49 @@
         <tbody id="usuariosBody"></tbody>
     </table>
 
-    <!-- ✍️ Formulario para Agregar/Editar Usuarios -->
+    <!-- 📋 G. Formulario para Agregar o Editar Usuarios -->
     <div id="formularioUsuario" style="display: none">
         <h2 id="formTitulo">Añadir Usuario</h2>
+
+        <!-- 🔹 Campo: ID oculto (para edición) -->
         <input type="hidden" id="usuarioID">
 
+        <!-- 🔹 Campo: Nombre del Usuario -->
         <label for="nombreUsuario">Nombre:</label>
-        <input type="text" id="nombreUsuario" required><br>
+        <input type="text" id="nombreUsuario" required>
 
+        <!-- 🔹 Campo: Email -->
         <label for="emailUsuario">Email:</label>
-        <input type="email" id="emailUsuario" required><br>
+        <input type="email" id="emailUsuario" required>
 
+        <!-- 🔹 Campo: Contraseña -->
         <label for="passwordUsuario">Contraseña:</label>
-        <input type="password" id="passwordUsuario" required><br>
+        <input type="password" id="passwordUsuario" required>
 
+        <!-- 🔹 Campo: Rol del Usuario -->
         <label for="rolUsuario">Rol:</label>
         <select id="rolUsuario">
             <option value="admin">Administrador</option>
             <option value="usuario">Usuario</option>
             <option value="invitado">Invitado</option>
-        </select><br>
+        </select>
 
+        <!-- 🔹 Campo: Estado del Usuario -->
         <label for="estadoUsuario">Estado:</label>
         <select id="estadoUsuario">
             <option value="activo">Activo</option>
             <option value="inactivo">Inactivo</option>
-        </select><br>
+        </select>
 
-        <!-- Botones -->
+        <!-- 🔘 Botones del formulario -->
         <div id="botonesFormulario">
             <button onclick="guardarCambiosDesdeFormulario()">Guardar</button>
             <button onclick="cerrarFormulario()">Cancelar</button>
         </div>
     </div>
 
-    <!-- Botón para volver atrás -->
+    <!-- 🔙 H. Botón para regresar atrás -->
     <button class="back-button" onclick="volverAtras()">Volver Atrás</button>
+
 </body>
 </html>

@@ -49,3 +49,8 @@
 9. **Correcciones en la Intranet**
    - Revisar botón "Ver Historial" en la intranet (corregir en el JS).
    - Solucionar error del comparador de precios al agregar una nueva tienda (no permite comparar en Tienda 3).
+
+10. **Comentarios y optimizacion del codigo**
+   - Optimizarlo y comenntarlo como en producto.html de intranet
+      *
+   - Todos los demas hay que seguir comentando y optimizando

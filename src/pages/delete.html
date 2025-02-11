@@ -1,70 +1,65 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Borrar - ComparaTú</title>
-    <link rel="stylesheet" href="../style/delete.css" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borrar Cuenta - ComparaTú</title>
+
+    <!-- ✅ Estilos CSS -->
+    <link rel="stylesheet" href="../style/delete.css">
+
+    <!-- ✅ Librería PouchDB (Base de Datos Local) -->
     <script src="../libs/pouchdb-9.0.0.min.js"></script>
+
+    <!-- ✅ Archivo JS para la lógica de eliminación de cuenta -->
     <script type="module" src="../functions/delete.js" defer></script>
-  </head>
-  <body>
+</head>
+<body>
+
+    <!-- 📌 Contenedor principal -->
     <div class="container">
-      <!-- 🖼️ Sección Izquierda -->
-      <div class="left-section">
-        <h1>Elimina tu cuenta</h1>
-        <p>
-          Lamentamos que quiera irse de <strong>ComparaTú</strong>. Esperamos
-          que haya tenido una buena experiencia.
-        </p>
-      </div>
 
-      <!-- 📋 Sección Derecha (Formulario) -->
-      <div class="right-section">
-        <h2>Borrar cuenta</h2>
-        <form action="#" method="post">
-          <label for="username">Usuario:</label>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            placeholder="Elige un nombre de usuario"
-            required
-          />
+        <!-- 🖼️ Sección Izquierda (Mensaje) -->
+        <div class="left-section">
+            <h1>Elimina tu cuenta</h1>
+            <p>
+                Lamentamos que quieras irte de <strong>ComparaTú</strong>. Esperamos
+                que hayas tenido una buena experiencia.
+            </p>
+        </div>
 
-          <label for="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="Ingresa tu email"
-            required
-          />
+        <!-- 📋 Sección Derecha (Formulario de eliminación) -->
+        <div class="right-section">
+            <h2>Borrar cuenta</h2>
 
-          <label for="password">Contraseña:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Crea una contraseña"
-            required
-          />
+            <form action="#" method="post">
 
-          <label for="confirm-password">Confirmar Contraseña:</label>
-          <input
-            type="password"
-            id="confirm-password"
-            name="confirm-password"
-            placeholder="Confirma tu contraseña"
-            required
-          />
+                <!-- 🔹 Campo: Nombre de usuario -->
+                <label for="username">Usuario:</label>
+                <input type="text" id="username" name="username" placeholder="Tu nombre de usuario" required>
 
-          <button type="submit">Borrar cuenta</button>
-          <button type="button" class="back-button" onclick="volverAtras()">
-            Volver Atrás
-          </button>
-        </form>
-      </div>
+                <!-- 🔹 Campo: Email -->
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Tu email" required>
+
+                <!-- 🔹 Campo: Contraseña -->
+                <label for="password">Contraseña:</label>
+                <input type="password" id="password" name="password" placeholder="Tu contraseña" required>
+
+                <!-- 🔹 Campo: Confirmación de contraseña -->
+                <label for="confirm-password">Confirmar Contraseña:</label>
+                <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirma tu contraseña" required>
+
+                <!-- 🔥 Botón para borrar cuenta -->
+                <button type="submit">Borrar cuenta</button>
+
+                <!-- 🔙 Botón para regresar atrás -->
+                <button type="button" class="back-button" onclick="volverAtras()">Volver Atrás</button>
+
+            </form>
+        </div>
+
     </div>
-  </body>
+
+</body>
 </html>

@@ -1,28 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>confcuenta</title>
-    <!-- Vinculación de archivos CSS -->
-    <link rel="stylesheet" href="../style/global/header.css" />
-    <link rel="stylesheet" href="../style/confcuenta.css" />
-    <link rel="stylesheet" href="../style/global/footer.css" />
+    <title>Configuración de Cuenta</title>
 
-    <!-- Librerías y scripts necesarios -->
-    <!-- jQuery: Facilita manipulación del DOM y AJAX -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- PouchDB: Manejo de bases de datos locales en el navegador -->
-    <script src="../libs/pouchdb-9.0.0.min.js"></script>
-    <!-- Funciones específicas para la gestión de productos -->
-    <script type="module" src="../functions/confcuenta.js"></script>
-    <!-- Validaciones personalizadas para los formularios -->
-    <script src="../valid/validaciones.js"></script>
+    <!-- ✅ Estilos CSS -->
+    <link rel="stylesheet" href="../style/global/header.css">  <!-- Estilos del encabezado -->
+    <link rel="stylesheet" href="../style/confcuenta.css">  <!-- Estilos específicos de esta página -->
+    <link rel="stylesheet" href="../style/global/footer.css">  <!-- Estilos del pie de página -->
+
+    <!-- ✅ Librerías y scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  <!-- jQuery (para manipulación del DOM) -->
+    <script src="../libs/pouchdb-9.0.0.min.js"></script>  <!-- PouchDB (base de datos local) -->
+    <script type="module" src="../functions/confcuenta.js"></script>  <!-- Funciones específicas de configuración -->
+    <script src="../valid/validaciones.js"></script>  <!-- Validaciones personalizadas -->
 </head>
 <body>
-     <!-- 🧩 Aquí se cargará el header dinámico -->
-     <div id="header"></div>
-     <div class="container">
+
+    <!-- 🧩 Carga del header dinámico -->
+    <div id="header"></div>
+
+    <!-- 📌 Contenedor principal -->
+    <div class="container">
+
+        <!-- 🔹 Sección de Información Personal -->
         <section class="configuracion">
             <h2>Información Personal</h2>
             <label>Nombre: <input type="text" id="nombre" placeholder="Tu nombre"></label>
@@ -30,12 +32,14 @@
             <label>Nombre de Usuario: <input type="text" id="usuario" placeholder="Tu nombre de usuario"></label>
             <label>Fecha de Nacimiento: <input type="date" id="fecha-nacimiento"></label>
         </section>
-        
+
+        <!-- 🔹 Sección de Seguridad -->
         <section class="seguridad">
             <h2>Seguridad</h2>
             <label>Contraseña: <input type="password" id="password" placeholder="Nueva contraseña"></label>
         </section>
-        
+
+        <!-- 🔹 Sección de Preferencias -->
         <section class="preferencias">
             <h2>Preferencias</h2>
             <label>Idioma: 
@@ -49,16 +53,18 @@
                 <input type="checkbox" id="notificaciones"> Recibir notificaciones por correo
             </label>
         </section>
-        
+
+        <!-- 🔹 Gestión de Cuenta -->
         <section class="cuenta">
             <h2>Gestión de Cuenta</h2>
             <a href="actualizar_cuenta.html" class="btn actualizar">Actualizar Cuenta</a>
             <a href="borrar_cuenta.html" class="btn eliminar">Borrar Cuenta</a>
         </section>
+
     </div>
 
-     <!-- 🧩 Aquí se cargará el footer dinámico -->
+    <!-- 🧩 Carga del footer dinámico -->
     <div id="footer"></div>
-    
+
 </body>
 </html>

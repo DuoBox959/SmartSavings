@@ -1,38 +1,38 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <!-- Definimos el estándar HTML5 -->
-    <meta charset="UTF-8" />
-    <!-- Configuración para diseño responsivo -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Título de la página que aparece en la pestaña del navegador -->
+<head>
+    <!-- ✅ Configuración básica del documento -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Gestión de Productos</title>
 
-    <!-- Vinculación de archivos CSS -->
-    <link rel="stylesheet" href="../style/global/header.css" />
-    <link rel="stylesheet" href="../style/producto.css" />
-    <link rel="stylesheet" href="../style/global/footer.css" />
+    <!-- ✅ Vinculación de archivos CSS -->
+    <link rel="stylesheet" href="../style/global/header.css">  <!-- Estilos del encabezado -->
+    <link rel="stylesheet" href="../style/producto.css">  <!-- Estilos específicos de la página -->
+    <link rel="stylesheet" href="../style/global/footer.css">  <!-- Estilos del pie de página -->
 
-     <!-- Librerías y scripts necesarios -->
-    <!-- jQuery: Facilita manipulación del DOM y AJAX -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- PouchDB: Manejo de bases de datos locales en el navegador -->
-    <script src="../libs/pouchdb-9.0.0.min.js"></script>
-    <!-- Funciones específicas para la gestión de productos -->
-    <script type="module" src="../functions/productos.js"></script>
-    <!-- Validaciones personalizadas para los formularios -->
-    <script src="../valid/validaciones.js"></script>
-  </head>
-  <body>
-    <!-- 🧩 Aquí se cargará el header dinámico -->
+    <!-- ✅ Librerías y scripts necesarios -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  <!-- jQuery (manipulación del DOM) -->
+    <script src="../libs/pouchdb-9.0.0.min.js"></script>  <!-- PouchDB (base de datos local) -->
+    <script type="module" src="../functions/productos.js"></script>  <!-- Funciones de gestión de productos -->
+    <script src="../valid/validaciones.js"></script>  <!-- Validaciones personalizadas -->
+</head>
+<body>
+
+    <!-- 🧩 Header dinámico (cargado desde JS) -->
     <div id="header"></div>
+
+    <!-- 📌 Contenedor principal -->
     <div class="productos-container" id="productos-container">
-      Aquí se insertarán dinámicamente las tarjetas de productos
+        <!-- 🔹 Aquí se insertarán dinámicamente las tarjetas de productos -->
     </div>
-    <!-- Botón de regreso -->
+
+    <!-- 🔙 Botón para regresar atrás -->
     <button class="back-button" onclick="volverAtras()">Volver Atrás</button>
 
-    <!-- 🧩 Aquí se cargará el footer dinámico -->
+    <!-- 🧩 Footer dinámico (cargado desde JS) -->
     <div id="footer"></div>
-  </body>
+
+</body>
 </html>

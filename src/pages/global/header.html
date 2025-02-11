@@ -1,23 +1,38 @@
+<!-- ✅ Importación de funciones globales -->
 <script type="module" src="../../functions/global/funciones.js" defer></script>
+
+<!-- ✅ Encabezado Principal -->
 <header>
-  <div class="logo">
-    <h1><a href="/src/pages/index.html" class="comparaTu" id="comparatu">ComparaTú</a></h1>
-  </div>
-  <div class="eslogan">
-    <p class="subtitulo">
-      Encuentra las mejores ofertas y organiza tus productos fácilmente
-    </p>
-  </div>
-  <div class="acciones" id="acciones">
-    <a href="/src/pages/register.html" class="enlace" id="registerLink">Registrate</a>
-    <a href="/src/pages/login.html" class="enlace" id="loginLink">Iniciar Sesión</a>
-    <div id="userMenu" class="user-menu" style="display: none">
-      <button id="userName" class="user-menu-button">Bienvenido, Jon</button>
-      <div class="dropdown-menu" id="dropdownMenu">
-        <a href="/src/pages/index.html" id="logout">Cerrar Sesión</a>
-        <a href="/src/pages/update.html" id="changeUser">Actualizar Usuario</a>
-        <a href="/src/pages/delete.html" id="delete">Borrar Cuenta</a>
-      </div>
+
+    <!-- 🔹 Logo y enlace a la página principal -->
+    <div class="logo">
+        <h1>
+            <a href="/src/pages/index.html" class="comparaTu" id="comparatu">ComparaTú</a>
+        </h1>
     </div>
-  </div>
+
+    <!-- 🔹 Eslogan -->
+    <div class="eslogan">
+        <p class="subtitulo">Encuentra las mejores ofertas y organiza tus productos fácilmente</p>
+    </div>
+
+    <!-- 🔹 Sección de acciones (Registro/Iniciar Sesión) -->
+    <div class="acciones" id="acciones">
+        
+        <!-- Botones para usuarios no autenticados -->
+        <a href="/src/pages/register.html" class="enlace" id="registerLink">Regístrate</a>
+        <a href="/src/pages/login.html" class="enlace" id="loginLink">Iniciar Sesión</a>
+
+        <!-- Menú desplegable para usuarios autenticados -->
+        <div id="userMenu" class="user-menu" style="display: none">
+            <button id="userName" class="user-menu-button">Bienvenido, Jon</button>
+            <div class="dropdown-menu" id="dropdownMenu">
+                <a href="/src/pages/index.html" id="logout">Cerrar Sesión</a>
+                <a href="/src/pages/update.html" id="changeUser">Actualizar Usuario</a>
+                <a href="/src/pages/delete.html" id="delete">Borrar Cuenta</a>
+            </div>
+        </div>
+
+    </div>
+
 </header>

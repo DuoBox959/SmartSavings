@@ -1,48 +1,53 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - ComparaTú</title>
-    <!-- Vinculación al archivo de estilos CSS específico para esta página -->
-    <link rel="stylesheet" href="../style/login.css" />
+
+    <!-- ✅ Estilos CSS -->
+    <link rel="stylesheet" href="../style/login.css">
+
+    <!-- ✅ Librería PouchDB (Base de Datos Local) -->
     <script src="../libs/pouchdb-9.0.0.min.js"></script>
+
+    <!-- ✅ Archivo JS para la lógica de login -->
     <script type="module" src="../functions/login.js" defer></script>
-  </head>
-  <body>
+</head>
+<body>
+
+    <!-- 📌 Contenedor principal -->
     <div class="container">
-      <div class="form-container">
-        <h1>Inicia Sesión</h1>
-        <form action="#" method="post">
-          <label for="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="Ingresa tu email"
-            required
-          />
+        <div class="form-container">
 
-          <label for="password">Contraseña:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Ingresa tu contraseña"
-            required
-          />
+            <h1>Inicia Sesión</h1>
 
-          <button type="submit">Iniciar Sesión</button>
-          <p class="register-link">
-            ¿No tienes cuenta? <a href="register.html">Regístrate aquí</a>
-          </p>
+            <!-- 📋 Formulario de inicio de sesión -->
+            <form action="#" method="post">
 
-          <!-- Botón "Volver Atrás" -->
-          <button type="button" class="back-button" onclick="volverAtras()">
-            Volver Atrás
-          </button>
-        </form>
-      </div>
+                <!-- 🔹 Campo: Email -->
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Ingresa tu email" required>
+
+                <!-- 🔹 Campo: Contraseña -->
+                <label for="password">Contraseña:</label>
+                <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña" required>
+
+                <!-- 🔥 Botón para iniciar sesión -->
+                <button type="submit">Iniciar Sesión</button>
+
+                <!-- 🔹 Enlace para registrarse -->
+                <p class="register-link">
+                    ¿No tienes cuenta? <a href="register.html">Regístrate aquí</a>
+                </p>
+
+                <!-- 🔙 Botón para regresar atrás -->
+                <button type="button" class="back-button" onclick="volverAtras()">Volver Atrás</button>
+
+            </form>
+
+        </div>
     </div>
-  </body>
+
+</body>
 </html>

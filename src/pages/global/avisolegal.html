@@ -1,99 +1,68 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <!-- Definimos el estándar HTML5 -->
-    <meta charset="UTF-8" />
-    <!-- Hacemos que el diseño sea responsive para dispositivos móviles -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Título de la página que se muestra en la pestaña del navegador -->
+<head>
+    <!-- ✅ Configuración básica del documento -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Aviso Legal</title>
 
-    <!-- Importación de fuentes externas desde Google Fonts -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
-    <!-- Vinculación al archivo de estilos CSS específico para esta página -->
-    <link rel="stylesheet" href="../../style/global/header.css" />
-    <link rel="stylesheet" href="../../style/global/politicas.css" />
-    <link rel="stylesheet" href="../../style/global/footer.css" />
+    <!-- ✅ Importación de fuentes desde Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- ✅ Vinculación de archivos CSS -->
+    <link rel="stylesheet" href="../../style/global/header.css">  <!-- Estilos del header -->
+    <link rel="stylesheet" href="../../style/global/politicas.css">  <!-- Estilos generales de políticas -->
+    <link rel="stylesheet" href="../../style/global/footer.css">  <!-- Estilos del footer -->
+
+    <!-- ✅ Archivo JS para funcionalidades relacionadas con políticas -->
     <script src="../../functions/politicas.js" type="module" defer></script>
-  </head>
-  <body>
-    <!-- 🧩 Aquí se cargará el header dinámico -->
+</head>
+<body>
+
+    <!-- 🧩 Carga del header dinámico -->
     <div id="header"></div>
+
+    <!-- 📌 Contenedor principal -->
     <div class="container">
-      <div class="politicas">
-        <h2>Aviso Legal</h2>
-        <p>
-          Bienvenido a <strong>ComparaTu</strong>, una plataforma diseñada para
-          ayudarte a comparar precios y características de productos y servicios
-          de manera eficiente. A continuación, se detallan los términos legales
-          que rigen el uso de este sitio web. Recomendamos leer detenidamente
-          este aviso antes de continuar navegando.
-        </p>
+        <div class="politicas">
 
-        <h3>1. Uso del Sitio</h3>
-        <ul>
-          <li>
-            Al utilizar <strong>ComparaTu</strong>, aceptas respetar las leyes
-            aplicables y los términos descritos en este aviso legal.
-          </li>
-          <li>
-            La información presentada en este sitio tiene como único propósito
-            facilitar la comparación de precios y características de productos.
-            No garantizamos que dicha información esté libre de errores, ya que
-            proviene de fuentes externas que pueden variar con el tiempo.
-          </li>
-          <li>
-            <strong>Prohibido:</strong> Está estrictamente prohibido el uso del
-            contenido de <strong>ComparaTu</strong> para fines ilícitos, como la
-            distribución de información falsa o el acceso no autorizado a
-            sistemas informáticos.
-          </li>
-        </ul>
+            <h2>Aviso Legal</h2>
+            <p>
+                Bienvenido a <strong>ComparaTú</strong>, una plataforma diseñada para ayudarte a comparar precios y características 
+                de productos y servicios de manera eficiente. A continuación, se detallan los términos legales que rigen el uso 
+                de este sitio web. Recomendamos leer detenidamente este aviso antes de continuar navegando.
+            </p>
 
-        <h3>2. Responsabilidad</h3>
-        <ul>
-          <li>
-            <strong>ComparaTu</strong> actúa únicamente como un intermediario
-            informativo. No somos responsables de las transacciones que los
-            usuarios realicen con terceros a partir de la información
-            proporcionada en este sitio.
-          </li>
-          <li>
-            Es responsabilidad del usuario verificar los precios, las
-            condiciones y las características del producto directamente con el
-            proveedor antes de realizar cualquier compra.
-          </li>
-          <li>
-            Aunque hacemos nuestro mejor esfuerzo para mantener la información
-            actualizada, <strong>ComparaTu</strong> no garantiza la
-            disponibilidad o veracidad de los datos en todo momento.
-          </li>
-        </ul>
+            <!-- 🔹 Sección: Uso del Sitio -->
+            <h3>1. Uso del Sitio</h3>
+            <ul>
+                <li>Al utilizar <strong>ComparaTú</strong>, aceptas respetar las leyes aplicables y los términos descritos en este aviso legal.</li>
+                <li>La información presentada en este sitio tiene como único propósito facilitar la comparación de precios y características de productos.</li>
+                <li><strong>Prohibido:</strong> Está estrictamente prohibido el uso del contenido de <strong>ComparaTú</strong> para fines ilícitos.</li>
+            </ul>
 
-        <h3>3. Propiedad Intelectual</h3>
-        <ul>
-          <li>
-            Todos los contenidos disponibles en <strong>ComparaTu</strong>,
-            incluyendo textos, imágenes, logotipos y diseños, son propiedad
-            intelectual de <strong>ComparaTu</strong> o de sus respectivos
-            autores y están protegidos por las leyes de derechos de autor.
-          </li>
-          <li>
-            Queda prohibida la reproducción, distribución o modificación del
-            contenido del sitio sin el consentimiento previo por escrito del
-            titular.
-          </li>
-          <li>
-            El uso no autorizado de los contenidos puede dar lugar a acciones
-            legales conforme a la legislación vigente.
-          </li>
-        </ul>
-      </div>
+            <!-- 🔹 Sección: Responsabilidad -->
+            <h3>2. Responsabilidad</h3>
+            <ul>
+                <li><strong>ComparaTú</strong> actúa únicamente como un intermediario informativo.</li>
+                <li>Es responsabilidad del usuario verificar los precios y condiciones con el proveedor antes de realizar una compra.</li>
+                <li>Hacemos nuestro mejor esfuerzo para mantener la información actualizada, pero no garantizamos su precisión en todo momento.</li>
+            </ul>
+
+            <!-- 🔹 Sección: Propiedad Intelectual -->
+            <h3>3. Propiedad Intelectual</h3>
+            <ul>
+                <li>Todos los contenidos de <strong>ComparaTú</strong> están protegidos por derechos de autor.</li>
+                <li>Queda prohibida la reproducción, distribución o modificación del contenido sin autorización.</li>
+                <li>El uso no autorizado de los contenidos puede dar lugar a acciones legales.</li>
+            </ul>
+
+        </div>
     </div>
-    <!-- 🧩 Aquí se cargará el footer dinámico -->
+
+    <!-- 🧩 Carga del footer dinámico -->
     <div id="footer"></div>
-  </body>
+
+</body>
 </html>
