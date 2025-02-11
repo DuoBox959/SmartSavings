@@ -3,6 +3,7 @@ function inicializarChatbot() {
     const chatInput = document.getElementById("chat-input");
     const sendBtn = document.getElementById("send-btn");
 
+    // 🔄 Esperar hasta que los elementos del chatbot existan antes de continuar
     if (!chatBody || !chatInput || !sendBtn) {
         console.warn("⏳ Chatbot aún no está disponible. Reintentando...");
         setTimeout(inicializarChatbot, 500);
@@ -69,4 +70,3 @@ function inicializarChatbot() {
 
 // ⏳ Esperar a que el chatbot esté listo antes de ejecutarlo
 setTimeout(inicializarChatbot, 500);
-

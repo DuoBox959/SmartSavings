@@ -1,88 +1,76 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio | Comparador de Precios</title>
 
-    <!-- Fuentes -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
+    <!-- ✅ Fuentes de Google -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
-    <!-- Estilos CSS -->
-    <link rel="stylesheet" href="../style/global/header.css" />
-    <link rel="stylesheet" href="../style/index.css" />
-    <link rel="stylesheet" href="../style/global/footer.css" />
-    <link rel="stylesheet" href="/src/style/global/chatbot.css" />
+    <!-- ✅ Estilos CSS -->
+    <link rel="stylesheet" href="../style/global/header.css">  <!-- Estilos del header -->
+    <link rel="stylesheet" href="../style/index.css">  <!-- Estilos específicos de la página -->
+    <link rel="stylesheet" href="../style/global/footer.css">  <!-- Estilos del footer -->
+    <link rel="stylesheet" href="/src/style/global/chatbot.css">  <!-- Estilos del chatbot -->
 
-    <!-- Carga el archivo JS como módulo -->
-    <script src="../functions/index.js" type="module" defer></script>
+    <!-- ✅ Scripts JS -->
+    <script src="../functions/index.js" type="module" defer></script>  <!-- Funciones principales -->
+    <script src="/src/functions/global/chatbot.js" defer></script>  <!-- Chatbot IA -->
+</head>
 
-    <script src="/src/functions/global/chatbot.js" defer></script>
-  </head>
-
-  <body>
-    <!-- 🧩 Aquí se cargará el header dinámico -->
+<body>
+    <!-- 🧩 Header dinámico (se carga desde JS) -->
     <div id="header"></div>
 
-    <!-- Contenedor principal -->
+    <!-- 📌 Contenedor principal -->
     <div class="container">
-      <main>
-        <!-- Sección de tarjetas -->
-        <section class="tarjetas">
-          <!-- Tarjeta 1: Gestión de Productos -->
-          <div class="tarjeta">
-            <div class="icono-contenedor">
-              <img src="../assets/icons/icon1.webp" alt="API" />
-            </div>
-            <a href="productos.html" class="enlace">Gestión de Productos</a>
-          </div>
+        <main>
+            <!-- 🎯 Sección de Tarjetas (Opciones principales) -->
+            <section class="tarjetas">
+                
+                <!-- 🔹 Tarjeta 1: Gestión de Productos -->
+                <div class="tarjeta">
+                    <div class="icono-contenedor">
+                        <img src="../assets/icons/icon1.webp" alt="API">
+                    </div>
+                    <a href="productos.html" class="enlace">Gestión de Productos</a>
+                </div>
 
-          <!-- Tarjeta 2: Comparador de Precios -->
-          <div class="tarjeta">
-            <div class="icono-contenedor">
-              <img src="../assets/icons/icon2.webp" alt="API" />
-            </div>
-            <a href="comparador.html" class="enlace">Comparador Precios</a>
-          </div>
-        </section>
-      </main>
+                <!-- 🔹 Tarjeta 2: Comparador de Precios -->
+                <div class="tarjeta">
+                    <div class="icono-contenedor">
+                        <img src="../assets/icons/icon2.webp" alt="Comparador">
+                    </div>
+                    <a href="comparador.html" class="enlace">Comparador Precios</a>
+                </div>
+
+            </section>
+        </main>
     </div>
-<!-- Chatbot -->
-<div id="chat-container">
-  <div id="chat-header">💬 Chatbot IA</div>
-  <div id="chat-body"></div>
-  <input type="text" id="chat-input" placeholder="Escribe un mensaje...">
-  <button id="send-btn">Enviar</button>
-</div>
+
+<!-- 🧩🤖 Contenedor del chatbot (se carga desde funciones globales) -->
+<div id="chatBot"></div>
+
 
     <!-- 🍪 Banner de Cookies -->
     <div class="cookies-banner" id="cookies-banner">
-      <div class="cookies-content">
-        <p>
-          Este sitio web utiliza cookies para mejorar tu experiencia. Al
-          continuar navegando, aceptas su uso.
-          <a href="../pages/global/politicacookies.html" class="cookies-link">Leer más</a>.
-        </p>
-        <div class="cookies-buttons">
-          <button id="aceptar-cookies" class="cookies-btn cookies-aceptar">
-            Aceptar
-          </button>
-          <button id="rechazar-cookies" class="cookies-btn cookies-rechazar">
-            Rechazar
-          </button>
+        <div class="cookies-content">
+            <p>
+                Este sitio web utiliza cookies para mejorar tu experiencia. Al continuar navegando, aceptas su uso.
+                <a href="../pages/global/politicacookies.html" class="cookies-link">Leer más</a>.
+            </p>
+            <div class="cookies-buttons">
+                <button id="aceptar-cookies" class="cookies-btn cookies-aceptar">Aceptar</button>
+                <button id="rechazar-cookies" class="cookies-btn cookies-rechazar">Rechazar</button>
+            </div>
         </div>
-      </div>
     </div>
 
-
-    <!-- Superposición para el banner de cookies -->
+    <!-- 🔲 Superposición para el banner de cookies -->
     <div class="overlay" id="overlay"></div>
 
-    <!-- 🧩 Aquí se cargará el footer dinámico -->
+    <!-- 🧩 Footer dinámico (se carga desde JS) -->
     <div id="footer"></div>
-    <!-- Chatbot -->
-  </body>
+</body>
 </html>
