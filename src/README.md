@@ -54,3 +54,4 @@
    - Optimizarlo y comenntarlo como en producto.html de intranet
       *
    - Todos los demas hay que seguir comentando y optimizando
+   - En las funciones que tenga un comentario asi resumido como se hace con @params y comentarios de algunas lineas importante en js, en css comento alguna linea
