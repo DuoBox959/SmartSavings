@@ -13,11 +13,11 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  align-items: center; /* Centra el contenido en el eje horizontal */
+  align-items: center;
 }
 
 #header, #footer {
-  width: 100%; /* Asegura que el header y footer ocupen todo el ancho */
+  width: 100%;
 }
 
 .container {
@@ -30,35 +30,37 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   max-width: 500px;
   width: 100%;
-  margin-top: 20px; /* Espacio desde el header */
-  margin-bottom: 20px; /* Espacio hasta el footer */
+  margin-top: 20px; 
+  margin-bottom: 20px;
 }
 
 section {
   padding: 15px;
-  border-radius: 8px;
-  background: #f9f9f9;
+  border-bottom: 1px solid #ddd;
+}
+
+section:last-child {
+  border-bottom: none;
 }
 
 h2 {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   margin-bottom: 10px;
-  color: #444;
+  color: #222;
 }
 
 label {
-  display: flex;
-  flex-direction: column;
-  font-size: 0.9rem;
-  margin-bottom: 10px;
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 8px;
 }
 
 input, select {
-  padding: 8px;
+  width: 100%;
+  padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 6px;
+  border-radius: 5px;
   font-size: 1rem;
-  margin-top: 5px;
 }
 
 input[type="checkbox"] {
@@ -68,23 +70,43 @@ input[type="checkbox"] {
 
 .btn {
   display: block;
+  width: 100%;
   text-align: center;
-  padding: 10px;
-  margin-top: 10px;
-  border-radius: 6px;
-  text-decoration: none;
+  padding: 12px;
+  margin-top: 15px;
+  border-radius: 5px;
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
+  border: none;
 }
 
-.actualizar {
-  background: #4CAF50;
+.update, .delete {
+  display: block;
+  font-size: 1.1rem;
+  text-decoration: underline;
+  color: black;
+  margin: 10px 0;
+  padding: 8px 0;
+  text-align: left;
+  transition: color 0.3s;
+}
+
+.update {
+  border-left: 4px solid #a8d5ba;
+  padding-left: 12px;
+}
+
+.delete {
+  border-left: 4px solid #dc3545;
+  padding-left: 12px;
+}
+
+.update:hover, .delete:hover {
+  color: #007bff;
+}
+
+.guardar {
+  background: #28a745;
   color: white;
 }
-
-.eliminar {
-  background: #E53935;
-  color: white;
-}
-

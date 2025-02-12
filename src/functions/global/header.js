@@ -8,8 +8,6 @@ export function gestionarUsuarioAutenticado() {
   const userMenu = document.getElementById("userMenu");
   const userName = document.getElementById("userName");
   const logout = document.getElementById("logout");
-  const changeUser = document.getElementById("changeUser");
-  const del = document.getElementById("delete");
 
   console.log(user); // Verifica si el usuario está correctamente cargado
 
@@ -18,9 +16,7 @@ export function gestionarUsuarioAutenticado() {
     loginLink &&
     userMenu &&
     userName &&
-    logout &&
-    changeUser &&
-    del
+    logout
   ) {
     if (user) {
       // Ocultar enlaces de registro e inicio de sesión
@@ -36,11 +32,6 @@ export function gestionarUsuarioAutenticado() {
         sessionStorage.removeItem("user");
         localStorage.removeItem("user");
         window.location.reload(); // Recarga la página después de cerrar sesión
-      });
-
-      // Función para cambiar de usuario
-      changeUser.addEventListener("click", () => {
-        window.location.href = "login.html";
       });
     } else {
       // Mostrar enlaces de registro e inicio de sesión

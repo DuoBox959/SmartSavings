@@ -25,12 +25,6 @@
    - Permitir acceso solo a administradores.
    - Definir roles de usuario (administrador, usuario estándar).
 
-5. **Añadir Descripción en la BD de Productos**
-   - Incluir campo de descripción para etiquetas como:
-     - Gluten
-     - Lactosa
-     - Otros alérgenos
-
 6. **Historial de Precios y Peso de los Productos**
    - Mostrar cuánto costaba un producto en años anteriores.
    - Incluir información del peso de los productos para evitar engaños.
@@ -41,10 +35,10 @@
 
 8. **Página de Configuración de Cuenta**
    - Permitir modificar datos personales.
-   - Opción para cambiar la contraseña.
    - Ajustes de preferencias.
-   - Rediseñar configuracion cuenta
    - Programar configuracion cuenta
+   - Añadir capchat para guardar la configuracion de cuenta
+   - Añadir nuevos campos a la bd de usuarios
 
 9. **Correcciones en la Intranet**
    - Revisar botón "Ver Historial" en la intranet (corregir en el JS).
