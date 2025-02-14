@@ -15,7 +15,7 @@
     <!-- ✅ Librerías y scripts necesarios -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  <!-- jQuery (manipulación del DOM) -->
     <script src="../libs/pouchdb-9.0.0.min.js"></script>  <!-- PouchDB (base de datos local) -->
-    <script type="module" src="../functions/productos.js"></script>  <!-- Funciones de gestión de productos -->
+    <script type="module" src="../functions/productos.js" defer></script>  <!-- Funciones de gestión de productos -->
     <script src="../valid/validaciones.js"></script>  <!-- Validaciones personalizadas -->
 </head>
 <body>
@@ -30,6 +30,52 @@
 
     <!-- 🔙 Botón para regresar atrás -->
     <button class="back-button" onclick="volverAtras()">Volver Atrás</button>
+    
+    <!-- 📝 Modal para editar producto -->
+<div id="modal-editar" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="cerrarFormulario()">&times;</span>
+        <h2>Editar Producto</h2>
+        <form id="form-editar-producto">
+            <label>Nombre:</label>
+            <input type="text" id="edit-nombre" required>
+
+            <label>Marca:</label>
+            <input type="text" id="edit-marca">
+
+            <label>Precio Unidad (€):</label>
+            <input type="number" id="edit-precioUnidad" step="0.01">
+
+            <label>Precio Lote (€):</label>
+            <input type="number" id="edit-precioLote" step="0.01">
+
+            <label>Peso:</label>
+            <input type="number" id="edit-peso" step="0.01">
+            
+            <label>Unidad de Peso:</label>
+            <select id="edit-unidadPeso">
+                <option value="kg">Kilogramos (kg)</option>
+                <option value="g">Gramos (g)</option>
+                <option value="l">Litros (l)</option>
+            </select>
+
+            <label>Supermercado:</label>
+            <input type="text" id="edit-supermercado">
+
+            <label>Ubicación:</label>
+            <input type="text" id="edit-ubicacion">
+
+            <label>Biografía:</label>
+            <textarea id="edit-biografia"></textarea>
+
+            <label>Descripción:</label>
+            <textarea id="edit-descripcion"></textarea>
+
+            <input type="hidden" id="edit-producto-id"> <!-- ID oculto para saber qué producto actualizar -->
+            <button type="button" onclick="guardarCambiosDesdeFormulario()">Guardar Cambios</button>
+        </form>
+    </div>
+</div>
 
     <!-- 🧩 Footer dinámico (cargado desde JS) -->
     <div id="footer"></div>

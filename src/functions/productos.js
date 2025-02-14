@@ -139,6 +139,87 @@ function toggleFavorito(element) {
   element.classList.toggle("favorito");
 }
 
+async function editarProducto(id) {
+  try {
+      const producto = await db.get(id);
+
+      // Rellenar el formulario con los datos del producto
+      document.getElementById("edit-producto-id").value = producto._id;
+      document.getElementById("edit-nombre").value = producto.nombre || "";
+      document.getElementById("edit-marca").value = producto.marca || "";
+      document.getElementById("edit-precioUnidad").value = producto.precioUnidad || "";
+      document.getElementById("edit-precioLote").value = producto.precioLote || "";
+      document.getElementById("edit-peso").value = producto.peso || "";
+      document.getElementById("edit-unidadPeso").value = producto.unidadPeso || "";
+      document.getElementById("edit-supermercado").value = producto.supermercado || "";
+      document.getElementById("edit-ubicacion").value = producto.ubicacion || "";
+      document.getElementById("edit-biografia").value = producto.biografia || "";
+      document.getElementById("edit-descripcion").value = producto.descripcion || "";
+
+      // Mostrar el modal
+      document.getElementById("modal-editar").style.display = "block";
+  } catch (err) {
+      console.error("Error al cargar el producto para edición:", err);
+  }
+}
+
+async function guardarCambiosDesdeFormulario() {
+  try {
+      const id = document.getElementById("edit-producto-id").value;
+
+      // Obtener los datos actualizados
+      const productoActualizado = {
+          _id: id,
+          _rev: (await db.get(id))._rev, // Necesario para actualizar en PouchDB
+          nombre: document.getElementById("edit-nombre").value,
+          marca: document.getElementById("edit-marca").value,
+          precioUnidad: parseFloat(document.getElementById("edit-precioUnidad").value) || 0,
+          precioLote: parseFloat(document.getElementById("edit-precioLote").value) || 0,
+          peso: parseFloat(document.getElementById("edit-peso").value) || 0,
+          unidadPeso: document.getElementById("edit-unidadPeso").value || "kg",
+          supermercado: document.getElementById("edit-supermercado").value,
+          ubicacion: document.getElementById("edit-ubicacion").value,
+          biografia: document.getElementById("edit-biografia").value,
+          descripcion: document.getElementById("edit-descripcion").value,
+      };
+
+      await db.put(productoActualizado); // Guardar cambios en la base de datos
+      console.log("Producto actualizado correctamente");
+
+      cerrarFormulario(); // Cerrar modal
+      cargarProductos(); // Refrescar la lista de productos
+  } catch (err) {
+      console.error("Error al guardar cambios:", err);
+  }
+}
+
+window.guardarCambiosDesdeFormulario = guardarCambiosDesdeFormulario;
+
+
+function cerrarFormulario() {
+  document.getElementById("modal-editar").style.display = "none";
+}
+
+window.cerrarFormulario = cerrarFormulario;
+
+async function eliminarProducto(id) {
+  try {
+    const producto = await db.get(id);
+
+    const confirmacion = confirm(`¿Estás seguro de que deseas eliminar "${producto.nombre}"?`);
+    if (!confirmacion) return;
+
+    await db.remove(producto);
+    console.log(`Producto "${producto.nombre}" eliminado correctamente.`);
+    
+    cargarProductos(); // Actualizar la lista después de eliminar
+  } catch (err) {
+    console.error("Error al eliminar el producto:", err);
+  }
+}
+
+window.eliminarProducto = eliminarProducto;
+
 // Exponer funciones al ámbito global
 window.editarProducto = editarProducto;
 window.eliminarProducto = eliminarProducto;
