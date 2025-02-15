@@ -64,6 +64,9 @@ function mostrarFormularioAgregar() {
     $("#rolUsuario").val("usuario");
     $("#estadoUsuario").val("activo");
     $("#formularioUsuario").show();
+
+     // Desplazamiento suave al formulario
+     document.getElementById("formularioUsuario").scrollIntoView({ behavior: "smooth" });
 }
 
 // 🟢 **Guardar cambios desde el formulario**

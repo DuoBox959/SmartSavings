@@ -3,9 +3,6 @@ import { db } from "../../libs/db.js";
 let productosCache = [];
 let productosTable; 
 
-
-
-
 // Cuando el DOM esté listo:
 $(document).ready(() => {
   // 1. Inicializamos la DataTable con la opción responsive
@@ -232,6 +229,9 @@ function mostrarFormularioAgregar() {
   $("#imgProducto").val(""); // Limpiar el input de imagen
 
   $("#formularioProducto").show();
+  
+   // Desplazamiento suave al formulario
+   document.getElementById("formularioProducto").scrollIntoView({ behavior: "smooth" });
 }
 
 /**
