@@ -141,23 +141,27 @@ function toggleFavorito(element) {
 
 async function editarProducto(id) {
   try {
+      // Obtener el producto de la base de datos
       const producto = await db.get(id);
 
-      // Rellenar el formulario con los datos del producto
+      // Verificar que el producto tiene datos válidos antes de asignarlos
       document.getElementById("edit-producto-id").value = producto._id;
       document.getElementById("edit-nombre").value = producto.nombre || "";
       document.getElementById("edit-marca").value = producto.marca || "";
-      document.getElementById("edit-precioUnidad").value = producto.precioUnidad || "";
-      document.getElementById("edit-precioLote").value = producto.precioLote || "";
-      document.getElementById("edit-peso").value = producto.peso || "";
-      document.getElementById("edit-unidadPeso").value = producto.unidadPeso || "";
+      document.getElementById("edit-precioUnidad").value = producto.precioUnidad !== undefined ? producto.precioUnidad : "";
+      document.getElementById("edit-precioLote").value = producto.precioLote !== undefined ? producto.precioLote : "";
+      document.getElementById("edit-peso").value = producto.peso !== undefined ? producto.peso : "";
+      document.getElementById("edit-unidadPeso").value = producto.unidadPeso || "kg";
       document.getElementById("edit-supermercado").value = producto.supermercado || "";
       document.getElementById("edit-ubicacion").value = producto.ubicacion || "";
       document.getElementById("edit-biografia").value = producto.biografia || "";
       document.getElementById("edit-descripcion").value = producto.descripcion || "";
 
-      // Mostrar el modal
-      document.getElementById("modal-editar").style.display = "block";
+      // 🔹 Mostrar el modal con `flex` en lugar de `block` (para evitar problemas de visualización)
+      const modal = document.getElementById("modal-editar");
+      modal.style.display = "flex";
+
+      console.log("Modal abierto y datos cargados:", producto);
   } catch (err) {
       console.error("Error al cargar el producto para edición:", err);
   }
