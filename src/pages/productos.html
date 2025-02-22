@@ -1,84 +1,92 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
+  <head>
     <!-- ✅ Configuración básica del documento -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Gestión de Productos</title>
 
     <!-- ✅ Vinculación de archivos CSS -->
-    <link rel="stylesheet" href="../style/global/header.css">  <!-- Estilos del encabezado -->
-    <link rel="stylesheet" href="../style/producto.css">  <!-- Estilos específicos de la página -->
-    <link rel="stylesheet" href="../style/global/footer.css">  <!-- Estilos del pie de página -->
+    <link rel="stylesheet" href="../style/global/header.css" />
+    <!-- Estilos del encabezado -->
+    <link rel="stylesheet" href="../style/producto.css" />
+    <!-- Estilos específicos de la página -->
+    <link rel="stylesheet" href="../style/global/footer.css" />
+    <!-- Estilos del pie de página -->
 
     <!-- ✅ Librerías y scripts necesarios -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  <!-- jQuery (manipulación del DOM) -->
-    <script src="../libs/pouchdb-9.0.0.min.js"></script>  <!-- PouchDB (base de datos local) -->
-    <script type="module" src="../functions/productos.js" defer></script>  <!-- Funciones de gestión de productos -->
-    <script src="../valid/validaciones.js"></script>  <!-- Validaciones personalizadas -->
-</head>
-<body>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- jQuery (manipulación del DOM) -->
+    <script src="../libs/pouchdb-9.0.0.min.js"></script>
+    <!-- PouchDB (base de datos local) -->
+    <script type="module" src="../functions/productos.js" defer></script>
+    <!-- Funciones de gestión de productos -->
+    <script src="../valid/validaciones.js"></script>
+    <!-- Validaciones personalizadas -->
+  </head>
+  <body>
     <!-- 🧩 Header dinámico (cargado desde JS) -->
     <div id="header"></div>
 
     <!-- 📌 Contenedor principal -->
     <div class="productos-container" id="productos-container">
-        <!-- 🔹 Aquí se insertarán dinámicamente las tarjetas de productos -->
+      <!-- 🔹 Aquí se insertarán dinámicamente las tarjetas de productos -->
     </div>
 
     <!-- 🔙 Botón para regresar atrás -->
     <button class="back-button" onclick="volverAtras()">Volver Atrás</button>
-    
+
     <!-- 📝 Modal para editar producto -->
-<div id="modal-editar" class="modal">
-    <div class="modal-content">
+    <div id="modal-editar" class="modal">
+      <div class="modal-content">
         <span class="close" onclick="cerrarFormulario()">&times;</span>
         <h2>Editar Producto</h2>
         <form id="form-editar-producto">
-            <label>Nombre:</label>
-            <input type="text" id="edit-nombre" required>
+          <label>Nombre:</label>
+          <input type="text" id="edit-nombre" required />
 
-            <label>Marca:</label>
-            <input type="text" id="edit-marca">
+          <label>Marca:</label>
+          <input type="text" id="edit-marca" />
 
-            <label>Precio Unidad (€):</label>
-            <input type="number" id="edit-precioUnidad" step="0.01">
+          <label>Precio Unidad (€):</label>
+          <input type="number" id="edit-precioUnidad" step="0.01" />
 
-            <label>Precio Lote (€):</label>
-            <input type="number" id="edit-precioLote" step="0.01">
+          <label>Precio Lote (€):</label>
+          <input type="number" id="edit-precioLote" step="0.01" />
 
-            <label>Peso:</label>
-            <input type="number" id="edit-peso" step="0.01">
-            
-            <label>Unidad de Peso:</label>
-            <select id="edit-unidadPeso">
-                <option value="kg">Kilogramos (kg)</option>
-                <option value="g">Gramos (g)</option>
-                <option value="l">Litros (l)</option>
-            </select>
+          <label>Peso:</label>
+          <input type="number" id="edit-peso" step="0.01" />
 
-            <label>Supermercado:</label>
-            <input type="text" id="edit-supermercado">
+          <label>Unidad de Peso:</label>
+          <select id="edit-unidadPeso">
+            <option value="kg">Kilogramos (kg)</option>
+            <option value="g">Gramos (g)</option>
+            <option value="l">Litros (l)</option>
+          </select>
 
-            <label>Ubicación:</label>
-            <input type="text" id="edit-ubicacion">
+          <label>Supermercado:</label>
+          <input type="text" id="edit-supermercado" />
 
-            <label>Biografía:</label>
-            <textarea id="edit-biografia"></textarea>
+          <label>Ubicación:</label>
+          <input type="text" id="edit-ubicacion" />
 
-            <label>Descripción:</label>
-            <textarea id="edit-descripcion"></textarea>
+          <label>Biografía:</label>
+          <textarea id="edit-biografia"></textarea>
 
-            <input type="hidden" id="edit-producto-id"> <!-- ID oculto para saber qué producto actualizar -->
-            <button type="button" onclick="guardarCambiosDesdeFormulario()">Guardar Cambios</button>
+          <label>Descripción:</label>
+          <textarea id="edit-descripcion"></textarea>
+
+          <input type="hidden" id="edit-producto-id" />
+          <!-- ID oculto para saber qué producto actualizar -->
+          <button type="button" onclick="guardarCambiosDesdeFormulario()">
+            Guardar Cambios
+          </button>
         </form>
+      </div>
     </div>
-</div>
 
     <!-- 🧩 Footer dinámico (cargado desde JS) -->
     <div id="footer"></div>
-
-</body>
+  </body>
 </html>

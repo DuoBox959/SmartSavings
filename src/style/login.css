@@ -25,9 +25,10 @@ body {
 
 /* 📝 Caja del formulario con efecto neumorfismo */
 .form-container {
-  background: linear-gradient(145deg, #e0e0e0, #ffffff); 
+  background: linear-gradient(145deg, #e0e0e0, #ffffff);
   border-radius: 15px;
-  box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.2), -6px -6px 15px rgba(255, 255, 255, 0.8); 
+  box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.2),
+    -6px -6px 15px rgba(255, 255, 255, 0.8);
   padding: 30px;
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -58,13 +59,15 @@ form input {
   font-size: 16px;
   margin-bottom: 15px;
   background: #f0f0f0;
-  box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.1), inset -4px -4px 8px rgba(255, 255, 255, 0.7);
+  box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.1),
+    inset -4px -4px 8px rgba(255, 255, 255, 0.7);
   transition: box-shadow 0.3s ease;
 }
 
 /* 🎯 Efecto al enfocar */
 form input:focus {
-  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1), inset -2px -2px 5px rgba(255, 255, 255, 0.7);
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.7);
   outline: none;
 }
 
@@ -79,7 +82,8 @@ form button {
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.3s ease, transform 0.3s ease;
-  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2), -4px -4px 8px rgba(255, 255, 255, 0.1);
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2),
+    -4px -4px 8px rgba(255, 255, 255, 0.1);
 }
 
 form button:hover {
@@ -116,7 +120,8 @@ form button:hover {
   cursor: pointer;
   margin-top: 15px;
   transition: background 0.3s ease, transform 0.3s ease;
-  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2), -4px -4px 8px rgba(255, 255, 255, 0.1);
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2),
+    -4px -4px 8px rgba(255, 255, 255, 0.1);
 }
 
 .back-button:hover {
@@ -127,5 +132,6 @@ form button:hover {
 /* 🎭 Efecto de escala en hover para el formulario */
 .form-container:hover {
   transform: scale(1.02);
-  box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.2), -8px -8px 20px rgba(255, 255, 255, 0.8);
+  box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.2),
+    -8px -8px 20px rgba(255, 255, 255, 0.8);
 }

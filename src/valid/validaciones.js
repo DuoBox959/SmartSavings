@@ -1,5 +1,3 @@
-
-
 // 📋 Validaciones para los campos del formulario
 async function asignarIDDisponible() {
   try {

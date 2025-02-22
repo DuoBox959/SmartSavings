@@ -1,53 +1,63 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
+  <head>
     <!-- ✅ A. Configuración del Documento -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Login - ComparaTú</title>
 
     <!-- ✅ B. Vinculación de Archivos CSS -->
-    <link rel="stylesheet" href="../style/login.css">
+    <link rel="stylesheet" href="../style/login.css" />
 
     <!-- ✅ C. Librerías y Scripts Necesarios -->
-    <script src="../libs/pouchdb-9.0.0.min.js"></script>  <!-- PouchDB (Base de Datos Local) -->
-    <script type="module" src="../functions/login.js" defer></script>  <!-- Lógica de autenticación -->
-</head>
-<body>
-
+    <script src="../libs/pouchdb-9.0.0.min.js"></script>
+    <!-- PouchDB (Base de Datos Local) -->
+    <script type="module" src="../functions/login.js" defer></script>
+    <!-- Lógica de autenticación -->
+  </head>
+  <body>
     <!-- 📌 D. Contenedor Principal -->
     <div class="container">
-        <div class="form-container">
+      <div class="form-container">
+        <h1>Inicia Sesión</h1>
 
-            <h1>Inicia Sesión</h1>
+        <!-- 📋 E. Formulario de Inicio de Sesión -->
+        <form action="#" method="post">
+          <!-- 🔹 Campo: Email -->
+          <label for="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Ingresa tu email"
+            required
+          />
 
-            <!-- 📋 E. Formulario de Inicio de Sesión -->
-            <form action="#" method="post">
+          <!-- 🔹 Campo: Contraseña -->
+          <label for="password">Contraseña:</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Ingresa tu contraseña"
+            required
+          />
 
-                <!-- 🔹 Campo: Email -->
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" placeholder="Ingresa tu email" required>
+          <!-- 🔥 F. Botón para Iniciar Sesión -->
+          <button type="submit">Iniciar Sesión</button>
 
-                <!-- 🔹 Campo: Contraseña -->
-                <label for="password">Contraseña:</label>
-                <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña" required>
+          <!-- 🔹 Enlace para Registrarse -->
+          <p class="register-link">
+            ¿No tienes cuenta? <a href="register.html">Regístrate aquí</a>
+          </p>
 
-                <!-- 🔥 F. Botón para Iniciar Sesión -->
-                <button type="submit">Iniciar Sesión</button>
-
-                <!-- 🔹 Enlace para Registrarse -->
-                <p class="register-link">
-                    ¿No tienes cuenta? <a href="register.html">Regístrate aquí</a>
-                </p>
-
-                <!-- 🔙 G. Botón para Regresar Atrás -->
-                <button type="button" class="back-button" onclick="volverAtras()">Volver Atrás</button>
-
-            </form>
-
-        </div>
+          <!-- 🔙 G. Botón para Regresar Atrás -->
+          <button type="button" class="back-button" onclick="volverAtras()">
+            Volver Atrás
+          </button>
+        </form>
+      </div>
     </div>
-
-</body>
+  </body>
 </html>

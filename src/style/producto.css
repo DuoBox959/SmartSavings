@@ -51,7 +51,6 @@ body {
   border-radius: 12px;
   transition: transform 0.3s ease;
   margin-bottom: 10px;
-
 }
 
 .product-card:hover img {
@@ -89,14 +88,17 @@ body {
 }
 
 /* ⚖️ Peso y Ubicación */
-.product-card .peso, .product-card .supermercado, .product-card .ubicacion {
+.product-card .peso,
+.product-card .supermercado,
+.product-card .ubicacion {
   font-size: 16px;
   color: #555;
   margin: 6px 0;
 }
 
 /* 📝 Descripción y Biografía */
-.product-card .biografia, .product-card .descripcion {
+.product-card .biografia,
+.product-card .descripcion {
   font-size: 15px;
   color: #444;
   margin-top: 6px;
@@ -150,7 +152,6 @@ body {
   background: #d32f2f;
   color: white;
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
-
 }
 .btn-eliminar:hover {
   background: #e64a19;
@@ -159,12 +160,10 @@ body {
   background: #388e3c;
   color: white;
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
-
 }
 .btn-editar:hover {
   background: #388e3c;
 }
-
 
 /* 🔙 Botón Volver Atrás */
 .back-button {
@@ -192,11 +191,10 @@ body {
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.5); 
+  background-color: rgba(0, 0, 0, 0.5);
   align-items: center;
   justify-content: center;
 }
-
 
 .close {
   float: right;
@@ -210,7 +208,7 @@ body {
   background-color: white;
   padding: 15px;
   width: 90%;
-  max-width: 600px;  /* 🔥 Más ancho */
+  max-width: 600px; /* 🔥 Más ancho */
   border-radius: 10px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   text-align: center;
@@ -282,7 +280,6 @@ body {
   transition: background 0.3s ease;
   width: 100%;
   grid-column: span 2; /* Ocupa todo el ancho */
-
 }
 
 #form-editar-producto button:hover {

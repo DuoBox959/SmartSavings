@@ -1,57 +1,68 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Actualizar Datos - ComparaTú</title>
 
     <!-- ✅ Estilos CSS -->
-    <link rel="stylesheet" href="../style/update.css">
+    <link rel="stylesheet" href="../style/update.css" />
 
     <!-- ✅ Librería PouchDB (Base de Datos Local) -->
     <script src="../libs/pouchdb-9.0.0.min.js"></script>
 
     <!-- ✅ Archivo JS para la lógica de actualización de cuenta -->
     <script type="module" src="../functions/update.js" defer></script>
-</head>
-<body>
-
+  </head>
+  <body>
     <!-- 📌 Contenedor principal -->
     <div class="container">
-        <div class="form-container">
+      <div class="form-container">
+        <h1>Actualizar datos</h1>
 
-            <h1>Actualizar datos</h1>
+        <!-- 📋 Formulario de actualización -->
+        <form action="#" method="post">
+          <!-- 🔹 Campo: Nombre de usuario -->
+          <label for="username">Usuario:</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            placeholder="Actualiza tu nombre de usuario"
+          />
 
-            <!-- 📋 Formulario de actualización -->
-            <form action="#" method="post">
+          <!-- 🔹 Campo: Email -->
+          <label for="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Actualiza tu email"
+          />
 
-                <!-- 🔹 Campo: Nombre de usuario -->
-                <label for="username">Usuario:</label>
-                <input type="text" id="username" name="username" placeholder="Actualiza tu nombre de usuario">
+          <!-- 🔹 Campo: Contraseña -->
+          <label for="password">Contraseña:</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Actualiza tu contraseña"
+          />
 
-                <!-- 🔹 Campo: Email -->
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" placeholder="Actualiza tu email">
+          <!-- 🔥 Botón para actualizar datos -->
+          <button type="submit">Actualizar datos</button>
 
-                <!-- 🔹 Campo: Contraseña -->
-                <label for="password">Contraseña:</label>
-                <input type="password" id="password" name="password" placeholder="Actualiza tu contraseña">
+          <!-- 🔹 Enlace para borrar cuenta -->
+          <p class="register-link">
+            ¿Deseas borrar tu cuenta? <a href="delete.html">Haz clic aquí</a>
+          </p>
 
-                <!-- 🔥 Botón para actualizar datos -->
-                <button type="submit">Actualizar datos</button>
-
-                <!-- 🔹 Enlace para borrar cuenta -->
-                <p class="register-link">
-                    ¿Deseas borrar tu cuenta? <a href="delete.html">Haz clic aquí</a>
-                </p>
-
-                <!-- 🔙 Botón para regresar atrás -->
-                <button type="button" class="back-button" onclick="volverAtras()">Volver Atrás</button>
-
-            </form>
-
-        </div>
+          <!-- 🔙 Botón para regresar atrás -->
+          <button type="button" class="back-button" onclick="volverAtras()">
+            Volver Atrás
+          </button>
+        </form>
+      </div>
     </div>
-
-</body>
+  </body>
 </html>

@@ -91,20 +91,39 @@ async function cargarProductos() {
     productosCache.forEach((producto) => {
       const productoHTML = `
         <div class="product-card">
-            <span class="favorite-icon" onclick="toggleFavorito(this)">❤️</span>
-            <img src="${producto.img || "default.jpg"}" alt="${producto.nombre || "Producto sin nombre"}">
+            <img src="${producto.img || "default.jpg"}" alt="${
+        producto.nombre || "Producto sin nombre"
+      }">
             <h3>${producto.nombre || "Producto sin nombre"}</h3>
             <p class="marca">${producto.marca || "Marca desconocida"}</p>
-            <p class="precio">Desde ${producto.precioUnidad ? `${producto.precioUnidad} €` : "0 €"}</p>
-            <p class="precio-lote">Lote: ${producto.precioLote ? `${producto.precioLote} €` : "0 €"}</p>
-            <p class="peso">Peso: ${producto.peso ? `${producto.peso} ${producto.unidadPeso || "kg"}` : "0 kg"}</p>
-            <p class="supermercado">Supermercado: ${producto.supermercado || "No especificado"}</p>
-            <p class="ubicacion">Ubicación: ${producto.ubicacion || "No disponible"}</p>
+            <p class="precio">Desde ${
+              producto.precioUnidad ? `${producto.precioUnidad} €` : "0 €"
+            }</p>
+            <p class="precio-lote">Lote: ${
+              producto.precioLote ? `${producto.precioLote} €` : "0 €"
+            }</p>
+            <p class="peso">Peso: ${
+              producto.peso
+                ? `${producto.peso} ${producto.unidadPeso || "kg"}`
+                : "0 kg"
+            }</p>
+            <p class="supermercado">Supermercado: ${
+              producto.supermercado || "No especificado"
+            }</p>
+            <p class="ubicacion">Ubicación: ${
+              producto.ubicacion || "No disponible"
+            }</p>
             <p class="biografia">${producto.biografia || "Sin biografía"}</p>
-            <p class="descripcion">${producto.descripcion || "Sin descripción"}</p>
+            <p class="descripcion">${
+              producto.descripcion || "Sin descripción"
+            }</p>
             <div class="acciones">
-                <button class="btn-editar" onclick="editarProducto('${producto._id}')">✏️ Editar</button>
-                <button class="btn-eliminar" onclick="eliminarProducto('${producto._id}')">🗑️ Eliminar</button>
+                <button class="btn-editar" onclick="editarProducto('${
+                  producto._id
+                }')">✏️ Editar</button>
+                <button class="btn-eliminar" onclick="eliminarProducto('${
+                  producto._id
+                }')">🗑️ Eliminar</button>
             </div>
         </div>
       `;
@@ -141,64 +160,71 @@ function toggleFavorito(element) {
 
 async function editarProducto(id) {
   try {
-      // Obtener el producto de la base de datos
-      const producto = await db.get(id);
+    // Obtener el producto de la base de datos
+    const producto = await db.get(id);
 
-      // Verificar que el producto tiene datos válidos antes de asignarlos
-      document.getElementById("edit-producto-id").value = producto._id;
-      document.getElementById("edit-nombre").value = producto.nombre || "";
-      document.getElementById("edit-marca").value = producto.marca || "";
-      document.getElementById("edit-precioUnidad").value = producto.precioUnidad !== undefined ? producto.precioUnidad : "";
-      document.getElementById("edit-precioLote").value = producto.precioLote !== undefined ? producto.precioLote : "";
-      document.getElementById("edit-peso").value = producto.peso !== undefined ? producto.peso : "";
-      document.getElementById("edit-unidadPeso").value = producto.unidadPeso || "kg";
-      document.getElementById("edit-supermercado").value = producto.supermercado || "";
-      document.getElementById("edit-ubicacion").value = producto.ubicacion || "";
-      document.getElementById("edit-biografia").value = producto.biografia || "";
-      document.getElementById("edit-descripcion").value = producto.descripcion || "";
+    // Verificar que el producto tiene datos válidos antes de asignarlos
+    document.getElementById("edit-producto-id").value = producto._id;
+    document.getElementById("edit-nombre").value = producto.nombre || "";
+    document.getElementById("edit-marca").value = producto.marca || "";
+    document.getElementById("edit-precioUnidad").value =
+      producto.precioUnidad !== undefined ? producto.precioUnidad : "";
+    document.getElementById("edit-precioLote").value =
+      producto.precioLote !== undefined ? producto.precioLote : "";
+    document.getElementById("edit-peso").value =
+      producto.peso !== undefined ? producto.peso : "";
+    document.getElementById("edit-unidadPeso").value =
+      producto.unidadPeso || "kg";
+    document.getElementById("edit-supermercado").value =
+      producto.supermercado || "";
+    document.getElementById("edit-ubicacion").value = producto.ubicacion || "";
+    document.getElementById("edit-biografia").value = producto.biografia || "";
+    document.getElementById("edit-descripcion").value =
+      producto.descripcion || "";
 
-      // 🔹 Mostrar el modal con `flex` en lugar de `block` (para evitar problemas de visualización)
-      const modal = document.getElementById("modal-editar");
-      modal.style.display = "flex";
+    // 🔹 Mostrar el modal con `flex` en lugar de `block` (para evitar problemas de visualización)
+    const modal = document.getElementById("modal-editar");
+    modal.style.display = "flex";
 
-      console.log("Modal abierto y datos cargados:", producto);
+    console.log("Modal abierto y datos cargados:", producto);
   } catch (err) {
-      console.error("Error al cargar el producto para edición:", err);
+    console.error("Error al cargar el producto para edición:", err);
   }
 }
 
 async function guardarCambiosDesdeFormulario() {
   try {
-      const id = document.getElementById("edit-producto-id").value;
+    const id = document.getElementById("edit-producto-id").value;
 
-      // Obtener los datos actualizados
-      const productoActualizado = {
-          _id: id,
-          _rev: (await db.get(id))._rev, // Necesario para actualizar en PouchDB
-          nombre: document.getElementById("edit-nombre").value,
-          marca: document.getElementById("edit-marca").value,
-          precioUnidad: parseFloat(document.getElementById("edit-precioUnidad").value) || 0,
-          precioLote: parseFloat(document.getElementById("edit-precioLote").value) || 0,
-          peso: parseFloat(document.getElementById("edit-peso").value) || 0,
-          unidadPeso: document.getElementById("edit-unidadPeso").value || "kg",
-          supermercado: document.getElementById("edit-supermercado").value,
-          ubicacion: document.getElementById("edit-ubicacion").value,
-          biografia: document.getElementById("edit-biografia").value,
-          descripcion: document.getElementById("edit-descripcion").value,
-      };
+    // Obtener los datos actualizados
+    const productoActualizado = {
+      _id: id,
+      _rev: (await db.get(id))._rev, // Necesario para actualizar en PouchDB
+      nombre: document.getElementById("edit-nombre").value,
+      marca: document.getElementById("edit-marca").value,
+      precioUnidad:
+        parseFloat(document.getElementById("edit-precioUnidad").value) || 0,
+      precioLote:
+        parseFloat(document.getElementById("edit-precioLote").value) || 0,
+      peso: parseFloat(document.getElementById("edit-peso").value) || 0,
+      unidadPeso: document.getElementById("edit-unidadPeso").value || "kg",
+      supermercado: document.getElementById("edit-supermercado").value,
+      ubicacion: document.getElementById("edit-ubicacion").value,
+      biografia: document.getElementById("edit-biografia").value,
+      descripcion: document.getElementById("edit-descripcion").value,
+    };
 
-      await db.put(productoActualizado); // Guardar cambios en la base de datos
-      console.log("Producto actualizado correctamente");
+    await db.put(productoActualizado); // Guardar cambios en la base de datos
+    console.log("Producto actualizado correctamente");
 
-      cerrarFormulario(); // Cerrar modal
-      cargarProductos(); // Refrescar la lista de productos
+    cerrarFormulario(); // Cerrar modal
+    cargarProductos(); // Refrescar la lista de productos
   } catch (err) {
-      console.error("Error al guardar cambios:", err);
+    console.error("Error al guardar cambios:", err);
   }
 }
 
 window.guardarCambiosDesdeFormulario = guardarCambiosDesdeFormulario;
-
 
 function cerrarFormulario() {
   document.getElementById("modal-editar").style.display = "none";
@@ -210,12 +236,14 @@ async function eliminarProducto(id) {
   try {
     const producto = await db.get(id);
 
-    const confirmacion = confirm(`¿Estás seguro de que deseas eliminar "${producto.nombre}"?`);
+    const confirmacion = confirm(
+      `¿Estás seguro de que deseas eliminar "${producto.nombre}"?`
+    );
     if (!confirmacion) return;
 
     await db.remove(producto);
     console.log(`Producto "${producto.nombre}" eliminado correctamente.`);
-    
+
     cargarProductos(); // Actualizar la lista después de eliminar
   } catch (err) {
     console.error("Error al eliminar el producto:", err);

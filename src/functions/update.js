@@ -1,8 +1,7 @@
 // Importar funciones necesarias
-// import { cargarHeaderFooter } from "../functions/global/funciones.js";
 import { gestionarUsuarioAutenticado } from "../functions/global/header.js";
-import { cerrarSesion, volverAtras } from '../functions/global/funciones.js';
-import { db, findUserByEmail } from '../libs/dbuser.js'; // Importar la base de datos y la función de búsqueda
+import { cerrarSesion, volverAtras } from "../functions/global/funciones.js";
+import { db, findUserByEmail } from "../libs/dbuser.js"; // Importar la base de datos y la función de búsqueda
 
 // Asignar funciones a `window`
 window.volverAtras = volverAtras;
@@ -23,7 +22,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 function manejarUsuario() {
   let user = null;
   try {
-    user = JSON.parse(sessionStorage.getItem("user")) || JSON.parse(localStorage.getItem("user"));
+    user =
+      JSON.parse(sessionStorage.getItem("user")) ||
+      JSON.parse(localStorage.getItem("user"));
   } catch (error) {
     console.error("Error al leer los datos del usuario:", error);
   }
@@ -78,7 +79,9 @@ function configurarFormulario() {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
-    const currentUser = JSON.parse(sessionStorage.getItem("user")) || JSON.parse(localStorage.getItem("user"));
+    const currentUser =
+      JSON.parse(sessionStorage.getItem("user")) ||
+      JSON.parse(localStorage.getItem("user"));
 
     if (!currentUser || !currentUser.email) {
       return console.error("No se encontró un usuario autenticado.");
@@ -98,14 +101,18 @@ function configurarFormulario() {
         console.log("Datos actualizados con éxito.");
 
         // Actualizar los datos en sessionStorage/localStorage
-        const updatedUser = { ...currentUser, name: userDoc.name, email: userDoc.email };
+        const updatedUser = {
+          ...currentUser,
+          name: userDoc.name,
+          email: userDoc.email,
+        };
         sessionStorage.setItem("user", JSON.stringify(updatedUser));
         localStorage.setItem("user", JSON.stringify(updatedUser));
 
         alert("Datos actualizados correctamente.");
-        
+
         // Redirigir al index ya logueado
-        window.location.href = 'index.html';
+        window.location.href = "index.html";
       } else {
         console.error("Usuario no encontrado en la base de datos.");
       }

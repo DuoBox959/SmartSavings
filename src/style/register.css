@@ -19,7 +19,7 @@
   width: 50%;
   height: 100vh;
   background: url("../assets/img/product.webp") no-repeat center center;
-  background-size: cover; 
+  background-size: cover;
   color: white;
   display: flex;
   flex-direction: column;
@@ -31,7 +31,7 @@
 
 /* 📌 Contenedor del texto con fondo oscuro */
 .left-section-text {
-  background: rgba(0, 0, 0, 0.6); 
+  background: rgba(0, 0, 0, 0.6);
   padding: 20px 25px;
   border-radius: 10px;
   text-align: center;
@@ -42,7 +42,7 @@
 .left-section h1 {
   font-size: 2rem;
   font-weight: bold;
-  color: #ffffff; 
+  color: #ffffff;
   margin-bottom: 10px;
 }
 
@@ -63,7 +63,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: #d4d4d4; 
+  background: #d4d4d4;
   padding: 40px;
 }
 
@@ -71,7 +71,7 @@
 .right-section h2 {
   font-size: 2rem;
   font-weight: bold;
-  color: #1e3c5a; 
+  color: #1e3c5a;
   text-align: center;
   margin-bottom: 20px;
 }
@@ -94,7 +94,7 @@ form label {
 form input {
   width: 100%;
   padding: 10px;
-  border: 1px solid #b0bec5; 
+  border: 1px solid #b0bec5;
   border-radius: 5px;
   font-size: 14px;
   margin-bottom: 5px;
@@ -114,7 +114,7 @@ form button {
   width: 100%;
   padding: 12px;
   border: none;
-  background: #237f27; 
+  background: #237f27;
   color: white;
   font-size: 16px;
   border-radius: 5px;
@@ -124,7 +124,7 @@ form button {
 }
 
 form button:hover {
-  background: #185f1a; 
+  background: #185f1a;
 }
 
 /* 📌 Ajuste del texto "¿Ya tienes cuenta? Inicia sesión aquí" */
@@ -146,7 +146,7 @@ form button:hover {
 
 /* 🔙 Botón de Regreso */
 .back-button {
-  background: #7bbb95; 
+  background: #7bbb95;
   color: white;
   border: none;
   padding: 10px;

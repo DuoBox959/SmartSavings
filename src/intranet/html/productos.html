@@ -1,29 +1,35 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
+  <head>
     <!-- ✅ A. Configuración del Documento -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Gestión de Productos</title>
 
     <!-- ✅ B. Vinculación de Archivos CSS -->
-    <link rel="stylesheet" href="../css/producto.css">
+    <link rel="stylesheet" href="../css/producto.css" />
 
     <!-- ✅ C. Librerías y Scripts Necesarios -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  <!-- jQuery -->
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>  <!-- DataTables -->
-    <script src="../../libs/pouchdb-9.0.0.min.js"></script>  <!-- PouchDB -->
-    <script src="../../valid/validaciones.js"></script>  <!-- Validaciones -->
-    <script type="module" src="../js/productos.js"></script>  <!-- Lógica de productos -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>  <!-- SweetAlert2 -->
-</head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <!-- DataTables -->
+    <script src="../../libs/pouchdb-9.0.0.min.js"></script>
+    <!-- PouchDB -->
+    <script src="../../valid/validaciones.js"></script>
+    <!-- Validaciones -->
+    <script type="module" src="../js/productos.js"></script>
+    <!-- Lógica de productos -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- SweetAlert2 -->
+  </head>
 
-<body>
-
+  <body>
     <!-- 🏷️ D. Aviso Importante -->
     <div id="aviso" class="aviso-importante">
-        <strong>Aviso:</strong> La base de datos es pública y los datos pueden estar desactualizados o no ser exactos.
+      <strong>Aviso:</strong> La base de datos es pública y los datos pueden
+      estar desactualizados o no ser exactos.
     </div>
 
     <!-- 🏷️ E. Encabezado y Botón Agregar -->
@@ -32,129 +38,128 @@
 
     <!-- 📊 F. Tabla Dinámica de Productos -->
     <div class="tabla-contenedor">
-        <table id="productosTable" class="display">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Producto</th>
-                    <th>Marca</th>
-                    <th>Precio Unidad</th>
-                    <th>Precio Lote</th>
-                    <th>Peso</th>
-                    <th>Última Modificación</th>
-                    <th>Supermercado</th>
-                    <th>Ubicación</th>
-                    <th>Historial</th>
-                    <th>Biografía</th>
-                    <th>Imagen</th>
-                    <th>Descripción</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody id="productosBody"></tbody>
-        </table>
+      <table id="productosTable" class="display">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Producto</th>
+            <th>Marca</th>
+            <th>Precio Unidad</th>
+            <th>Precio Lote</th>
+            <th>Peso</th>
+            <th>Última Modificación</th>
+            <th>Supermercado</th>
+            <th>Ubicación</th>
+            <th>Historial</th>
+            <th>Biografía</th>
+            <th>Imagen</th>
+            <th>Descripción</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="productosBody"></tbody>
+      </table>
     </div>
 
     <!-- 📋 G. Formulario para Agregar o Editar Productos -->
-    <div id="formularioProducto" class="formulario" style="display: none;">
-        <h2 id="formTitulo">Agregar Producto</h2>
+    <div id="formularioProducto" class="formulario" style="display: none">
+      <h2 id="formTitulo">Agregar Producto</h2>
 
-        <!-- 🔹 Campo: ID oculto (para edición) -->
-        <input type="hidden" id="productoID">
+      <!-- 🔹 Campo: ID oculto (para edición) -->
+      <input type="hidden" id="productoID" />
 
-        <!-- 🔹 Campo: Nombre del Producto -->
-        <label for="nombreProducto">Nombre del Producto:</label>
-        <input type="text" id="nombreProducto">
+      <!-- 🔹 Campo: Nombre del Producto -->
+      <label for="nombreProducto">Nombre del Producto:</label>
+      <input type="text" id="nombreProducto" />
 
-        <!-- 🔹 Campo: Marca -->
-        <label for="marcaProducto">Marca:</label>
-        <input type="text" id="marcaProducto">
+      <!-- 🔹 Campo: Marca -->
+      <label for="marcaProducto">Marca:</label>
+      <input type="text" id="marcaProducto" />
 
-        <!-- 🔹 Campo: Precio por Unidad -->
-        <label for="precioUnidad">Precio Unidad:</label>
-        <input type="number" id="precioUnidad" step="0.01" min="0">
+      <!-- 🔹 Campo: Precio por Unidad -->
+      <label for="precioUnidad">Precio Unidad:</label>
+      <input type="number" id="precioUnidad" step="0.01" min="0" />
 
-        <!-- 🔹 Campo: Precio por Lote -->
-        <label for="precioLote">Precio Lote:</label>
-        <input type="number" id="precioLote" step="0.01" min="0">
+      <!-- 🔹 Campo: Precio por Lote -->
+      <label for="precioLote">Precio Lote:</label>
+      <input type="number" id="precioLote" step="0.01" min="0" />
 
-        <!-- 🔹 Campo: Peso -->
-        <label for="pesoProducto">Peso:</label>
-        <input type="number" id="pesoProducto" step="0.01" min="0">
+      <!-- 🔹 Campo: Peso -->
+      <label for="pesoProducto">Peso:</label>
+      <input type="number" id="pesoProducto" step="0.01" min="0" />
 
-        <!-- 🔹 Campo: Unidad de Peso -->
-        <label for="unidadPeso">Unidad de Peso:</label>
-        <select id="unidadPeso">
-            <option value="kg">Kilogramos (kg)</option>
-            <option value="g">Gramos (g)</option>
-            <option value="l">Litros (l)</option>
-        </select>
+      <!-- 🔹 Campo: Unidad de Peso -->
+      <label for="unidadPeso">Unidad de Peso:</label>
+      <select id="unidadPeso">
+        <option value="kg">Kilogramos (kg)</option>
+        <option value="g">Gramos (g)</option>
+        <option value="l">Litros (l)</option>
+      </select>
 
-        <!-- 🔹 Campo: Supermercado -->
-        <label for="nombreSupermercado">Supermercado:</label>
-        <input type="text" id="nombreSupermercado">
+      <!-- 🔹 Campo: Supermercado -->
+      <label for="nombreSupermercado">Supermercado:</label>
+      <input type="text" id="nombreSupermercado" />
 
-        <!-- 🔹 Campo: Ubicación del Supermercado -->
-        <label for="ubicacionSupermercado">Ubicación:</label>
-        <input type="text" id="ubicacionSupermercado">
+      <!-- 🔹 Campo: Ubicación del Supermercado -->
+      <label for="ubicacionSupermercado">Ubicación:</label>
+      <input type="text" id="ubicacionSupermercado" />
 
-        <!-- 🔹 Campo: Biografía del Producto -->
-        <label for="biografiaProducto">Biografía del Producto:</label>
-        <textarea id="biografiaProducto" rows="3"></textarea>
+      <!-- 🔹 Campo: Biografía del Producto -->
+      <label for="biografiaProducto">Biografía del Producto:</label>
+      <textarea id="biografiaProducto" rows="3"></textarea>
 
-        <!-- 🔹 Campo: Imagen del Producto -->
-        <label for="imgProducto">Imagen del Producto:</label>
-        <input type="file" id="imgProducto" accept="image/*">
+      <!-- 🔹 Campo: Imagen del Producto -->
+      <label for="imgProducto">Imagen del Producto:</label>
+      <input type="file" id="imgProducto" accept="image/*" />
 
-        <!-- 🔹 Campo: Descripción -->
-        <label for="descripcionProducto">Descripción:</label>
-        <textarea id="descripcionProducto" rows="3"></textarea>
+      <!-- 🔹 Campo: Descripción -->
+      <label for="descripcionProducto">Descripción:</label>
+      <textarea id="descripcionProducto" rows="3"></textarea>
 
-        <!-- 🔘 Botones del formulario -->
-        <div id="botonesFormulario">
-            <button onclick="guardarCambiosDesdeFormulario()">Guardar</button>
-            <button onclick="cerrarFormulario()">Cancelar</button>
-        </div>
+      <!-- 🔘 Botones del formulario -->
+      <div id="botonesFormulario">
+        <button onclick="guardarCambiosDesdeFormulario()">Guardar</button>
+        <button onclick="cerrarFormulario()">Cancelar</button>
+      </div>
     </div>
 
     <!-- 📖 H. Sección para la Biografía Manual del Producto -->
-    <div id="formularioBiografia" style="display: none;">
-        <h3>Agregar Biografía del Producto</h3>
+    <div id="formularioBiografia" style="display: none">
+      <h3>Agregar Biografía del Producto</h3>
 
-        <!-- 🔹 Campo: Año -->
-        <label for="anioBiografia">Año:</label>
-        <input type="number" id="anioBiografia" min="1900" max="2100">
+      <!-- 🔹 Campo: Año -->
+      <label for="anioBiografia">Año:</label>
+      <input type="number" id="anioBiografia" min="1900" max="2100" />
 
-        <!-- 🔹 Campo: Mes -->
-        <label for="mesBiografia">Mes:</label>
-        <select id="mesBiografia">
-            <option value="Enero">Enero</option>
-            <option value="Febrero">Febrero</option>
-            <option value="Marzo">Marzo</option>
-            <option value="Abril">Abril</option>
-            <option value="Mayo">Mayo</option>
-            <option value="Junio">Junio</option>
-            <option value="Julio">Julio</option>
-            <option value="Agosto">Agosto</option>
-            <option value="Septiembre">Septiembre</option>
-            <option value="Octubre">Octubre</option>
-            <option value="Noviembre">Noviembre</option>
-            <option value="Diciembre">Diciembre</option>
-        </select>
+      <!-- 🔹 Campo: Mes -->
+      <label for="mesBiografia">Mes:</label>
+      <select id="mesBiografia">
+        <option value="Enero">Enero</option>
+        <option value="Febrero">Febrero</option>
+        <option value="Marzo">Marzo</option>
+        <option value="Abril">Abril</option>
+        <option value="Mayo">Mayo</option>
+        <option value="Junio">Junio</option>
+        <option value="Julio">Julio</option>
+        <option value="Agosto">Agosto</option>
+        <option value="Septiembre">Septiembre</option>
+        <option value="Octubre">Octubre</option>
+        <option value="Noviembre">Noviembre</option>
+        <option value="Diciembre">Diciembre</option>
+      </select>
 
-        <!-- 🔹 Campo: Precio Unidad -->
-        <label for="precioBiografia">Precio Unidad:</label>
-        <input type="number" id="precioBiografia" step="0.01">
+      <!-- 🔹 Campo: Precio Unidad -->
+      <label for="precioBiografia">Precio Unidad:</label>
+      <input type="number" id="precioBiografia" step="0.01" />
 
-        <!-- 🔹 Campo: Peso -->
-        <label for="pesoBiografia">Peso:</label>
-        <input type="number" id="pesoBiografia" step="0.01">
+      <!-- 🔹 Campo: Peso -->
+      <label for="pesoBiografia">Peso:</label>
+      <input type="number" id="pesoBiografia" step="0.01" />
 
-        <button onclick="agregarBiografiaProducto()">Añadir al Historial</button>
+      <button onclick="agregarBiografiaProducto()">Añadir al Historial</button>
     </div>
 
     <!-- 🔙 I. Botón para regresar atrás -->
     <button class="back-button" onclick="volverAtras()">Volver Atrás</button>
-
-</body>
+  </body>
 </html>

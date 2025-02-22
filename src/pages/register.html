@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Registro - ComparaTú</title>
 
     <!-- ✅ Estilos CSS -->
-    <link rel="stylesheet" href="../style/register.css">
+    <link rel="stylesheet" href="../style/register.css" />
 
     <!-- ✅ Librería PouchDB (Base de Datos Local) -->
     <script src="../libs/pouchdb-9.0.0.min.js"></script>
@@ -14,62 +14,91 @@
     <!-- ✅ Archivos JS para validaciones y lógica de registro -->
     <script type="module" src="../functions/global/funciones.js" defer></script>
     <script type="module" src="../functions/register.js" defer></script>
-</head>
-<body>
-
+  </head>
+  <body>
     <!-- 📌 Contenedor principal -->
     <div class="container">
+      <!-- 🖼️ Sección Izquierda (Mensaje de bienvenida) -->
+      <div class="left-section">
+        <h1>Crea tu cuenta gratis</h1>
+        <p>
+          Explora todas las funciones de ComparaTú y obtén las mejores ofertas.
+        </p>
+      </div>
 
-        <!-- 🖼️ Sección Izquierda (Mensaje de bienvenida) -->
-        <div class="left-section">
-            <h1>Crea tu cuenta gratis</h1>
-            <p>Explora todas las funciones de ComparaTú y obtén las mejores ofertas.</p>
-        </div>
+      <!-- 📋 Sección Derecha (Formulario de registro) -->
+      <div class="right-section">
+        <h2>Regístrate en ComparaTú</h2>
 
-        <!-- 📋 Sección Derecha (Formulario de registro) -->
-        <div class="right-section">
-            <h2>Regístrate en ComparaTú</h2>
+        <form action="#" method="post">
+          <!-- 🔹 Campo: Email -->
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Ingresa tu email"
+            required
+          />
 
-            <form action="#" method="post">
+          <!-- 🔹 Campo: Contraseña -->
+          <label for="password">Contraseña</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Crea una contraseña"
+            required
+          />
+          <small
+            >Debe contener al menos 8 caracteres, un número y una letra
+            minúscula.</small
+          >
 
-                <!-- 🔹 Campo: Email -->
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="Ingresa tu email" required>
+          <!-- 🔹 Campo: Nombre de usuario -->
+          <label for="username">Usuario</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            placeholder="Elige un nombre de usuario"
+            required
+          />
+          <small
+            >Solo caracteres alfanuméricos y guiones. No puede iniciar ni
+            terminar con guión.</small
+          >
 
-                <!-- 🔹 Campo: Contraseña -->
-                <label for="password">Contraseña</label>
-                <input type="password" id="password" name="password" placeholder="Crea una contraseña" required>
-                <small>Debe contener al menos 8 caracteres, un número y una letra minúscula.</small>
+          <!-- 🔥 Botón para registrarse -->
+          <button type="submit">Continuar →</button>
 
-                <!-- 🔹 Campo: Nombre de usuario -->
-                <label for="username">Usuario</label>
-                <input type="text" id="username" name="username" placeholder="Elige un nombre de usuario" required>
-                <small>Solo caracteres alfanuméricos y guiones. No puede iniciar ni terminar con guión.</small>
+          <!-- 🔹 Enlace para iniciar sesión -->
+          <p class="login-link">
+            ¿Ya tienes cuenta? <a href="login.html">Inicia sesión aquí</a>
+          </p>
 
-                <!-- 🔥 Botón para registrarse -->
-                <button type="submit">Continuar →</button>
+          <!-- 🔙 Botón para regresar atrás -->
+          <button type="button" class="back-button" onclick="volverAtras()">
+            Volver Atrás
+          </button>
 
-                <!-- 🔹 Enlace para iniciar sesión -->
-                <p class="login-link">
-                    ¿Ya tienes cuenta? <a href="login.html">Inicia sesión aquí</a>
-                </p>
-
-                <!-- 🔙 Botón para regresar atrás -->
-                <button type="button" class="back-button" onclick="volverAtras()">Volver Atrás</button>
-
-                <!-- 📜 Políticas y términos -->
-                <p class="terms">
-                    Al crear una cuenta, aceptas nuestros
-                    <a href="../pages/global/terminoscondiciones.html">Términos y Condiciones</a>.
-                    Para más información sobre nuestras prácticas de privacidad, consulta nuestra
-                    <a href="../pages/global/politicaprivacidad.html">Política de Privacidad</a>
-                    y nuestra <a href="../pages/global/politicacookies.html">Política de Cookies</a>.
-                </p>
-
-            </form>
-        </div>
-
+          <!-- 📜 Políticas y términos -->
+          <p class="terms">
+            Al crear una cuenta, aceptas nuestros
+            <a href="../pages/global/terminoscondiciones.html"
+              >Términos y Condiciones</a
+            >. Para más información sobre nuestras prácticas de privacidad,
+            consulta nuestra
+            <a href="../pages/global/politicaprivacidad.html"
+              >Política de Privacidad</a
+            >
+            y nuestra
+            <a href="../pages/global/politicacookies.html"
+              >Política de Cookies</a
+            >.
+          </p>
+        </form>
+      </div>
     </div>
-
-</body>
+  </body>
 </html>

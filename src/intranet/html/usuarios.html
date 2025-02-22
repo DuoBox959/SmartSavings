@@ -1,27 +1,32 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
+  <head>
     <!-- ✅ A. Configuración del Documento -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Gestión de Usuarios</title>
 
     <!-- ✅ B. Vinculación de Archivos CSS -->
-    <link rel="stylesheet" href="../css/usuarios.css">
+    <link rel="stylesheet" href="../css/usuarios.css" />
 
     <!-- ✅ C. Librerías y Scripts Necesarios -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  <!-- jQuery -->
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>  <!-- DataTables -->
-    <script src="../../libs/pouchdb-9.0.0.min.js"></script>  <!-- PouchDB -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>  <!-- 🔐 Para encriptar contraseñas -->
-    <script type="module" src="../js/usuarios.js"></script>  <!-- Lógica de gestión de usuarios -->
-</head>
-<body>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <!-- DataTables -->
+    <script src="../../libs/pouchdb-9.0.0.min.js"></script>
+    <!-- PouchDB -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <!-- 🔐 Para encriptar contraseñas -->
+    <script type="module" src="../js/usuarios.js"></script>
+    <!-- Lógica de gestión de usuarios -->
+  </head>
+  <body>
     <!-- 🏷️ D. Aviso de Información -->
     <div id="aviso" class="aviso-importante">
-        <strong>Aviso:</strong> La base de datos es pública y los datos pueden estar desactualizados.
+      <strong>Aviso:</strong> La base de datos es pública y los datos pueden
+      estar desactualizados.
     </div>
 
     <!-- 📌 E. Título y Botón Agregar -->
@@ -30,63 +35,62 @@
 
     <!-- 📊 F. Tabla de Usuarios -->
     <table id="usuariosTable" class="display">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Email</th>
-                <th>Rol</th>
-                <th>Estado</th>
-                <th>Fecha Registro</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody id="usuariosBody"></tbody>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Rol</th>
+          <th>Estado</th>
+          <th>Fecha Registro</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="usuariosBody"></tbody>
     </table>
 
     <!-- 📋 G. Formulario para Agregar o Editar Usuarios -->
     <div id="formularioUsuario" style="display: none">
-        <h2 id="formTitulo">Añadir Usuario</h2>
+      <h2 id="formTitulo">Añadir Usuario</h2>
 
-        <!-- 🔹 Campo: ID oculto (para edición) -->
-        <input type="hidden" id="usuarioID">
+      <!-- 🔹 Campo: ID oculto (para edición) -->
+      <input type="hidden" id="usuarioID" />
 
-        <!-- 🔹 Campo: Nombre del Usuario -->
-        <label for="nombreUsuario">Nombre:</label>
-        <input type="text" id="nombreUsuario" required>
+      <!-- 🔹 Campo: Nombre del Usuario -->
+      <label for="nombreUsuario">Nombre:</label>
+      <input type="text" id="nombreUsuario" required />
 
-        <!-- 🔹 Campo: Email -->
-        <label for="emailUsuario">Email:</label>
-        <input type="email" id="emailUsuario" required>
+      <!-- 🔹 Campo: Email -->
+      <label for="emailUsuario">Email:</label>
+      <input type="email" id="emailUsuario" required />
 
-        <!-- 🔹 Campo: Contraseña -->
-        <label for="passwordUsuario">Contraseña:</label>
-        <input type="password" id="passwordUsuario" required>
+      <!-- 🔹 Campo: Contraseña -->
+      <label for="passwordUsuario">Contraseña:</label>
+      <input type="password" id="passwordUsuario" required />
 
-        <!-- 🔹 Campo: Rol del Usuario -->
-        <label for="rolUsuario">Rol:</label>
-        <select id="rolUsuario">
-            <option value="admin">Administrador</option>
-            <option value="usuario">Usuario</option>
-            <option value="invitado">Invitado</option>
-        </select>
+      <!-- 🔹 Campo: Rol del Usuario -->
+      <label for="rolUsuario">Rol:</label>
+      <select id="rolUsuario">
+        <option value="admin">Administrador</option>
+        <option value="usuario">Usuario</option>
+        <option value="invitado">Invitado</option>
+      </select>
 
-        <!-- 🔹 Campo: Estado del Usuario -->
-        <label for="estadoUsuario">Estado:</label>
-        <select id="estadoUsuario">
-            <option value="activo">Activo</option>
-            <option value="inactivo">Inactivo</option>
-        </select>
+      <!-- 🔹 Campo: Estado del Usuario -->
+      <label for="estadoUsuario">Estado:</label>
+      <select id="estadoUsuario">
+        <option value="activo">Activo</option>
+        <option value="inactivo">Inactivo</option>
+      </select>
 
-        <!-- 🔘 Botones del formulario -->
-        <div id="botonesFormulario">
-            <button onclick="guardarCambiosDesdeFormulario()">Guardar</button>
-            <button onclick="cerrarFormulario()">Cancelar</button>
-        </div>
+      <!-- 🔘 Botones del formulario -->
+      <div id="botonesFormulario">
+        <button onclick="guardarCambiosDesdeFormulario()">Guardar</button>
+        <button onclick="cerrarFormulario()">Cancelar</button>
+      </div>
     </div>
 
     <!-- 🔙 H. Botón para regresar atrás -->
     <button class="back-button" onclick="volverAtras()">Volver Atrás</button>
-
-</body>
+  </body>
 </html>

@@ -1,16 +1,30 @@
+/* 🌟 Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 /* 🌐 Estilo General */
 body {
   font-family: "Arial", sans-serif;
-  text-align: center;
   margin: 0;
   padding: 0;
-  background: #a8d5ba;
+  background: #cecfcfe8;
   color: #333;
-  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; /* Para ocupar toda la altura de la pantalla */
+  width: 100%;
 }
 
 /* 🎨 Estilo del Título */
@@ -59,7 +73,6 @@ h1 {
   font-size: 1em;
   background-color: #f9f9f9;
 }
-
 
 /* 🔲 Contenedor para el botón de añadir tienda */
 #addStoreButton {
@@ -131,18 +144,21 @@ h1 {
   margin-bottom: 15px;
 }
 
-
-/* 🔙 Botón Volver Atrás */
+/* 🔙 Botón Volver Atrás - Full Width */
 .back-button {
   background-color: #237f27;
   color: white;
   border: none;
   padding: 10px 15px;
-  font-size: 1em;
-  border-radius: 5px;
+  font-size: 1.2em;
+  border-radius: 0;
   cursor: pointer;
   transition: background-color 0.3s ease;
   margin-top: 20px;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  text-align: center;
 }
 
 .back-button:hover {

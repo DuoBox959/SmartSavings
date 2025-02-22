@@ -1,19 +1,19 @@
 /* 🏷️ Encabezado */
 header {
-  display: flex; 
-  align-items: center; 
-  justify-content: space-between; 
-  padding: 20px; 
-  background: #a8d5ba; 
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  background: #a8d5ba;
   color: #2c3e34;
 }
 
 /* Estilo del logo (sección izquierda) */
 header .logo h1 {
-  font-size: 1.8em; 
-  font-weight: 700; 
-  margin: 0; 
-  color: #2c3e34; 
+  font-size: 1.8em;
+  font-weight: 700;
+  margin: 0;
+  color: #2c3e34;
 }
 
 /* Estilo del eslogan (sección central) */
@@ -24,44 +24,44 @@ header .eslogan {
 
 header .eslogan .subtitulo {
   font-size: 1.2em;
-  margin: 0; 
-  font-weight: 400; 
-  color: #345e4d; 
+  margin: 0;
+  font-weight: 400;
+  color: #345e4d;
 }
 
 /* Estilo de los enlaces (sección derecha) */
 header .acciones {
-  display: flex; 
+  display: flex;
   gap: 15px;
 }
 
 header .acciones .enlace {
-  font-size: 1em; 
+  font-size: 1em;
   color: #2c3e34;
-  text-decoration: none; 
-  font-weight: 500; 
-  padding: 5px 10px; 
-  border: 1px solid #2c3e34; 
-  border-radius: 5px; 
-  transition: background 0.3s; 
+  text-decoration: none;
+  font-weight: 500;
+  padding: 5px 10px;
+  border: 1px solid #2c3e34;
+  border-radius: 5px;
+  transition: background 0.3s;
 }
 
 header .acciones .enlace:hover {
-  background: #2c3e34; 
-  color: #a8d5ba; 
+  background: #2c3e34;
+  color: #a8d5ba;
 }
 
 /* Estilo para el enlace ComparaTú */
 .comparaTu {
-  text-decoration: none; 
-  color: inherit; 
-  cursor: pointer; 
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
   transition: color 0.3s ease;
 }
 
 /* Cambiar color del texto al pasar el ratón */
 .comparaTu:hover {
-  color: #365a7e; 
+  color: #365a7e;
 }
 
 /* 🔽 Menú desplegable */
@@ -117,7 +117,7 @@ header .acciones .enlace:hover {
 .show {
   opacity: 1;
   transform: translateY(0);
-  max-height: 200px; 
+  max-height: 200px;
   visibility: visible;
 }
 

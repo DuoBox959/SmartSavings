@@ -1,15 +1,15 @@
 import { db } from "../../libs/db.js";
 // Variables globales
 let productosCache = [];
-let productosTable; 
+let productosTable;
 
 // Cuando el DOM esté listo:
 $(document).ready(() => {
   // 1. Inicializamos la DataTable con la opción responsive
   productosTable = $("#productosTable").DataTable({
     responsive: true, // Para que la tabla se adapte en pantallas pequeñas
-    autoWidth: false,    // evita forzar anchos que se pasen del contenedor
-    scrollX: false  
+    autoWidth: false, // evita forzar anchos que se pasen del contenedor
+    scrollX: false,
   });
   // 2. Cargar productos desde la BD y mostrarlos en la tabla
   cargarProductos();
@@ -187,7 +187,6 @@ function accionesHTML(id) {
   `;
 }
 
-
 /**
  * Convierte una imagen a Base64 para poder almacenarla en la BD.
  * @param {File} archivo - El archivo de imagen
@@ -224,14 +223,18 @@ function formatearFecha(fecha) {
  */
 function mostrarFormularioAgregar() {
   $("#formTitulo").text("Agregar Producto");
-  $("#productoID, #nombreProducto, #marcaProducto, #precioUnidad, #precioLote, #pesoProducto, #nombreSupermercado, #ubicacionSupermercado").val("");
+  $(
+    "#productoID, #nombreProducto, #marcaProducto, #precioUnidad, #precioLote, #pesoProducto, #nombreSupermercado, #ubicacionSupermercado"
+  ).val("");
   $("#unidadPeso").val("kg");
   $("#imgProducto").val(""); // Limpiar el input de imagen
 
   $("#formularioProducto").show();
-  
-   // Desplazamiento suave al formulario
-   document.getElementById("formularioProducto").scrollIntoView({ behavior: "smooth" });
+
+  // Desplazamiento suave al formulario
+  document
+    .getElementById("formularioProducto")
+    .scrollIntoView({ behavior: "smooth" });
 }
 
 /**
@@ -253,7 +256,8 @@ async function guardarCambiosDesdeFormulario() {
   const supermercado = $("#nombreSupermercado").val().trim();
   const ubicacion = $("#ubicacionSupermercado").val().trim();
   const biografia = $("#biografiaProducto").val().trim() || "Sin biografía";
-  const descripcion = $("#descripcionProducto").val().trim() || "Sin descripción";
+  const descripcion =
+    $("#descripcionProducto").val().trim() || "Sin descripción";
 
   // 📸 Convertir imagen a Base64 si se ha seleccionado una
   let imgBase64 = "";
@@ -292,7 +296,6 @@ async function guardarCambiosDesdeFormulario() {
           },
         ],
       };
-
     } catch (err) {
       console.error("❌ Error obteniendo el documento existente:", err);
       return;
@@ -300,7 +303,7 @@ async function guardarCambiosDesdeFormulario() {
   } else {
     // 🆕 **CREAR UN PRODUCTO NUEVO**
     console.log("🆕 Creando un nuevo producto...");
-    
+
     await cargarProductos(); // 🔄 Asegurar que `productosCache` está actualizado
     const nuevoId = await asignarIDDisponible(); // 🔥 Obtener ID correcto
     console.log("📌 Nuevo ID asignado:", nuevoId); // DEPURACIÓN
@@ -338,7 +341,6 @@ async function guardarCambiosDesdeFormulario() {
 
     cargarProductos(); // 🔄 Recargar la tabla de productos
     cerrarFormulario(); // 🏁 Cerrar el formulario
-
   } catch (err) {
     console.error("❌ Error guardando producto:", err);
 
@@ -360,7 +362,6 @@ async function guardarCambiosDesdeFormulario() {
         console.log("📥 Documento fusionado antes de guardar:", mergedDoc);
         await db.put(mergedDoc);
         console.log("✅ Producto guardado después del conflicto.");
-        
       } catch (retryErr) {
         console.error("❌ Error al intentar resolver el conflicto:", retryErr);
       }
@@ -460,7 +461,9 @@ async function eliminarProducto(id) {
  */
 function cerrarFormulario() {
   $("#formularioProducto").hide();
-  $("#productoID, #nombreProducto, #marcaProducto, #precioUnidad, #precioLote, #pesoProducto, #nombreSupermercado, #ubicacionSupermercado").val("");
+  $(
+    "#productoID, #nombreProducto, #marcaProducto, #precioUnidad, #precioLote, #pesoProducto, #nombreSupermercado, #ubicacionSupermercado"
+  ).val("");
   $("#unidadPeso").val("kg");
   $("#imgProducto").val("");
 }
@@ -472,7 +475,7 @@ function volverAtras() {
   window.location.href = "../html/intranet.html";
 }
 window.db = db;
-window.productosCache = productosCache;  // <-- ahora sí lo expones en window
+window.productosCache = productosCache; // <-- ahora sí lo expones en window
 // window.validarCamposFormulario = validarCamposFormulario;
 window.editarProducto = editarProducto;
 window.eliminarProducto = eliminarProducto;

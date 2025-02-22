@@ -1,5 +1,8 @@
 import { db } from "../libs/db.js";
 import { volverAtras } from "../functions/global/funciones.js";
+import { cargarHeaderFooter } from "../functions/global/funciones.js";
+import { gestionarUsuarioAutenticado } from "../functions/global/header.js";
+import { cerrarSesion } from "../functions/global/funciones.js";
 
 // Asignar funciones a `window`
 window.cargarTiendas = cargarTiendas;
@@ -15,6 +18,15 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   cargarProductos();
+  cargarHeaderFooter();
+
+  // Esperar a que el header se cargue antes de ejecutar gestionarUsuarioAutenticado()
+  const interval = setInterval(() => {
+    if (document.getElementById("userMenu")) {
+      gestionarUsuarioAutenticado();
+      clearInterval(interval); // Detener la espera una vez que se ejecute la función
+    }
+  }, 100); // Revisa cada 100ms si el header ya está cargado
 });
 
 // 📋 Función para crear opciones en `<select>`

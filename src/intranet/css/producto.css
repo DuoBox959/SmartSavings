@@ -190,7 +190,7 @@ table.dataTable tbody tr:hover {
 /* Botón Editar (Azul) */
 .btn-accion {
   display: inline-flex; /* Mantiene icono y texto en la misma línea */
-  align-items: center;  /* Alinea verticalmente */
+  align-items: center; /* Alinea verticalmente */
   justify-content: center;
   gap: 6px; /* Espacio entre icono y texto */
   padding: 8px 12px;
