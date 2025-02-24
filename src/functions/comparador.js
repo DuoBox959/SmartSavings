@@ -56,17 +56,18 @@ async function cargarProductos() {
 }
 
 // 🏪 Función para cargar tiendas en los selectores
-async function cargarTiendas() {
+async function cargarTiendas(selectElement = null) {
   const productoSeleccionado = document.getElementById("producto").value;
+
+  // Si no hay producto seleccionado, no hacemos nada
+  if (!productoSeleccionado) return;
+
+  // Si no se pasa un selector específico, seleccionamos los dos primeros
   const tienda1Select = document.getElementById("tienda1");
   const tienda2Select = document.getElementById("tienda2");
 
-  [tienda1Select, tienda2Select].forEach(
-    (select) =>
-      (select.innerHTML = '<option value="">Selecciona una tienda</option>')
-  );
-
-  if (!productoSeleccionado) return;
+  // Si se pasa un parámetro (el select dinámico de tienda), lo usamos
+  const selects = selectElement ? [selectElement] : [tienda1Select, tienda2Select];
 
   try {
     const result = await db.allDocs({ include_docs: true });
@@ -79,13 +80,13 @@ async function cargarTiendas() {
       ),
     ].sort();
 
-    [tienda1Select, tienda2Select].forEach((select) =>
-      crearOpciones(select, nombresTiendas)
-    );
+    // Crear las opciones para cada select pasado como argumento
+    selects.forEach((select) => crearOpciones(select, nombresTiendas));
   } catch (err) {
     console.error("Error al cargar tiendas:", err);
   }
 }
+
 
 // ➕ Añadir un selector de tienda extra
 let contadorTiendas = 3; // Inicia en "Tienda 3"
@@ -127,12 +128,8 @@ function anadirSelectorTienda() {
     width: "100%", // 🔹 Asegura que mantenga el mismo tamaño que los otros selects
   });
 
-  // 📦 Cargar tiendas en el nuevo select (Corrección aquí)
-  if (typeof cargarTiendas === "function") {
-    cargarTiendas(); // Usa la función que ya tienes definida
-  } else {
-    console.error("Error: La función cargarTiendas no está definida.");
-  }
+  // 📦 Cargar tiendas en el nuevo select
+  cargarTiendas(select);
 
   contadorTiendas++; // Incrementar el contador
 
@@ -141,6 +138,7 @@ function anadirSelectorTienda() {
     document.getElementById("addStoreButton").style.display = "none";
   }
 }
+
 
 // 📊 Comparar precios entre tiendas seleccionadas
 async function compararPrecios() {
