@@ -170,6 +170,14 @@ table.dataTable tbody tr:hover {
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
+/* 📌 Contenedor de los botones */
+#botonesFormulario {
+  display: flex;
+  justify-content: center; /* Centra los botones */
+  gap: 10px; /* Espacio entre botones */
+  margin-top: 10px; /* Espacio arriba si es necesario */
+}
+
 /* Botón Guardar */
 #formularioUsuario button:nth-child(1) {
   background-color: #4caf50;

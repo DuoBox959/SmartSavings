@@ -50,45 +50,54 @@ button:hover {
    📊 3. ESTILOS PARA LA TABLA
 ============================ */
 table.dataTable {
-  width: 100%;
+  width: 100%; /* Ocupa el 100% del contenedor */
+  max-width: 100%; /* Evita que se desborde */
   background-color: #ffffff;
   border-collapse: collapse;
   color: #333;
   margin: 0 auto;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  table-layout: auto; /* Ajuste dinámico de columnas */
+  font-size: 0.8em; /* Reduce el tamaño del texto */
 }
-/* 📌 Ajuste del contenedor de la tabla */
-/* ESTO ES LO QUE PONE EL FONDO BLANCO DE ATRAS DE LA TABLA .dataTables_wrapper {
-  width: 95%; 
-  margin: 20px auto; 
-  background: white; 
-  padding: 20px; 
-  border-radius: 10px; 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
-} */
 
-/* Encabezados */
+/* 📌 Ajuste del contenedor de la tabla */
+/* ESTO ES LO QUE PONE EL FONDO BLANCO DE ATRÁS DE LA TABLA */
+.dataTables_wrapper {
+  max-width: 100%; /* Se ajusta al contenedor padre */
+  margin: 20px auto;
+  background: white;
+  padding: 10px; /* Menos espacio alrededor */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  overflow-x: auto; /* Permite desplazamiento horizontal si es necesario */
+  display: block;
+}
+
+/* 📌 Encabezados */
 table.dataTable thead th {
   background-color: #365a7e;
   color: white;
-  padding: 12px;
+  padding: 8px; /* Reduce el padding */
   text-align: center;
-  font-size: 1em;
+  font-size: 0.9em; /* Reduce el tamaño de fuente */
+  white-space: nowrap; /* Evita saltos de línea en encabezados */
 }
 
-/* Celdas */
+/* 📌 Celdas */
 table.dataTable tbody td {
-  padding: 10px;
+  padding: 6px; /* Reduce el espacio interno */
   text-align: center;
-  font-size: 0.9em;
+  font-size: 0.8em; /* Fuente más pequeña */
+  white-space: nowrap; /* Mantiene los datos en una línea */
 }
 
-/* Filas alternas */
+/* 📌 Filas alternas */
 table.dataTable tbody tr:nth-child(even) {
   background-color: #f9f9f9;
 }
 
-/* Hover */
+/* 📌 Efecto Hover */
 table.dataTable tbody tr:hover {
   background-color: #e3f2fd;
 }
@@ -98,13 +107,14 @@ table.dataTable tbody tr:hover {
 ============================ */
 .dataTables_length,
 .dataTables_filter {
-  font-size: 1em;
-  margin-bottom: 10px;
+  font-size: 0.9em; /* Ajusta el tamaño del texto */
+  margin-bottom: 5px;
 }
 
 .dataTables_filter label,
 .dataTables_length label {
   color: #333;
+  font-size: 0.9em;
 }
 
 /* ============================
@@ -146,22 +156,30 @@ table.dataTable tbody tr:hover {
 #formularioProducto input,
 #formularioProducto select {
   width: 100%;
-  padding: 10px;
+  padding: 7px;
   margin-bottom: 15px;
   font-size: 1em;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
 
-/* Botones del Formulario */
+/* 📌 Contenedor de los botones */
+#botonesFormulario {
+  display: flex;
+  justify-content: center; /* Centra los botones */
+  gap: 10px; /* Espacio entre botones */
+  margin-top: 10px; /* Espacio arriba si es necesario */
+}
+
+/* 📌 Botones del Formulario */
 #formularioProducto button {
-  width: 48%;
+  width: 48%; /* Ajuste del tamaño */
   padding: 10px;
   font-size: 1em;
-  margin: 5px 1%;
   border-radius: 5px;
   cursor: pointer;
   transition: 0.3s ease;
+  border: none;
 }
 
 /* Guardar */
@@ -189,7 +207,7 @@ table.dataTable tbody tr:hover {
 ============================ */
 /* Botón Editar (Azul) */
 .btn-accion {
-  display: inline-flex; /* Mantiene icono y texto en la misma línea */
+  /* display: inline-flex; Mantiene icono y texto en la misma línea */
   align-items: center; /* Alinea verticalmente */
   justify-content: center;
   gap: 6px; /* Espacio entre icono y texto */
@@ -227,8 +245,40 @@ table.dataTable tbody tr:hover {
   transform: scale(1.05);
 }
 
+/*================================
+8. Los textareas del formulario
+==================================*/
+
+/* 📌 Estilos para el textarea */
+#biografiaProducto, #descripcionProducto {
+  width: 100%; /* Que ocupe todo el ancho disponible */
+  max-width: 100%; /* Evita que se haga más grande de lo necesario */
+  padding: 7px;
+  font-size: 1em;
+  border: 1px solid #ccc; /* Borde sutil */
+  border-radius: 5px; /* Bordes redondeados */
+  background-color: #f9f9f9; /* Fondo claro */
+  color: #333; /* Texto oscuro */
+  resize: vertical; /* Solo permite redimensionar verticalmente */
+  transition: all 0.3s ease; /* Transición suave */
+}
+
+/* 📌 Estilo cuando está en foco (clic o escritura) */
+#biografiaProducto:focus, #descripcionProducto:focus {
+  outline: none; /* Elimina el borde azul predeterminado */
+  border-color: #365a7e; /* Color más visible al enfocarse */
+  box-shadow: 0 0 5px rgba(54, 90, 126, 0.5); /* Sombra sutil */
+  background-color: #fff; /* Fondo más blanco al escribir */
+}
+
+/* 📌 Placeholder estilizado */
+#biografiaProducto::placeholder, #descripcionProducto::placeholder {
+  color: #999;
+  font-style: italic;
+}
+
 /* ============================
-   📱 8. ESTILOS RESPONSIVE
+   📱 9. ESTILOS RESPONSIVE
 ============================ */
 @media (max-width: 576px) {
   body {

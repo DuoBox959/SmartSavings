@@ -196,7 +196,7 @@ async function compararPrecios() {
     }, precios[0]);
 
     // Generar HTML con los datos comparativos
-    let resultadoHTML = `<h3>Comparación de Precios para "${productoSeleccionado}"</h3><ul>`;
+    let resultadoHTML = `<h3 style="text-align: center;">Comparación de Precios para "${productoSeleccionado}"</h3><ul>`;
     precios.forEach(
       ({
         tienda,
@@ -226,7 +226,7 @@ async function compararPrecios() {
       tiendaMasBarata.tienda
     }</strong> con un precio de <strong>${tiendaMasBarata.precioUnidad.toFixed(
       2
-    )} €</strong> por unidad.</p>`;
+    )} €</strong> por unidad.</p><br>`;
 
     // Reflexión sobre cuál opción es más rentable
     resultadoHTML += `<p>💡 <strong>Mejor relación calidad-precio</strong>: La mejor compra según el precio por peso es en <strong>${

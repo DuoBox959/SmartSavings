@@ -100,36 +100,45 @@ h1 {
   transform: scale(1.05);
 }
 
-/* 📋 Estilo del Contenedor de Resultados */
+/* 📋 Estilos del Contenedor de Resultados */
 #resultadoComparacion {
   margin-top: 20px;
   font-size: 1.2em;
   text-align: left;
-  width: 400px;
-  max-width: 90%;
-  padding: 15px;
+  width: 100%;
+  max-width: 600px; /* Ajuste para mejor visualización */
+  padding: 20px;
   border: 1px solid #ddd;
-  border-radius: 5px;
+  border-radius: 8px;
   background-color: #ffffff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
-/* 📌 Asegurar que los select adicionales ocupen todo el ancho */
+
+/* 📌 Contenedor para tiendas adicionales */
 #extraStores {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Mejora el espaciado entre elementos */
 }
 
-/* 📌 Estilo uniforme para los selects adicionales */
+/* 📌 Estilos uniformes para los selects adicionales */
 #extraStores select {
-  width: 100% !important;
-  padding: 10px;
+  width: 100%;
+  padding: 12px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 6px;
   font-size: 1em;
   background-color: #f9f9f9;
-  margin-bottom: 15px;
+  transition: border-color 0.3s ease;
 }
 
-/* 📌 Asegurar que los labels estén alineados y con buen espaciado */
+#extraStores select:focus {
+  border-color: #365a7e;
+  outline: none;
+}
+
+/* 📌 Estilos para las etiquetas */
 #extraStores label {
   width: 100%;
   display: block;
@@ -138,10 +147,13 @@ h1 {
   margin-bottom: 5px;
 }
 
-/* 📌 Mejor espaciado entre cada tienda añadida */
+/* 📌 Mejor espaciado entre tiendas añadidas */
 .extra-store {
   width: 100%;
-  margin-bottom: 15px;
+  padding: 10px;
+  background: #f5f5f5;
+  border-radius: 6px;
+  border: 1px solid #ddd;
 }
 
 /* 🔙 Botón Volver Atrás - Full Width */
