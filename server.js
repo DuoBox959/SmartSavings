@@ -39,6 +39,8 @@ app.get("/", (req, res) => {
   res.send("🚀 Servidor funcionando con MongoDB Atlas");
 });
 
+//USUARIOS
+
 // ✅ Obtener todos los usuarios
 app.get("/api/usuarios", async (req, res) => {
   try {
@@ -61,6 +63,9 @@ app.post("/api/usuarios", async (req, res) => {
     res.status(500).json({ error: "Error al crear usuario" });
   }
 });
+
+
+
 
 
 // ✅ Actualizar usuario
@@ -99,6 +104,59 @@ app.delete("/api/usuarios/:id", async (req, res) => {
   } catch (err) {
     console.error("❌ Error eliminando usuario:", err);
     res.status(500).json({ error: "Error al eliminar usuario" });
+  }
+});
+
+//PRODUCTO
+
+// ✅ Crear nuevo producto
+app.post("/api/productos", async (req, res) => {
+  try {
+    const nuevoProducto = req.body;
+    await db.collection("Productos").insertOne(nuevoProducto);
+    res.status(201).json({ message: "Producto creado correctamente" });
+  } catch (err) {
+    console.error("❌ Error creando Producto:", err);
+    res.status(500).json({ error: "Error al crear Producto" });
+  }
+});
+
+// ✅ Actualizar producto
+app.put("/api/productos/:id", async (req, res) => {
+  try {
+    const id = new ObjectId(req.params.id);
+    const updateData = req.body;
+
+    const result = await db.collection("Productos").updateOne(
+      { _id: id },
+      { $set: updateData }
+    );
+
+    if (result.modifiedCount === 0) {
+      return res.status(404).json({ error: "Producto no encontrado" });
+    }
+
+    res.json({ message: "Producto actualizado correctamente" });
+  } catch (err) {
+    console.error("❌ Error actualizando Producto:", err);
+    res.status(500).json({ error: "Error al actualizar producto" });
+  }
+});
+
+// ✅ Eliminar producto
+app.delete("/api/productos/:id", async (req, res) => {
+  try {
+    const id = new ObjectId(req.params.id);
+    const result = await db.collection("Productos").deleteOne({ _id: id });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ error: "Producto no encontrado" });
+    }
+
+    res.json({ message: "Producto eliminado correctamente" });
+  } catch (err) {
+    console.error("❌ Error eliminando producto:", err);
+    res.status(500).json({ error: "Error al eliminar producto" });
   }
 });
 
