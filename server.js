@@ -62,6 +62,10 @@ app.post("/api/usuarios", async (req, res) => {
   }
 });
 
+
+
+
+
 // ✅ Actualizar usuario
 app.put("/api/usuarios/:id", async (req, res) => {
   try {
@@ -100,3 +104,4 @@ app.delete("/api/usuarios/:id", async (req, res) => {
     res.status(500).json({ error: "Error al eliminar usuario" });
   }
 });
+
