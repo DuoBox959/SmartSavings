@@ -31,16 +31,19 @@ async function cargarUsuarios() {
     usuariosCache = usuarios; // 👈 ACTUALIZAMOS EL CACHE GLOBAL
 
     usuariosTable.clear(); // ✅ Limpiamos tabla antes de cargar nuevos
-    usuarios.forEach((usuario) => {
+    usuarios.forEach((usuario) => { // ✅ Ahora 'usuario' está definido
       usuariosTable.row.add([
-        usuario._id,
+        usuario._id,  
         usuario.nombre,
+        usuario.pass,  // ✅ CORREGIDO: el campo en la BD es 'pass', no 'password'
         usuario.email,
-        usuario.rol,
         formatearFecha(usuario.fechaRegistro || new Date().toISOString()),
+        usuario.rol,
         accionesHTML(usuario._id),
       ]);
     });
+    
+   
     usuariosTable.draw(); // ✅ Renderizar cambios
   } catch (error) {
     console.error("❌ Error al cargar usuarios:", error);
