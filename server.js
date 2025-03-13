@@ -163,6 +163,7 @@ app.delete("/api/usuarios/:id", async (req, res) => {
   }
 });
 
+//PRODUCTO
 
 // ✅ Obtener todos los productos
 app.get("/api/productos", async (req, res) => {
