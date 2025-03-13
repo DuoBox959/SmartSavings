@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <!-- ✅ A. Configuración del Documento -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Gestión de Precios</title>
+
+    <!-- ✅ B. Vinculación de Archivos CSS -->
+    <link rel="stylesheet" href="../css/datTable.css" />
+    
+    <!-- jQuery y DataTables JS -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+    <!-- Script de lógica -->
+    <script type="module" src="../js/precios.js"></script>
+  </head>
+  <body>
+    <!-- 🏷️ D. Aviso de Información -->
+    <div id="aviso" class="aviso-importante">
+      <strong>Aviso:</strong> Los precios pueden cambiar sin previo aviso.
+    </div>
+
+    <!-- 📌 E. Título y Botón Agregar -->
+    <h1>Gestión de Precios</h1>
+    <button onclick="mostrarFormularioAgregar()">Añadir Precio</button>
+
+    <!-- 📊 F. Tabla de Precios -->
+    <table id="preciosTable" class="display">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Producto ID</th>
+          <th>Precio Actual</th>
+          <th>Precio Descuento</th>
+          <th>Unidad/Lote</th>
+          <th>Precio Histórico</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="preciosBody"></tbody>
+    </table>
+
+    <!-- 📋 G. Formulario para Agregar o Editar Precio -->
+    <div id="formularioPrecio" style="display: none">
+      <h2 id="formTitulo">Añadir Precio</h2>
+
+      <form onsubmit="return false;">
+        <!-- 🔹 Campo: ID oculto (para edición) -->
+        <input type="hidden" id="precioID" />
+
+        <!-- 🔹 Campo: Producto ID -->
+        <label for="productoID">Producto ID:</label>
+        <input type="text" id="productoID" required />
+
+        <!-- 🔹 Campo: Precio Actual -->
+        <label for="precioActual">Precio Actual:</label>
+        <input type="number" id="precioActual" step="0.01" required />
+
+        <!-- 🔹 Campo: Precio Descuento -->
+        <label for="precioDescuento">Precio Descuento:</label>
+        <input type="number" id="precioDescuento" step="0.01" />
+
+        <!-- 🔹 Campo: Unidad o Lote -->
+        <label for="unidadLote">Unidad/Lote:</label>
+        <input type="text" id="unidadLote" />
+
+        <!-- 🔹 Campo: Precio Histórico -->
+        <label for="precioHistorico">Precio Histórico (separado por comas):</label>
+        <input type="text" id="precioHistorico" />
+
+        <!-- 🔘 Botones del formulario -->
+        <div id="botonesFormulario">
+          <button type="button" onclick="guardarPrecio()">Guardar</button>
+          <button type="button" onclick="cerrarFormulario()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- 🔙 H. Botón para regresar atrás -->
+    <button class="back-button" onclick="volverAtras()">Volver Atrás</button>
+  </body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <!-- ✅ A. Configuración del Documento -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Gestión de Opiniones</title>
+
+    <!-- ✅ B. Vinculación de Archivos CSS -->
+    <link rel="stylesheet" href="../css/datTable.css" />
+    
+    <!-- jQuery y DataTables JS -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+    <!-- Script de lógica -->
+    <script type="module" src="../js/opiniones.js"></script>
+  </head>
+  <body>
+    <!-- 🏷️ D. Aviso de Información -->
+    <div id="aviso" class="aviso-importante">
+      <strong>Aviso:</strong> La información de opiniones puede cambiar en cualquier momento.
+    </div>
+
+    <!-- 📌 E. Título y Botón Agregar -->
+    <h1>Gestión de Opiniones</h1>
+    <button onclick="mostrarFormularioAgregar()">Añadir Opinión</button>
+
+    <!-- 📊 F. Tabla de Opiniones -->
+    <table id="opinionesTable" class="display">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Producto ID</th>
+          <th>Usuario ID</th>
+          <th>Opinión</th>
+          <th>Calificación</th>
+          <th>Fecha</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="opinionesBody"></tbody>
+    </table>
+
+    <!-- 📋 G. Formulario para Agregar o Editar Opinión -->
+    <div id="formularioOpinion" style="display: none">
+      <h2 id="formTitulo">Añadir Opinión</h2>
+
+      <form onsubmit="return false;">
+        <!-- 🔹 Campo: ID oculto (para edición) -->
+        <input type="hidden" id="opinionID" />
+
+        <!-- 🔹 Campo: Producto ID -->
+        <label for="productoID">Producto ID:</label>
+        <input type="text" id="productoID" required />
+
+        <!-- 🔹 Campo: Usuario ID -->
+        <label for="usuarioID">Usuario ID:</label>
+        <input type="text" id="usuarioID" required />
+
+        <!-- 🔹 Campo: Opinión -->
+        <label for="textoOpinion">Opinión:</label>
+        <textarea id="textoOpinion" required></textarea>
+
+        <!-- 🔹 Campo: Calificación -->
+        <label for="calificacionOpinion">Calificación (1-5):</label>
+        <input type="number" id="calificacionOpinion" min="1" max="5" required />
+
+        <!-- 🔹 Campo: Fecha de la Opinión -->
+        <label for="fechaOpinion">Fecha:</label>
+        <input type="date" id="fechaOpinion" required />
+
+        <!-- 🔘 Botones del formulario -->
+        <div id="botonesFormulario">
+          <button type="button" onclick="guardarOpinion()">Guardar</button>
+          <button type="button" onclick="cerrarFormulario()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- 🔙 H. Botón para regresar atrás -->
+    <button class="back-button" onclick="volverAtras()">Volver Atrás</button>
+  </body>
+</html>

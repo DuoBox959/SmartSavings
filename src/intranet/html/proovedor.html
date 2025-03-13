@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <!-- ✅ A. Configuración del Documento -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Gestión de Proveedores</title>
+
+    <!-- ✅ B. Vinculación de Archivos CSS -->
+    <link rel="stylesheet" href="../css/datTable.css" />
+    
+    <!-- jQuery y DataTables JS -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+    <!-- Script de lógica -->
+    <script type="module" src="../js/proveedor.js"></script>
+  </head>
+  <body>
+    <!-- 🏷️ D. Aviso de Información -->
+    <div id="aviso" class="aviso-importante">
+      <strong>Aviso:</strong> La información de proveedores puede cambiar en cualquier momento.
+    </div>
+
+    <!-- 📌 E. Título y Botón Agregar -->
+    <h1>Gestión de Proveedores</h1>
+    <button onclick="mostrarFormularioAgregar()">Añadir Proveedor</button>
+
+    <!-- 📊 F. Tabla de Proveedores -->
+    <table id="proveedorTable" class="display">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>País</th>
+          <th>Comunidad Autónoma</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="proveedorBody"></tbody>
+    </table>
+
+    <!-- 📋 G. Formulario para Agregar o Editar Proveedor -->
+    <div id="formularioProveedor" style="display: none">
+      <h2 id="formTitulo">Añadir Proveedor</h2>
+
+      <form onsubmit="return false;">
+        <!-- 🔹 Campo: ID oculto (para edición) -->
+        <input type="hidden" id="proveedorID" />
+
+        <!-- 🔹 Campo: Nombre -->
+        <label for="nombreProveedor">Nombre:</label>
+        <input type="text" id="nombreProveedor" required />
+
+        <!-- 🔹 Campo: País -->
+        <label for="paisProveedor">País:</label>
+        <input type="text" id="paisProveedor" required />
+
+        <!-- 🔹 Campo: Comunidad Autónoma -->
+        <label for="comunidadAutonoma">Comunidad Autónoma:</label>
+        <input type="text" id="comunidadAutonoma" required />
+
+        <!-- 🔘 Botones del formulario -->
+        <div id="botonesFormulario">
+          <button type="button" onclick="guardarProveedor()">Guardar</button>
+          <button type="button" onclick="cerrarFormulario()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- 🔙 H. Botón para regresar atrás -->
+    <button class="back-button" onclick="volverAtras()">Volver Atrás</button>
+  </body>
+</html>
