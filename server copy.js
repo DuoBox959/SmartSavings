@@ -53,14 +53,47 @@ app.get("/api/usuarios", async (req, res) => {
 // ✅ Crear nuevo usuario
 app.post("/api/usuarios", async (req, res) => {
   try {
-    const nuevoUsuario = req.body;
-    await db.collection("Usuarios").insertOne(nuevoUsuario);
-    res.status(201).json({ message: "Usuario creado correctamente" });
+    console.log("📥 Recibiendo solicitud para crear usuario...");
+    console.log("📌 Datos recibidos:", req.body);
+
+    const { nombre, pass, email, rol } = req.body;
+
+    if (!nombre || !pass || !email || !rol) {
+      console.error("❌ Faltan datos obligatorios.");
+      return res.status(400).json({ error: "Todos los campos son obligatorios" });
+    }
+
+    const nuevoUsuario = {
+      nombre,
+      pass,
+      email,
+      fechaRegistro: new Date().toISOString(),
+      rol
+    };
+
+    console.log("📤 Insertando en MongoDB:", nuevoUsuario);
+    const result = await db.collection("Usuarios").insertOne(nuevoUsuario);
+    console.log("✅ Resultado de la inserción:", result);
+
+    if (result.insertedId) {
+      nuevoUsuario._id = result.insertedId; // ✅ Agregamos el _id al objeto
+      console.log("✅ Usuario agregado correctamente:", nuevoUsuario);
+      return res.status(201).json({
+        message: "Usuario creado correctamente",
+        usuario: nuevoUsuario // ✅ Ahora sí devuelve el usuario con el _id
+      });
+    } else {
+      console.error("❌ Error al insertar usuario en MongoDB.");
+      return res.status(500).json({ error: "Error al guardar el usuario en la base de datos" });
+    }
   } catch (err) {
     console.error("❌ Error creando usuario:", err);
     res.status(500).json({ error: "Error al crear usuario" });
   }
 });
+
+
+
 
 
 // ✅ Actualizar usuario
