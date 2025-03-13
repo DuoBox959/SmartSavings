@@ -76,8 +76,12 @@ function mostrarFormularioAgregar() {
     })
   );
 
-  $("#formularioUsuario").show();
-  document.getElementById("formularioUsuario").scrollIntoView({ behavior: "smooth" });
+// ✅ Cambiar la función del botón Guardar para CREAR usuario
+$("#botonesFormulario button:first").off("click").on("click", guardarCambiosDesdeFormulario);
+
+$("#formularioUsuario").show();
+document.getElementById("formularioUsuario").scrollIntoView({ behavior: "smooth" });
+
 }
 
 
@@ -153,6 +157,45 @@ const usuario = {
   }
 }
 
+// 🟢 Guardar cambios en la edición de un usuario existente
+async function guardarEdicionUsuario() {
+  const id = $("#usuarioID").val();
+  if (!id) {
+    console.error("❌ No hay un ID de usuario válido.");
+    return;
+  }
+
+  const nombre = $("#nombreUsuario").val();
+  const password = $("#passwordUsuario").val();
+  const email = $("#emailUsuario").val();
+  const rol = $("#rolUsuario").val();
+
+  // ✅ Solo enviar los campos que se han modificado
+  const usuarioActualizado = {};
+  if (nombre) usuarioActualizado.nombre = nombre;
+  if (password) usuarioActualizado.pass = password;
+  if (email) usuarioActualizado.email = email;
+  if (rol) usuarioActualizado.rol = rol;
+
+  console.log("📤 Enviando datos para editar usuario:", usuarioActualizado);
+
+  try {
+    const response = await fetch(`http://localhost:3000/api/usuarios/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(usuarioActualizado),
+    });
+
+    if (!response.ok) throw new Error("Error al actualizar usuario");
+
+    console.log("✅ Usuario actualizado correctamente");
+
+    await cargarUsuarios();
+    cerrarFormulario();
+  } catch (err) {
+    console.error("❌ Error actualizando usuario:", err);
+  }
+}
 
 
 // 🟢 Editar usuario
@@ -164,10 +207,15 @@ function editarUsuario(id) {
   $("#usuarioID").val(usuario._id);
   $("#nombreUsuario").val(usuario.nombre || "");
   $("#emailUsuario").val(usuario.email || "");
-  $("#passwordUsuario").val(""); // nunca rellenamos password real
+  $("#passwordUsuario").val(usuario.password || ""); // 🔹val(""); No mostrar la contraseña real
   $("#rolUsuario").val(usuario.rol || "usuario");
+
+  // ✅ Cambia la función del botón Guardar para edición
+  $("#botonesFormulario button:first").off("click").on("click", guardarEdicionUsuario);
+
   $("#formularioUsuario").show();
 }
+
 
 // 🟢 Eliminar usuario
 async function eliminarUsuario(id) {

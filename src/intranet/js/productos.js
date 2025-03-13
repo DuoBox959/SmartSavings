@@ -26,55 +26,33 @@ $(document).ready(() => {
  */
 async function cargarProductos() {
   try {
-    // Obtenemos todos los documentos
-    const result = await db.allDocs({ include_docs: true });
-    // Mapeamos para acceder a la info del doc
-    productosCache = result.rows.map((row) => row.doc);
+    // ✅ Hacer una petición a la API de productos
+    const response = await fetch("http://localhost:3000/api/productos");
+    const productos = await response.json();
 
-    // Limpiamos cualquier dato previo en la tabla
+    // ✅ Limpiar y actualizar la DataTable
     productosTable.clear();
-
-    // Agregamos las filas al DataTable
-    productosCache.forEach((producto) => {
+    productos.forEach((producto) => {
       productosTable.row.add([
-        // 1. ID
         producto._id,
-        // 2. Imagen (si existe, mostramos; si no, indicamos "Sin imagen")
         producto.Imagen
-          ? `<img src="${producto.Imagen}" alt="Producto" 
-               style="width: 50px; height: 50px; object-fit: cover;" />`
+          ? `<img src="${producto.Imagen}" alt="Producto" style="width: 50px; height: 50px; object-fit: cover;" />`
           : "Sin imagen",
-        // 3. Nombre del producto
         producto.Nombre || "",
-        // 4. Marca
         producto.Marca || "",
-         // 5. Peso
-         producto.peso
-         ? `${producto.peso} ${producto.unidadPeso || "kg"}`
-         : "0 kg",
-        // 6. IDProveedor
-        producto.Proveedor_id,
-        // 7. IDSupermercado
-        producto.Supermercado_id,
-        // 8. IDUsuario
-        producto.Usuario_id,
-        // 9. Estado
-        producto.Estado,
-        // 10. Historial
-        // `<button onclick="verHistorial('${producto._id}')">Ver Historial</button>`,
-        // 11. Biografía
-        // producto.biografia || "Sin biografía",
-        // 13. Descripción
-        // producto.descripcion || "Sin descripción",
-        // 14. Acciones (editar/eliminar)
+        producto.Proveedor_id || "",
+        producto.Supermercado_id || "",
+        producto.Usuario_id || "",
+        producto.Estado || "",
+        producto.peso ? `${producto.peso} ${producto.unidadPeso || "kg"}` : "0 kg",
         accionesHTML(producto._id),
       ]);
     });
 
-    // Redibujar la tabla después de añadir todos los productos
+    // ✅ Redibujar la tabla después de actualizar los datos
     productosTable.draw();
   } catch (err) {
-    console.error("Error cargando productos:", err);
+    console.error("❌ Error cargando productos:", err);
   }
 }
 
