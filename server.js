@@ -54,7 +54,7 @@ app.get("/api/usuarios", async (req, res) => {
 app.post("/api/usuarios", async (req, res) => {
   try {
     const nuevoUsuario = req.body;
-    await db.collection("usuarios").insertOne(nuevoUsuario);
+    await db.collection("Usuarios").insertOne(nuevoUsuario);
     res.status(201).json({ message: "Usuario creado correctamente" });
   } catch (err) {
     console.error("❌ Error creando usuario:", err);
@@ -68,7 +68,7 @@ app.put("/api/usuarios/:id", async (req, res) => {
     const id = new ObjectId(req.params.id);
     const updateData = req.body;
 
-    const result = await db.collection("usuarios").updateOne(
+    const result = await db.collection("Usuarios").updateOne(
       { _id: id },
       { $set: updateData }
     );
@@ -88,7 +88,7 @@ app.put("/api/usuarios/:id", async (req, res) => {
 app.delete("/api/usuarios/:id", async (req, res) => {
   try {
     const id = new ObjectId(req.params.id);
-    const result = await db.collection("usuarios").deleteOne({ _id: id });
+    const result = await db.collection("Usuarios").deleteOne({ _id: id });
 
     if (result.deletedCount === 0) {
       return res.status(404).json({ error: "Usuario no encontrado" });
