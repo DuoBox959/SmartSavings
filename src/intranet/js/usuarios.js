@@ -65,64 +65,95 @@ function mostrarFormularioAgregar() {
   $("#formTitulo").text("Añadir Usuario");
   $("#usuarioID, #nombreUsuario, #emailUsuario, #passwordUsuario").val("");
   $("#rolUsuario").val("usuario");
-  $("#formularioUsuario").show();
 
+  // ✅ Mostrar fecha actual en el campo de fecha (formato DD/MM/AAAA)
+  const fechaActual = new Date();
+  $("#fechaRegistroUsuario").val(
+    fechaActual.toLocaleDateString("es-ES", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    })
+  );
+
+  $("#formularioUsuario").show();
   document.getElementById("formularioUsuario").scrollIntoView({ behavior: "smooth" });
 }
 
-// 🟢 Guardar (crear o actualizar)
+
+// 🟢 Guardar (crear)
 async function guardarCambiosDesdeFormulario() {
   const id = $("#usuarioID").val();
   const nombre = $("#nombreUsuario").val();
   let password = $("#passwordUsuario").val();
   const email = $("#emailUsuario").val();
-  const fechaRegistro = new Date().toISOString();
   const rol = $("#rolUsuario").val();
 
-
+  // ✅ Validar que todos los campos estén llenos
   if (!nombre || !email || !password) {
     alert("⚠️ Todos los campos son obligatorios.");
     return;
   }
 
-  password = CryptoJS.SHA256(password).toString();
+const usuario = {
+  nombre,
+  pass: password, 
+  email,
+  rol
+};
 
-  const usuario = {
-    nombre, 
-    pass: password,
-    email,
-    fechaRegistro,
-    rol,
-   
-  };
+
+  console.log("📤 Enviando datos al backend:", usuario); // 🔍 Ver qué se envía
 
   try {
+    let response;
     if (id) {
-      // PUT = actualizar
-      const response = await fetch(`http://localhost:3000/api/usuarios/${id}`, {
+      // PUT = actualizar usuario
+      response = await fetch(`http://localhost:3000/api/usuarios/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(usuario),
       });
-
-      if (!response.ok) throw new Error("Error al actualizar usuario");
     } else {
       // POST = nuevo usuario
-      const response = await fetch("http://localhost:3000/api/usuarios", {
+      response = await fetch("http://localhost:3000/api/usuarios", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(usuario),
       });
-
-      if (!response.ok) throw new Error("Error al crear usuario");
     }
 
-    await cargarUsuarios();
+    if (!response.ok) throw new Error("Error al guardar usuario");
+
+    const data = await response.json();
+    console.log("✅ Respuesta del backend:", data); // 🔍 Ver respuesta del servidor
+
+    // ❗ Posible problema: si `data.usuario` es undefined, evitar el error
+    if (!data.usuario) {
+      console.error("❌ Error: El backend no devolvió el usuario creado.");
+      return;
+    }
+
+    // ✅ Si el usuario fue creado, actualizar la tabla sin recargar la página
+    if (!id) {
+      usuariosTable.row.add([
+        data.usuario._id,  // 🔹 Aquí es donde el error podría ocurrir
+        data.usuario.nombre,
+        "********", // 🔹 No mostrar la contraseña
+        data.usuario.email,
+        formatearFecha(data.usuario.fechaRegistro), // ✅ Ahora la fecha viene del backend
+        data.usuario.rol,
+        accionesHTML(data.usuario._id)
+      ]).draw();
+    }
+
     cerrarFormulario();
   } catch (err) {
     console.error("❌ Error guardando usuario:", err);
   }
 }
+
+
 
 // 🟢 Editar usuario
 function editarUsuario(id) {
