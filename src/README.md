@@ -1,50 +1,27 @@
-### Tareas Pendientes
+# SmartSavings
 
-1. **Añadir Cesta de Ahorro**
-   - Implementar una cesta de ahorro para que el cliente pueda ver cuánto ha ahorrado en su compra.
-   - Realizar un cálculo comparativo con los precios de otras tiendas.
-   - Mostrar el ahorro por producto (ejemplo: "Te has ahorrado 1€").
-   - Añadir botón opcional para incluir comparaciones sin sobrecargar la lista.
-   - Al final de la compra, mostrar:
-     - Total ahorrado (verde).
-     - Precio que hubiera costado en otras tiendas (rojo).
-     - Comparación de qué tienda tiene los precios más altos.
+## Descripción
 
-2. **Actualizar Interfaz `productos.html`**
-   - Mejorar el diseño para que sea más atractivo e intuitivo.
-   - Optimizar la organización de la información.
-   - Implementar una experiencia superior a la de Idealo.
+**SmartSavings** es un proyecto diseñada para la **comparación de precios** de productos entre distintos supermercados. Su principal objetivo es ayudar a los usuarios a encontrar la mejor relación calidad-precio en sus compras diarias, facilitando la toma de decisiones informadas y fomentando la competencia entre supermercados.
 
-3. **Hacer la Base de Datos Pública**
-   - Permitir acceso a Rube y a mí.
-   - Crear un sistema de login para la intranet con usuarios autorizados.
-   - Evaluar la implementación de roles en la tabla de usuarios.
-   - Implementar un CAPTCHA (Google o uno propio más creativo).
+## Tecnologías Utilizadas
 
-4. **Añadir Login en la Intranet**
-   - Permitir acceso solo a administradores.
-   - Definir roles de usuario (administrador, usuario estándar).
+El proyecto está desarrollado utilizando las siguientes tecnologías:
 
-6. **Historial de Precios y Peso de los Productos**
-   - Mostrar cuánto costaba un producto en años anteriores.
-   - Incluir información del peso de los productos para evitar engaños.
-   - Detectar estrategias de "reduflación" (ejemplo: Doritos redujo 100g sin bajar el precio).
+- **Frontend:** HTML, CSS, JavaScript
+- **Backend:** Node.js con Express.js
+- **Base de Datos:** MongoDB Atlas
 
-7. **Añadir `creadoPor` a la Base de Datos**
-   - Relacionar cada producto con el usuario que lo registró.
+## Funcionalidades Principales
 
-8. **Página de Configuración de Cuenta**
-   - Permitir modificar datos personales.
-   - Ajustes de preferencias.
-   - Programar configuracion cuenta
-   - Añadir capchat para guardar la configuracion de cuenta
-   - Añadir nuevos campos a la bd de usuarios
+- **Visualización de productos:** Lista de productos disponibles en los supermercados con detalles como **nombre**, **marca**, **imagen**, **precio** y **proveedor**.
+- **Gestión de usuarios:** Creación, actualización y eliminación de usuarios registrados en la plataforma.
+- **Conexión con MongoDB Atlas:** Base de datos NoSQL para el almacenamiento de productos, supermercados y precios.
+- **API REST:** Desarrollo de **endpoints** en Node.js con Express para la gestión de usuarios y productos.
+- **Interfaz dinámica:** Implementación de **DataTables** para mostrar productos de forma interactiva y mejorar la experiencia del usuario.
+- **Validaciones:** Uso de **JavaScript** y **PouchDB** para validaciones y almacenamiento temporal.
+- **Mensajes de alerta:** Se utiliza **SweetAlert2** para mejorar la interacción con el usuario mediante mensajes visuales.
 
-9. **Correcciones en la Intranet**
-   - Revisar botón "Ver Historial" en la intranet (corregir en el JS).
+## Autores
 
-10. **Comentarios y optimizacion del codigo**
-   - Optimizarlo y comenntarlo como en producto.html de intranet
-      *
-   - Todos los demas hay que seguir comentando y optimizando
-   - En las funciones que tenga un comentario asi resumido como se hace con @params y comentarios de algunas lineas importante en js, en css comento alguna linea
+Los autores de este proyecto son **Javier Domínguez** y **Rubén Fernández**
