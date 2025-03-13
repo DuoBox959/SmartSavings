@@ -103,7 +103,18 @@ app.delete("/api/usuarios/:id", async (req, res) => {
   }
 });
 
-//PRODUCTO
+//PRODUCTOS
+
+// ✅ Obtener todos los productos
+app.get("/api/productos", async (req, res) => {
+  try {
+    const productos = await db.collection("Productos").find().toArray();
+    res.json(productos);
+  } catch (err) {
+    console.error("❌ Error obteniendo productos:", err);
+    res.status(500).json({ error: "Error al obtener productos" });
+  }
+});
 
 // ✅ Crear nuevo producto
 app.post("/api/productos", async (req, res) => {
