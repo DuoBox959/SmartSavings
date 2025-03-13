@@ -25,23 +25,33 @@ $(document).ready(() => {
 async function cargarProductos() {
   try {
     // Obtenemos todos los documentos
-    const result = await db.allDocs({ include_docs: true });
+    // const result = await db.allDocs({ include_docs: true });
     // Mapeamos para acceder a la info del doc
-    productosCache = result.rows.map((row) => row.doc);
+    // productosCache = result.rows.map((row) => row.doc);
+    const respuesta = await fetch("http://localhost:3000/api/Productos");
+    const productos = await respuesta.json();
+    productosCache = productos; // 👈 ACTUALIZAMOS EL CACHE GLOBAL
 
-    // ✅ Limpiar y actualizar la DataTable
+    // Limpiamos cualquier dato previo en la tabla
     productosTable.clear();
-    productos.forEach((producto) => {
+
+    // Agregamos las filas al DataTable
+    productosCache.forEach((producto) => {
       productosTable.row.add([
+        // 1. ID
         producto._id,
+        // 2. Imagen (si existe, mostramos; si no, indicamos "Sin imagen")
         producto.Imagen
-          ? `<img src="${producto.Imagen}" alt="Producto" style="width: 50px; height: 50px; object-fit: cover;" />`
+          ? `<img src="${producto.Imagen}" alt="Producto" 
+               style="width: 50px; height: 50px; object-fit: cover;" />`
           : "Sin imagen",
+        // 3. Nombre del producto
         producto.Nombre || "",
+        // 4. Marca
         producto.Marca || "",
          // 5. Peso
-         producto.peso
-         ? `${producto.peso} ${producto.unidadPeso || "kg"}`
+         producto.Peso
+         ? `${producto.Peso} ${producto.UnidadPeso || "kg"}`
          : "0 kg",
         // 6. IDProveedor
         producto.Proveedor_id,
@@ -51,21 +61,15 @@ async function cargarProductos() {
         producto.Usuario_id,
         // 9. Estado
         producto.Estado,
-        // 10. Historial
-        // `<button onclick="verHistorial('${producto._id}')">Ver Historial</button>`,
-        // 11. Biografía
-        // producto.biografia || "Sin biografía",
-        // 13. Descripción
-        // producto.descripcion || "Sin descripción",
         // 14. Acciones (editar/eliminar)
         accionesHTML(producto._id),
       ]);
     });
 
-    // ✅ Redibujar la tabla después de actualizar los datos
+    // Redibujar la tabla después de añadir todos los productos
     productosTable.draw();
   } catch (err) {
-    console.error("❌ Error cargando productos:", err);
+    console.error("Error cargando productos:", err);
   }
 }
 
