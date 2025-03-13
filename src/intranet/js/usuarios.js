@@ -1,5 +1,3 @@
-import { db } from "../../libs/dbuser.js"; // ✅ Asegúrate de que `dbuser.js` existe
-
 // 🔹 Variables globales
 let usuariosTable;
 let usuariosCache = [];
@@ -12,125 +10,153 @@ $(document).ready(() => {
     columns: [
       { title: "ID" },
       { title: "Nombre" },
+      { title: "Password" },
       { title: "Email" },
-      { title: "Rol" },
-      { title: "Estado" },
       { title: "Fecha Registro" },
+      { title: "Rol" },
       { title: "Acciones" },
     ],
   });
 
-  cargarUsuarios(); // ✅ Ahora se llama correctamente
+  cargarUsuarios(); // ✅ Llama la nueva función fetch
 });
 
-// 🟢 **Cargar usuarios en la tabla**
+// 🟢 Cargar usuarios desde servidor Express
+
 async function cargarUsuarios() {
   try {
-    const result = await db.allDocs({ include_docs: true });
-    usuariosCache = result.rows.map((row) => row.doc);
+    const respuesta = await fetch("http://localhost:3000/api/usuarios");
+    const usuarios = await respuesta.json();
 
-    usuariosTable.clear();
+    usuariosCache = usuarios; // 👈 ACTUALIZAMOS EL CACHE GLOBAL
 
-    usuariosCache.forEach((usuario) => {
+    usuariosTable.clear(); // ✅ Limpiamos tabla antes de cargar nuevos
+    usuarios.forEach((usuario) => {
       usuariosTable.row.add([
         usuario._id,
-        usuario.name || "Sin nombre",
-        usuario.email || "Sin email",
-        usuario.rol || "usuario",
-        usuario.estado || "activo",
-        usuario.fechaRegistro
-          ? formatearFecha(usuario.fechaRegistro)
-          : "Sin fecha",
+        usuario.nombre,
+        usuario.email,
+        usuario.rol,
+        formatearFecha(usuario.fechaRegistro || new Date().toISOString()),
         accionesHTML(usuario._id),
       ]);
     });
-
-    usuariosTable.draw();
-  } catch (err) {
-    console.error("❌ Error cargando usuarios:", err);
+    usuariosTable.draw(); // ✅ Renderizar cambios
+  } catch (error) {
+    console.error("❌ Error al cargar usuarios:", error);
   }
 }
 
-// 🟢 **Acciones de editar y eliminar**
+
+
+// 🟢 Generar HTML para editar y eliminar
 function accionesHTML(id) {
   return `
-        <button onclick="editarUsuario('${id}')">✏️ Editar</button>
-        <button class="btn-eliminar" onclick="eliminarUsuario('${id}')">🗑️ Eliminar</button>
-    `;
+    <button onclick="editarUsuario('${id}')">✏️ Editar</button>
+    <button class="btn-eliminar" onclick="eliminarUsuario('${id}')">🗑️ Eliminar</button>
+  `;
 }
 
-// 🟢 **Mostrar formulario para agregar usuario**
+// 🟢 Mostrar formulario para agregar
 function mostrarFormularioAgregar() {
   $("#formTitulo").text("Añadir Usuario");
   $("#usuarioID, #nombreUsuario, #emailUsuario, #passwordUsuario").val("");
   $("#rolUsuario").val("usuario");
-  $("#estadoUsuario").val("activo");
   $("#formularioUsuario").show();
 
-  // Desplazamiento suave al formulario
-  document
-    .getElementById("formularioUsuario")
-    .scrollIntoView({ behavior: "smooth" });
+  document.getElementById("formularioUsuario").scrollIntoView({ behavior: "smooth" });
 }
 
-// 🟢 **Guardar cambios desde el formulario**
+// 🟢 Guardar (crear o actualizar)
 async function guardarCambiosDesdeFormulario() {
   const id = $("#usuarioID").val();
   const nombre = $("#nombreUsuario").val();
-  const email = $("#emailUsuario").val();
   let password = $("#passwordUsuario").val();
-  const rol = $("#rolUsuario").val();
-  const estado = $("#estadoUsuario").val();
+  const email = $("#emailUsuario").val();
   const fechaRegistro = new Date().toISOString();
+  const rol = $("#rolUsuario").val();
+
 
   if (!nombre || !email || !password) {
     alert("⚠️ Todos los campos son obligatorios.");
     return;
   }
 
-  // ✅ Encriptar contraseña con SHA-256
   password = CryptoJS.SHA256(password).toString();
 
-  let doc;
-  if (id) {
-    try {
-      const existingDoc = await db.get(id);
-      doc = { ...existingDoc, name: nombre, email, password, rol, estado };
-    } catch (err) {
-      console.error("❌ Error obteniendo el usuario:", err);
-      return;
-    }
-  } else {
-    doc = {
-      _id: await asignarIDDisponible(),
-      name: nombre,
-      email,
-      password,
-      rol,
-      estado,
-      fechaRegistro,
-      productosCreados: [], // ✅ Agregar campo vacío por defecto
-    };
-  }
+  const usuario = {
+    nombre, 
+    pass: password,
+    email,
+    fechaRegistro,
+    rol,
+   
+  };
 
   try {
-    await db.put(doc);
-    cargarUsuarios();
+    if (id) {
+      // PUT = actualizar
+      const response = await fetch(`http://localhost:3000/api/usuarios/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(usuario),
+      });
+
+      if (!response.ok) throw new Error("Error al actualizar usuario");
+    } else {
+      // POST = nuevo usuario
+      const response = await fetch("http://localhost:3000/api/usuarios", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(usuario),
+      });
+
+      if (!response.ok) throw new Error("Error al crear usuario");
+    }
+
+    await cargarUsuarios();
     cerrarFormulario();
   } catch (err) {
     console.error("❌ Error guardando usuario:", err);
   }
 }
 
-// 🟢 **Generar un ID único**
-async function asignarIDDisponible() {
-  const timestamp = new Date().getTime();
-  return `user-${timestamp}`;
+// 🟢 Editar usuario
+function editarUsuario(id) {
+  const usuario = usuariosCache.find((u) => u._id === id);
+  if (!usuario) return;
+
+  $("#formTitulo").text("Editar Usuario");
+  $("#usuarioID").val(usuario._id);
+  $("#nombreUsuario").val(usuario.nombre || "");
+  $("#emailUsuario").val(usuario.email || "");
+  $("#passwordUsuario").val(""); // nunca rellenamos password real
+  $("#rolUsuario").val(usuario.rol || "usuario");
+  $("#formularioUsuario").show();
 }
 
-// 🟢 **Formatear fecha de registro**
+// 🟢 Eliminar usuario
+async function eliminarUsuario(id) {
+  const confirmacion = confirm("¿Estás seguro de eliminar este usuario?");
+  if (!confirmacion) return;
+
+  try {
+    const response = await fetch(`http://localhost:3000/api/usuarios/${id}`, {
+      method: "DELETE",
+    });
+
+    if (!response.ok) throw new Error("Error al eliminar usuario");
+
+    await cargarUsuarios();
+  } catch (err) {
+    console.error("❌ Error eliminando usuario:", err);
+  }
+}
+
+// 🟢 Formatear fecha
 function formatearFecha(fechaISO) {
   const fecha = new Date(fechaISO);
+  if (isNaN(fecha.getTime())) return fechaISO; // Si es string no ISO, se devuelve tal cual
   return fecha.toLocaleDateString("es-ES", {
     day: "2-digit",
     month: "2-digit",
@@ -138,50 +164,23 @@ function formatearFecha(fechaISO) {
   });
 }
 
-// 🟢 **Editar un usuario**
-function editarUsuario(id) {
-  const usuario = usuariosCache.find((u) => u._id === id);
-  if (!usuario) return;
 
-  $("#formTitulo").text("Editar Usuario");
-  $("#usuarioID").val(usuario._id);
-  $("#nombreUsuario").val(usuario.name || "");
-  $("#emailUsuario").val(usuario.email || "");
-  $("#passwordUsuario").val(usuario.password || "");
-  $("#rolUsuario").val(usuario.rol || "usuario");
-  $("#estadoUsuario").val(usuario.estado || "activo");
-  $("#formularioUsuario").show();
+// 🟢 Cerrar formulario
+function cerrarFormulario() {
+  $("#formularioUsuario").hide();
+  $("#usuarioID, #nombreUsuario, #emailUsuario, #passwordUsuario").val("");
 }
 
-// 🟢 **Eliminar un usuario**
-async function eliminarUsuario(id) {
-  const usuario = usuariosCache.find((u) => u._id === id);
-  if (!usuario) return;
-
-  if (confirm("¿Estás seguro de eliminar este usuario?")) {
-    try {
-      await db.remove(usuario);
-      cargarUsuarios();
-    } catch (err) {
-      console.error("❌ Error eliminando usuario:", err);
-    }
-  }
+// 🟢 Volver atrás
+function volverAtras() {
+  window.location.href = "../html/intranet.html";
 }
 
-// 🟢 **Funciones globales para el HTML**
+// 🟢 Exponer funciones globales
 window.editarUsuario = editarUsuario;
 window.eliminarUsuario = eliminarUsuario;
 window.mostrarFormularioAgregar = mostrarFormularioAgregar;
 window.guardarCambiosDesdeFormulario = guardarCambiosDesdeFormulario;
 window.cerrarFormulario = cerrarFormulario;
 window.volverAtras = volverAtras;
-window.cargarUsuarios = cargarUsuarios; // ✅ Hacerla accesible globalmente
-
-function volverAtras() {
-  window.location.href = "../html/intranet.html";
-}
-
-function cerrarFormulario() {
-  $("#formularioUsuario").hide();
-  $("#usuarioID, #nombreUsuario, #emailUsuario, #passwordUsuario").val("");
-}
+window.cargarUsuarios = cargarUsuarios;
