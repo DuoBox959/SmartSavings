@@ -295,3 +295,195 @@ app.delete("/api/supermercados/:id", async (req, res) => {
   }
 });
 
+//DESCRIPCION
+
+// ✅ Obtener todos los supermercados
+app.get("/api/descripcion", async (req, res) => {
+  try {
+    const descripcion = await db.collection("Descripcion").find().toArray();
+    res.json(descripcion);
+  } catch (err) {
+    console.error("❌ Error obteniendo descripcion:", err);
+    res.status(500).json({ error: "Error al obtener descripcion" });
+  }
+});
+
+// ✅ Crear nueva descripcion
+app.post("/api/descripcion", async (req, res) => {
+  try {
+    const nuevaDescripcion = req.body;
+    await db.collection("Descripcion").insertOne(nuevaDescripcion);
+    res.status(201).json({ message: "Descripcion creada correctamente" });
+  } catch (err) {
+    console.error("❌ Error creando Descripcion:", err);
+    res.status(500).json({ error: "Error al crear Descripcion" });
+  }
+});
+
+// ✅ Actualizar descripcion
+app.put("/api/descripcion/:id", async (req, res) => {
+  try {
+    const id = new ObjectId(req.params.id);
+    const updateData = req.body;
+
+    const result = await db.collection("Descripcion").updateOne(
+      { _id: id },
+      { $set: updateData }
+    );
+
+    if (result.modifiedCount === 0) {
+      return res.status(404).json({ error: "Descripcion no encontrado" });
+    }
+
+    res.json({ message: "Descripcion actualizado correctamente" });
+  } catch (err) {
+    console.error("❌ Error actualizando Descripcion:", err);
+    res.status(500).json({ error: "Error al actualizar Descripcion" });
+  }
+});
+
+// ✅ Eliminar descripcion
+app.delete("/api/descripcion/:id", async (req, res) => {
+  try {
+    const id = new ObjectId(req.params.id);
+    const result = await db.collection("Descripcion").deleteOne({ _id: id });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ error: "Descripcion no encontrado" });
+    }
+
+    res.json({ message: "Descripcion eliminado correctamente" });
+  } catch (err) {
+    console.error("❌ Error eliminando Descripcion:", err);
+    res.status(500).json({ error: "Error al eliminar Descripcion" });
+  }
+});
+
+//PROVEEDOR
+
+// ✅ Obtener todos los proveedores
+app.get("/api/proveedor", async (req, res) => {
+  try {
+    const proveedor = await db.collection("Proveedor").find().toArray();
+    res.json(proveedor);
+  } catch (err) {
+    console.error("❌ Error obteniendo proveedor:", err);
+    res.status(500).json({ error: "Error al obtener proveedor" });
+  }
+});
+
+// ✅ Crear nuevo proveedor
+app.post("/api/proveedor", async (req, res) => {
+  try {
+    const nuevoProveedor = req.body;
+    await db.collection("Proveedor").insertOne(nuevoProveedor);
+    res.status(201).json({ message: "Proveedor creado correctamente" });
+  } catch (err) {
+    console.error("❌ Error creando Proveedor:", err);
+    res.status(500).json({ error: "Error al crear Proveedor" });
+  }
+});
+
+// ✅ Actualizar proveedor
+app.put("/api/proveedor/:id", async (req, res) => {
+  try {
+    const id = new ObjectId(req.params.id);
+    const updateData = req.body;
+
+    const result = await db.collection("Proveedor").updateOne(
+      { _id: id },
+      { $set: updateData }
+    );
+
+    if (result.modifiedCount === 0) {
+      return res.status(404).json({ error: "Proveedor no encontrado" });
+    }
+
+    res.json({ message: "Proveedor actualizado correctamente" });
+  } catch (err) {
+    console.error("❌ Error actualizando Proveedor:", err);
+    res.status(500).json({ error: "Error al actualizar Proveedor" });
+  }
+});
+
+// ✅ Eliminar proveedor
+app.delete("/api/proveedor/:id", async (req, res) => {
+  try {
+    const id = new ObjectId(req.params.id);
+    const result = await db.collection("Proveedor").deleteOne({ _id: id });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ error: "Proveedor no encontrado" });
+    }
+
+    res.json({ message: "Proveedor eliminado correctamente" });
+  } catch (err) {
+    console.error("❌ Error eliminando Proveedor:", err);
+    res.status(500).json({ error: "Error al eliminar Proveedor" });
+  }
+});
+
+//OPINIONES
+
+// ✅ Obtener todas las opiniones
+app.get("/api/opiniones", async (req, res) => {
+  try {
+    const opiniones = await db.collection("Opiniones").find().toArray();
+    res.json(opiniones);
+  } catch (err) {
+    console.error("❌ Error obteniendo opiniones:", err);
+    res.status(500).json({ error: "Error al obtener opiniones" });
+  }
+});
+
+// ✅ Crear nueva opinion
+app.post("/api/opiniones", async (req, res) => {
+  try {
+    const nuevaOpinion = req.body;
+    await db.collection("Opiniones").insertOne(nuevaOpinion);
+    res.status(201).json({ message: "Opinion creado correctamente" });
+  } catch (err) {
+    console.error("❌ Error creando Opinion:", err);
+    res.status(500).json({ error: "Error al crear Opinion" });
+  }
+});
+
+// ✅ Actualizar opinion
+app.put("/api/opiniones/:id", async (req, res) => {
+  try {
+    const id = new ObjectId(req.params.id);
+    const updateData = req.body;
+
+    const result = await db.collection("Opinion").updateOne(
+      { _id: id },
+      { $set: updateData }
+    );
+
+    if (result.modifiedCount === 0) {
+      return res.status(404).json({ error: "Opinion no encontrada" });
+    }
+
+    res.json({ message: "Opinion actualizada correctamente" });
+  } catch (err) {
+    console.error("❌ Error actualizando Opinion:", err);
+    res.status(500).json({ error: "Error al actualizar Opinion" });
+  }
+});
+
+// ✅ Eliminar opinion
+app.delete("/api/opiniones/:id", async (req, res) => {
+  try {
+    const id = new ObjectId(req.params.id);
+    const result = await db.collection("Opiniones").deleteOne({ _id: id });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ error: "Opinion no encontrada" });
+    }
+
+    res.json({ message: "Opinion eliminada correctamente" });
+  } catch (err) {
+    console.error("❌ Error eliminando Opinion:", err);
+    res.status(500).json({ error: "Error al eliminar Opinion" });
+  }
+});
+
