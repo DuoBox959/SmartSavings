@@ -166,3 +166,132 @@ app.delete("/api/productos/:id", async (req, res) => {
     res.status(500).json({ error: "Error al eliminar producto" });
   }
 });
+
+//PRECIOS
+
+// ✅ Obtener todos los precios
+app.get("/api/precios", async (req, res) => {
+  try {
+    const precios = await db.collection("Precios").find().toArray();
+    res.json(precios);
+  } catch (err) {
+    console.error("❌ Error obteniendo precios:", err);
+    res.status(500).json({ error: "Error al obtener precios" });
+  }
+});
+
+// ✅ Crear nuevo precio
+app.post("/api/precios", async (req, res) => {
+  try {
+    const nuevoPrecio = req.body;
+    await db.collection("Precios").insertOne(nuevoPrecio);
+    res.status(201).json({ message: "Precio creado correctamente" });
+  } catch (err) {
+    console.error("❌ Error creando Precio:", err);
+    res.status(500).json({ error: "Error al crear Precio" });
+  }
+});
+
+// ✅ Actualizar precio
+app.put("/api/precios/:id", async (req, res) => {
+  try {
+    const id = new ObjectId(req.params.id);
+    const updateData = req.body;
+
+    const result = await db.collection("Precios").updateOne(
+      { _id: id },
+      { $set: updateData }
+    );
+
+    if (result.modifiedCount === 0) {
+      return res.status(404).json({ error: "Precio no encontrado" });
+    }
+
+    res.json({ message: "Precio actualizado correctamente" });
+  } catch (err) {
+    console.error("❌ Error actualizando Precio:", err);
+    res.status(500).json({ error: "Error al actualizar precio" });
+  }
+});
+
+// ✅ Eliminar precio
+app.delete("/api/precios/:id", async (req, res) => {
+  try {
+    const id = new ObjectId(req.params.id);
+    const result = await db.collection("Precios").deleteOne({ _id: id });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ error: "Precio no encontrado" });
+    }
+
+    res.json({ message: "Precio eliminado correctamente" });
+  } catch (err) {
+    console.error("❌ Error eliminando precio:", err);
+    res.status(500).json({ error: "Error al eliminar precio" });
+  }
+});
+
+//SUPERMERCADO
+
+// ✅ Obtener todos los supermercados
+app.get("/api/supermercados", async (req, res) => {
+  try {
+    const supermercados = await db.collection("Supermecados").find().toArray();
+    res.json(supermercados);
+  } catch (err) {
+    console.error("❌ Error obteniendo supermercados:", err);
+    res.status(500).json({ error: "Error al obtener supermercados" });
+  }
+});
+
+// ✅ Crear nuevo supermercados
+app.post("/api/supermercados", async (req, res) => {
+  try {
+    const nuevoSupermercado = req.body;
+    await db.collection("Supermercado").insertOne(nuevoSupermercado);
+    res.status(201).json({ message: "Supermercado creado correctamente" });
+  } catch (err) {
+    console.error("❌ Error creando Supermercado:", err);
+    res.status(500).json({ error: "Error al crear Supermercado" });
+  }
+});
+
+// ✅ Actualizar supermercado
+app.put("/api/supermercados/:id", async (req, res) => {
+  try {
+    const id = new ObjectId(req.params.id);
+    const updateData = req.body;
+
+    const result = await db.collection("Supermercados").updateOne(
+      { _id: id },
+      { $set: updateData }
+    );
+
+    if (result.modifiedCount === 0) {
+      return res.status(404).json({ error: "Supermercado no encontrado" });
+    }
+
+    res.json({ message: "Supermercado actualizado correctamente" });
+  } catch (err) {
+    console.error("❌ Error actualizando Supermercado:", err);
+    res.status(500).json({ error: "Error al actualizar Supermercado" });
+  }
+});
+
+// ✅ Eliminar supermercado
+app.delete("/api/supermercados/:id", async (req, res) => {
+  try {
+    const id = new ObjectId(req.params.id);
+    const result = await db.collection("Supermercados").deleteOne({ _id: id });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ error: "Supermercado no encontrado" });
+    }
+
+    res.json({ message: "Supermercado eliminado correctamente" });
+  } catch (err) {
+    console.error("❌ Error eliminando supermercado:", err);
+    res.status(500).json({ error: "Error al eliminar supermercado" });
+  }
+});
+
