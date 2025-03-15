@@ -90,20 +90,16 @@ function mostrarFormularioAgregar() {
     .scrollIntoView({ behavior: "smooth" });
 }
 
-// 🟢 Guardar (crear) producto
-async function guardarCambiosDesdeFormulario() {
+// 🟢 Guardar cambios y agregar producto
+async function guardarCambiosDesdeFormulario(event) {
+  event.preventDefault(); // Evitar el envío tradicional del formulario
+
   const id = $("#productoID").val();
   const nombre = $("#nombreProducto").val();
   const imagen = $("#imagenProducto").val();
   const marca = $("#marcaProducto").val();
   const peso = $("#pesoProducto").val();
   const estado = $("#estadoProducto").val();
-
-  // ✅ Validar que todos los campos estén llenos
-  // if (!nombre || !marca || !peso || !estado) {
-  //   alert("⚠️ Todos los campos son obligatorios.");
-  //   return;
-  // }
 
   // Separar peso y unidad de peso
   const [pesoValor, unidadPeso] = peso.split(" ");
@@ -165,10 +161,10 @@ async function guardarCambiosDesdeFormulario() {
           data.producto.Estado, // Aseguramos que Estado esté en su columna
           accionesHTML(data.producto._id),
         ])
-        .draw();
+        .draw(); // Esto actualiza la tabla con el nuevo producto
     }
 
-    cerrarFormulario();
+    cerrarFormulario(); // Cierra el formulario después de guardar
   } catch (err) {
     console.error("❌ Error guardando producto:", err);
   }
