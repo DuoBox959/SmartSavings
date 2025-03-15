@@ -96,21 +96,19 @@ async function guardarCambiosDesdeFormulario(event) {
 
   const id = $("#productoID").val();
   const nombre = $("#nombreProducto").val();
-  const imagen = $("#imagenProducto").val();
+  const imagen = $("#imgProducto").val(); // Aquí se utiliza el id correcto del input
   const marca = $("#marcaProducto").val();
-  const peso = $("#pesoProducto").val();
-  const estado = $("#estadoProducto").val();
-
-  // Separar peso y unidad de peso
-  const [pesoValor, unidadPeso] = peso.split(" ");
+  const peso = $("#pesoProducto").val(); // Obtenemos el valor del peso
+  const unidadPeso = $("#unidadPeso").val(); // Obtenemos la unidad de peso desde el select
+  const estado = $("#Estado").val(); // Estado
 
   const producto = {
     Nombre: nombre,
     Imagen: imagen,
     Marca: marca,
-    Peso: pesoValor, // Guardamos solo el número
-    UnidadPeso: unidadPeso || "", // Guardamos solo la unidad
-    Estado: estado,
+    Peso: peso, // Guardamos solo el número (valor de peso)
+    UnidadPeso: unidadPeso, // Guardamos solo la unidad de peso
+    Estado: estado, // Estado (En Stock o Sin Stock)
   };
 
   console.log("📤 Enviando datos al backend:", producto); // 🔍 Ver qué se envía
@@ -227,9 +225,10 @@ function editarProducto(id) {
   $("#productoID").val(producto._id);
   $("#nombreProducto").val(producto.Nombre || "");
   $("#marcaProducto").val(producto.Marca || "");
-  $("#imagenProducto").val(producto.Imagen || "");
-  $("#pesoProducto").val(`${producto.Peso} ${producto.UnidadPeso}` || "");
-  $("#estadoProducto").val(producto.Estado || "En Stock");
+  $("#imgProducto").val(producto.Imagen || "");
+  $("#pesoProducto").val(`${producto.Peso} ${producto.UnidadPeso}` || ""); // Combinamos peso y unidad en el campo de texto
+  $("#unidadPeso").val(producto.UnidadPeso || "kg"); // Asignamos el valor de la unidad de peso en el select
+  $("#Estado").val(producto.Estado || "En Stock"); // Asignamos el valor del estado en el select
 
   $("#botonesFormulario button:first")
     .off("click")
