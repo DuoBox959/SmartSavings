@@ -31,26 +31,24 @@ async function cargarUsuarios() {
     usuariosCache = usuarios; // 👈 ACTUALIZAMOS EL CACHE GLOBAL
 
     usuariosTable.clear(); // ✅ Limpiamos tabla antes de cargar nuevos
-    usuarios.forEach((usuario) => { // ✅ Ahora 'usuario' está definido
+    usuarios.forEach((usuario) => {
+      // ✅ Ahora 'usuario' está definido
       usuariosTable.row.add([
-        usuario._id,  
+        usuario._id,
         usuario.nombre,
-        usuario.pass,  // ✅ CORREGIDO: el campo en la BD es 'pass', no 'password'
+        usuario.pass, // ✅ CORREGIDO: el campo en la BD es 'pass', no 'password'
         usuario.email,
         formatearFecha(usuario.fechaRegistro || new Date().toISOString()),
         usuario.rol,
         accionesHTML(usuario._id),
       ]);
     });
-    
-   
+
     usuariosTable.draw(); // ✅ Renderizar cambios
   } catch (error) {
     console.error("❌ Error al cargar usuarios:", error);
   }
 }
-
-
 
 // 🟢 Generar HTML para editar y eliminar
 function accionesHTML(id) {
@@ -76,14 +74,16 @@ function mostrarFormularioAgregar() {
     })
   );
 
-// ✅ Cambiar la función del botón Guardar para CREAR usuario
-$("#botonesFormulario button:first").off("click").on("click", guardarCambiosDesdeFormulario);
+  // ✅ Cambiar la función del botón Guardar para CREAR usuario
+  $("#botonesFormulario button:first")
+    .off("click")
+    .on("click", guardarCambiosDesdeFormulario);
 
-$("#formularioUsuario").show();
-document.getElementById("formularioUsuario").scrollIntoView({ behavior: "smooth" });
-
+  $("#formularioUsuario").show();
+  document
+    .getElementById("formularioUsuario")
+    .scrollIntoView({ behavior: "smooth" });
 }
-
 
 // 🟢 Guardar (crear)
 async function guardarCambiosDesdeFormulario() {
@@ -99,13 +99,12 @@ async function guardarCambiosDesdeFormulario() {
     return;
   }
 
-const usuario = {
-  nombre,
-  pass: password, 
-  email,
-  rol
-};
-
+  const usuario = {
+    nombre,
+    pass: password,
+    email,
+    rol,
+  };
 
   console.log("📤 Enviando datos al backend:", usuario); // 🔍 Ver qué se envía
 
@@ -140,15 +139,17 @@ const usuario = {
 
     // ✅ Si el usuario fue creado, actualizar la tabla sin recargar la página
     if (!id) {
-      usuariosTable.row.add([
-        data.usuario._id,  // 🔹 Aquí es donde el error podría ocurrir
-        data.usuario.nombre,
-        "********", // 🔹 No mostrar la contraseña
-        data.usuario.email,
-        formatearFecha(data.usuario.fechaRegistro), // ✅ Ahora la fecha viene del backend
-        data.usuario.rol,
-        accionesHTML(data.usuario._id)
-      ]).draw();
+      usuariosTable.row
+        .add([
+          data.usuario._id, // 🔹 Aquí es donde el error podría ocurrir
+          data.usuario.nombre,
+          "********", // 🔹 No mostrar la contraseña
+          data.usuario.email,
+          formatearFecha(data.usuario.fechaRegistro), // ✅ Ahora la fecha viene del backend
+          data.usuario.rol,
+          accionesHTML(data.usuario._id),
+        ])
+        .draw();
     }
 
     cerrarFormulario();
@@ -197,7 +198,6 @@ async function guardarEdicionUsuario() {
   }
 }
 
-
 // 🟢 Editar usuario
 function editarUsuario(id) {
   const usuario = usuariosCache.find((u) => u._id === id);
@@ -211,11 +211,15 @@ function editarUsuario(id) {
   $("#rolUsuario").val(usuario.rol || "usuario");
 
   // ✅ Cambia la función del botón Guardar para edición
-  $("#botonesFormulario button:first").off("click").on("click", guardarEdicionUsuario);
+  $("#botonesFormulario button:first")
+    .off("click")
+    .on("click", guardarEdicionUsuario);
 
   $("#formularioUsuario").show();
+  document
+    .getElementById("formularioUsuario")
+    .scrollIntoView({ behavior: "smooth" });
 }
-
 
 // 🟢 Eliminar usuario
 async function eliminarUsuario(id) {
@@ -245,7 +249,6 @@ function formatearFecha(fechaISO) {
     year: "numeric",
   });
 }
-
 
 // 🟢 Cerrar formulario
 function cerrarFormulario() {

@@ -101,8 +101,8 @@ async function guardarCambiosDesdeFormulario(event) {
   const peso = $("#pesoProducto").val();
   const unidadPeso = $("#unidadPeso").val();
   const estado = $("#Estado").val();
-  const proveedorId = $("#idProveedor").val(); 
-  const supermercadoId = $("#idSupermercado").val(); 
+  const proveedorId = $("#idProveedor").val();
+  const supermercadoId = $("#idSupermercado").val();
   const usuarioId = $("#idUsuario").val();
 
   const producto = {
@@ -168,7 +168,7 @@ async function guardarCambiosDesdeFormulario(event) {
 
     cerrarFormulario(); // Cierra el formulario después de guardar
     // Recargar la página automáticamente después de guardar
-    location.reload(); 
+    location.reload();
   } catch (err) {
     console.error("❌ Error guardando producto:", err);
   }
@@ -225,7 +225,7 @@ async function guardarEdicionProducto() {
 // 🟢 Editar producto
 function editarProducto(id) {
   const producto = productosCache.find((p) => p._id === id);
-  
+
   if (!producto) {
     console.error("❌ Producto no encontrado en productosCache");
     return;
@@ -237,19 +237,22 @@ function editarProducto(id) {
   $("#productoID").val(producto._id);
   $("#nombreProducto").val(producto.Nombre || "");
   $("#marcaProducto").val(producto.Marca || "");
-  $("#imgProducto").val(producto.Imagen || ""); 
-  $("#pesoProducto").val(producto.Peso || ""); 
-  $("#unidadPeso").val(producto.UnidadPeso || "KG"); 
+  $("#imgProducto").val(producto.Imagen || "");
+  $("#pesoProducto").val(producto.Peso || "");
+  $("#unidadPeso").val(producto.UnidadPeso || "KG");
   $("#idProveedor").val(producto.Proveedor_id || "");
   $("#idSupermercado").val(producto.Supermercado_id || "");
   $("#idUsuario").val(producto.Usuario_id || "");
-  $("#Estado").val(producto.Estado || "En Stock"); 
+  $("#Estado").val(producto.Estado || "En Stock");
 
   $("#botonesFormulario button:first")
     .off("click")
     .on("click", guardarEdicionProducto);
 
   $("#formularioProducto").show();
+  document
+    .getElementById("formularioProducto")
+    .scrollIntoView({ behavior: "smooth" });
 }
 
 // 🟢 Eliminar producto
