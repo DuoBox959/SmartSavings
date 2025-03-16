@@ -12,12 +12,12 @@ $(document).ready(() => {
       { title: "Imagen" },
       { title: "Nombre" },
       { title: "Marca" },
-      { title: "Peso" }, // Solo una columna para el peso y su unidad
+      { title: "Peso" },
       { title: "Proveedor_id" },
       { title: "Supermercado_id" },
-      { title: "Usuario_id" }, // Aseguramos que la columna de Usuario_id esté en la posición correcta
-      { title: "Estado" }, // Aseguramos que la columna de Estado esté en la posición correcta
-      { title: "Acciones" }, // La columna de Acciones es la última
+      { title: "Usuario_id" },
+      { title: "Estado" },
+      { title: "Acciones" },
     ],
   });
 
@@ -96,22 +96,28 @@ async function guardarCambiosDesdeFormulario(event) {
 
   const id = $("#productoID").val();
   const nombre = $("#nombreProducto").val();
-  const imagen = $("#imgProducto").val(); // Aquí se utiliza el id correcto del input
+  const imagen = $("#imgProducto").val();
   const marca = $("#marcaProducto").val();
-  const peso = $("#pesoProducto").val(); // Obtenemos el valor del peso
-  const unidadPeso = $("#unidadPeso").val(); // Obtenemos la unidad de peso desde el select
-  const estado = $("#Estado").val(); // Estado
+  const peso = $("#pesoProducto").val();
+  const unidadPeso = $("#unidadPeso").val();
+  const estado = $("#Estado").val();
+  const proveedorId = $("#idProveedor").val(); 
+  const supermercadoId = $("#idSupermercado").val(); 
+  const usuarioId = $("#idUsuario").val();
 
   const producto = {
     Nombre: nombre,
     Imagen: imagen,
     Marca: marca,
-    Peso: peso, // Guardamos solo el número (valor de peso)
-    UnidadPeso: unidadPeso, // Guardamos solo la unidad de peso
-    Estado: estado, // Estado (En Stock o Sin Stock)
+    Peso: peso,
+    UnidadPeso: unidadPeso,
+    Estado: estado,
+    Proveedor_id: proveedorId,
+    Supermercado_id: supermercadoId,
+    Usuario_id: usuarioId,
   };
 
-  console.log("📤 Enviando datos al backend:", producto); // 🔍 Ver qué se envía
+  console.log("📤 Enviando datos al backend:", producto);
 
   try {
     let response;
@@ -134,7 +140,7 @@ async function guardarCambiosDesdeFormulario(event) {
     if (!response.ok) throw new Error("Error al guardar producto");
 
     const data = await response.json();
-    console.log("✅ Respuesta del backend:", data); // 🔍 Ver respuesta del servidor
+    console.log("✅ Respuesta del backend:", data);
 
     if (!data.producto) {
       console.error("❌ Error: El backend no devolvió el producto creado.");
@@ -143,26 +149,26 @@ async function guardarCambiosDesdeFormulario(event) {
 
     // ✅ Si el producto fue creado, actualizar la tabla sin recargar la página
     if (!id) {
-      const pesoConUnidad = `${data.producto.Peso} ${data.producto.UnidadPeso}`; // Combinamos el peso y la unidad
+      const pesoConUnidad = `${data.producto.Peso} ${data.producto.UnidadPeso}`;
       productosTable.row
         .add([
           data.producto._id,
-          `<img src="${data.producto.Imagen}" alt="${data.producto.Nombre}" width="50" />`, // ✅ Muestra la imagen del producto
+          `<img src="${data.producto.Imagen}" alt="${data.producto.Nombre}" width="50" />`,
           data.producto.Nombre,
           data.producto.Marca,
-          pesoConUnidad, // Mostramos peso + unidad en una sola celda
-          data.producto.Proveedor_id ? data.producto.Proveedor_id.$oid : "",
-          data.producto.Supermercado_id
-            ? data.producto.Supermercado_id.$oid
-            : "",
-          data.producto.Usuario_id ? data.producto.Usuario_id.$oid : "", // Aseguramos que Usuario_id esté en su columna
-          data.producto.Estado, // Aseguramos que Estado esté en su columna
+          pesoConUnidad,
+          data.producto.Proveedor_id,
+          data.producto.Supermercado_id,
+          data.producto.Usuario_id,
+          data.producto.Estado,
           accionesHTML(data.producto._id),
         ])
-        .draw(); // Esto actualiza la tabla con el nuevo producto
+        .draw();
     }
 
     cerrarFormulario(); // Cierra el formulario después de guardar
+    // Recargar la página automáticamente después de guardar
+    location.reload(); 
   } catch (err) {
     console.error("❌ Error guardando producto:", err);
   }
@@ -219,16 +225,25 @@ async function guardarEdicionProducto() {
 // 🟢 Editar producto
 function editarProducto(id) {
   const producto = productosCache.find((p) => p._id === id);
-  if (!producto) return;
+  
+  if (!producto) {
+    console.error("❌ Producto no encontrado en productosCache");
+    return;
+  }
+
+  console.log("📌 Producto encontrado para editar:", producto);
 
   $("#formTitulo").text("Editar Producto");
   $("#productoID").val(producto._id);
   $("#nombreProducto").val(producto.Nombre || "");
   $("#marcaProducto").val(producto.Marca || "");
-  $("#imgProducto").val(producto.Imagen || "");
-  $("#pesoProducto").val(`${producto.Peso} ${producto.UnidadPeso}` || ""); // Combinamos peso y unidad en el campo de texto
-  $("#unidadPeso").val(producto.UnidadPeso || "kg"); // Asignamos el valor de la unidad de peso en el select
-  $("#Estado").val(producto.Estado || "En Stock"); // Asignamos el valor del estado en el select
+  $("#imgProducto").val(producto.Imagen || ""); 
+  $("#pesoProducto").val(producto.Peso || ""); 
+  $("#unidadPeso").val(producto.UnidadPeso || "KG"); 
+  $("#idProveedor").val(producto.Proveedor_id || "");
+  $("#idSupermercado").val(producto.Supermercado_id || "");
+  $("#idUsuario").val(producto.Usuario_id || "");
+  $("#Estado").val(producto.Estado || "En Stock"); 
 
   $("#botonesFormulario button:first")
     .off("click")
