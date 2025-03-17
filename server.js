@@ -212,7 +212,7 @@ app.get("/api/productos", async (req, res) => {
 });
 
 
-// ✅ Crear nuevo producto
+// ✅ MIRAR PARA QUE INSERTE PRODUCTO Y SE RECARGUE LA PAGINA Crear nuevo producto
 app.post("/api/productos", async (req, res) => {
   try {
     const nuevoProducto = req.body;
