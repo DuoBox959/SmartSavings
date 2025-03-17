@@ -1,53 +1,51 @@
-// Importa la base de datos y la función de búsqueda desde dbuser.js
-import { db, findUserByEmail } from "../libs/dbuser.js";
+// 📌 login.js - Nueva versión (MongoDB)
 import { volverAtras } from "../functions/global/funciones.js";
 
-// Selecciona los elementos del formulario
+// Seleccionamos elementos del formulario
 const loginForm = document.querySelector("form");
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
 
-//Para volver atras al darle al boton
+// Hacer el botón de volver atrás funcional
 window.volverAtras = volverAtras;
 
-// Agrega un listener al evento submit del formulario
+// Evento de submit
 loginForm.addEventListener("submit", async (event) => {
-  event.preventDefault(); // Previene el comportamiento predeterminado del formulario
+  event.preventDefault(); // Evitar recarga de página
 
-  const email = emailInput.value.trim(); // Obtiene y limpia el email
-  const password = passwordInput.value; // Obtiene la contraseña
+  const email = emailInput.value.trim();
+  const password = passwordInput.value;
 
   if (!email || !password) {
-    alert("Por favor, completa todos los campos.");
+    alert("⚠️ Por favor, completa todos los campos.");
     return;
   }
 
   try {
-    // Intenta obtener el documento del usuario desde la base de datos
-    const user = await findUserByEmail(email);
+    // 🔹 Enviar datos al backend
+    const response = await fetch("http://localhost:3000/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
-    if (user) {
-      // Compara la contraseña ingresada con la almacenada
-      if (user.password === password) {
-        // Crear sesión del usuario en sessionStorage
-        sessionStorage.setItem(
-          "user",
-          JSON.stringify({ name: user.name, email: user.email })
-        );
+    const data = await response.json();
 
-        alert(`Inicio de sesión exitoso. Bienvenido, ${user.name}!`);
-        console.log("Usuario autenticado:", user);
-        // Aquí puedes redirigir al usuario o realizar otras acciones
-        window.location.href = "index.html";
-      } else {
-        alert("Contraseña incorrecta");
-      }
-    } else {
-      alert("Usuario no encontrado");
+    if (!response.ok) {
+      throw new Error(data.error || "Error en el inicio de sesión");
     }
+
+    // ✅ Guardar la sesión
+    sessionStorage.setItem("user", JSON.stringify({ 
+      name: data.user.nombre, 
+      email: data.user.email,
+      role: data.user.rol
+    }));
+
+    alert(`✅ Inicio de sesión exitoso. ¡Bienvenido, ${data.user.nombre}!`);
+    window.location.href = "index.html"; // Redirigir a la página principal
   } catch (error) {
-    // Maneja los errores
-    console.error("Error al iniciar sesión:", error);
-    alert("Ocurrió un error al intentar iniciar sesión. Inténtalo nuevamente.");
+    console.error("❌ Error en login:", error);
+    alert(error.message);
   }
 });

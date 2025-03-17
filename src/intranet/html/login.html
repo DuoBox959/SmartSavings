@@ -1,28 +1,25 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
-    <!-- ✅ A. Configuración del Documento -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <title>Login - ComparaTú</title>
 
-    <!-- ✅ B. Vinculación de Archivos CSS -->
-    <link rel="stylesheet" href="../style/login.css" />
+    <!-- ✅ Estilos CSS -->
+    <link rel="stylesheet" href="../css/login.css" />
 
-    <!-- ✅ C. Librerías y Scripts Necesarios -->
-    <script src="../libs/pouchdb-9.0.0.min.js"></script>
-    <!-- PouchDB (Base de Datos Local) -->
-    <script type="module" src="../functions/login.js" defer></script>
-    <!-- Lógica de autenticación -->
+    <!-- ✅ Lógica del login -->
+    <script type="module" src="../js/login.js" defer></script>
+
+  
   </head>
   <body>
-    <!-- 📌 D. Contenedor Principal -->
+    <!-- 📌 Contenedor principal -->
     <div class="container">
       <div class="form-container">
-        <h1>Inicia Sesión</h1>
+        <h1>Inicia Sesión en Intranet</h1>
 
-        <!-- 📋 E. Formulario de Inicio de Sesión -->
+        <!-- 📋 Formulario de inicio de sesión -->
         <form action="#" method="post">
           <!-- 🔹 Campo: Email -->
           <label for="email">Email:</label>
@@ -44,18 +41,10 @@
             required
           />
 
-          <!-- 🔥 F. Botón para Iniciar Sesión -->
+          <!-- 🔥 Botón para iniciar sesión -->
           <button type="submit">Iniciar Sesión</button>
 
-          <!-- 🔹 Enlace para Registrarse -->
-          <p class="register-link">
-            ¿No tienes cuenta? <a href="register.html">Regístrate aquí</a>
-          </p>
-
-          <!-- 🔙 G. Botón para Regresar Atrás -->
-          <button type="button" class="back-button" onclick="volverAtras()">
-            Volver Atrás
-          </button>
+          
         </form>
       </div>
     </div>

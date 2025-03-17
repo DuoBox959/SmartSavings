@@ -9,6 +9,9 @@
 
     <!-- ✅ B. Vinculación de Archivos CSS -->
     <link rel="stylesheet" href="../css/intranet.css" />
+    
+    <!-- ✅ Importar estilos de login.css -->
+    <link rel="stylesheet" href="../css/login.css" />
 
     <!-- ✅ C. Librerías Externas -->
     <link
@@ -71,12 +74,18 @@
           <i class="fas fa-bell" aria-label="Notificaciones"></i>
           <i class="fas fa-envelope" aria-label="Mensajes"></i>
           <i class="fas fa-user-circle" aria-label="Perfil de usuario"></i>
+        
+          <!-- 🔹 Aquí se mostrará el nombre del usuario -->
+          <span id="userWelcome" class="user-welcome" style="color:black"></span>
+        
+          <!-- 🔴 Botón de Cerrar Sesión -->
           <button class="logout">Cerrar Sesión</button>
         </div>
+        
       </header>
 
       <!-- 📅 G. Sección de Contenido Principal -->
-      <section class="dashboard">
+      <section class="dashboard" style="color:black">
         <!-- 🔔 Próximo Evento -->
         <div class="event-box">
           <h2>Próximo Evento</h2>
@@ -94,6 +103,6 @@
     </main>
 
     <!-- ✅ H. Vinculación del Archivo JavaScript -->
-    <script src="../js/intranet.js"></script>
+    <script type="module" src="../js/intranet.js" defer></script>
   </body>
 </html>

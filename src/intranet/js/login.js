@@ -1,53 +1,69 @@
-// Importa la base de datos y la función de búsqueda desde dbuser.js
-import { db, findUserByEmail } from "../libs/dbuser.js";
-import { volverAtras } from "../functions/global/funciones.js";
-
-// Selecciona los elementos del formulario
+// Seleccionamos elementos del formulario
 const loginForm = document.querySelector("form");
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
 
-//Para volver atras al darle al boton
-window.volverAtras = volverAtras;
-
-// Agrega un listener al evento submit del formulario
+// Evento de submit
 loginForm.addEventListener("submit", async (event) => {
-  event.preventDefault(); // Previene el comportamiento predeterminado del formulario
+  event.preventDefault();
 
-  const email = emailInput.value.trim(); // Obtiene y limpia el email
-  const password = passwordInput.value; // Obtiene la contraseña
+  const email = emailInput.value.trim();
+  const password = passwordInput.value.trim();
 
   if (!email || !password) {
-    alert("Por favor, completa todos los campos.");
+    alert("⚠️ Por favor, completa todos los campos.");
     return;
   }
 
+  console.log("📤 Enviando datos al servidor...", { email, password });
+
   try {
-    // Intenta obtener el documento del usuario desde la base de datos
-    const user = await findUserByEmail(email);
+    const response = await fetch("http://localhost:3000/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
-    if (user) {
-      // Compara la contraseña ingresada con la almacenada
-      if (user.password === password) {
-        // Crear sesión del usuario en sessionStorage
-        sessionStorage.setItem(
-          "user",
-          JSON.stringify({ name: user.name, email: user.email })
-        );
+    const data = await response.json();
 
-        alert(`Inicio de sesión exitoso. Bienvenido, ${user.name}!`);
-        console.log("Usuario autenticado:", user);
-        // Aquí puedes redirigir al usuario o realizar otras acciones
-        window.location.href = "index.html";
-      } else {
-        alert("Contraseña incorrecta");
-      }
+    console.log("📥 Respuesta del servidor:", data);
+
+    if (!response.ok) {
+      console.error("❌ Error en login:", data.error || "Error desconocido");
+      alert(data.error || "Error en el inicio de sesión");
+      return;
+    }
+
+    if (!data.user || !data.user.rol) {
+      console.error("⚠️ Usuario sin rol definido:", data);
+      alert("Error: No se recibió un rol válido.");
+      return;
+    }
+
+    console.log("🔎 Usuario autenticado:", data.user);
+
+    // ✅ Guardar sesión del usuario
+    sessionStorage.setItem(
+      "user",
+      JSON.stringify({
+        name: data.user.nombre,
+        email: data.user.email,
+        rol: data.user.rol.toLowerCase(), // Normalizamos rol
+      })
+    );
+
+    alert(`✅ Inicio de sesión exitoso. Bienvenido, ${data.user.nombre}!`);
+
+    // 🔄 Redirección según el rol
+    if (data.user.rol.toLowerCase() === "admin") {
+      console.log("🚀 Redirigiendo a intranet...");
+      window.location.href = "../html/intranet.html";
     } else {
-      alert("Usuario no encontrado");
+      console.log("🚀 Redirigiendo a página de usuario...");
+      window.location.href = "../../pages/index.html";
     }
   } catch (error) {
-    // Maneja los errores
-    console.error("Error al iniciar sesión:", error);
-    alert("Ocurrió un error al intentar iniciar sesión. Inténtalo nuevamente.");
+    console.error("❌ Error en la solicitud:", error);
+    alert("Ocurrió un error al intentar iniciar sesión.");
   }
 });

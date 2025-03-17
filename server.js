@@ -163,15 +163,46 @@ app.delete("/api/usuarios/:id", async (req, res) => {
   }
 });
 
-//PRODUCTO
 
-// ✅ Obtener todos los productos
-app.get("/api/productos", async (req, res) => {
+// const bcrypt = require("bcryptjs"); AÑDIR EN UN FUTURO YA QUE GUARDAR EL TEXTO PLANO NO ES SEGURO, PERO HAY QUE INSTALARLO
+
+// ✅ Ruta para iniciar sesión
+app.post("/api/login", async (req, res) => {
   try {
-    const productos = await db.collection("Productos").find().toArray();
-    res.json(productos);
+    const { email, password } = req.body;
+
+    // ⚠️ Verificar datos ingresados
+    if (!email || !password) {
+      return res.status(400).json({ error: "Email y contraseña son requeridos" });
+    }
+
+    // 🔍 Buscar usuario en la BD
+    const user = await db.collection("Usuarios").findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
+    }
+
+    // 🔑 Comparar la contraseña directamente (SIN bcrypt)
+    if (user.pass !== password) {
+      return res.status(401).json({ error: "Contraseña incorrecta" });
+    }
+
+    // ✅ Usuario autenticado correctamente
+    res.json({
+      message: "Inicio de sesión exitoso",
+      user: {
+        _id: user._id,
+        nombre: user.nombre,
+        email: user.email,
+        rol: user.rol,
+      },
+    });
+
   } catch (err) {
-    console.error("❌ Error obteniendo productos:", err);
-    res.status(500).json({ error: "Error al obtener productos" });
+    console.error("❌ Error en login:", err);
+    res.status(500).json({ error: "Error en el servidor" });
   }
 });
+
+
