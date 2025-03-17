@@ -41,6 +41,45 @@ app.get("/", (req, res) => {
   res.send("🚀 Servidor funcionando con MongoDB Atlas");
 });
 
+// ✅ Ruta para iniciar sesión
+app.post("/api/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // ⚠️ Verificar datos ingresados
+    if (!email || !password) {
+      return res.status(400).json({ error: "Email y contraseña son requeridos" });
+    }
+
+    // 🔍 Buscar usuario en la BD
+    const user = await db.collection("Usuarios").findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
+    }
+
+    // 🔑 Comparar la contraseña directamente (SIN bcrypt)
+    if (user.pass !== password) {
+      return res.status(401).json({ error: "Contraseña incorrecta" });
+    }
+
+    // ✅ Usuario autenticado correctamente
+    res.json({
+      message: "Inicio de sesión exitoso",
+      user: {
+        _id: user._id,
+        nombre: user.nombre,
+        email: user.email,
+        rol: user.rol,
+      },
+    });
+
+  } catch (err) {
+    console.error("❌ Error en login:", err);
+    res.status(500).json({ error: "Error en el servidor" });
+  }
+});
+
 //USUARIOS
 
 // ✅ Obtener todos los usuarios
@@ -54,17 +93,6 @@ app.get("/api/usuarios", async (req, res) => {
   }
 });
 
-// ✅ Crear nuevo usuario
-// app.post("/api/usuarios", async (req, res) => {
-//   try {
-//     const nuevoUsuario = req.body;
-//     await db.collection("Usuarios").insertOne(nuevoUsuario);
-//     res.status(201).json({ message: "Usuario creado correctamente" });
-//   } catch (err) {
-//     console.error("❌ Error creando usuario:", err);
-//     res.status(500).json({ error: "Error al crear usuario" });
-//   }
-// });
 app.post("/api/usuarios", async (req, res) => {
   try {
     console.log("📥 Recibiendo solicitud para crear usuario...");
@@ -171,47 +199,6 @@ app.delete("/api/usuarios/:id", async (req, res) => {
   }
 });
 
-
-
-// ✅ Ruta para iniciar sesión
-app.post("/api/login", async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    // ⚠️ Verificar datos ingresados
-    if (!email || !password) {
-      return res.status(400).json({ error: "Email y contraseña son requeridos" });
-    }
-
-    // 🔍 Buscar usuario en la BD
-    const user = await db.collection("Usuarios").findOne({ email });
-
-    if (!user) {
-      return res.status(404).json({ error: "Usuario no encontrado" });
-    }
-
-    // 🔑 Comparar la contraseña directamente (SIN bcrypt)
-    if (user.pass !== password) {
-      return res.status(401).json({ error: "Contraseña incorrecta" });
-    }
-
-    // ✅ Usuario autenticado correctamente
-    res.json({
-      message: "Inicio de sesión exitoso",
-      user: {
-        _id: user._id,
-        nombre: user.nombre,
-        email: user.email,
-        rol: user.rol,
-      },
-    });
-
-  } catch (err) {
-    console.error("❌ Error en login:", err);
-    res.status(500).json({ error: "Error en el servidor" });
-  }
-});
-
 //PRODUCTO
 // ✅ Obtener todos los productos
 app.get("/api/productos", async (req, res) => {
@@ -241,8 +228,9 @@ app.post("/api/productos", async (req, res) => {
 app.put("/api/productos/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    console.log("📥 Datos recibidos en el servidor para actualizar:", req.body); // 💡 Imprime los datos recibidos
-
+ // 📌 Imprimir datos recibidos en el servidor
+ console.log("📥 Datos recibidos para actualizar:", req.body);
+    // ⚠️ Verificar si el ID es válido antes de convertirlo a ObjectId
     if (!ObjectId.isValid(id)) {
       return res.status(400).json({ error: "ID de producto no válido" });
     }
@@ -250,19 +238,26 @@ app.put("/api/productos/:id", async (req, res) => {
     const objectId = new ObjectId(id);
     const updateData = {};
 
-    // Verifica que los campos se están enviando correctamente
-    if (req.body.nombre) updateData.Nombre = req.body.nombre;
-    if (req.body.marca) updateData.Marca = req.body.marca;
-    if (req.body.peso) updateData.Peso = req.body.peso;
-    if (req.body.unidadPeso) updateData.UnidadPeso = req.body.unidadPeso;
-    if (req.body.estado) updateData.Estado = req.body.estado;
-    if (req.body.proveedor_id) updateData.Proveedor_id = new ObjectId(req.body.proveedor_id);
-    if (req.body.supermercado_id) updateData.Supermercado_id = new ObjectId(req.body.supermercado_id);
-    if (req.body.usuario_id) updateData.Usuario_id = new ObjectId(req.body.usuario_id);
+    // 📌 Solo agregar campos si han sido enviados en la petición
+    if (req.body.nombre) updateData.nombre = req.body.nombre;
+    if (req.body.marca) updateData.marca = req.body.marca;
+    if (req.body.peso) updateData.peso = req.body.peso;
+    if (req.body.unidadPeso) updateData.unidadPeso = req.body.unidadPeso;
+    if (req.body.estado) updateData.estado = req.body.estado;
+    
+    if (req.body.proveedor_id && ObjectId.isValid(req.body.proveedor_id)) {
+      updateData.proveedor_id = new ObjectId(req.body.proveedor_id);
+    }
+    if (req.body.supermercado_id && ObjectId.isValid(req.body.supermercado_id)) {
+      updateData.supermercado_id = new ObjectId(req.body.supermercado_id);
+    }
+    if (req.body.usuario_id && ObjectId.isValid(req.body.usuario_id)) {
+      updateData.usuario_id = new ObjectId(req.body.usuario_id);
+    }
 
-    console.log("🛠️ Datos a actualizar en MongoDB:", updateData); // 💡 Verifica lo que realmente se está intentando actualizar
-
+    // ❗ Permitir respuesta sin cambios en lugar de devolver error
     if (Object.keys(updateData).length === 0) {
+      console.warn("⚠️ No se detectaron cambios en el producto.");
       return res.status(200).json({ message: "No hubo cambios en el producto, pero la solicitud fue exitosa." });
     }
 
@@ -271,11 +266,9 @@ app.put("/api/productos/:id", async (req, res) => {
       { $set: updateData }
     );
 
-    if (result.matchedCount === 0) {
-      return res.status(404).json({ error: "Producto no encontrado" });
+    if (result.modifiedCount === 0) {
+      return res.status(200).json({ message: "No hubo cambios en el producto, pero la solicitud fue exitosa." });
     }
-
-    console.log("✅ Resultado de la actualización en MongoDB:", result);
 
     res.json({ message: "Producto actualizado correctamente", producto: updateData });
   } catch (err) {
@@ -283,7 +276,6 @@ app.put("/api/productos/:id", async (req, res) => {
     res.status(500).json({ error: "Error al actualizar producto" });
   }
 });
-
 
 
 
@@ -362,8 +354,15 @@ app.put("/api/precios/:id", async (req, res) => {
 // ✅ Eliminar precio
 app.delete("/api/precios/:id", async (req, res) => {
   try {
-    const id = new ObjectId(req.params.id);
-    const result = await db.collection("Precios").deleteOne({ _id: id });
+    const { id } = req.params;
+
+    // ⚠️ Validar ID antes de convertirlo a ObjectId
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ error: "ID no válido" });
+    }
+
+    const objectId = new ObjectId(id);
+    const result = await db.collection("Precios").deleteOne({ _id: objectId });
 
     if (result.deletedCount === 0) {
       return res.status(404).json({ error: "Precio no encontrado" });
@@ -371,7 +370,7 @@ app.delete("/api/precios/:id", async (req, res) => {
 
     res.json({ message: "Precio eliminado correctamente" });
   } catch (err) {
-    console.error("❌ Error eliminando precio:", err);
+    console.error("❌ Error eliminando Precio:", err);
     res.status(500).json({ error: "Error al eliminar precio" });
   }
 });
@@ -426,8 +425,15 @@ app.put("/api/supermercados/:id", async (req, res) => {
 // ✅ Eliminar supermercado
 app.delete("/api/supermercados/:id", async (req, res) => {
   try {
-    const id = new ObjectId(req.params.id);
-    const result = await db.collection("Supermercados").deleteOne({ _id: id });
+    const { id } = req.params;
+
+    // ⚠️ Validar ID antes de convertirlo a ObjectId
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ error: "ID no válido" });
+    }
+
+    const objectId = new ObjectId(id);
+    const result = await db.collection("Supermercados").deleteOne({ _id: objectId });
 
     if (result.deletedCount === 0) {
       return res.status(404).json({ error: "Supermercado no encontrado" });
@@ -435,8 +441,8 @@ app.delete("/api/supermercados/:id", async (req, res) => {
 
     res.json({ message: "Supermercado eliminado correctamente" });
   } catch (err) {
-    console.error("❌ Error eliminando supermercado:", err);
-    res.status(500).json({ error: "Error al eliminar supermercado" });
+    console.error("❌ Error eliminando Supermercado:", err);
+    res.status(500).json({ error: "Error al eliminar Supermercado" });
   }
 });
 
@@ -490,8 +496,15 @@ app.put("/api/descripcion/:id", async (req, res) => {
 // ✅ Eliminar descripcion
 app.delete("/api/descripcion/:id", async (req, res) => {
   try {
-    const id = new ObjectId(req.params.id);
-    const result = await db.collection("Descripcion").deleteOne({ _id: id });
+    const { id } = req.params;
+
+    // ⚠️ Validar ID antes de convertirlo a ObjectId
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ error: "ID no válido" });
+    }
+
+    const objectId = new ObjectId(id);
+    const result = await db.collection("Descripcion").deleteOne({ _id: objectId });
 
     if (result.deletedCount === 0) {
       return res.status(404).json({ error: "Descripcion no encontrado" });
@@ -554,8 +567,15 @@ app.put("/api/proveedor/:id", async (req, res) => {
 // ✅ Eliminar proveedor
 app.delete("/api/proveedor/:id", async (req, res) => {
   try {
-    const id = new ObjectId(req.params.id);
-    const result = await db.collection("Proveedor").deleteOne({ _id: id });
+    const { id } = req.params;
+
+    // ⚠️ Validar ID antes de convertirlo a ObjectId
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ error: "ID no válido" });
+    }
+
+    const objectId = new ObjectId(id);
+    const result = await db.collection("Proveedor").deleteOne({ _id: objectId });
 
     if (result.deletedCount === 0) {
       return res.status(404).json({ error: "Proveedor no encontrado" });
@@ -599,7 +619,7 @@ app.put("/api/opiniones/:id", async (req, res) => {
     const id = new ObjectId(req.params.id);
     const updateData = req.body;
 
-    const result = await db.collection("Opinion").updateOne(
+    const result = await db.collection("Opiniones").updateOne(
       { _id: id },
       { $set: updateData }
     );
@@ -618,14 +638,21 @@ app.put("/api/opiniones/:id", async (req, res) => {
 // ✅ Eliminar opinion
 app.delete("/api/opiniones/:id", async (req, res) => {
   try {
-    const id = new ObjectId(req.params.id);
-    const result = await db.collection("Opiniones").deleteOne({ _id: id });
+    const { id } = req.params;
 
-    if (result.deletedCount === 0) {
-      return res.status(404).json({ error: "Opinion no encontrada" });
+    // ⚠️ Validar ID antes de convertirlo a ObjectId
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ error: "ID no válido" });
     }
 
-    res.json({ message: "Opinion eliminada correctamente" });
+    const objectId = new ObjectId(id);
+    const result = await db.collection("Opiniones").deleteOne({ _id: objectId });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ error: "Opinion no encontrado" });
+    }
+
+    res.json({ message: "Opinion eliminado correctamente" });
   } catch (err) {
     console.error("❌ Error eliminando Opinion:", err);
     res.status(500).json({ error: "Error al eliminar Opinion" });
