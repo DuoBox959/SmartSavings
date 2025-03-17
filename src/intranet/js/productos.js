@@ -182,25 +182,42 @@ async function guardarEdicionProducto() {
     return;
   }
 
-  const nombre = $("#nombreProducto").val();
-  const imagen = $("#imagenProducto").val();
-  const marca = $("#marcaProducto").val();
-  const peso = $("#pesoProducto").val();
-  const estado = $("#estadoProducto").val();
-
-  const productoActualizado = {};
-  if (nombre) productoActualizado.Nombre = nombre;
-  if (imagen) productoActualizado.Imagen = imagen;
-  if (marca) productoActualizado.Marca = marca;
-
-  // Separar el campo de peso y unidad
-  if (peso) {
-    const [pesoValor, unidadPeso] = peso.split(" ");
-    productoActualizado.Peso = pesoValor;
-    productoActualizado.UnidadPeso = unidadPeso || "";
+  // ✅ Obtener los valores originales del producto desde productosCache
+  const productoOriginal = productosCache.find((p) => p._id === id);
+  if (!productoOriginal) {
+    console.error("❌ Producto no encontrado en caché.");
+    return;
   }
 
-  if (estado) productoActualizado.Estado = estado;
+  // ✅ Obtener los valores ingresados en el formulario
+  const nombre = $("#nombreProducto").val().trim();
+  const imagen = $("#imgProducto").val().trim();
+  const marca = $("#marcaProducto").val().trim();
+  const peso = $("#pesoProducto").val().trim();
+  const unidadPeso = $("#unidadPeso").val().trim();
+  const estado = $("#Estado").val();
+  const proveedorId = $("#idProveedor").val().trim();
+  const supermercadoId = $("#idSupermercado").val().trim();
+  const usuarioId = $("#idUsuario").val().trim();
+
+  // ✅ Crear objeto con los cambios detectados
+  const productoActualizado = {};
+
+  if (nombre !== productoOriginal.Nombre) productoActualizado.nombre = nombre;
+  if (imagen !== productoOriginal.Imagen) productoActualizado.imagen = imagen;
+  if (marca !== productoOriginal.Marca) productoActualizado.marca = marca;
+  if (peso !== productoOriginal.Peso) productoActualizado.peso = peso;
+  if (unidadPeso !== productoOriginal.UnidadPeso) productoActualizado.unidadPeso = unidadPeso;
+  if (estado !== productoOriginal.Estado) productoActualizado.estado = estado;
+  if (proveedorId !== productoOriginal.Proveedor_id) productoActualizado.proveedor_id = proveedorId;
+  if (supermercadoId !== productoOriginal.Supermercado_id) productoActualizado.supermercado_id = supermercadoId;
+  if (usuarioId !== productoOriginal.Usuario_id) productoActualizado.usuario_id = usuarioId;
+
+  // ❗ Si no hay cambios, evitar enviar la petición
+  if (Object.keys(productoActualizado).length === 0) {
+    console.warn("⚠️ No se detectaron cambios en el producto.");
+    return;
+  }
 
   console.log("📤 Enviando datos para editar producto:", productoActualizado);
 
@@ -211,16 +228,21 @@ async function guardarEdicionProducto() {
       body: JSON.stringify(productoActualizado),
     });
 
-    if (!response.ok) throw new Error("Error al actualizar producto");
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("❌ Error en respuesta del servidor:", errorData);
+      throw new Error(errorData.error || "Error al actualizar producto");
+    }
 
     console.log("✅ Producto actualizado correctamente");
-
     await cargarProductos();
     cerrarFormulario();
   } catch (err) {
     console.error("❌ Error actualizando producto:", err);
   }
 }
+
+
 
 // 🟢 Editar producto
 function editarProducto(id) {

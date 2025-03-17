@@ -171,7 +171,7 @@ app.delete("/api/usuarios/:id", async (req, res) => {
   }
 });
 
-//PRODUCTO
+
 
 // ✅ Ruta para iniciar sesión
 app.post("/api/login", async (req, res) => {
@@ -212,6 +212,19 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
+//PRODUCTO
+// ✅ Obtener todos los productos
+app.get("/api/productos", async (req, res) => {
+  try {
+    const productos = await db.collection("Productos").find().toArray();
+    res.json(productos);
+  } catch (err) {
+    console.error("❌ Error obteniendo productos:", err);
+    res.status(500).json({ error: "Error al obtener productos" });
+  }
+});
+
+
 // ✅ Crear nuevo producto
 app.post("/api/productos", async (req, res) => {
   try {
@@ -224,33 +237,78 @@ app.post("/api/productos", async (req, res) => {
   }
 });
 
-// ✅ Actualizar producto
+// ✅ Actualizar producto con validaciones
 app.put("/api/productos/:id", async (req, res) => {
   try {
-    const id = new ObjectId(req.params.id);
-    const updateData = req.body;
+    const { id } = req.params;
+ // 📌 Imprimir datos recibidos en el servidor
+ console.log("📥 Datos recibidos para actualizar:", req.body);
+    // ⚠️ Verificar si el ID es válido antes de convertirlo a ObjectId
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ error: "ID de producto no válido" });
+    }
+
+    const objectId = new ObjectId(id);
+    const updateData = {};
+
+    // 📌 Solo agregar campos si han sido enviados en la petición
+    if (req.body.nombre) updateData.nombre = req.body.nombre;
+    if (req.body.marca) updateData.marca = req.body.marca;
+    if (req.body.peso) updateData.peso = req.body.peso;
+    if (req.body.unidadPeso) updateData.unidadPeso = req.body.unidadPeso;
+    if (req.body.estado) updateData.estado = req.body.estado;
+    
+    if (req.body.proveedor_id && ObjectId.isValid(req.body.proveedor_id)) {
+      updateData.proveedor_id = new ObjectId(req.body.proveedor_id);
+    }
+    if (req.body.supermercado_id && ObjectId.isValid(req.body.supermercado_id)) {
+      updateData.supermercado_id = new ObjectId(req.body.supermercado_id);
+    }
+    if (req.body.usuario_id && ObjectId.isValid(req.body.usuario_id)) {
+      updateData.usuario_id = new ObjectId(req.body.usuario_id);
+    }
+
+    // ❗ Permitir respuesta sin cambios en lugar de devolver error
+    if (Object.keys(updateData).length === 0) {
+      console.warn("⚠️ No se detectaron cambios en el producto.");
+      return res.status(200).json({ message: "No hubo cambios en el producto, pero la solicitud fue exitosa." });
+    }
+
+    console.log("📤 Actualizando producto en MongoDB:", updateData);
 
     const result = await db.collection("Productos").updateOne(
-      { _id: id },
+      { _id: objectId },
       { $set: updateData }
     );
 
-    if (result.modifiedCount === 0) {
+    if (result.matchedCount === 0) {
       return res.status(404).json({ error: "Producto no encontrado" });
     }
 
-    res.json({ message: "Producto actualizado correctamente" });
+    if (result.modifiedCount === 0) {
+      return res.status(200).json({ message: "No hubo cambios en el producto, pero la solicitud fue exitosa." });
+    }
+
+    res.json({ message: "Producto actualizado correctamente", producto: updateData });
   } catch (err) {
-    console.error("❌ Error actualizando Producto:", err);
+    console.error("❌ Error actualizando producto:", err);
     res.status(500).json({ error: "Error al actualizar producto" });
   }
 });
 
-// ✅ Eliminar producto
+
+// ✅ Eliminar producto con validaciones
 app.delete("/api/productos/:id", async (req, res) => {
   try {
-    const id = new ObjectId(req.params.id);
-    const result = await db.collection("Productos").deleteOne({ _id: id });
+    const { id } = req.params;
+
+    // ⚠️ Validar ID antes de convertirlo a ObjectId
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ error: "ID de producto no válido" });
+    }
+
+    const objectId = new ObjectId(id);
+    const result = await db.collection("Productos").deleteOne({ _id: objectId });
 
     if (result.deletedCount === 0) {
       return res.status(404).json({ error: "Producto no encontrado" });
@@ -262,6 +320,7 @@ app.delete("/api/productos/:id", async (req, res) => {
     res.status(500).json({ error: "Error al eliminar producto" });
   }
 });
+
 
 //PRECIOS
 
