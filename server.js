@@ -228,9 +228,8 @@ app.post("/api/productos", async (req, res) => {
 app.put("/api/productos/:id", async (req, res) => {
   try {
     const { id } = req.params;
- // 📌 Imprimir datos recibidos en el servidor
- console.log("📥 Datos recibidos para actualizar:", req.body);
-    // ⚠️ Verificar si el ID es válido antes de convertirlo a ObjectId
+    console.log("📥 Datos recibidos en el servidor para actualizar:", req.body); // 💡 Imprime los datos recibidos
+
     if (!ObjectId.isValid(id)) {
       return res.status(400).json({ error: "ID de producto no válido" });
     }
@@ -238,26 +237,19 @@ app.put("/api/productos/:id", async (req, res) => {
     const objectId = new ObjectId(id);
     const updateData = {};
 
-    // 📌 Solo agregar campos si han sido enviados en la petición
-    if (req.body.nombre) updateData.nombre = req.body.nombre;
-    if (req.body.marca) updateData.marca = req.body.marca;
-    if (req.body.peso) updateData.peso = req.body.peso;
-    if (req.body.unidadPeso) updateData.unidadPeso = req.body.unidadPeso;
-    if (req.body.estado) updateData.estado = req.body.estado;
-    
-    if (req.body.proveedor_id && ObjectId.isValid(req.body.proveedor_id)) {
-      updateData.proveedor_id = new ObjectId(req.body.proveedor_id);
-    }
-    if (req.body.supermercado_id && ObjectId.isValid(req.body.supermercado_id)) {
-      updateData.supermercado_id = new ObjectId(req.body.supermercado_id);
-    }
-    if (req.body.usuario_id && ObjectId.isValid(req.body.usuario_id)) {
-      updateData.usuario_id = new ObjectId(req.body.usuario_id);
-    }
+    // Verifica que los campos se están enviando correctamente
+    if (req.body.nombre) updateData.Nombre = req.body.nombre;
+    if (req.body.marca) updateData.Marca = req.body.marca;
+    if (req.body.peso) updateData.Peso = req.body.peso;
+    if (req.body.unidadPeso) updateData.UnidadPeso = req.body.unidadPeso;
+    if (req.body.estado) updateData.Estado = req.body.estado;
+    if (req.body.proveedor_id) updateData.Proveedor_id = new ObjectId(req.body.proveedor_id);
+    if (req.body.supermercado_id) updateData.Supermercado_id = new ObjectId(req.body.supermercado_id);
+    if (req.body.usuario_id) updateData.Usuario_id = new ObjectId(req.body.usuario_id);
 
-    // ❗ Permitir respuesta sin cambios en lugar de devolver error
+    console.log("🛠️ Datos a actualizar en MongoDB:", updateData); // 💡 Verifica lo que realmente se está intentando actualizar
+
     if (Object.keys(updateData).length === 0) {
-      console.warn("⚠️ No se detectaron cambios en el producto.");
       return res.status(200).json({ message: "No hubo cambios en el producto, pero la solicitud fue exitosa." });
     }
 
@@ -266,9 +258,11 @@ app.put("/api/productos/:id", async (req, res) => {
       { $set: updateData }
     );
 
-    if (result.modifiedCount === 0) {
-      return res.status(200).json({ message: "No hubo cambios en el producto, pero la solicitud fue exitosa." });
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ error: "Producto no encontrado" });
     }
+
+    console.log("✅ Resultado de la actualización en MongoDB:", result);
 
     res.json({ message: "Producto actualizado correctamente", producto: updateData });
   } catch (err) {
@@ -276,6 +270,8 @@ app.put("/api/productos/:id", async (req, res) => {
     res.status(500).json({ error: "Error al actualizar producto" });
   }
 });
+
+
 
 
 
