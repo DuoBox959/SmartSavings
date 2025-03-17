@@ -228,7 +228,6 @@ app.post("/api/productos", async (req, res) => {
 app.put("/api/productos/:id", async (req, res) => {
   try {
     const { id } = req.params;
-
     // ⚠️ Verificar si el ID es válido antes de convertirlo a ObjectId
     if (!ObjectId.isValid(id)) {
       return res.status(400).json({ error: "ID de producto no válido" });
@@ -292,6 +291,7 @@ app.delete("/api/productos/:id", async (req, res) => {
     res.status(500).json({ error: "Error al eliminar producto" });
   }
 });
+
 
 //PRECIOS
 
