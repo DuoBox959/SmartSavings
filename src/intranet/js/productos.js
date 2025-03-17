@@ -199,7 +199,6 @@ async function guardarEdicionProducto() {
   const proveedorId = $("#idProveedor").val().trim();
   const supermercadoId = $("#idSupermercado").val().trim();
   const usuarioId = $("#idUsuario").val().trim();
-
   // ✅ Crear objeto con los cambios detectados
   const productoActualizado = {};
 
@@ -235,7 +234,14 @@ async function guardarEdicionProducto() {
     }
 
     console.log("✅ Producto actualizado correctamente");
-    await cargarProductos();
+     // 🟢 ACTUALIZAR SOLO LA FILA DEL PRODUCTO SIN RECARGAR TODA LA TABLA
+     const fila = productosTable.row($(`tr:has(td:contains('${id}'))`)).data();
+     if (fila) {
+       fila[2] = productoActualizado.nombre || productoOriginal.Nombre;
+       fila[3] = productoActualizado.marca || productoOriginal.Marca;
+       fila[4] = `${productoActualizado.peso || productoOriginal.Peso} ${productoActualizado.unidadPeso || productoOriginal.UnidadPeso}`;
+       productosTable.row($(`tr:has(td:contains('${id}'))`)).data(fila).draw();
+     }
     cerrarFormulario();
   } catch (err) {
     console.error("❌ Error actualizando producto:", err);
