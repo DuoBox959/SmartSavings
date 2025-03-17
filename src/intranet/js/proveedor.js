@@ -22,7 +22,7 @@ $(document).ready(() => {
 // 🟢 Cargar proveedores desde servidor Express
 async function cargarProveedores() {
   try {
-    const respuesta = await fetch("http://localhost:3000/api/proveedores");
+    const respuesta = await fetch("http://localhost:3000/api/proveedor");
     const proveedores = await respuesta.json();
 
     proveedorCache = proveedores;
@@ -30,9 +30,9 @@ async function cargarProveedores() {
     proveedores.forEach((proveedor) => {
       proveedorTable.row.add([
         proveedor._id,
-        proveedor.nombre,
-        proveedor.pais,
-        proveedor.ciudad || "N/A",
+        proveedor.Nombre,
+        proveedor.Pais,
+        proveedor["C.Autonoma"] || "N/A",
         accionesHTML(proveedor._id),
       ]);
     });
@@ -54,10 +54,17 @@ function accionesHTML(id) {
 // 🟢 Mostrar formulario para agregar
 function mostrarFormularioAgregar() {
   $("#formTitulo").text("Añadir Proveedor");
-  $("#proveedorID, #nombreProveedor, #paisProveedor, #comunidadAutonoma").val("");
+  $("#proveedorID, #nombreProveedor, #paisProveedor, #comunidadAutonoma").val(
+    ""
+  );
 
-  $("#botonesFormulario button:first").off("click").on("click", guardarCambiosDesdeFormulario);
+  $("#botonesFormulario button:first")
+    .off("click")
+    .on("click", guardarCambiosDesdeFormulario);
   $("#formularioProveedor").show();
+  document
+    .getElementById("formularioProveedor")
+    .scrollIntoView({ behavior: "smooth" });
 }
 
 // 🟢 Guardar proveedor (crear o editar)
@@ -110,8 +117,13 @@ function editarProveedor(id) {
   $("#paisProveedor").val(proveedor.pais || "");
   $("#comunidadAutonoma").val(proveedor.comunidadAutonoma || "");
 
-  $("#botonesFormulario button:first").off("click").on("click", guardarCambiosDesdeFormulario);
+  $("#botonesFormulario button:first")
+    .off("click")
+    .on("click", guardarCambiosDesdeFormulario);
   $("#formularioProveedor").show();
+  document
+    .getElementById("formularioProveedor")
+    .scrollIntoView({ behavior: "smooth" });
 }
 
 // 🟢 Eliminar proveedor
@@ -120,9 +132,12 @@ async function eliminarProveedor(id) {
   if (!confirmacion) return;
 
   try {
-    const response = await fetch(`http://localhost:3000/api/proveedores/${id}`, {
-      method: "DELETE",
-    });
+    const response = await fetch(
+      `http://localhost:3000/api/proveedores/${id}`,
+      {
+        method: "DELETE",
+      }
+    );
 
     if (!response.ok) throw new Error("Error al eliminar proveedor");
 
@@ -135,7 +150,9 @@ async function eliminarProveedor(id) {
 // 🟢 Cerrar formulario
 function cerrarFormulario() {
   $("#formularioProveedor").hide();
-  $("#proveedorID, #nombreProveedor, #paisProveedor, #comunidadAutonoma").val("");
+  $("#proveedorID, #nombreProveedor, #paisProveedor, #comunidadAutonoma").val(
+    ""
+  );
 }
 
 // 🟢 Volver atrás

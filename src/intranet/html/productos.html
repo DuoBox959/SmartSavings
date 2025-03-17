@@ -64,6 +64,10 @@
       <!-- 🔹 Campo: ID oculto (para edición) -->
       <input type="hidden" id="productoID" />
 
+       <!-- 🔹 Campo: Imagen del Producto -->
+       <label for="imgProducto">Imagen del Producto:</label>
+       <input type="file" id="imgProducto" accept="image/*" />
+
       <!-- 🔹 Campo: Nombre del Producto -->
       <label for="nombreProducto">Nombre del Producto:</label>
       <input type="text" id="nombreProducto" />
@@ -72,14 +76,6 @@
       <label for="marcaProducto">Marca:</label>
       <input type="text" id="marcaProducto" />
 
-      <!-- 🔹 Campo: Precio por Unidad -->
-      <label for="precioUnidad">Precio Unidad:</label>
-      <input type="number" id="precioUnidad" step="0.01" min="0" />
-
-      <!-- 🔹 Campo: Precio por Lote -->
-      <label for="precioLote">Precio Lote:</label>
-      <input type="number" id="precioLote" step="0.01" min="0" />
-
       <!-- 🔹 Campo: Peso -->
       <label for="pesoProducto">Peso:</label>
       <input type="number" id="pesoProducto" step="0.01" min="0" />
@@ -87,31 +83,30 @@
       <!-- 🔹 Campo: Unidad de Peso -->
       <label for="unidadPeso">Unidad de Peso:</label>
       <select id="unidadPeso">
-        <option value="kg">Kilogramos (kg)</option>
-        <option value="g">Gramos (g)</option>
-        <option value="l">Litros (l)</option>
+        <option value="KG">Kilogramos (KG)</option>
+        <option value="G">Gramos (G)</option>
+        <option value="L">Litros (L)</option>
       </select>
 
-      <!-- 🔹 Campo: Supermercado -->
-      <label for="nombreSupermercado">Supermercado:</label>
-      <input type="text" id="nombreSupermercado" />
+      <!-- 🔹 Campo: Proveedor ID -->
+      <label for="idProveedor">Proveedor ID:</label>
+      <input type="text" id="idProveedor" />
 
-      <!-- 🔹 Campo: Ubicación del Supermercado -->
-      <label for="ubicacionSupermercado">Ubicación:</label>
-      <input type="text" id="ubicacionSupermercado" />
+      <!-- 🔹 Campo: Supermercado ID -->
+      <label for="idSupermercado">Supermercado ID:</label>
+      <input type="text" id="idSupermercado" />
 
-      <!-- 🔹 Campo: Biografía del Producto -->
-      <label for="biografiaProducto">Biografía del Producto:</label>
-      <textarea id="biografiaProducto" rows="3"></textarea>
+      <!-- 🔹 Campo: Usuario ID -->
+      <label for="idUsuario">Usuario ID:</label>
+      <input type="text" id="idUsuario" />
+
+      <!-- 🔹 Campo: Estado del Producto -->
+      <label for="Estado">Estado:</label>
+      <select id="Estado">
+        <option value="En Stock">En stock</option>
+        <option value="Sin stock">Sin Stock</option>
+      </select>
       <br>
-
-      <!-- 🔹 Campo: Imagen del Producto -->
-      <label for="imgProducto">Imagen del Producto:</label>
-      <input type="file" id="imgProducto" accept="image/*" />
-
-      <!-- 🔹 Campo: Descripción -->
-      <label for="descripcionProducto">Descripción:</label>
-      <textarea id="descripcionProducto" rows="3"></textarea>
 
       <!-- 🔘 Botones del formulario -->
       <div id="botonesFormulario">
@@ -119,41 +114,6 @@
         <button onclick="cerrarFormulario()">Cancelar</button>
       </div>
     </div>
-
-    <!-- 📖 H. Sección para la Biografía Manual del Producto -->
-    <div id="formularioBiografia" style="display: none">
-      <h3>Agregar Biografía del Producto</h3>
-
-      <!-- 🔹 Campo: Año -->
-      <label for="anioBiografia">Año:</label>
-      <input type="number" id="anioBiografia" min="1900" max="2100" />
-
-      <!-- 🔹 Campo: Mes -->
-      <label for="mesBiografia">Mes:</label>
-      <select id="mesBiografia">
-        <option value="Enero">Enero</option>
-        <option value="Febrero">Febrero</option>
-        <option value="Marzo">Marzo</option>
-        <option value="Abril">Abril</option>
-        <option value="Mayo">Mayo</option>
-        <option value="Junio">Junio</option>
-        <option value="Julio">Julio</option>
-        <option value="Agosto">Agosto</option>
-        <option value="Septiembre">Septiembre</option>
-        <option value="Octubre">Octubre</option>
-        <option value="Noviembre">Noviembre</option>
-        <option value="Diciembre">Diciembre</option>
-      </select>
-
-      <!-- 🔹 Campo: Precio Unidad -->
-      <label for="precioBiografia">Precio Unidad:</label>
-      <input type="number" id="precioBiografia" step="0.01" />
-
-      <!-- 🔹 Campo: Peso -->
-      <label for="pesoBiografia">Peso:</label>
-      <input type="number" id="pesoBiografia" step="0.01" />
-
-      <button onclick="agregarBiografiaProducto()">Añadir al Historial</button>
     </div>
 
     <!-- 🔙 I. Botón para regresar atrás -->
