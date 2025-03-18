@@ -779,7 +779,7 @@ app.delete("/api/proveedor/:id", async (req, res) => {
 });
 
 // =============================================
-// 🅸 CRUD DE OPINIONES
+// 🅸 CRUD DE OPINIONES: Poner que el campo fecha no sea editable y se genere automaticamente y no tengas que ponerlo manual
 // =============================================
 
 /**
@@ -788,14 +788,35 @@ app.delete("/api/proveedor/:id", async (req, res) => {
  */
 app.post("/api/opiniones", async (req, res) => {
   try {
-    const nuevaOpinion = req.body;
-    await db.collection("Opiniones").insertOne(nuevaOpinion);
-    res.status(201).json({ message: "Opinion creado correctamente" });
+    const { Producto_id, Usuario_id, Opinion, Calificacion } = req.body;
+
+    // ✅ Validar los campos obligatorios
+    if (!Producto_id || !Usuario_id || !Opinion) {
+      return res.status(400).json({ error: "Producto ID, Usuario ID y Opinión son obligatorios" });
+    }
+
+    // ✅ Crear nueva opinión con fecha automática
+    const nuevaOpinion = {
+      Producto_id: new ObjectId(Producto_id),
+      Usuario_id: new ObjectId(Usuario_id),
+      Opinion,
+      Calificacion: Calificacion ? parseInt(Calificacion, 10) : null, // No es obligatorio
+      Fecha: new Date().toISOString(), // Se asigna automáticamente
+    };
+
+    const resultado = await db.collection("Opiniones").insertOne(nuevaOpinion);
+
+    res.status(201).json({
+      message: "Opinión creada correctamente",
+      opinion: { ...nuevaOpinion, _id: resultado.insertedId },
+    });
+
   } catch (err) {
-    console.error("❌ Error creando Opinion:", err);
-    res.status(500).json({ error: "Error al crear Opinion" });
+    console.error("❌ Error creando Opinión:", err);
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 });
+
 
 /**
  * ✅ Obtener todas las opiniones (Read)
@@ -810,6 +831,7 @@ app.get("/api/opiniones", async (req, res) => {
     res.status(500).json({ error: "Error al obtener opiniones" });
   }
 });
+
 
 /**
  * ✅ Actualizar opinión existente (Update)
