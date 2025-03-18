@@ -54,12 +54,14 @@ function accionesHTML(id) {
 // 🟢 Mostrar formulario para agregar un proveedor
 function mostrarFormularioAgregar() {
   $("#formTitulo").text("Añadir Proveedor");
-  $("#proveedorID, #nombreProveedor, #paisProveedor, #comunidadAutonoma").val("");
+  $("#proveedorID, #nombreProveedor, #paisProveedor, #comunidadAutonoma").val(
+    ""
+  );
 
   $("#botonesFormulario button:first")
     .off("click")
     .on("click", guardarProveedor);
-  
+
   $("#formularioProveedor").show();
 }
 
@@ -75,7 +77,11 @@ async function guardarProveedor() {
     return;
   }
 
-  const proveedor = { Nombre: nombre, Pais: pais, "C.Autonoma": comunidadAutonoma };
+  const proveedor = {
+    Nombre: nombre,
+    Pais: pais,
+    "C.Autonoma": comunidadAutonoma,
+  };
 
   try {
     let response;
@@ -147,7 +153,9 @@ function volverAtras() {
 // 🟢 Cerrar formulario
 function cerrarFormulario() {
   $("#formularioProveedor").hide();
-  $("#proveedorID, #nombreProveedor, #paisProveedor, #comunidadAutonoma").val("");
+  $("#proveedorID, #nombreProveedor, #paisProveedor, #comunidadAutonoma").val(
+    ""
+  );
 }
 
 // 🟢 Exponer funciones globales para el HTML
@@ -155,7 +163,6 @@ window.mostrarFormularioAgregar = mostrarFormularioAgregar;
 window.cerrarFormulario = cerrarFormulario;
 window.guardarProveedor = guardarProveedor;
 window.cargarProveedores = cargarProveedores;
-window.editarProveedor = editarProveedor;  
+window.editarProveedor = editarProveedor;
 window.eliminarProveedor = eliminarProveedor;
 window.volverAtras = volverAtras;
-

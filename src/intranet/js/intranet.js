@@ -45,7 +45,10 @@ document.addEventListener("DOMContentLoaded", function () {
     mainContent.classList.toggle("full-width");
 
     // Guardar estado del sidebar en localStorage
-    localStorage.setItem("sidebarState", sidebar.classList.contains("hidden") ? "hidden" : "visible");
+    localStorage.setItem(
+      "sidebarState",
+      sidebar.classList.contains("hidden") ? "hidden" : "visible"
+    );
   });
 
   if (localStorage.getItem("sidebarState") === "hidden") {

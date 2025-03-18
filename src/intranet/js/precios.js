@@ -34,15 +34,17 @@ async function cargarPrecios() {
       preciosTable.row.add([
         precio._id || "N/A",
         precio.producto_id || "N/A",
-        typeof precio.precioActual === "number" 
-          ? precio.precioActual.toFixed(2) + " €" 
+        typeof precio.precioActual === "number"
+          ? precio.precioActual.toFixed(2) + " €"
           : "N/A",
         typeof precio.precioDescuento === "number"
-          ? precio.precioDescuento.toFixed(2) + " €" 
+          ? precio.precioDescuento.toFixed(2) + " €"
           : "N/A",
         precio.unidadLote || "N/A",
         precio.precioHistorico && Array.isArray(precio.precioHistorico)
-          ? precio.precioHistorico.map(p => (typeof p === "number" ? p.toFixed(2) : "N/A")).join(", ") + " €"
+          ? precio.precioHistorico
+              .map((p) => (typeof p === "number" ? p.toFixed(2) : "N/A"))
+              .join(", ") + " €"
           : "N/A",
         accionesHTML(precio._id),
       ]);
@@ -53,7 +55,6 @@ async function cargarPrecios() {
     console.error("❌ Error al cargar precios:", error);
   }
 }
-
 
 // 🟢 Generar HTML para editar y eliminar
 function accionesHTML(id) {
@@ -66,9 +67,13 @@ function accionesHTML(id) {
 // 🟢 Mostrar formulario para agregar
 function mostrarFormularioAgregar() {
   $("#formTitulo").text("Añadir Precio");
-  $("#precioID, #productoID, #precioActual, #precioDescuento, #unidadLote, #precioHistorico").val("");
+  $(
+    "#precioID, #productoID, #precioActual, #precioDescuento, #unidadLote, #precioHistorico"
+  ).val("");
 
-  $("#botonesFormulario button:first").off("click").on("click", guardarCambiosDesdeFormulario);
+  $("#botonesFormulario button:first")
+    .off("click")
+    .on("click", guardarCambiosDesdeFormulario);
   $("#formularioPrecio").show();
 }
 
@@ -79,7 +84,10 @@ async function guardarCambiosDesdeFormulario() {
   const precioActual = parseFloat($("#precioActual").val());
   const precioDescuento = parseFloat($("#precioDescuento").val()) || null;
   const unidadLote = $("#unidadLote").val();
-  const precioHistorico = $("#precioHistorico").val().split(",").map((p) => parseFloat(p.trim()));
+  const precioHistorico = $("#precioHistorico")
+    .val()
+    .split(",")
+    .map((p) => parseFloat(p.trim()));
 
   if (!producto_id || isNaN(precioActual)) {
     alert("⚠️ Producto ID y Precio Actual son obligatorios.");
@@ -87,7 +95,13 @@ async function guardarCambiosDesdeFormulario() {
   }
 
   // 🔥 Eliminamos `id` para que MongoDB lo genere automáticamente
-  const precio = { producto_id, precioActual, precioDescuento, unidadLote, precioHistorico };
+  const precio = {
+    producto_id,
+    precioActual,
+    precioDescuento,
+    unidadLote,
+    precioHistorico,
+  };
 
   try {
     let response;
@@ -114,7 +128,6 @@ async function guardarCambiosDesdeFormulario() {
   }
 }
 
-
 // 🟢 Editar precio
 function editarPrecio(id) {
   const precio = preciosCache.find((p) => p._id === id);
@@ -126,9 +139,13 @@ function editarPrecio(id) {
   $("#precioActual").val(precio.precioActual);
   $("#precioDescuento").val(precio.precioDescuento || "");
   $("#unidadLote").val(precio.unidadLote || "");
-  $("#precioHistorico").val(precio.precioHistorico ? precio.precioHistorico.join(", ") : "");
+  $("#precioHistorico").val(
+    precio.precioHistorico ? precio.precioHistorico.join(", ") : ""
+  );
 
-  $("#botonesFormulario button:first").off("click").on("click", guardarCambiosDesdeFormulario);
+  $("#botonesFormulario button:first")
+    .off("click")
+    .on("click", guardarCambiosDesdeFormulario);
   $("#formularioPrecio").show();
 }
 
@@ -153,7 +170,9 @@ async function eliminarPrecio(id) {
 // 🟢 Cerrar formulario
 function cerrarFormulario() {
   $("#formularioPrecio").hide();
-  $("#precioID, #productoID, #precioActual, #precioDescuento, #unidadLote, #precioHistorico").val("");
+  $(
+    "#precioID, #productoID, #precioActual, #precioDescuento, #unidadLote, #precioHistorico"
+  ).val("");
 }
 
 // 🟢 Volver atrás

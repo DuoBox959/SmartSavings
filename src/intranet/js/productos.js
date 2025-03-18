@@ -118,7 +118,8 @@ async function guardarCambiosDesdeFormulario(event) {
     }
 
     const data = await response.json();
-    if (!data.producto) throw new Error("El backend no devolvió el producto creado");
+    if (!data.producto)
+      throw new Error("El backend no devolvió el producto creado");
 
     // ✅ Agregar la nueva fila a DataTable
     productosTable.row
@@ -142,11 +143,8 @@ async function guardarCambiosDesdeFormulario(event) {
   }
 }
 
-
-
-
 // 🟢 Guardar cambios en la edición de un producto existente
-async function guardarEdicionProducto() { 
+async function guardarEdicionProducto() {
   const id = $("#productoID").val();
   if (!id) {
     console.error("❌ No hay un ID de producto válido.");
@@ -199,10 +197,6 @@ async function guardarEdicionProducto() {
   }
 }
 
-
-
-
-
 // 🟢 Editar producto
 function editarProducto(id) {
   const producto = productosCache.find((p) => p._id === id);
@@ -237,9 +231,10 @@ function editarProducto(id) {
     .on("click", guardarEdicionProducto);
 
   $("#formularioProducto").show();
-  document.getElementById("formularioProducto").scrollIntoView({ behavior: "smooth" });
+  document
+    .getElementById("formularioProducto")
+    .scrollIntoView({ behavior: "smooth" });
 }
-
 
 // 🟢 Eliminar producto
 async function eliminarProducto(id) {

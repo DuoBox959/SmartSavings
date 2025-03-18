@@ -1,65 +1,64 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
+  <head>
     <!-- ✅ Configuración del Documento -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Configuración - Intranet</title>
 
     <!-- ✅ Vinculación de CSS -->
-    <link rel="stylesheet" href="../css/confIntranet.css">
+    <link rel="stylesheet" href="../css/confIntranet.css" />
 
     <!-- ✅ Librerías Externas -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-</head>
-<body>
-
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+  </head>
+  <body>
     <!-- 📌 Sidebar de Navegación -->
-   
 
     <!-- 📌 Contenido Principal -->
     <main class="main-content">
-        <h1>Configuración</h1>
+      <h1>Configuración</h1>
 
-        <!-- 🛠️ Configuración de Usuario -->
-        <div class="config-section">
-            <h2>Perfil de Usuario</h2>
-            <label for="username">Nombre:</label>
-            <input type="text" id="username" value="Usuario Ejemplo">
-            
-            <label for="email">Correo Electrónico:</label>
-            <input type="email" id="email" value="usuario@empresa.com">
-            
-            <label for="password">Nueva Contraseña:</label>
-            <input type="password" id="password">
-            
-            <button>Guardar Cambios</button>
-        </div>
+      <!-- 🛠️ Configuración de Usuario -->
+      <div class="config-section">
+        <h2>Perfil de Usuario</h2>
+        <label for="username">Nombre:</label>
+        <input type="text" id="username" value="Usuario Ejemplo" />
 
-        <!-- 🔐 Seguridad -->
-        <div class="config-section">
-            <h2>Seguridad</h2>
-            <label>
-                <input type="checkbox" id="2fa"> Habilitar Autenticación en Dos Pasos (2FA)
-            </label>
-            <button>Actualizar Seguridad</button>
-        </div>
+        <label for="email">Correo Electrónico:</label>
+        <input type="email" id="email" value="usuario@empresa.com" />
 
-        <!-- 📢 Notificaciones -->
-        <div class="config-section">
-            <h2>Notificaciones</h2>
-            <label>
-                <input type="checkbox" checked> Recibir notificaciones por correo
-            </label>
-            <label>
-                <input type="checkbox"> Habilitar notificaciones push
-            </label>
-            <button>Guardar Preferencias</button>
-        </div>
+        <label for="password">Nueva Contraseña:</label>
+        <input type="password" id="password" />
+
+        <button>Guardar Cambios</button>
+      </div>
+
+      <!-- 🔐 Seguridad -->
+      <div class="config-section">
+        <h2>Seguridad</h2>
+        <label>
+          <input type="checkbox" id="2fa" /> Habilitar Autenticación en Dos
+          Pasos (2FA)
+        </label>
+        <button>Actualizar Seguridad</button>
+      </div>
+
+      <!-- 📢 Notificaciones -->
+      <div class="config-section">
+        <h2>Notificaciones</h2>
+        <label>
+          <input type="checkbox" checked /> Recibir notificaciones por correo
+        </label>
+        <label> <input type="checkbox" /> Habilitar notificaciones push </label>
+        <button>Guardar Preferencias</button>
+      </div>
     </main>
 
     <!-- ✅ Vinculación del Archivo JavaScript -->
     <script src="../js/configuracion.js" defer></script>
-
-</body>
+  </body>
 </html>

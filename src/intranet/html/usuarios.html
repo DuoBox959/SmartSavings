@@ -9,12 +9,11 @@
 
     <!-- ✅ B. Vinculación de Archivos CSS -->
     <link rel="stylesheet" href="../css/usuarios.css" />
-    
+
     <!-- jQuery y DataTables JS -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-    
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <!-- 🔐 Para encriptar contraseñas -->
     <script type="module" src="../js/usuarios.js"></script>
@@ -47,48 +46,58 @@
       <tbody id="usuariosBody"></tbody>
     </table>
 
-  <!-- 📋 G. Formulario para Agregar o Editar Usuarios -->
-<div id="formularioUsuario" style="display: none">
-  <h2 id="formTitulo">Añadir Usuario</h2>
+    <!-- 📋 G. Formulario para Agregar o Editar Usuarios -->
+    <div id="formularioUsuario" style="display: none">
+      <h2 id="formTitulo">Añadir Usuario</h2>
 
-  <form onsubmit="return false;"> <!-- ← aquí agregamos el form -->
-    <!-- 🔹 Campo: ID oculto (para edición) -->
-    <input type="hidden" id="usuarioID" />
+      <form onsubmit="return false;">
+        <!-- ← aquí agregamos el form -->
+        <!-- 🔹 Campo: ID oculto (para edición) -->
+        <input type="hidden" id="usuarioID" />
 
-    <!-- 🔹 Campo: Nombre del Usuario -->
-    <label for="nombreUsuario">Nombre:</label>
-    <input type="text" id="nombreUsuario" required />
+        <!-- 🔹 Campo: Nombre del Usuario -->
+        <label for="nombreUsuario">Nombre:</label>
+        <input type="text" id="nombreUsuario" required />
 
-    <!-- 🔹 Campo: Contraseña -->
-    <label for="passwordUsuario">Contraseña:</label>
-    <input type="password" id="passwordUsuario" required autocomplete="new-password" />
+        <!-- 🔹 Campo: Contraseña -->
+        <label for="passwordUsuario">Contraseña:</label>
+        <input
+          type="password"
+          id="passwordUsuario"
+          required
+          autocomplete="new-password"
+        />
 
-    <!-- 🔹 Campo: Email -->
-    <label for="emailUsuario">Email:</label>
-    <input type="email" id="emailUsuario" required autocomplete="username" />
+        <!-- 🔹 Campo: Email -->
+        <label for="emailUsuario">Email:</label>
+        <input
+          type="email"
+          id="emailUsuario"
+          required
+          autocomplete="username"
+        />
 
-    <!-- 🔹 Campo: Fecha Registro (solo lectura) -->
-    <label for="fechaRegistroUsuario">Fecha Registro:</label>
-    <input type="text" id="fechaRegistroUsuario" readonly />
+        <!-- 🔹 Campo: Fecha Registro (solo lectura) -->
+        <label for="fechaRegistroUsuario">Fecha Registro:</label>
+        <input type="text" id="fechaRegistroUsuario" readonly />
 
-    <!-- 🔹 Campo: Rol del Usuario -->
-   <label for="rolUsuario">Rol:</label>
-    <select id="rolUsuario">
-     <option value="admin">Administrador</option>
-     <option value="usuario">Usuario</option>
-     <option value="invitado">Invitado</option>
-    </select>
+        <!-- 🔹 Campo: Rol del Usuario -->
+        <label for="rolUsuario">Rol:</label>
+        <select id="rolUsuario">
+          <option value="admin">Administrador</option>
+          <option value="usuario">Usuario</option>
+          <option value="invitado">Invitado</option>
+        </select>
 
-    <!-- 🔘 Botones del formulario -->
-    <div id="botonesFormulario">
-      <button type="button">Guardar</button>
+        <!-- 🔘 Botones del formulario -->
+        <div id="botonesFormulario">
+          <button type="button">Guardar</button>
 
-      <!-- <button type="button" onclick="guardarCambiosDesdeFormulario()">Guardar</button> -->
-      <button type="button" onclick="cerrarFormulario()">Cancelar</button>
+          <!-- <button type="button" onclick="guardarCambiosDesdeFormulario()">Guardar</button> -->
+          <button type="button" onclick="cerrarFormulario()">Cancelar</button>
+        </div>
+      </form>
     </div>
-  </form>
-</div>
-
 
     <!-- 🔙 H. Botón para regresar atrás -->
     <button class="back-button" onclick="volverAtras()">Volver Atrás</button>

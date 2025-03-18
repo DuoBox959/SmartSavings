@@ -65,7 +65,9 @@ function accionesHTML(id) {
 // ✅ Mostrar formulario para agregar un supermercado
 function mostrarFormularioAgregar() {
   $("#formTitulo").text("Añadir Supermercado");
-  $("#supermercadoID, #nombreSupermercado, #paisSupermercado, #ciudadSupermercado, #ubicacionSupermercado").val("");
+  $(
+    "#supermercadoID, #nombreSupermercado, #paisSupermercado, #ciudadSupermercado, #ubicacionSupermercado"
+  ).val("");
 
   $("#botonesFormulario button:first")
     .off("click")
@@ -76,46 +78,54 @@ function mostrarFormularioAgregar() {
 
 // ✅ Guardar un supermercado (crear o editar)
 async function guardarSupermercado() {
-    const id = $("#supermercadoID").val();
-    const nombre = $("#nombreSupermercado").val();
-    const pais = $("#paisSupermercado").val();
-    const ciudad = $("#ciudadSupermercado").val();
-    const ubicacion = $("#ubicacionSupermercado").val().split(",").map(u => u.trim()); // 🔹 Convertir a array
-  
-    if (!nombre || !pais || !ciudad || !ubicacion.length) {
-      alert("⚠️ Todos los campos son obligatorios.");
-      return;
-    }
-  
-    const supermercado = { Nombre: nombre, Pais: pais, Ciudad: ciudad, Ubicacion: ubicacion };
-  
-    try {
-      let response;
-      if (id) {
-        // PUT = actualizar
-        response = await fetch(`http://localhost:3000/api/supermercados/${id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(supermercado),
-        });
-      } else {
-        // POST = nuevo
-        response = await fetch("http://localhost:3000/api/supermercados", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(supermercado),
-        });
-      }
-  
-      if (!response.ok) throw new Error("Error al guardar supermercado");
-  
-      await cargarSupermercados(); // 🔹 Recargar la tabla con los nuevos datos
-      cerrarFormulario();
-    } catch (err) {
-      console.error("❌ Error guardando supermercado:", err);
-    }
+  const id = $("#supermercadoID").val();
+  const nombre = $("#nombreSupermercado").val();
+  const pais = $("#paisSupermercado").val();
+  const ciudad = $("#ciudadSupermercado").val();
+  const ubicacion = $("#ubicacionSupermercado")
+    .val()
+    .split(",")
+    .map((u) => u.trim()); // 🔹 Convertir a array
+
+  if (!nombre || !pais || !ciudad || !ubicacion.length) {
+    alert("⚠️ Todos los campos son obligatorios.");
+    return;
   }
-  
+
+  const supermercado = {
+    Nombre: nombre,
+    Pais: pais,
+    Ciudad: ciudad,
+    Ubicacion: ubicacion,
+  };
+
+  try {
+    let response;
+    if (id) {
+      // PUT = actualizar
+      response = await fetch(`http://localhost:3000/api/supermercados/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(supermercado),
+      });
+    } else {
+      // POST = nuevo
+      response = await fetch("http://localhost:3000/api/supermercados", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(supermercado),
+      });
+    }
+
+    if (!response.ok) throw new Error("Error al guardar supermercado");
+
+    await cargarSupermercados(); // 🔹 Recargar la tabla con los nuevos datos
+    cerrarFormulario();
+  } catch (err) {
+    console.error("❌ Error guardando supermercado:", err);
+  }
+}
+
 // ✅ Editar un supermercado
 function editarSupermercado(id) {
   const supermercado = supermercadosCache.find((s) => s._id === id);
@@ -141,9 +151,12 @@ async function eliminarSupermercado(id) {
   if (!confirmacion) return;
 
   try {
-    const response = await fetch(`http://localhost:3000/api/supermercados/${id}`, {
-      method: "DELETE",
-    });
+    const response = await fetch(
+      `http://localhost:3000/api/supermercados/${id}`,
+      {
+        method: "DELETE",
+      }
+    );
 
     if (!response.ok) throw new Error("Error al eliminar supermercado");
 
@@ -161,7 +174,9 @@ function volverAtras() {
 // ✅ Cerrar formulario
 function cerrarFormulario() {
   $("#formularioSupermercado").hide();
-  $("#supermercadoID, #nombreSupermercado, #paisSupermercado, #ciudadSupermercado, #ubicacionSupermercado").val("");
+  $(
+    "#supermercadoID, #nombreSupermercado, #paisSupermercado, #ciudadSupermercado, #ubicacionSupermercado"
+  ).val("");
 }
 
 // ✅ Exponer funciones globales

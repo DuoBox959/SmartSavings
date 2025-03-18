@@ -60,11 +60,11 @@ function accionesHTML(id) {
 // ✅ Mostrar formulario para agregar una opinión
 function mostrarFormularioAgregar() {
   $("#formTitulo").text("Añadir Opinión");
-  $("#opinionID, #productoID, #usuarioID, #textoOpinion, #calificacionOpinion").val("");
+  $(
+    "#opinionID, #productoID, #usuarioID, #textoOpinion, #calificacionOpinion"
+  ).val("");
 
-  $("#botonesFormulario button:first")
-    .off("click")
-    .on("click", guardarOpinion);
+  $("#botonesFormulario button:first").off("click").on("click", guardarOpinion);
 
   $("#formularioOpinion").show();
 }
@@ -133,9 +133,7 @@ function editarOpinion(id) {
   $("#textoOpinion").val(opinion.Opinion);
   $("#calificacionOpinion").val(opinion.Calificacion);
 
-  $("#botonesFormulario button:first")
-    .off("click")
-    .on("click", guardarOpinion);
+  $("#botonesFormulario button:first").off("click").on("click", guardarOpinion);
 
   $("#formularioOpinion").show();
 }
@@ -166,7 +164,9 @@ function volverAtras() {
 // ✅ Cerrar el formulario de opinión
 function cerrarFormulario() {
   $("#formularioOpinion").hide();
-  $("#opinionID, #productoID, #usuarioID, #textoOpinion, #calificacionOpinion").val("");
+  $(
+    "#opinionID, #productoID, #usuarioID, #textoOpinion, #calificacionOpinion"
+  ).val("");
 }
 
 // ✅ Exponer funciones globales para que sean accesibles en el HTML
@@ -176,4 +176,3 @@ window.editarOpinion = editarOpinion;
 window.eliminarOpinion = eliminarOpinion;
 window.cargarOpiniones = cargarOpiniones;
 window.volverAtras = volverAtras;
-
