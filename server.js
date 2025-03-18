@@ -708,8 +708,38 @@ app.delete("/api/descripcion/:id", async (req, res) => {
 // 🅷 CRUD DE PROOVEDOR
 // =============================================
 
+/**
+ * ✅ Crear un nuevo proovedor (Create)
+ * Ruta: POST /api/proovedor
+ */
+app.post("/api/proveedor", async (req, res) => {
+  try {
+    const { Nombre, Pais, "C.Autonoma": ComunidadAutonoma } = req.body;
 
-// ✅ Obtener todos los proveedores
+    // 📌 Validar que los campos obligatorios están presentes
+    if (!Nombre || !Pais || !ComunidadAutonoma) {
+      return res.status(400).json({ error: "Todos los campos son obligatorios" });
+    }
+
+    const nuevoProveedor = { Nombre, Pais, "C.Autonoma": ComunidadAutonoma };
+
+    const resultado = await db.collection("Proveedor").insertOne(nuevoProveedor);
+
+    res.status(201).json({
+      message: "Proveedor creado correctamente",
+      proveedor: { ...nuevoProveedor, _id: resultado.insertedId },
+    });
+  } catch (err) {
+    console.error("❌ Error creando proveedor:", err);
+    res.status(500).json({ error: "Error al crear proveedor" });
+  }
+});
+
+
+/**
+ * ✅ Obtener todos los proovedores (Read)
+ * Ruta: GET /api/descripcion
+ */
 app.get("/api/proveedor", async (req, res) => {
   try {
     const proveedor = await db.collection("Proveedor").find().toArray();
@@ -720,41 +750,49 @@ app.get("/api/proveedor", async (req, res) => {
   }
 });
 
-// ✅ Crear nuevo proveedor
-app.post("/api/proveedor", async (req, res) => {
-  try {
-    const nuevoProveedor = req.body;
-    await db.collection("Proveedor").insertOne(nuevoProveedor);
-    res.status(201).json({ message: "Proveedor creado correctamente" });
-  } catch (err) {
-    console.error("❌ Error creando Proveedor:", err);
-    res.status(500).json({ error: "Error al crear Proveedor" });
-  }
-});
-
-// ✅ Actualizar proveedor
+/**
+ * ✅ Actualizar proovedor existente (Update)
+ * Ruta: PUT /api/proovedor/:id
+ */
 app.put("/api/proveedor/:id", async (req, res) => {
   try {
-    const id = new ObjectId(req.params.id);
-    const updateData = req.body;
+    const { id } = req.params;
+
+    // 📌 Validar el ID
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ error: "ID de proveedor no válido" });
+    }
+
+    const updateData = {};
+    if (req.body.Nombre) updateData.Nombre = req.body.Nombre;
+    if (req.body.Pais) updateData.Pais = req.body.Pais;
+    if (req.body["C.Autonoma"]) updateData["C.Autonoma"] = req.body["C.Autonoma"];
+
+    if (Object.keys(updateData).length === 0) {
+      return res.status(400).json({ error: "No se enviaron cambios" });
+    }
 
     const result = await db.collection("Proveedor").updateOne(
-      { _id: id },
+      { _id: new ObjectId(id) },
       { $set: updateData }
     );
 
     if (result.modifiedCount === 0) {
-      return res.status(404).json({ error: "Proveedor no encontrado" });
+      return res.status(404).json({ error: "Proveedor no encontrado o sin cambios" });
     }
 
     res.json({ message: "Proveedor actualizado correctamente" });
   } catch (err) {
-    console.error("❌ Error actualizando Proveedor:", err);
-    res.status(500).json({ error: "Error al actualizar Proveedor" });
+    console.error("❌ Error actualizando proveedor:", err);
+    res.status(500).json({ error: "Error al actualizar proveedor" });
   }
 });
 
-// ✅ Eliminar proveedor
+
+/**
+ * ✅ Eliminar proovedor (Delete)
+ * Ruta: DELETE /api/proovedor/:id
+ */
 app.delete("/api/proveedor/:id", async (req, res) => {
   try {
     const { id } = req.params;

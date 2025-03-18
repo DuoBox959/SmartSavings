@@ -2,7 +2,7 @@
 let proveedorTable;
 let proveedorCache = [];
 
-// 🔹 Iniciar DataTable y cargar proveedores cuando el documento esté listo
+// 🔹 Iniciar DataTable y cargar proveedores al iniciar
 $(document).ready(() => {
   proveedorTable = $("#proveedorTable").DataTable({
     destroy: true,
@@ -19,7 +19,7 @@ $(document).ready(() => {
   cargarProveedores();
 });
 
-// 🟢 Cargar proveedores desde servidor Express
+// 🟢 Cargar proveedores desde el servidor
 async function cargarProveedores() {
   try {
     const respuesta = await fetch("http://localhost:3000/api/proveedor");
@@ -43,7 +43,7 @@ async function cargarProveedores() {
   }
 }
 
-// 🟢 Generar HTML para editar y eliminar
+// 🟢 Generar HTML para botones de editar y eliminar
 function accionesHTML(id) {
   return `
     <button onclick="editarProveedor('${id}')">✏️ Editar</button>
@@ -51,24 +51,20 @@ function accionesHTML(id) {
   `;
 }
 
-// 🟢 Mostrar formulario para agregar
+// 🟢 Mostrar formulario para agregar un proveedor
 function mostrarFormularioAgregar() {
   $("#formTitulo").text("Añadir Proveedor");
-  $("#proveedorID, #nombreProveedor, #paisProveedor, #comunidadAutonoma").val(
-    ""
-  );
+  $("#proveedorID, #nombreProveedor, #paisProveedor, #comunidadAutonoma").val("");
 
   $("#botonesFormulario button:first")
     .off("click")
-    .on("click", guardarCambiosDesdeFormulario);
+    .on("click", guardarProveedor);
+  
   $("#formularioProveedor").show();
-  document
-    .getElementById("formularioProveedor")
-    .scrollIntoView({ behavior: "smooth" });
 }
 
 // 🟢 Guardar proveedor (crear o editar)
-async function guardarCambiosDesdeFormulario() {
+async function guardarProveedor() {
   const id = $("#proveedorID").val();
   const nombre = $("#nombreProveedor").val();
   const pais = $("#paisProveedor").val();
@@ -79,18 +75,18 @@ async function guardarCambiosDesdeFormulario() {
     return;
   }
 
-  const proveedor = { nombre, pais, comunidadAutonoma };
+  const proveedor = { Nombre: nombre, Pais: pais, "C.Autonoma": comunidadAutonoma };
 
   try {
     let response;
     if (id) {
-      response = await fetch(`http://localhost:3000/api/proveedores/${id}`, {
+      response = await fetch(`http://localhost:3000/api/proveedor/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(proveedor),
       });
     } else {
-      response = await fetch("http://localhost:3000/api/proveedores", {
+      response = await fetch("http://localhost:3000/api/proveedor", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(proveedor),
@@ -105,43 +101,39 @@ async function guardarCambiosDesdeFormulario() {
     console.error("❌ Error guardando proveedor:", err);
   }
 }
-
 // 🟢 Editar proveedor
 function editarProveedor(id) {
   const proveedor = proveedorCache.find((p) => p._id === id);
-  if (!proveedor) return;
+  if (!proveedor) {
+    alert("❌ Error: Proveedor no encontrado.");
+    return;
+  }
 
   $("#formTitulo").text("Editar Proveedor");
   $("#proveedorID").val(proveedor._id);
-  $("#nombreProveedor").val(proveedor.nombre || "");
-  $("#paisProveedor").val(proveedor.pais || "");
-  $("#comunidadAutonoma").val(proveedor.comunidadAutonoma || "");
+  $("#nombreProveedor").val(proveedor.Nombre || "");
+  $("#paisProveedor").val(proveedor.Pais || "");
+  $("#comunidadAutonoma").val(proveedor["C.Autonoma"] || "");
 
   $("#botonesFormulario button:first")
     .off("click")
-    .on("click", guardarCambiosDesdeFormulario);
-  $("#formularioProveedor").show();
-  document
-    .getElementById("formularioProveedor")
-    .scrollIntoView({ behavior: "smooth" });
-}
+    .on("click", guardarProveedor); // Se usa la misma función de guardar
 
+  $("#formularioProveedor").show();
+}
 // 🟢 Eliminar proveedor
 async function eliminarProveedor(id) {
-  const confirmacion = confirm("¿Estás seguro de eliminar este proveedor?");
+  const confirmacion = confirm("❗ ¿Estás seguro de eliminar este proveedor?");
   if (!confirmacion) return;
 
   try {
-    const response = await fetch(
-      `http://localhost:3000/api/proveedores/${id}`,
-      {
-        method: "DELETE",
-      }
-    );
+    const response = await fetch(`http://localhost:3000/api/proveedor/${id}`, {
+      method: "DELETE",
+    });
 
-    if (!response.ok) throw new Error("Error al eliminar proveedor");
+    if (!response.ok) throw new Error("❌ Error al eliminar proveedor");
 
-    await cargarProveedores();
+    await cargarProveedores(); // Recargar la tabla después de eliminar
   } catch (err) {
     console.error("❌ Error eliminando proveedor:", err);
   }
@@ -150,21 +142,14 @@ async function eliminarProveedor(id) {
 // 🟢 Cerrar formulario
 function cerrarFormulario() {
   $("#formularioProveedor").hide();
-  $("#proveedorID, #nombreProveedor, #paisProveedor, #comunidadAutonoma").val(
-    ""
-  );
+  $("#proveedorID, #nombreProveedor, #paisProveedor, #comunidadAutonoma").val("");
 }
 
-// 🟢 Volver atrás
-function volverAtras() {
-  window.location.href = "../html/intranet.html";
-}
-
-// 🟢 Exponer funciones globales
-window.editarProveedor = editarProveedor;
-window.eliminarProveedor = eliminarProveedor;
+// 🟢 Exponer funciones globales para el HTML
 window.mostrarFormularioAgregar = mostrarFormularioAgregar;
-window.guardarCambiosDesdeFormulario = guardarCambiosDesdeFormulario;
 window.cerrarFormulario = cerrarFormulario;
-window.volverAtras = volverAtras;
+window.guardarProveedor = guardarProveedor;
 window.cargarProveedores = cargarProveedores;
+window.editarProveedor = editarProveedor;  
+window.eliminarProveedor = eliminarProveedor;
+
