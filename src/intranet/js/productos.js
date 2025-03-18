@@ -160,7 +160,7 @@ async function guardarEdicionProducto() {
     return;
   }
 
-  // ✅ Crear FormData en vez de JSON si hay una nueva imagen
+  // ✅ Crear FormData para enviar imágenes correctamente
   const formData = new FormData();
   formData.append("nombre", $("#nombreProducto").val().trim());
   formData.append("marca", $("#marcaProducto").val().trim());
@@ -171,7 +171,7 @@ async function guardarEdicionProducto() {
   formData.append("supermercado_id", $("#idSupermercado").val().trim());
   formData.append("usuario_id", $("#idUsuario").val().trim());
 
-  // 📌 Obtener la imagen correctamente
+  // 📌 Obtener la imagen correctamente del input file
   const imagenInput = $("#imgProducto")[0].files[0];
   if (imagenInput) {
     formData.append("Imagen", imagenInput);
@@ -191,13 +191,14 @@ async function guardarEdicionProducto() {
 
     console.log("✅ Producto actualizado correctamente");
 
-    // 🟢 ACTUALIZAR SOLO LA FILA DEL PRODUCTO SIN RECARGAR TODA LA TABLA
+    // 🟢 Volver a cargar los productos sin recargar la página
     await cargarProductos();
     cerrarFormulario();
   } catch (err) {
     console.error("❌ Error actualizando producto:", err);
   }
 }
+
 
 
 
@@ -224,22 +225,19 @@ function editarProducto(id) {
   $("#idUsuario").val(producto.Usuario_id || "");
   $("#Estado").val(producto.Estado || "En Stock");
 
-// ✅ Mostrar vista previa de la imagen actual si existe
-if (producto.Imagen) {
-  $("#vistaPreviaImagen").attr("src", producto.Imagen).show();
-} else {
-  $("#vistaPreviaImagen").hide();
-}
-
+  // 📌 Mostrar imagen previa si existe
+  if (producto.Imagen) {
+    $("#vistaPreviaImagen").attr("src", producto.Imagen).show();
+  } else {
+    $("#vistaPreviaImagen").hide();
+  }
 
   $("#botonesFormulario button:first")
     .off("click")
     .on("click", guardarEdicionProducto);
 
   $("#formularioProducto").show();
-  document
-    .getElementById("formularioProducto")
-    .scrollIntoView({ behavior: "smooth" });
+  document.getElementById("formularioProducto").scrollIntoView({ behavior: "smooth" });
 }
 
 

@@ -11,6 +11,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// 📌 Servir archivos estáticos desde la carpeta "uploads"
+app.use("/uploads", express.static("uploads"));
+
 let db;
 
 // 📌 Middleware para subida de archivos
@@ -230,8 +233,6 @@ app.get("/api/productos", async (req, res) => {
 
 // ✅ MIRAR PARA QUE INSERTE PRODUCTO Y SE RECARGUE LA PAGINA Crear nuevo producto
 
-// 📌 Servir archivos estáticos desde la carpeta "uploads"
-app.use("/uploads", express.static("uploads"));
 
 // 📌 Ruta para crear producto con imagen
 app.post("/api/productos", upload.single("Imagen"), async (req, res) => {
@@ -265,11 +266,11 @@ app.post("/api/productos", upload.single("Imagen"), async (req, res) => {
   }
 });
 
-// ✅ Actualizar producto con validacionesy con img
+// ✅ Actualizar producto: Arreglar este error: Not allowed to load local resource: file:///C:/fakepath/DALL%C2%B7E%202025-02-12%2010.33.10%20-%20A%20sleek%20and%20modern%20UI%20design%20featuring%20product%20cards%20for%20a%20shopping%20app%20or%20website,%20using%20a%20color%20scheme%20of%20white,%20red,%20and%20green.%20Each%20card%20has%20a%20whi.webp
 app.put("/api/productos/:id", upload.single("Imagen"), async (req, res) => {
   try {
     const { id } = req.params;
-    console.log("📥 Datos recibidos en el servidor para actualizar:", req.body);
+    console.log("📥 Datos recibidos para actualizar:", req.body);
 
     if (!ObjectId.isValid(id)) {
       return res.status(400).json({ error: "ID de producto no válido" });
@@ -278,7 +279,7 @@ app.put("/api/productos/:id", upload.single("Imagen"), async (req, res) => {
     const objectId = new ObjectId(id);
     const updateData = {};
 
-    // 📌 Si el usuario sube una nueva imagen, actualizarla
+    // 📌 Si se subió una nueva imagen, actualizarla
     if (req.file) {
       updateData.Imagen = `/uploads/${req.file.filename}`;
     }
@@ -315,12 +316,6 @@ app.put("/api/productos/:id", upload.single("Imagen"), async (req, res) => {
     res.status(500).json({ error: "Error al actualizar producto" });
   }
 });
-
-
-
-
-
-
 
 // ✅ Eliminar producto con validaciones
 app.delete("/api/productos/:id", async (req, res) => {
