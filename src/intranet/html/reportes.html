@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes - Intranet</title>
+
+    <!-- ✅ Vinculación de CSS -->
+    <link rel="stylesheet" href="../css/reportes.css">
+
+    <!-- ✅ Librerías Externas -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Librería para gráficos -->
+</head>
+<body>
+
+    <!-- 📌 Sidebar de Navegación -->
+ 
+
+    <!-- 📌 Contenido Principal -->
+    <main class="main-content">
+        <h1>Reportes</h1>
+
+        <!-- 📊 Resumen General -->
+        <div class="report-summary">
+            <div class="card">
+                <h3>Usuarios Registrados</h3>
+                <p>👤 450</p>
+            </div>
+            <div class="card">
+                <h3>Productos en Stock</h3>
+                <p>📦 850</p>
+            </div>
+            <div class="card">
+                <h3>Órdenes Procesadas</h3>
+                <p>🛒 120</p>
+            </div>
+            <div class="card">
+                <h3>Productos Mensuales</h3>
+                <p>25,000</p>
+            </div>
+        </div>
+
+        <!-- 📊 Gráfico de Subida de productos -->
+        <div class="chart-container">
+            <h2>Productos Mensuales</h2>
+            <!-- <canvas id="productoChart"></canvas> -->
+        </div>
+
+        <!-- 📊 Gráfico de Distribución de Usuarios -->
+        <div class="chart-container">
+            <h2>Distribución de Usuarios</h2>
+            <!-- <canvas id="usuariosChart"></canvas> -->
+        </div>
+
+        <!-- 📋 Historial de Actividad -->
+        <div class="activity-log">
+            <h2>Últimos Movimientos</h2>
+            <table>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Usuario</th>
+                    <th>Acción</th>
+                </tr>
+                <tr>
+                    <td>18/03/2025</td>
+                    <td>Juan Pérez</td>
+                    <td>Actualizó un producto</td>
+                </tr>
+                <tr>
+                    <td>17/03/2025</td>
+                    <td>María López</td>
+                    <td>Registró un nuevo usuario</td>
+                </tr>
+            </table>
+        </div>
+
+    </main>
+
+
+        // 📊 Gráfico de Ventas
+        const ctxVentas = document.getElementById('ventasChart').getContext('2d');
+        new Chart(ctxVentas, {
+            type: 'bar',
+            data: {
+                labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
+                datasets: [{
+                    label: 'Ventas en USD',
+                    data: [5000, 7000, 8000, 12000, 25000],
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)'
+                }]
+            }
+        });
+
+        // 📊 Gráfico de Usuarios
+        const ctxUsuarios = document.getElementById('usuariosChart').getContext('2d');
+        new Chart(ctxUsuarios, {
+            type: 'pie',
+            data: {
+                labels: ['Administradores', 'Usuarios', 'Invitados'],
+                datasets: [{
+                    data: [10, 300, 140],
+                    backgroundColor: ['#ff6384', '#36a2eb', '#ffce56']
+                }]
+            }
+        });
+ 
+
+</body>
+</html>
