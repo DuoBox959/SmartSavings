@@ -1,13 +1,15 @@
-// server.js
-const { conectarDB, ObjectId } = require("./conexion1");
+// =============================================
+// 🅰️ CONFIGURACIÓN INICIAL
+// =============================================
 
+const { conectarDB, ObjectId } = require("./conexion1");
 require("dotenv").config();
 const multer = require("multer");
 const path = require("path");
 const express = require("express");
 const cors = require("cors");
-const app = express();
 
+const app = express();
 app.use(cors());
 app.use(express.json());
 
@@ -16,7 +18,7 @@ app.use("/uploads", express.static("uploads"));
 
 let db;
 
-// 📌 Middleware para subida de archivos
+// 📌 Configuración de almacenamiento para imágenes con Multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads/"); // Carpeta donde se guardarán las imágenes
@@ -27,7 +29,6 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
-//CONEXIONES
 
 // 🔌 Conectar a MongoDB Atlas
 (async () => {
@@ -53,12 +54,18 @@ const upload = multer({ storage: storage });
 })();
 
 // ✅ Ruta simple de prueba
-
 app.get("/", (req, res) => {
   res.send("🚀 Servidor funcionando con MongoDB Atlas");
 });
 
-// ✅ Ruta para iniciar sesión
+// =============================================
+// 🅱️ RUTAS DE AUTENTICACIÓN (LOGIN)
+// =============================================
+
+/**
+ * ✅ Iniciar sesión (Login)
+ * Ruta: POST /api/login
+ */
 app.post("/api/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -97,18 +104,14 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
-//USUARIOS
+// =============================================
+// 🅲️ CRUD DE USUARIOS
+// =============================================
 
-// ✅ Obtener todos los usuarios
-app.get("/api/usuarios", async (req, res) => {
-  try {
-    const usuarios = await db.collection("Usuarios").find().toArray();
-    res.json(usuarios);
-  } catch (err) {
-    console.error("❌ Error obteniendo usuarios:", err);
-    res.status(500).json({ error: "Error al obtener usuarios" });
-  }
-});
+/**
+ * ✅ Crear un nuevo usuario (Create)
+ * Ruta: POST /api/usuarios
+ */
 
 app.post("/api/usuarios", async (req, res) => {
   try {
@@ -151,8 +154,24 @@ app.post("/api/usuarios", async (req, res) => {
   }
 });
 
-// ✅ Actualizar usuario
+/**
+ * ✅ Obtener todos los usuarios (Read)
+ * Ruta: GET /api/usuarios
+ */
+app.get("/api/usuarios", async (req, res) => {
+  try {
+    const usuarios = await db.collection("Usuarios").find().toArray();
+    res.json(usuarios);
+  } catch (err) {
+    console.error("❌ Error obteniendo usuarios:", err);
+    res.status(500).json({ error: "Error al obtener usuarios" });
+  }
+});
 
+/**
+ * ✅ Modificar un usuario existente (Update)
+ * Ruta: PUT /api/usuarios/:id
+ */
 app.put("/api/usuarios/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -192,8 +211,10 @@ app.put("/api/usuarios/:id", async (req, res) => {
   }
 });
 
-// ✅ Eliminar usuario
-
+/**
+ * ✅ Eliminar un usuario (Delete)
+ * Ruta: DELETE /api/usuarios/:id
+ */
 app.delete("/api/usuarios/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -217,24 +238,16 @@ app.delete("/api/usuarios/:id", async (req, res) => {
   }
 });
 
-//PRODUCTO
-
-// ✅ Obtener todos los productos
-
-app.get("/api/productos", async (req, res) => {
-  try {
-    const productos = await db.collection("Productos").find().toArray();
-    res.json(productos);
-  } catch (err) {
-    console.error("❌ Error obteniendo productos:", err);
-    res.status(500).json({ error: "Error al obtener productos" });
-  }
-});
+// =============================================
+// 🅳️ CRUD DE PRODUCTOS
+// =============================================
 
 // ✅ MIRAR PARA QUE INSERTE PRODUCTO Y SE RECARGUE LA PAGINA Crear nuevo producto
 
-
-// 📌 Ruta para crear producto con imagen
+/**
+ * ✅ Crear un nuevo producto con imagen (Create)
+ * Ruta: POST /api/productos
+ */
 app.post("/api/productos", upload.single("Imagen"), async (req, res) => {
   try {
     if (!req.file) {
@@ -266,7 +279,24 @@ app.post("/api/productos", upload.single("Imagen"), async (req, res) => {
   }
 });
 
-// ✅ Actualizar producto: Arreglar este error: Not allowed to load local resource: file:///C:/fakepath/DALL%C2%B7E%202025-02-12%2010.33.10%20-%20A%20sleek%20and%20modern%20UI%20design%20featuring%20product%20cards%20for%20a%20shopping%20app%20or%20website,%20using%20a%20color%20scheme%20of%20white,%20red,%20and%20green.%20Each%20card%20has%20a%20whi.webp
+/**
+ * ✅ Obtener todos los productos (Read)
+ * Ruta: GET /api/productos
+ */
+app.get("/api/productos", async (req, res) => {
+  try {
+    const productos = await db.collection("Productos").find().toArray();
+    res.json(productos);
+  } catch (err) {
+    console.error("❌ Error obteniendo productos:", err);
+    res.status(500).json({ error: "Error al obtener productos" });
+  }
+});
+
+/**
+ * ✅ Actualizar producto existente (Update)
+ * Ruta: PUT /api/productos/:id
+ */
 app.put("/api/productos/:id", upload.single("Imagen"), async (req, res) => {
   try {
     const { id } = req.params;
@@ -317,7 +347,10 @@ app.put("/api/productos/:id", upload.single("Imagen"), async (req, res) => {
   }
 });
 
-// ✅ Eliminar producto con validaciones
+/**
+ * ✅ Eliminar producto (Delete)
+ * Ruta: DELETE /api/productos/:id
+ */
 app.delete("/api/productos/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -341,21 +374,14 @@ app.delete("/api/productos/:id", async (req, res) => {
   }
 });
 
+// =============================================
+// 🅳️ CRUD DE PRECIOS
+// =============================================
 
-//PRECIOS
-
-// ✅ Obtener todos los precios
-app.get("/api/precios", async (req, res) => {
-  try {
-    const precios = await db.collection("Precios").find().toArray();
-    res.json(precios);
-  } catch (err) {
-    console.error("❌ Error obteniendo precios:", err);
-    res.status(500).json({ error: "Error al obtener precios" });
-  }
-});
-
-// ✅ Crear nuevo precio
+/**
+ * ✅ Crear un nuevo precios (Create)
+ * Ruta: POST /api/precios
+ */
 app.post("/api/precios", async (req, res) => {
   try {
     const nuevoPrecio = req.body;
@@ -367,7 +393,24 @@ app.post("/api/precios", async (req, res) => {
   }
 });
 
-// ✅ Actualizar precio
+/**
+ * ✅ Obtener todos los precios (Read)
+ * Ruta: GET /api/precios
+ */
+app.get("/api/precios", async (req, res) => {
+  try {
+    const precios = await db.collection("Precios").find().toArray();
+    res.json(precios);
+  } catch (err) {
+    console.error("❌ Error obteniendo precios:", err);
+    res.status(500).json({ error: "Error al obtener precios" });
+  }
+});
+
+/**
+ * ✅ Actualizar precios existente (Update)
+ * Ruta: PUT /api/precios/:id
+ */
 app.put("/api/precios/:id", async (req, res) => {
   try {
     const id = new ObjectId(req.params.id);
@@ -389,7 +432,10 @@ app.put("/api/precios/:id", async (req, res) => {
   }
 });
 
-// ✅ Eliminar precio
+/**
+ * ✅ Eliminar precios (Delete)
+ * Ruta: DELETE /api/precios/:id
+ */
 app.delete("/api/precios/:id", async (req, res) => {
   try {
     const { id } = req.params;
