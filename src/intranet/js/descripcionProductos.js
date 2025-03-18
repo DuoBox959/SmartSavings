@@ -162,6 +162,11 @@ async function eliminarDescripcion(id) {
   }
 }
 
+// 🟢 Volver atrás
+function volverAtras() {
+  window.location.href = "../html/intranet.html";
+}
+
 // ✅ Cerrar el formulario de descripción
 function cerrarFormulario() {
     $("#formularioDescripcion").hide();
@@ -174,4 +179,5 @@ function cerrarFormulario() {
   window.editarDescripcion = editarDescripcion;
   window.eliminarDescripcion = eliminarDescripcion;
   window.cargarDescripciones = cargarDescripciones;
+  window.volverAtras = volverAtras;
   
