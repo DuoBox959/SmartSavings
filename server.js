@@ -493,10 +493,41 @@ app.delete("/api/precios/:id", async (req, res) => {
 // 🅵 CRUD DE SUPERMERCADOS
 // =============================================
 
-// ✅ Obtener todos los supermercados
+/**
+ * ✅ Crear un nuevo supermercados (Create)
+ * Ruta: POST /api/supermercados
+ */
+app.post("/api/supermercados", async (req, res) => {
+  try {
+    const { Nombre, Pais, Ciudad, Ubicacion } = req.body;
+
+    if (!Nombre || !Pais || !Ciudad || !Ubicacion) {
+      return res.status(400).json({ error: "Todos los campos son obligatorios" });
+    }
+
+    const nuevoSupermercado = { Nombre, Pais, Ciudad, Ubicacion };
+
+    const resultado = await db.collection("Supermercados").insertOne(nuevoSupermercado);
+
+    res.status(201).json({
+      message: "Supermercado creado correctamente",
+      supermercado: { ...nuevoSupermercado, _id: resultado.insertedId }
+    });
+  } catch (err) {
+    console.error("❌ Error creando Supermercado:", err);
+    res.status(500).json({ error: "Error al crear Supermercado" });
+  }
+});
+
+
+/**
+ * ✅ Obtener todos los supermercados (Read)
+ * Ruta: GET /api/supermercados
+ */
 app.get("/api/supermercados", async (req, res) => {
   try {
-    const supermercados = await db.collection("Supermecados").find().toArray();
+    const supermercados = await db.collection("Supermercados").find().toArray(); // 👈 Usa el nombre correcto de la colección
+    console.log("📌 Supermercados encontrados:", supermercados); // 👀 Verificar en la consola del servidor
     res.json(supermercados);
   } catch (err) {
     console.error("❌ Error obteniendo supermercados:", err);
@@ -504,17 +535,6 @@ app.get("/api/supermercados", async (req, res) => {
   }
 });
 
-// ✅ Crear nuevo supermercados
-app.post("/api/supermercados", async (req, res) => {
-  try {
-    const nuevoSupermercado = req.body;
-    await db.collection("Supermercado").insertOne(nuevoSupermercado);
-    res.status(201).json({ message: "Supermercado creado correctamente" });
-  } catch (err) {
-    console.error("❌ Error creando Supermercado:", err);
-    res.status(500).json({ error: "Error al crear Supermercado" });
-  }
-});
 
 // ✅ Actualizar supermercado
 app.put("/api/supermercados/:id", async (req, res) => {
