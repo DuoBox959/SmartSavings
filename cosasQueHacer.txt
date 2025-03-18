@@ -1,3 +1,4 @@
  <!-- 📌 Sidebar de Navegación --> ponerlo en un documento aparte global y arrastrarlo a todos los apartados de la intranet.
  Correción de tablas en lo que ponga server.js
  Poner que funcione los Reportes y Configuración.
+ que aparezca el nombre de las cosas no la id en tablas
