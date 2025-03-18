@@ -536,7 +536,10 @@ app.get("/api/supermercados", async (req, res) => {
 });
 
 
-// ✅ Actualizar supermercado
+/**
+ * ✅ Actualizar supermercados existente (Update)
+ * Ruta: PUT /api/supermercados/:id
+ */
 app.put("/api/supermercados/:id", async (req, res) => {
   try {
     const id = new ObjectId(req.params.id);
@@ -558,7 +561,10 @@ app.put("/api/supermercados/:id", async (req, res) => {
   }
 });
 
-// ✅ Eliminar supermercado
+/**
+ * ✅ Eliminar supermercados (Delete)
+ * Ruta: DELETE /api/supermercados/:id
+ */
 app.delete("/api/supermercados/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -582,57 +588,99 @@ app.delete("/api/supermercados/:id", async (req, res) => {
   }
 });
 
-
-// ✅ Obtener todos los supermercados
-app.get("/api/descripcion", async (req, res) => {
-  try {
-    const descripcion = await db.collection("Descripcion").find().toArray();
-    res.json(descripcion);
-  } catch (err) {
-    console.error("❌ Error obteniendo descripcion:", err);
-    res.status(500).json({ error: "Error al obtener descripcion" });
-  }
-});
-
 // =============================================
 // 🅶 CRUD DE DESCRIPCIÓN
 // =============================================
 
-// ✅ Crear nueva descripcion
+/**
+ * ✅ Crear una nueva descripción (Create)
+ * Ruta: POST /api/descripcion
+ */
 app.post("/api/descripcion", async (req, res) => {
   try {
-    const nuevaDescripcion = req.body;
-    await db.collection("Descripcion").insertOne(nuevaDescripcion);
-    res.status(201).json({ message: "Descripcion creada correctamente" });
+    const { Producto_id, Tipo, Subtipo, Utilidad, Ingredientes } = req.body;
+
+    // ✅ Solo validar Producto_id y Tipo
+    if (!Producto_id || !Tipo) {
+      return res.status(400).json({ error: "Producto ID y Tipo son obligatorios" });
+    }
+
+    const nuevaDescripcion = {
+      Producto_id: new ObjectId(Producto_id), // Convertir a ObjectId
+      Tipo,
+      Subtipo: Subtipo || null,
+      Utilidad: Utilidad || null,
+      Ingredientes: Array.isArray(Ingredientes) ? Ingredientes : [],
+    };
+
+    const resultado = await db.collection("Descripcion").insertOne(nuevaDescripcion);
+
+    res.status(201).json({
+      message: "Descripción creada correctamente",
+      descripcion: { ...nuevaDescripcion, _id: resultado.insertedId },
+    });
+
   } catch (err) {
-    console.error("❌ Error creando Descripcion:", err);
-    res.status(500).json({ error: "Error al crear Descripcion" });
+    console.error("❌ Error creando Descripción:", err);
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 });
 
-// ✅ Actualizar descripcion
+/**
+ * ✅ Obtener todas las descripciones (Read)
+ * Ruta: GET /api/descripcion
+ */
+app.get("/api/descripcion", async (req, res) => {
+  try {
+    const descripciones = await db.collection("Descripcion").find().toArray();
+    res.json(descripciones);
+  } catch (err) {
+    console.error("❌ Error obteniendo descripciones:", err);
+    res.status(500).json({ error: "Error al obtener descripciones" });
+  }
+});
+
+/**
+ * ✅ Actualizar descripcion existente (Update)
+ * Ruta: PUT /api/descripcion/:id
+ */
 app.put("/api/descripcion/:id", async (req, res) => {
   try {
-    const id = new ObjectId(req.params.id);
+    const { id } = req.params;
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ error: "ID no válido" });
+    }
+
     const updateData = req.body;
 
+    if (updateData.Producto_id) {
+      updateData.Producto_id = new ObjectId(updateData.Producto_id);
+    }
+    
+    if (updateData.Ingredientes) {
+      updateData.Ingredientes = Array.isArray(updateData.Ingredientes) ? updateData.Ingredientes : updateData.Ingredientes.split(",").map(i => i.trim());
+    }
+
     const result = await db.collection("Descripcion").updateOne(
-      { _id: id },
+      { _id: new ObjectId(id) },
       { $set: updateData }
     );
 
     if (result.modifiedCount === 0) {
-      return res.status(404).json({ error: "Descripcion no encontrado" });
+      return res.status(404).json({ error: "Descripción no encontrada o sin cambios" });
     }
 
-    res.json({ message: "Descripcion actualizado correctamente" });
+    res.json({ message: "Descripción actualizada correctamente" });
   } catch (err) {
-    console.error("❌ Error actualizando Descripcion:", err);
-    res.status(500).json({ error: "Error al actualizar Descripcion" });
+    console.error("❌ Error actualizando descripción:", err);
+    res.status(500).json({ error: "Error al actualizar descripción" });
   }
 });
 
-// ✅ Eliminar descripcion
+/**
+ * ✅ Eliminar Descripcion (Delete)
+ * Ruta: DELETE /api/descripcion/:id
+ */
 app.delete("/api/descripcion/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -734,18 +782,10 @@ app.delete("/api/proveedor/:id", async (req, res) => {
 // 🅸 CRUD DE OPINIONES
 // =============================================
 
-// ✅ Obtener todas las opiniones
-app.get("/api/opiniones", async (req, res) => {
-  try {
-    const opiniones = await db.collection("Opiniones").find().toArray();
-    res.json(opiniones);
-  } catch (err) {
-    console.error("❌ Error obteniendo opiniones:", err);
-    res.status(500).json({ error: "Error al obtener opiniones" });
-  }
-});
-
-// ✅ Crear nueva opinion
+/**
+ * ✅ Crear una nueva opinión (Create)
+ * Ruta: POST /api/opiniones
+ */
 app.post("/api/opiniones", async (req, res) => {
   try {
     const nuevaOpinion = req.body;
@@ -757,7 +797,24 @@ app.post("/api/opiniones", async (req, res) => {
   }
 });
 
-// ✅ Actualizar opinion
+/**
+ * ✅ Obtener todas las opiniones (Read)
+ * Ruta: GET /api/opiniones
+ */
+app.get("/api/opiniones", async (req, res) => {
+  try {
+    const opiniones = await db.collection("Opiniones").find().toArray();
+    res.json(opiniones);
+  } catch (err) {
+    console.error("❌ Error obteniendo opiniones:", err);
+    res.status(500).json({ error: "Error al obtener opiniones" });
+  }
+});
+
+/**
+ * ✅ Actualizar opinión existente (Update)
+ * Ruta: PUT /api/opiniones/:id
+ */
 app.put("/api/opiniones/:id", async (req, res) => {
   try {
     const id = new ObjectId(req.params.id);
@@ -779,7 +836,10 @@ app.put("/api/opiniones/:id", async (req, res) => {
   }
 });
 
-// ✅ Eliminar opinion
+/**
+ * ✅ Eliminar Descripcion (Delete)
+ * Ruta: DELETE /api/descripcion/:id
+ */
 app.delete("/api/opiniones/:id", async (req, res) => {
   try {
     const { id } = req.params;
