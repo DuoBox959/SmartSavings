@@ -29,14 +29,21 @@ async function cargarPrecios() {
 
     preciosCache = precios;
     preciosTable.clear();
+
     precios.forEach((precio) => {
       preciosTable.row.add([
-        precio._id,
-        precio.producto_id,
-        precio.precioActual.toFixed(2) + " €",
-        precio.precioDescuento ? precio.precioDescuento.toFixed(2) + " €" : "N/A",
+        precio._id || "N/A",
+        precio.producto_id || "N/A",
+        typeof precio.precioActual === "number" 
+          ? precio.precioActual.toFixed(2) + " €" 
+          : "N/A",
+        typeof precio.precioDescuento === "number"
+          ? precio.precioDescuento.toFixed(2) + " €" 
+          : "N/A",
         precio.unidadLote || "N/A",
-        precio.precioHistorico ? precio.precioHistorico.join(", ") + " €" : "N/A",
+        precio.precioHistorico && Array.isArray(precio.precioHistorico)
+          ? precio.precioHistorico.map(p => (typeof p === "number" ? p.toFixed(2) : "N/A")).join(", ") + " €"
+          : "N/A",
         accionesHTML(precio._id),
       ]);
     });
@@ -46,6 +53,7 @@ async function cargarPrecios() {
     console.error("❌ Error al cargar precios:", error);
   }
 }
+
 
 // 🟢 Generar HTML para editar y eliminar
 function accionesHTML(id) {
@@ -78,6 +86,7 @@ async function guardarCambiosDesdeFormulario() {
     return;
   }
 
+  // 🔥 Eliminamos `id` para que MongoDB lo genere automáticamente
   const precio = { producto_id, precioActual, precioDescuento, unidadLote, precioHistorico };
 
   try {
@@ -104,6 +113,7 @@ async function guardarCambiosDesdeFormulario() {
     console.error("❌ Error guardando precio:", err);
   }
 }
+
 
 // 🟢 Editar precio
 function editarPrecio(id) {

@@ -375,7 +375,7 @@ app.delete("/api/productos/:id", async (req, res) => {
 });
 
 // =============================================
-// 🅳️ CRUD DE PRECIOS
+// 🅴 CRUD DE PRECIOS: Ver porque no sale lista de precio historico y convertirlo en boton para verlos todos
 // =============================================
 
 /**
@@ -384,14 +384,38 @@ app.delete("/api/productos/:id", async (req, res) => {
  */
 app.post("/api/precios", async (req, res) => {
   try {
-    const nuevoPrecio = req.body;
-    await db.collection("Precios").insertOne(nuevoPrecio);
-    res.status(201).json({ message: "Precio creado correctamente" });
+    let { producto_id, precioActual, precioDescuento, unidadLote, precioHistorico } = req.body;
+
+    // ✅ Convertir a números, asegurando que sean válidos
+    precioActual = parseFloat(precioActual) || 0;
+    precioDescuento = precioDescuento ? parseFloat(precioDescuento) : null;
+
+    // ✅ Si unidadLote está vacío, poner "N/A"
+    unidadLote = unidadLote.trim() === "" ? "N/A" : unidadLote;
+
+    // ✅ Si precioHistorico no es un array, inicializarlo vacío
+    if (!Array.isArray(precioHistorico)) {
+      precioHistorico = [];
+    }
+
+    const nuevoPrecio = {
+      producto_id: new ObjectId(producto_id),
+      precioActual,
+      precioDescuento,
+      unidadLote,
+      precioHistorico,
+    };
+
+    const result = await db.collection("Precios").insertOne(nuevoPrecio);
+    nuevoPrecio._id = result.insertedId;
+
+    res.status(201).json({ message: "Precio creado correctamente", precio: nuevoPrecio });
   } catch (err) {
     console.error("❌ Error creando Precio:", err);
     res.status(500).json({ error: "Error al crear Precio" });
   }
 });
+
 
 /**
  * ✅ Obtener todos los precios (Read)
@@ -399,13 +423,19 @@ app.post("/api/precios", async (req, res) => {
  */
 app.get("/api/precios", async (req, res) => {
   try {
+    if (!db) {
+      return res.status(500).json({ error: "No hay conexión con la base de datos" });
+    }
     const precios = await db.collection("Precios").find().toArray();
+    console.log("✅ Precios obtenidos:", precios);
     res.json(precios);
   } catch (err) {
     console.error("❌ Error obteniendo precios:", err);
     res.status(500).json({ error: "Error al obtener precios" });
   }
 });
+
+
 
 /**
  * ✅ Actualizar precios existente (Update)
@@ -459,7 +489,9 @@ app.delete("/api/precios/:id", async (req, res) => {
   }
 });
 
-//SUPERMERCADO
+// =============================================
+// 🅵 CRUD DE SUPERMERCADOS
+// =============================================
 
 // ✅ Obtener todos los supermercados
 app.get("/api/supermercados", async (req, res) => {
@@ -530,7 +562,6 @@ app.delete("/api/supermercados/:id", async (req, res) => {
   }
 });
 
-//DESCRIPCION
 
 // ✅ Obtener todos los supermercados
 app.get("/api/descripcion", async (req, res) => {
@@ -542,6 +573,10 @@ app.get("/api/descripcion", async (req, res) => {
     res.status(500).json({ error: "Error al obtener descripcion" });
   }
 });
+
+// =============================================
+// 🅶 CRUD DE DESCRIPCIÓN
+// =============================================
 
 // ✅ Crear nueva descripcion
 app.post("/api/descripcion", async (req, res) => {
@@ -601,7 +636,10 @@ app.delete("/api/descripcion/:id", async (req, res) => {
   }
 });
 
-//PROVEEDOR
+// =============================================
+// 🅷 CRUD DE PROOVEDOR
+// =============================================
+
 
 // ✅ Obtener todos los proveedores
 app.get("/api/proveedor", async (req, res) => {
@@ -672,7 +710,9 @@ app.delete("/api/proveedor/:id", async (req, res) => {
   }
 });
 
-//OPINIONES
+// =============================================
+// 🅸 CRUD DE OPINIONES
+// =============================================
 
 // ✅ Obtener todas las opiniones
 app.get("/api/opiniones", async (req, res) => {
