@@ -2,15 +2,29 @@
 const { conectarDB, ObjectId } = require("./conexion1");
 
 require("dotenv").config();
+const multer = require("multer");
+const path = require("path");
 const express = require("express");
 const cors = require("cors");
-// const { conectarDB } = require("./conexion1");
-
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 
 let db;
+
+// 📌 Middleware para subida de archivos
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/"); // Carpeta donde se guardarán las imágenes
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname)); // Renombrar archivo con timestamp
+  },
+});
+
+const upload = multer({ storage: storage });
+//CONEXIONES
 
 // 🔌 Conectar a MongoDB Atlas
 (async () => {
@@ -35,8 +49,8 @@ let db;
   }
 })();
 
-
 // ✅ Ruta simple de prueba
+
 app.get("/", (req, res) => {
   res.send("🚀 Servidor funcionando con MongoDB Atlas");
 });
@@ -118,11 +132,11 @@ app.post("/api/usuarios", async (req, res) => {
     console.log("✅ Resultado de la inserción:", result);
 
     if (result.insertedId) {
-      nuevoUsuario._id = result.insertedId; // ✅ Agregamos el _id al objeto
+      nuevoUsuario._id = result.insertedId; // Agregamos el _id al objeto
       console.log("✅ Usuario agregado correctamente:", nuevoUsuario);
       return res.status(201).json({
         message: "Usuario creado correctamente",
-        usuario: nuevoUsuario // ✅ Ahora sí devuelve el usuario con el _id
+        usuario: nuevoUsuario // Ahora sí devuelve el usuario con el _id
       });
     } else {
       console.error("❌ Error al insertar usuario en MongoDB.");
@@ -134,8 +148,8 @@ app.post("/api/usuarios", async (req, res) => {
   }
 });
 
-
 // ✅ Actualizar usuario
+
 app.put("/api/usuarios/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -176,6 +190,7 @@ app.put("/api/usuarios/:id", async (req, res) => {
 });
 
 // ✅ Eliminar usuario
+
 app.delete("/api/usuarios/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -200,7 +215,9 @@ app.delete("/api/usuarios/:id", async (req, res) => {
 });
 
 //PRODUCTO
+
 // ✅ Obtener todos los productos
+
 app.get("/api/productos", async (req, res) => {
   try {
     const productos = await db.collection("Productos").find().toArray();
@@ -211,24 +228,48 @@ app.get("/api/productos", async (req, res) => {
   }
 });
 
-
 // ✅ MIRAR PARA QUE INSERTE PRODUCTO Y SE RECARGUE LA PAGINA Crear nuevo producto
-app.post("/api/productos", async (req, res) => {
+
+// 📌 Servir archivos estáticos desde la carpeta "uploads"
+app.use("/uploads", express.static("uploads"));
+
+// 📌 Ruta para crear producto con imagen
+app.post("/api/productos", upload.single("Imagen"), async (req, res) => {
   try {
-    const nuevoProducto = req.body;
-    await db.collection("Productos").insertOne(nuevoProducto);
-    res.status(201).json({ message: "Producto creado correctamente" });
+    if (!req.file) {
+      return res.status(400).json({ error: "No se ha subido ninguna imagen" });
+    }
+
+    const nuevoProducto = {
+      Nombre: req.body.Nombre,
+      Imagen: `/uploads/${req.file.filename}`, // Guardamos la ruta de la imagen
+      Marca: req.body.Marca,
+      Peso: req.body.Peso,
+      UnidadPeso: req.body.UnidadPeso,
+      Estado: req.body.Estado,
+      Proveedor_id: req.body.Proveedor_id,
+      Supermercado_id: req.body.Supermercado_id,
+      Usuario_id: req.body.Usuario_id,
+    };
+
+    const resultado = await db.collection("Productos").insertOne(nuevoProducto);
+    nuevoProducto._id = resultado.insertedId;
+
+    res.status(201).json({
+      message: "Producto creado correctamente",
+      producto: nuevoProducto,
+    });
   } catch (err) {
-    console.error("❌ Error creando Producto:", err);
-    res.status(500).json({ error: "Error al crear Producto" });
+    console.error("❌ Error en backend:", err);
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 });
 
-// ✅ Actualizar producto con validaciones
-app.put("/api/productos/:id", async (req, res) => {
+// ✅ Actualizar producto con validacionesy con img
+app.put("/api/productos/:id", upload.single("Imagen"), async (req, res) => {
   try {
     const { id } = req.params;
-    console.log("📥 Datos recibidos en el servidor para actualizar:", req.body); // 💡 Imprime los datos recibidos
+    console.log("📥 Datos recibidos en el servidor para actualizar:", req.body);
 
     if (!ObjectId.isValid(id)) {
       return res.status(400).json({ error: "ID de producto no válido" });
@@ -237,7 +278,11 @@ app.put("/api/productos/:id", async (req, res) => {
     const objectId = new ObjectId(id);
     const updateData = {};
 
-    // Verifica que los campos se están enviando correctamente
+    // 📌 Si el usuario sube una nueva imagen, actualizarla
+    if (req.file) {
+      updateData.Imagen = `/uploads/${req.file.filename}`;
+    }
+
     if (req.body.nombre) updateData.Nombre = req.body.nombre;
     if (req.body.marca) updateData.Marca = req.body.marca;
     if (req.body.peso) updateData.Peso = req.body.peso;
@@ -247,10 +292,10 @@ app.put("/api/productos/:id", async (req, res) => {
     if (req.body.supermercado_id) updateData.Supermercado_id = new ObjectId(req.body.supermercado_id);
     if (req.body.usuario_id) updateData.Usuario_id = new ObjectId(req.body.usuario_id);
 
-    console.log("🛠️ Datos a actualizar en MongoDB:", updateData); // 💡 Verifica lo que realmente se está intentando actualizar
+    console.log("🛠️ Datos a actualizar:", updateData);
 
     if (Object.keys(updateData).length === 0) {
-      return res.status(200).json({ message: "No hubo cambios en el producto, pero la solicitud fue exitosa." });
+      return res.status(200).json({ message: "No hubo cambios en el producto." });
     }
 
     const result = await db.collection("Productos").updateOne(
@@ -262,14 +307,16 @@ app.put("/api/productos/:id", async (req, res) => {
       return res.status(404).json({ error: "Producto no encontrado" });
     }
 
-    console.log("✅ Resultado de la actualización en MongoDB:", result);
-
+    console.log("✅ Producto actualizado en MongoDB:", result);
     res.json({ message: "Producto actualizado correctamente", producto: updateData });
+
   } catch (err) {
-    console.error("❌ Error actualizando producto en MongoDB:", err);
+    console.error("❌ Error actualizando producto:", err);
     res.status(500).json({ error: "Error al actualizar producto" });
   }
 });
+
+
 
 
 

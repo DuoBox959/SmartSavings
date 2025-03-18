@@ -92,90 +92,61 @@ function mostrarFormularioAgregar() {
 
 // 🟢 Guardar cambios y agregar producto
 async function guardarCambiosDesdeFormulario(event) {
-  event.preventDefault(); // Evitar el envío tradicional del formulario
+  event.preventDefault();
 
-  const id = $("#productoID").val();
-  const nombre = $("#nombreProducto").val();
-  const imagen = $("#imgProducto").val();
-  const marca = $("#marcaProducto").val();
-  const peso = $("#pesoProducto").val();
-  const unidadPeso = $("#unidadPeso").val();
-  const estado = $("#Estado").val();
-  const proveedorId = $("#idProveedor").val();
-  const supermercadoId = $("#idSupermercado").val();
-  const usuarioId = $("#idUsuario").val();
-
-  const producto = {
-    Nombre: nombre,
-    Imagen: imagen,
-    Marca: marca,
-    Peso: peso,
-    UnidadPeso: unidadPeso,
-    Estado: estado,
-    Proveedor_id: proveedorId,
-    Supermercado_id: supermercadoId,
-    Usuario_id: usuarioId,
-  };
-
-  console.log("📤 Enviando datos al backend:", producto);
+  const formData = new FormData();
+  formData.append("Nombre", $("#nombreProducto").val());
+  formData.append("Imagen", $("#imgProducto")[0].files[0]); // 📌 Obtener el archivo
+  formData.append("Marca", $("#marcaProducto").val());
+  formData.append("Peso", $("#pesoProducto").val());
+  formData.append("UnidadPeso", $("#unidadPeso").val());
+  formData.append("Estado", $("#Estado").val());
+  formData.append("Proveedor_id", $("#idProveedor").val());
+  formData.append("Supermercado_id", $("#idSupermercado").val());
+  formData.append("Usuario_id", $("#idUsuario").val());
 
   try {
-    let response;
-    if (id) {
-      // PUT = actualizar producto
-      response = await fetch(`http://localhost:3000/api/productos/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(producto),
-      });
-    } else {
-      // POST = nuevo producto
-      response = await fetch("http://localhost:3000/api/productos", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(producto),
-      });
-    }
+    const response = await fetch("http://localhost:3000/api/productos", {
+      method: "POST",
+      body: formData, // 📌 No incluir `Content-Type`, fetch lo asigna automáticamente
+    });
 
-    if (!response.ok) throw new Error("Error al guardar producto");
+    if (!response.ok) {
+      const errorData = await response.text(); // 📌 Leer la respuesta como texto
+      console.error("❌ Error del servidor:", errorData);
+      throw new Error("Error al guardar producto");
+    }
 
     const data = await response.json();
-    console.log("✅ Respuesta del backend:", data);
+    if (!data.producto) throw new Error("El backend no devolvió el producto creado");
 
-    if (!data.producto) {
-      console.error("❌ Error: El backend no devolvió el producto creado.");
-      return;
-    }
+    // ✅ Agregar la nueva fila a DataTable
+    productosTable.row
+      .add([
+        data.producto._id,
+        `<img src="${data.producto.Imagen}" alt="${data.producto.Nombre}" width="50" />`,
+        data.producto.Nombre,
+        data.producto.Marca,
+        `${data.producto.Peso} ${data.producto.UnidadPeso}`,
+        data.producto.Proveedor_id || "",
+        data.producto.Supermercado_id || "",
+        data.producto.Usuario_id || "",
+        data.producto.Estado,
+        accionesHTML(data.producto._id),
+      ])
+      .draw();
 
-    // ✅ Si el producto fue creado, actualizar la tabla sin recargar la página
-    if (!id) {
-      const pesoConUnidad = `${data.producto.Peso} ${data.producto.UnidadPeso}`;
-      productosTable.row
-        .add([
-          data.producto._id,
-          `<img src="${data.producto.Imagen}" alt="${data.producto.Nombre}" width="50" />`,
-          data.producto.Nombre,
-          data.producto.Marca,
-          pesoConUnidad,
-          data.producto.Proveedor_id,
-          data.producto.Supermercado_id,
-          data.producto.Usuario_id,
-          data.producto.Estado,
-          accionesHTML(data.producto._id),
-        ])
-        .draw();
-    }
-
-    cerrarFormulario(); // Cierra el formulario después de guardar
-    // Recargar la página automáticamente después de guardar
-    location.reload();
+    cerrarFormulario();
   } catch (err) {
     console.error("❌ Error guardando producto:", err);
   }
 }
 
+
+
+
 // 🟢 Guardar cambios en la edición de un producto existente
-async function guardarEdicionProducto() {
+async function guardarEdicionProducto() { 
   const id = $("#productoID").val();
   if (!id) {
     console.error("❌ No hay un ID de producto válido.");
@@ -189,42 +160,27 @@ async function guardarEdicionProducto() {
     return;
   }
 
-  // ✅ Obtener los valores ingresados en el formulario
-  const nombre = $("#nombreProducto").val().trim();
-  const imagen = $("#imgProducto").val().trim();
-  const marca = $("#marcaProducto").val().trim();
-  const peso = $("#pesoProducto").val().trim();
-  const unidadPeso = $("#unidadPeso").val().trim();
-  const estado = $("#Estado").val();
-  const proveedorId = $("#idProveedor").val().trim();
-  const supermercadoId = $("#idSupermercado").val().trim();
-  const usuarioId = $("#idUsuario").val().trim();
-  // ✅ Crear objeto con los cambios detectados
-  const productoActualizado = {};
+  // ✅ Crear FormData en vez de JSON si hay una nueva imagen
+  const formData = new FormData();
+  formData.append("nombre", $("#nombreProducto").val().trim());
+  formData.append("marca", $("#marcaProducto").val().trim());
+  formData.append("peso", $("#pesoProducto").val().trim());
+  formData.append("unidadPeso", $("#unidadPeso").val().trim());
+  formData.append("estado", $("#Estado").val());
+  formData.append("proveedor_id", $("#idProveedor").val().trim());
+  formData.append("supermercado_id", $("#idSupermercado").val().trim());
+  formData.append("usuario_id", $("#idUsuario").val().trim());
 
-  if (nombre !== productoOriginal.Nombre) productoActualizado.nombre = nombre;
-  if (imagen !== productoOriginal.Imagen) productoActualizado.imagen = imagen;
-  if (marca !== productoOriginal.Marca) productoActualizado.marca = marca;
-  if (peso !== productoOriginal.Peso) productoActualizado.peso = peso;
-  if (unidadPeso !== productoOriginal.UnidadPeso) productoActualizado.unidadPeso = unidadPeso;
-  if (estado !== productoOriginal.Estado) productoActualizado.estado = estado;
-  if (proveedorId !== productoOriginal.Proveedor_id) productoActualizado.proveedor_id = proveedorId;
-  if (supermercadoId !== productoOriginal.Supermercado_id) productoActualizado.supermercado_id = supermercadoId;
-  if (usuarioId !== productoOriginal.Usuario_id) productoActualizado.usuario_id = usuarioId;
-
-  // ❗ Si no hay cambios, evitar enviar la petición
-  if (Object.keys(productoActualizado).length === 0) {
-    console.warn("⚠️ No se detectaron cambios en el producto.");
-    return;
+  // 📌 Obtener la imagen correctamente
+  const imagenInput = $("#imgProducto")[0].files[0];
+  if (imagenInput) {
+    formData.append("Imagen", imagenInput);
   }
-
-  console.log("📤 Enviando datos para editar producto:", productoActualizado);
 
   try {
     const response = await fetch(`http://localhost:3000/api/productos/${id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(productoActualizado),
+      body: formData, // 📝 Enviamos `FormData`, no JSON
     });
 
     if (!response.ok) {
@@ -234,19 +190,15 @@ async function guardarEdicionProducto() {
     }
 
     console.log("✅ Producto actualizado correctamente");
-     // 🟢 ACTUALIZAR SOLO LA FILA DEL PRODUCTO SIN RECARGAR TODA LA TABLA
-     const fila = productosTable.row($(`tr:has(td:contains('${id}'))`)).data();
-     if (fila) {
-       fila[2] = productoActualizado.nombre || productoOriginal.Nombre;
-       fila[3] = productoActualizado.marca || productoOriginal.Marca;
-       fila[4] = `${productoActualizado.peso || productoOriginal.Peso} ${productoActualizado.unidadPeso || productoOriginal.UnidadPeso}`;
-       productosTable.row($(`tr:has(td:contains('${id}'))`)).data(fila).draw();
-     }
+
+    // 🟢 ACTUALIZAR SOLO LA FILA DEL PRODUCTO SIN RECARGAR TODA LA TABLA
+    await cargarProductos();
     cerrarFormulario();
   } catch (err) {
     console.error("❌ Error actualizando producto:", err);
   }
 }
+
 
 
 
@@ -265,13 +217,20 @@ function editarProducto(id) {
   $("#productoID").val(producto._id);
   $("#nombreProducto").val(producto.Nombre || "");
   $("#marcaProducto").val(producto.Marca || "");
-  $("#imgProducto").val(producto.Imagen || "");
   $("#pesoProducto").val(producto.Peso || "");
   $("#unidadPeso").val(producto.UnidadPeso || "KG");
   $("#idProveedor").val(producto.Proveedor_id || "");
   $("#idSupermercado").val(producto.Supermercado_id || "");
   $("#idUsuario").val(producto.Usuario_id || "");
   $("#Estado").val(producto.Estado || "En Stock");
+
+// ✅ Mostrar vista previa de la imagen actual si existe
+if (producto.Imagen) {
+  $("#vistaPreviaImagen").attr("src", producto.Imagen).show();
+} else {
+  $("#vistaPreviaImagen").hide();
+}
+
 
   $("#botonesFormulario button:first")
     .off("click")
@@ -282,6 +241,7 @@ function editarProducto(id) {
     .getElementById("formularioProducto")
     .scrollIntoView({ behavior: "smooth" });
 }
+
 
 // 🟢 Eliminar producto
 async function eliminarProducto(id) {
