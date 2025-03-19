@@ -1,50 +1,45 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
-    <!-- ✅ A. Configuración del Documento -->
+    <!-- 🅰️ Configuración del Documento -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <title>Gestión de Productos</title>
 
-    <!-- ✅ B. Vinculación de Archivos CSS -->
+    <!-- 🅱️ Vinculación de Archivos CSS -->
     <link rel="stylesheet" href="../css/global/sidebar.css" /> <!-- Sidebar CSS -->
     <link rel="stylesheet" href="../css/producto.css" />
 
-    <!-- ✅ C. Librerías y Scripts Necesarios -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- jQuery -->
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-    <!-- DataTables -->
-    <!-- <script src="../../libs/pouchdb-9.0.0.min.js"></script> -->
-    <!-- PouchDB -->
-    <script src="../../valid/validaciones.js"></script>
-    <!-- Validaciones -->
-    <script type="module" src="../js/productos.js"></script>
-    <!-- Lógica de productos -->
+    <!-- 🅲 Librerías y Scripts Necesarios -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery -->
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script> <!-- DataTables -->
+    <!-- <script src="../../libs/pouchdb-9.0.0.min.js"></script> --> <!-- PouchDB -->
+    <script src="../../valid/validaciones.js"></script> <!-- Validaciones -->
+    <script type="module" src="../js/productos.js"></script> <!-- Lógica de productos -->
     <script type="module" src="../js/global/sidebar.js" defer></script> <!-- Sidebar JS -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert2 -->
+
+    <!-- 🅳 Librerías de Iconos -->
     <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-  />
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
   </head>
 
   <body>
-    <!-- 📌 Cargar Sidebar de forma dinámica -->
+    <!-- 🅴 Cargar Sidebar de forma dinámica -->
     <div id="sidebar-container"></div>
-    <!-- 🏷️ D. Aviso Importante -->
+
+    <!-- 🅵 Aviso Importante -->
     <div id="aviso" class="aviso-importante">
-      <strong>Aviso:</strong> La base de datos es pública y los datos pueden
-      estar desactualizados o no ser exactos.
+      <strong>Aviso:</strong> La base de datos es pública y los datos pueden estar desactualizados o no ser exactos.
     </div>
 
-    <!-- 🏷️ E. Encabezado y Botón Agregar -->
+    <!-- 🅶 Encabezado y Botón Agregar -->
     <h1>Gestión de Productos</h1>
     <button onclick="mostrarFormularioAgregar()">Agregar Producto</button>
 
-    <!-- 📊 F. Tabla Dinámica de Productos -->
+    <!-- 🅷 Tabla Dinámica de Productos -->
     <div class="tabla-contenedor">
       <table id="productosTable" class="display">
         <thead>
@@ -65,21 +60,20 @@
       </table>
     </div>
 
-    <!-- 📋 G. Formulario para Agregar o Editar Productos -->
+    <!-- 🅸 Formulario para Agregar o Editar Productos -->
     <div id="formularioProducto" class="formulario" style="display: none">
       <h2 id="formTitulo">Agregar Producto</h2>
 
       <!-- 🔹 Campo: ID oculto (para edición) -->
       <input type="hidden" id="productoID" />
 
-       <!-- 🔹 Campo: Imagen del Producto -->
-       <label for="imgProducto">Imagen del Producto:</label>
-       <input type="file" id="imgProducto" accept="image/*" />
-       
-       <!-- ✅ Vista previa de la imagen -->
-       <img id="vistaPreviaImagen" src="" alt="Vista previa" width="100" style="display: none; margin-top: 10px;" />
-      
-       <!-- 🔹 Campo: Nombre del Producto -->
+      <!-- 🔹 Campo: Imagen del Producto -->
+      <label for="imgProducto">Imagen del Producto:</label>
+      <input type="file" id="imgProducto" accept="image/*" />
+      <!-- ✅ Vista previa de la imagen -->
+      <img id="vistaPreviaImagen" src="" alt="Vista previa" width="100" style="display: none; margin-top: 10px;" />
+
+      <!-- 🔹 Campo: Nombre del Producto -->
       <label for="nombreProducto">Nombre del Producto:</label>
       <input type="text" id="nombreProducto" />
 
@@ -119,14 +113,11 @@
       </select>
       <br>
 
-      <!-- 🔘 Botones del formulario -->
+      <!-- 🅹 Botones del Formulario -->
       <div id="botonesFormulario">
         <button>Guardar</button>
         <button onclick="cerrarFormulario()">Cancelar</button>
       </div>
     </div>
-    </div>
-
-    
   </body>
 </html>

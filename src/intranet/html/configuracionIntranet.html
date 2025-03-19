@@ -1,33 +1,34 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
-    <!-- ✅ Configuración del Documento -->
+    <!-- 🅰️ Configuración del Documento -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Configuración - Intranet</title>
 
-    <!-- ✅ Vinculación de CSS -->
+    <!-- 🅱️ Vinculación de CSS -->
     <link rel="stylesheet" href="../css/confIntranet.css" />
     <link rel="stylesheet" href="../css/global/sidebar.css" /> <!-- Sidebar CSS -->
 
-    <!-- ✅ Librerías Externas -->
+    <!-- 🅲 Librerías Externas -->
     <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-  />
-  <script type="module" src="../js/global/sidebar.js" defer></script> <!-- Sidebar JS -->
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
 
+    <!-- 🅳 Vinculación de JavaScript -->
+    <script type="module" src="../js/global/sidebar.js" defer></script> <!-- Sidebar JS -->
   </head>
-  <body>
 
-    <!-- 📌 Cargar Sidebar de forma dinámica -->
+  <body>
+    <!-- 🅴 Sidebar de Navegación -->
     <div id="sidebar-container"></div>
 
-    <!-- 📌 Contenido Principal -->
+    <!-- 🅵 Contenido Principal -->
     <main class="main-content">
       <h1>Configuración</h1>
 
-      <!-- 🛠️ Configuración de Usuario -->
+      <!-- 🅶 Configuración de Usuario -->
       <div class="config-section">
         <h2>Perfil de Usuario</h2>
         <label for="username">Nombre:</label>
@@ -42,7 +43,7 @@
         <button>Guardar Cambios</button>
       </div>
 
-      <!-- 🔐 Seguridad -->
+      <!-- 🅷 Seguridad -->
       <div class="config-section">
         <h2>Seguridad</h2>
         <label>
@@ -52,18 +53,20 @@
         <button>Actualizar Seguridad</button>
       </div>
 
-      <!-- 📢 Notificaciones -->
+      <!-- 🅸 Notificaciones -->
       <div class="config-section">
         <h2>Notificaciones</h2>
         <label>
           <input type="checkbox" checked /> Recibir notificaciones por correo
         </label>
-        <label> <input type="checkbox" /> Habilitar notificaciones push </label>
+        <label>
+          <input type="checkbox" /> Habilitar notificaciones push
+        </label>
         <button>Guardar Preferencias</button>
       </div>
     </main>
 
-    <!-- ✅ Vinculación del Archivo JavaScript -->
+    <!-- 🅹 Vinculación del Archivo JavaScript -->
     <script src="../js/configuracion.js" defer></script>
   </body>
 </html>

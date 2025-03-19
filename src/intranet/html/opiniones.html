@@ -1,43 +1,44 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
-    <!-- ✅ A. Configuración del Documento -->
+    <!-- 🅰️ Configuración del Documento -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <title>Gestión de Opiniones</title>
 
-    <!-- ✅ B. Vinculación de Archivos CSS -->
+    <!-- 🅱️ Vinculación de Archivos CSS -->
     <link rel="stylesheet" href="../css/global/datTable.css" />
     <link rel="stylesheet" href="../css/global/sidebar.css" /> <!-- Sidebar CSS -->
 
-    <!-- jQuery y DataTables JS -->
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-
-    <!-- Script de lógica -->
-    <script type="module" src="../js/global/sidebar.js" defer></script> <!-- Sidebar JS -->
-    <script type="module" src="../js/opiniones.js"></script>
-      <!-- ✅ C. Librerías Externas -->
-      <link
+    <!-- 🅲 Librerías Externas -->
+    <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     />
+
+    <!-- 🅳 Scripts y Dependencias -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+    <!-- 🅴 Script de Lógica -->
+    <script type="module" src="../js/global/sidebar.js" defer></script> <!-- Sidebar JS -->
+    <script type="module" src="../js/opiniones.js"></script>
   </head>
+
   <body>
-    <!-- 📌 Cargar Sidebar de forma dinámica -->
+    <!-- 🅵 Cargar Sidebar de forma dinámica -->
     <div id="sidebar-container"></div>
-    <!-- 🏷️ D. Aviso de Información -->
+
+    <!-- 🅶 Aviso de Información -->
     <div id="aviso" class="aviso-importante">
-      <strong>Aviso:</strong> La información de opiniones puede cambiar en
-      cualquier momento.
+      <strong>Aviso:</strong> La información de opiniones puede cambiar en cualquier momento.
     </div>
 
-    <!-- 📌 E. Título y Botón Agregar -->
+    <!-- 🅷 Título y Botón Agregar -->
     <h1>Gestión de Opiniones</h1>
     <button onclick="mostrarFormularioAgregar()">Añadir Opinión</button>
 
-    <!-- 📊 F. Tabla de Opiniones -->
+    <!-- 🅸 Tabla de Opiniones -->
     <table id="opinionesTable" class="display">
       <thead>
         <tr>
@@ -53,7 +54,7 @@
       <tbody id="opinionesBody"></tbody>
     </table>
 
-    <!-- 📋 G. Formulario para Agregar o Editar Opinión -->
+    <!-- 🅹 Formulario para Agregar o Editar Opinión -->
     <div id="formularioOpinion" style="display: none">
       <h2 id="formTitulo">Añadir Opinión</h2>
 
@@ -87,7 +88,7 @@
         <label for="fechaOpinion">Fecha:</label>
         <input type="date" id="fechaOpinion" required />
 
-        <!-- 🔘 Botones del formulario -->
+        <!-- 🅺 Botones del Formulario -->
         <div id="botonesFormulario">
           <button type="button">Guardar</button>
           <button type="button" onclick="cerrarFormulario()">Cancelar</button>

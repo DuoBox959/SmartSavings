@@ -1,40 +1,40 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
-    <!-- ✅ A. Configuración del Documento -->
+    <!-- 🅰️ Configuración del Documento -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <title>Gestión de Usuarios</title>
 
-    <!-- ✅ B. Vinculación de Archivos CSS -->
+    <!-- 🅱️ Vinculación de Archivos CSS -->
     <link rel="stylesheet" href="../css/global/datTable.css" />
     <link rel="stylesheet" href="../css/global/sidebar.css" /> <!-- Sidebar CSS -->
 
-    <!-- jQuery y DataTables JS -->
+    <!-- 🅲 Librerías Externas -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+
+    <!-- 🅳 Scripts Externos -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-    <!-- 🔐 Para encriptar contraseñas -->
+    
+    <!-- 🅴 Scripts del Proyecto -->
     <script type="module" src="../js/global/sidebar.js" defer></script> <!-- Sidebar JS -->
-    <script type="module" src="../js/usuarios.js"></script>
-    <!-- Lógica de gestión de usuarios -->
-      <!-- ✅ C. Librerías Externas -->
-    <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-  />
+    <script type="module" src="../js/usuarios.js"></script> <!-- Lógica de gestión de usuarios -->
   </head>
+
   <body>
-    <!-- 📌 Cargar Sidebar de forma dinámica -->
+    <!-- 🅵 Sidebar de Navegación -->
     <div id="sidebar-container"></div>
 
-    <!-- 📌 E. Título y Botón Agregar -->
+    <!-- 🅶 Título y Botón Agregar -->
     <h1>Gestión de Usuarios</h1>
     <button onclick="mostrarFormularioAgregar()">Añadir Usuario</button>
 
-    <!-- 📊 F. Tabla de Usuarios -->
+    <!-- 🅷 Tabla de Usuarios -->
     <table id="usuariosTable" class="display">
       <thead>
         <tr>
@@ -50,20 +50,18 @@
       <tbody id="usuariosBody"></tbody>
     </table>
 
-    <!-- 📋 G. Formulario para Agregar o Editar Usuarios -->
+    <!-- 🅸 Formulario para Agregar o Editar Usuarios -->
     <div id="formularioUsuario" style="display: none">
       <h2 id="formTitulo">Añadir Usuario</h2>
-
       <form onsubmit="return false;">
-        <!-- ← aquí agregamos el form -->
-        <!-- 🔹 Campo: ID oculto (para edición) -->
+        <!-- 🏷️ Campo: ID oculto (para edición) -->
         <input type="hidden" id="usuarioID" />
 
-        <!-- 🔹 Campo: Nombre del Usuario -->
+        <!-- 🏷️ Campo: Nombre del Usuario -->
         <label for="nombreUsuario">Nombre:</label>
         <input type="text" id="nombreUsuario" required />
 
-        <!-- 🔹 Campo: Contraseña -->
+        <!-- 🏷️ Campo: Contraseña -->
         <label for="passwordUsuario">Contraseña:</label>
         <input
           type="password"
@@ -72,7 +70,7 @@
           autocomplete="new-password"
         />
 
-        <!-- 🔹 Campo: Email -->
+        <!-- 🏷️ Campo: Email -->
         <label for="emailUsuario">Email:</label>
         <input
           type="email"
@@ -81,11 +79,11 @@
           autocomplete="username"
         />
 
-        <!-- 🔹 Campo: Fecha Registro (solo lectura) -->
+        <!-- 🏷️ Campo: Fecha Registro (solo lectura) -->
         <label for="fechaRegistroUsuario">Fecha Registro:</label>
         <input type="text" id="fechaRegistroUsuario" readonly />
 
-        <!-- 🔹 Campo: Rol del Usuario -->
+        <!-- 🏷️ Campo: Rol del Usuario -->
         <label for="rolUsuario">Rol:</label>
         <select id="rolUsuario">
           <option value="admin">Administrador</option>
@@ -96,12 +94,9 @@
         <!-- 🔘 Botones del formulario -->
         <div id="botonesFormulario">
           <button type="button">Guardar</button>
-
-          <!-- <button type="button" onclick="guardarCambiosDesdeFormulario()">Guardar</button> -->
           <button type="button" onclick="cerrarFormulario()">Cancelar</button>
         </div>
       </form>
     </div>
-
   </body>
 </html>

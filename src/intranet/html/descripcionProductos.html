@@ -1,43 +1,44 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
-    <!-- ✅ A. Configuración del Documento -->
+    <!-- 🅰️ Configuración del Documento -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <title>Gestión de Descripción de Productos</title>
 
-    <!-- ✅ B. Vinculación de Archivos CSS -->
+    <!-- 🅱️ Vinculación de CSS -->
     <link rel="stylesheet" href="../css/global/datTable.css" />
     <link rel="stylesheet" href="../css/global/sidebar.css" /> <!-- Sidebar CSS -->
 
+    <!-- 🅲 Librerías Externas -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
 
-    <!-- jQuery y DataTables JS -->
+    <!-- 🅳 Vinculación de JavaScript -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 
-    <!-- Script de lógica -->
+    <!-- 🅴 Scripts de Lógica -->
     <script type="module" src="../js/global/sidebar.js" defer></script> <!-- Sidebar JS -->
     <script type="module" src="../js/descripcionProductos.js"></script>
-    <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-  />
   </head>
+
   <body>
-    <!-- 📌 Cargar Sidebar de forma dinámica -->
+    <!-- 🅵 Sidebar de Navegación -->
     <div id="sidebar-container"></div>
 
-    <!-- 🏷️ D. Aviso de Información -->
+    <!-- 🅶 Aviso de Información -->
     <div id="aviso" class="aviso-importante">
       <strong>Aviso:</strong> La información puede cambiar en cualquier momento.
     </div>
 
-    <!-- 📌 E. Título y Botón Agregar -->
+    <!-- 🅷 Título y Botón Agregar -->
     <h1>Gestión de Descripción de Productos</h1>
     <button onclick="mostrarFormularioAgregar()">Añadir Descripción</button>
 
-    <!-- 📊 F. Tabla de Descripciones -->
+    <!-- 🅸 Tabla de Descripciones -->
     <table id="descripcionProductosTable" class="display">
       <thead>
         <tr>
@@ -53,43 +54,40 @@
       <tbody id="descripcionProductosBody"></tbody>
     </table>
 
-    <!-- 📋 G. Formulario para Agregar o Editar Descripción -->
+    <!-- 🅹 Formulario para Agregar o Editar Descripción -->
     <div id="formularioDescripcion" style="display: none">
       <h2 id="formTitulo">Añadir Descripción</h2>
 
       <form onsubmit="return false;">
-        <!-- 🔹 Campo: ID oculto (para edición) -->
+        <!-- 🔹 ID oculto -->
         <input type="hidden" id="descripcionID" />
 
-        <!-- 🔹 Campo: Producto ID -->
+        <!-- 🔹 Producto ID -->
         <label for="productoID">Producto ID:</label>
         <input type="text" id="productoID" required />
 
-        <!-- 🔹 Campo: Tipo -->
+        <!-- 🔹 Tipo -->
         <label for="tipoProducto">Tipo:</label>
         <input type="text" id="tipoProducto" required />
 
-        <!-- 🔹 Campo: Subtipo -->
+        <!-- 🔹 Subtipo -->
         <label for="subtipoProducto">Subtipo:</label>
         <input type="text" id="subtipoProducto" required />
 
-        <!-- 🔹 Campo: Utilidad -->
+        <!-- 🔹 Utilidad -->
         <label for="utilidadProducto">Utilidad:</label>
         <input type="text" id="utilidadProducto" required />
 
-        <!-- 🔹 Campo: Ingredientes -->
-        <label for="ingredientesProducto"
-          >Ingredientes (separados por coma):</label
-        >
+        <!-- 🔹 Ingredientes -->
+        <label for="ingredientesProducto">Ingredientes (separados por coma):</label>
         <input type="text" id="ingredientesProducto" required />
 
-        <!-- 🔘 Botones del formulario -->
+        <!-- 🅺 Botones del Formulario -->
         <div id="botonesFormulario">
           <button type="button">Guardar</button>
           <button type="button" onclick="cerrarFormulario()">Cancelar</button>
         </div>
       </form>
     </div>
-
   </body>
 </html>

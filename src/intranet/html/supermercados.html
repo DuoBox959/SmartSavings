@@ -1,42 +1,42 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <!-- ✅ A. Configuración del Documento -->
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+<head>
+    <!-- 🅰️ Configuración del Documento -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Supermercados</title>
 
-    <!-- ✅ B. Vinculación de Archivos CSS -->
-    <link rel="stylesheet" href="../css/global/datTable.css" />
+    <!-- 🅱️ Vinculación de Archivos CSS -->
+    <link rel="stylesheet" href="../css/global/datTable.css">
     <link rel="stylesheet" href="../css/global/sidebar.css" /> <!-- Sidebar CSS -->
 
-    <!-- jQuery y DataTables JS -->
+    <!-- 🅲 Librerías Externas -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!-- 🅳 jQuery y DataTables JS -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 
-    <!-- Script de lógica -->
+    <!-- 🅴 Scripts de lógica -->
     <script type="module" src="../js/global/sidebar.js" defer></script> <!-- Sidebar JS -->
     <script type="module" src="../js/supermercados.js"></script>
 
-      <!-- ✅ C. Librerías Externas -->
-      <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-    />
-  </head>
-  <body>
-    <!-- 🏷️ D. Aviso de Información -->
+</head>
+<body>
+
+    <!-- 🅵 Aviso de Información -->
     <div id="aviso" class="aviso-importante">
-      <strong>Aviso:</strong> La información de supermercados puede cambiar en
-      cualquier momento.
+      <strong>Aviso:</strong> La información de supermercados puede cambiar en cualquier momento.
     </div>
 
-    <!-- 📌 E. Título y Botón Agregar -->
+    <!-- 🅶 Cargar Sidebar de forma dinámica -->
+    <div id="sidebar-container"></div>
+
+    <!-- 🅷 Título y Botón Agregar -->
     <h1>Gestión de Supermercados</h1>
     <button onclick="mostrarFormularioAgregar()">Añadir Supermercado</button>
 
-    <!-- 📊 F. Tabla de Supermercados -->
+    <!-- 🅸 Tabla de Supermercados -->
     <table id="supermercadosTable" class="display">
       <thead>
         <tr>
@@ -51,7 +51,7 @@
       <tbody id="supermercadosBody"></tbody>
     </table>
 
-    <!-- 📋 G. Formulario para Agregar o Editar Supermercado -->
+    <!-- 🅹 Formulario para Agregar o Editar Supermercado -->
     <div id="formularioSupermercado" style="display: none">
       <h2 id="formTitulo">Añadir Supermercado</h2>
 
@@ -72,9 +72,7 @@
         <input type="text" id="ciudadSupermercado" required />
 
         <!-- 🔹 Campo: Ubicación -->
-        <label for="ubicacionSupermercado"
-          >Ubicación (separada por comas):</label
-        >
+        <label for="ubicacionSupermercado">Ubicación (separada por comas):</label>
         <input type="text" id="ubicacionSupermercado" required />
 
         <!-- 🔘 Botones del formulario -->
@@ -85,6 +83,5 @@
       </form>
     </div>
 
-
-  </body>
+</body>
 </html>

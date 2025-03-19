@@ -1,35 +1,33 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <!-- 🅰️ Configuración del Documento -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reportes - Intranet</title>
 
-    <!-- ✅ Vinculación de CSS -->
+    <!-- 🅱️ Vinculación de Archivos CSS -->
     <link rel="stylesheet" href="../css/reportes.css">
     <link rel="stylesheet" href="../css/global/sidebar.css" /> <!-- Sidebar CSS -->
 
-    <!-- ✅ Librerías Externas -->
+    <!-- 🅲 Librerías Externas -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Librería para gráficos -->
-    <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-  />
-    <script type="module" src="../js/global/sidebar.js" defer></script> <!-- Sidebar JS -->
-    
+
+    <!-- 🅳 Sidebar JS -->
+    <script type="module" src="../js/global/sidebar.js" defer></script>
+
 </head>
 <body>
 
-    <!-- 📌 Cargar Sidebar de forma dinámica -->
+    <!-- 🅴 Cargar Sidebar de forma dinámica -->
     <div id="sidebar-container"></div>
- 
 
-    <!-- 📌 Contenido Principal -->
+    <!-- 🅵 Contenido Principal -->
     <main class="main-content">
         <h1>Reportes</h1>
 
-        <!-- 📊 Resumen General -->
+        <!-- 🅶 Resumen General -->
         <div class="report-summary">
             <div class="card">
                 <h3>Usuarios Registrados</h3>
@@ -49,19 +47,19 @@
             </div>
         </div>
 
-        <!-- 📊 Gráfico de Subida de productos -->
+        <!-- 🅷 Gráfico de Subida de Productos -->
         <div class="chart-container">
             <h2>Productos Mensuales</h2>
             <!-- <canvas id="productoChart"></canvas> -->
         </div>
 
-        <!-- 📊 Gráfico de Distribución de Usuarios -->
+        <!-- 🅸 Gráfico de Distribución de Usuarios -->
         <div class="chart-container">
             <h2>Distribución de Usuarios</h2>
             <!-- <canvas id="usuariosChart"></canvas> -->
         </div>
 
-        <!-- 📋 Historial de Actividad -->
+        <!-- 🅹 Historial de Actividad -->
         <div class="activity-log">
             <h2>Últimos Movimientos</h2>
             <table>

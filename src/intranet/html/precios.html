@@ -1,43 +1,44 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
-    <!-- ✅ A. Configuración del Documento -->
+    <!-- 🅰️ Configuración del Documento -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <title>Gestión de Precios</title>
 
-    <!-- ✅ B. Vinculación de Archivos CSS -->
+    <!-- 🅱️ Vinculación de Archivos CSS -->
     <link rel="stylesheet" href="../css/global/datTable.css" />
     <link rel="stylesheet" href="../css/global/sidebar.css" /> <!-- Sidebar CSS -->
 
-    <!-- jQuery y DataTables JS -->
+    <!-- 🅲 Librerías Externas -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+
+    <!-- 🅳 Scripts y Dependencias -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 
-    <!-- Script de lógica -->
+    <!-- 🅴 Script de Lógica -->
     <script type="module" src="../js/global/sidebar.js" defer></script> <!-- Sidebar JS -->
     <script type="module" src="../js/precios.js"></script>
-
-    <!-- ✅ C. Librerías Externas -->
-    <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-    />
   </head>
+
   <body>
-    <!-- 📌 Cargar Sidebar de forma dinámica -->
+    <!-- 🅵 Cargar Sidebar de forma dinámica -->
     <div id="sidebar-container"></div>
-    <!-- 🏷️ D. Aviso de Información -->
+
+    <!-- 🅶 Aviso de Información -->
     <div id="aviso" class="aviso-importante">
       <strong>Aviso:</strong> Los precios pueden cambiar sin previo aviso.
     </div>
 
-    <!-- 📌 E. Título y Botón Agregar -->
+    <!-- 🅷 Título y Botón Agregar -->
     <h1>Gestión de Precios</h1>
     <button onclick="mostrarFormularioAgregar()">Añadir Precio</button>
 
-    <!-- 📊 F. Tabla de Precios -->
+    <!-- 🅸 Tabla de Precios -->
     <table id="preciosTable" class="display">
       <thead>
         <tr>
@@ -53,7 +54,7 @@
       <tbody id="preciosBody"></tbody>
     </table>
 
-    <!-- 📋 G. Formulario para Agregar o Editar Precio -->
+    <!-- 🅹 Formulario para Agregar o Editar Precio -->
     <div id="formularioPrecio" style="display: none">
       <h2 id="formTitulo">Añadir Precio</h2>
 
@@ -78,19 +79,15 @@
         <input type="text" id="unidadLote" />
 
         <!-- 🔹 Campo: Precio Histórico -->
-        <label for="precioHistorico"
-          >Precio Histórico (separado por comas):</label
-        >
+        <label for="precioHistorico">Precio Histórico (separado por comas):</label>
         <input type="text" id="precioHistorico" />
 
-        <!-- 🔘 Botones del formulario -->
+        <!-- 🅺 Botones del Formulario -->
         <div id="botonesFormulario">
           <button type="button">Guardar</button>
           <button type="button" onclick="cerrarFormulario()">Cancelar</button>
         </div>
       </form>
     </div>
-
-  
   </body>
 </html>
