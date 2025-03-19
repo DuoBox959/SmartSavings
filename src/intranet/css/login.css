@@ -99,20 +99,3 @@ button[type="submit"]:hover {
   text-decoration: underline;
 }
 
-/* 🔙 Botón de regreso */
-.back-button {
-  background: #237f27;
-  color: white;
-  border: none;
-  padding: 10px;
-  font-size: 14px;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 10px;
-  width: 100%;
-  transition: all 0.3s ease-in-out;
-}
-
-.back-button:hover {
-  background: #185f1a;
-}
