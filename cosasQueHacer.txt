@@ -6,3 +6,9 @@ Quiero que no pueda acceder a ninguna pagina de intranet si no estas conectado
 Arreglar precio historico para que ponga año y el precio.
 Poner la ventana de inicio de sesion mas bonito he puesto la funcion pero no la coge
 OPINIONES: Poner que el campo fecha no sea editable y se genere automaticamente y no tengas que ponerlo manual
+
+FRONTEND
+Poner la ventana de inicio de sesion mas bonito y las ventanas emergentes que haya tambien todo esto con sweetalert.
+Arreglar gestion de productos para que coja los datos de la base de datos
+Mirar si en compararprecio hay que arreglar algo una vez gestion de producto este arreglado.
+Poner mas bonito el gestion de producto que las venntanas parezcan mas profesional un estilo a idealo 
