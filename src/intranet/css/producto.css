@@ -109,19 +109,6 @@ table.dataTable tbody tr:hover {
 }
 
 /* ============================
-   🔔 5. AVISO O NOTIFICACIONES
-============================ */
-#aviso {
-  background-color: #ffeeba;
-  color: #856404;
-  border: 1px solid #f5c6cb;
-  padding: 10px;
-  margin-bottom: 20px;
-  border-radius: 5px;
-  font-size: 14px;
-}
-
-/* ============================
    📋 6. FORMULARIO DE PRODUCTOS
 ============================ */
 #formularioProducto {

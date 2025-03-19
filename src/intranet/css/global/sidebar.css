@@ -51,8 +51,10 @@
     position: fixed;
     top: 15px;
     left: 260px;
-    background: white;
-    border: none;
+    background: #2c3e50;
+    border: 3px solid #a8d5ba;
+    box-shadow: 0 0 10px #a8d5ba, 0 0 20px #a8d5ba, 0 0 40px #a8d5ba;
+    transition: all 0.3s ease-in-out;
     font-size: 20px;
     padding: 10px;
     cursor: pointer;
@@ -61,6 +63,9 @@
     border-radius: 5px;
   }
   
+  .toggle-sidebar:hover {
+    box-shadow: 0 0 10px #a8d5ba, 0 0 30px #a8d5ba, 0 0 30px #a8d5ba;
+  }
   /* 🟢 Modo oculto del sidebar */
   .sidebar.hidden {
     transform: translateX(-100%);
