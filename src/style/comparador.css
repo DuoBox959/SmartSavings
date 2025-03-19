@@ -156,26 +156,29 @@ h1 {
   border: 1px solid #ddd;
 }
 
-/* 🔙 Botón Volver Atrás - Full Width */
+/* 🔙 Botón Volver Atrás */
 .back-button {
   background-color: #237f27;
   color: white;
   border: none;
-  padding: 10px 15px;
-  font-size: 1.2em;
-  border-radius: 0;
+  padding: 15px 30px; /* Aumenta el tamaño del botón */
+  font-size: 1.2em; /* Letra más grande */
+  font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease;
   margin-top: 20px;
-  width: 100%;
-  bottom: 0;
-  left: 0;
+  border-radius: 8px; /* Bordes más redondeados */
+  width: 200px; /* Ajusta el ancho para que se vea grande */
   text-align: center;
+  display: block;
+  margin: 20px auto; /* Centrar el botón */
 }
 
+/* Al pasar el cursor */
 .back-button:hover {
   background-color: #388e3c;
 }
+
 
 /* 📱 Diseño Responsivo */
 @media (max-width: 768px) {

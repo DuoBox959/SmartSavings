@@ -170,17 +170,24 @@ body {
   background-color: #237f27;
   color: white;
   border: none;
-  padding: 10px 15px;
-  font-size: 1em;
+  padding: 15px 30px; /* Aumenta el tamaño del botón */
+  font-size: 1.2em; /* Letra más grande */
+  font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease;
   margin-top: 20px;
+  border-radius: 8px; /* Bordes más redondeados */
+  width: 200px; /* Ajusta el ancho para que se vea grande */
+  text-align: center;
+  display: block;
+  margin: 20px auto; /* Centrar el botón */
 }
 
 /* Al pasar el cursor */
 .back-button:hover {
   background-color: #388e3c;
 }
+
 
 /* 🎨 Estilos del modal */
 .modal {

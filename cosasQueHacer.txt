@@ -12,7 +12,7 @@ BACKEND
 
 FRONTEND
 1-Poner la ventana de inicio de sesion mas bonito y las ventanas emergentes que haya tambien todo esto con sweetalert.
-2-Arreglar gestion de productos para que coja los datos de la base de datos y ajustar el boton de volvr atras
+2-Realizar Configuraciónde la cuenta bien para que puedas modificar el usuario
 3-Hacer un nav en gestion de productos para dividirlo en refresco comida etc
-4-Mirar si en compararprecio hay que arreglar algo una vez gestion de producto este arreglado.
-5-Poner mas bonito el gestion de producto que las venntanas parezcan mas profesional un estilo a idealo 
+4-Poner mas bonito el gestion de producto que las venntanas parezcan mas profesional un estilo a idealo 
+5-Cambiar el id de las tiendas por el nombre en compara precios
