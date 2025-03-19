@@ -21,7 +21,7 @@ h1 {
    🔘 2. BOTONES GENERALES
 ============================ */
 button {
-  background-color: #365a7e;
+  background: #34495e;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -35,15 +35,6 @@ button {
 button:hover {
   background-color: #0854ab;
   transform: scale(1.05);
-}
-
-/* Botón de Regreso */
-.back-button {
-  background-color: #237f27;
-}
-
-.back-button:hover {
-  background-color: #388e3c;
 }
 
 /* ============================
@@ -76,7 +67,7 @@ table.dataTable {
 
 /* 📌 Encabezados */
 table.dataTable thead th {
-  background-color: #365a7e;
+  background: #34495e;
   color: white;
   padding: 8px; /* Reduce el padding */
   text-align: center;
@@ -222,7 +213,7 @@ table.dataTable tbody tr:hover {
   white-space: nowrap; /* Evita que el texto pase a otra línea */
 }
 .btn-editar {
-  background-color: #365a7e;
+  background: #34495e;
   transform: scale(1.05);
 }
 

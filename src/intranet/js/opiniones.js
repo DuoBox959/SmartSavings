@@ -156,11 +156,6 @@ async function eliminarOpinion(id) {
   }
 }
 
-// 🟢 Volver atrás
-function volverAtras() {
-  window.location.href = "../html/intranet.html";
-}
-
 // ✅ Cerrar el formulario de opinión
 function cerrarFormulario() {
   $("#formularioOpinion").hide();
@@ -175,4 +170,3 @@ window.cerrarFormulario = cerrarFormulario;
 window.editarOpinion = editarOpinion;
 window.eliminarOpinion = eliminarOpinion;
 window.cargarOpiniones = cargarOpiniones;
-window.volverAtras = volverAtras;

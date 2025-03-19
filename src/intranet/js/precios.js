@@ -175,16 +175,10 @@ function cerrarFormulario() {
   ).val("");
 }
 
-// 🟢 Volver atrás
-function volverAtras() {
-  window.location.href = "../html/intranet.html";
-}
-
 // 🟢 Exponer funciones globales
 window.editarPrecio = editarPrecio;
 window.eliminarPrecio = eliminarPrecio;
 window.mostrarFormularioAgregar = mostrarFormularioAgregar;
 window.guardarCambiosDesdeFormulario = guardarCambiosDesdeFormulario;
 window.cerrarFormulario = cerrarFormulario;
-window.volverAtras = volverAtras;
 window.cargarPrecios = cargarPrecios;

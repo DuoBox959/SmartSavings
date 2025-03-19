@@ -256,10 +256,6 @@ function cerrarFormulario() {
   $("#usuarioID, #nombreUsuario, #emailUsuario, #passwordUsuario").val("");
 }
 
-// 🟢 Volver atrás
-function volverAtras() {
-  window.location.href = "../html/intranet.html";
-}
 
 // 🟢 Exponer funciones globales
 window.editarUsuario = editarUsuario;
@@ -267,5 +263,4 @@ window.eliminarUsuario = eliminarUsuario;
 window.mostrarFormularioAgregar = mostrarFormularioAgregar;
 window.guardarCambiosDesdeFormulario = guardarCambiosDesdeFormulario;
 window.cerrarFormulario = cerrarFormulario;
-window.volverAtras = volverAtras;
 window.cargarUsuarios = cargarUsuarios;

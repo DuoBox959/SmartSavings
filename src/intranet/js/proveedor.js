@@ -145,11 +145,6 @@ async function eliminarProveedor(id) {
   }
 }
 
-// 🟢 Volver atrás
-function volverAtras() {
-  window.location.href = "../html/intranet.html";
-}
-
 // 🟢 Cerrar formulario
 function cerrarFormulario() {
   $("#formularioProveedor").hide();
@@ -165,4 +160,3 @@ window.guardarProveedor = guardarProveedor;
 window.cargarProveedores = cargarProveedores;
 window.editarProveedor = editarProveedor;
 window.eliminarProveedor = eliminarProveedor;
-window.volverAtras = volverAtras;

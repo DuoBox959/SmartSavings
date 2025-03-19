@@ -166,11 +166,6 @@ async function eliminarSupermercado(id) {
   }
 }
 
-// 🟢 Volver atrás
-function volverAtras() {
-  window.location.href = "../html/intranet.html";
-}
-
 // ✅ Cerrar formulario
 function cerrarFormulario() {
   $("#formularioSupermercado").hide();
@@ -185,4 +180,3 @@ window.cerrarFormulario = cerrarFormulario;
 window.editarSupermercado = editarSupermercado;
 window.eliminarSupermercado = eliminarSupermercado;
 window.cargarSupermercados = cargarSupermercados;
-window.volverAtras = volverAtras;

@@ -262,16 +262,10 @@ function cerrarFormulario() {
   ).val("");
 }
 
-// 🟢 Volver atrás
-function volverAtras() {
-  window.location.href = "../html/intranet.html";
-}
-
 // 🟢 Exponer funciones globales
 window.editarProducto = editarProducto;
 window.eliminarProducto = eliminarProducto;
 window.mostrarFormularioAgregar = mostrarFormularioAgregar;
 window.guardarCambiosDesdeFormulario = guardarCambiosDesdeFormulario;
 window.cerrarFormulario = cerrarFormulario;
-window.volverAtras = volverAtras;
 window.cargarProductos = cargarProductos;
