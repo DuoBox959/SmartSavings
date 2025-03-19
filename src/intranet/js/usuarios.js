@@ -36,7 +36,7 @@ async function cargarUsuarios() {
       usuariosTable.row.add([
         usuario._id,
         usuario.nombre,
-        usuario.pass, // ✅ CORREGIDO: el campo en la BD es 'pass', no 'password'
+        "********",
         usuario.email,
         formatearFecha(usuario.fechaRegistro || new Date().toISOString()),
         usuario.rol,
