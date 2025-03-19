@@ -10,9 +10,14 @@ BACKEND
 9-En Reportes hacerlo todo mas profesionalpara que realmente se vean los datos de la estadistica y en productos mensuales ver los productos mejor valorados ese mes o algo que se nos ocurra.
 10-Hacer mas profesional el panel de control: aportar ideas.
 
+
 FRONTEND
 1-Poner la ventana de inicio de sesion mas bonito y las ventanas emergentes que haya tambien todo esto con sweetalert.
 2-Realizar Configuraciónde la cuenta bien para que puedas modificar el usuario
 3-Hacer un nav en gestion de productos para dividirlo en refresco comida etc
 4-Poner mas bonito el gestion de producto que las venntanas parezcan mas profesional un estilo a idealo 
 5-Cambiar el id de las tiendas por el nombre en compara precios
+6-Poner registro para que funcione
+7-Poder minimizar el chatbot
+8-Hacer que funcione el editar en productos y poner tambien la tienda ubicacion etc mas datos en el producto.
+9-Poner que funcione bien el comparador de precios
