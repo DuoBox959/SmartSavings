@@ -63,6 +63,9 @@ function mostrarFormularioAgregar() {
     .on("click", guardarProveedor);
 
   $("#formularioProveedor").show();
+  document
+    .getElementById("formularioProveedor")
+    .scrollIntoView({ behavior: "smooth" });
 }
 
 // 🟢 Guardar proveedor (crear o editar)
@@ -125,7 +128,10 @@ function editarProveedor(id) {
     .off("click")
     .on("click", guardarProveedor); // Se usa la misma función de guardar
 
-  $("#formularioProveedor").show();
+    $("#formularioProveedor").show();
+    document
+      .getElementById("formularioProveedor")
+      .scrollIntoView({ behavior: "smooth" });
 }
 // 🟢 Eliminar proveedor
 async function eliminarProveedor(id) {

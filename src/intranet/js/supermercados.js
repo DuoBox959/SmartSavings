@@ -91,6 +91,9 @@ function mostrarFormularioAgregar() {
     .on("click", guardarSupermercado);
 
   $("#formularioSupermercado").show();
+  document
+    .getElementById("formularioSupermercado")
+    .scrollIntoView({ behavior: "smooth" });
 }
 
 // ✅ Guardar un supermercado (crear o editar)
@@ -159,7 +162,10 @@ function editarSupermercado(id) {
     .off("click")
     .on("click", guardarSupermercado);
 
-  $("#formularioSupermercado").show();
+    $("#formularioSupermercado").show();
+    document
+      .getElementById("formularioSupermercado")
+      .scrollIntoView({ behavior: "smooth" });
 }
 
 // ✅ Eliminar un supermercado

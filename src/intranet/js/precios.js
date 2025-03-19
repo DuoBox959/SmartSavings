@@ -86,7 +86,11 @@ function mostrarFormularioAgregar() {
   $("#botonesFormulario button:first")
     .off("click")
     .on("click", guardarCambiosDesdeFormulario);
+
   $("#formularioPrecio").show();
+  document
+    .getElementById("formularioPrecio")
+    .scrollIntoView({ behavior: "smooth" });
 }
 
 // 🟢 Guardar precio (crear o editar)
@@ -158,7 +162,11 @@ function editarPrecio(id) {
   $("#botonesFormulario button:first")
     .off("click")
     .on("click", guardarCambiosDesdeFormulario);
+
   $("#formularioPrecio").show();
+  document
+    .getElementById("formularioPrecio")
+    .scrollIntoView({ behavior: "smooth" });
 }
 
 // 🟢 Eliminar precio

@@ -22,7 +22,6 @@ $(document).ready(() => {
 });
 
 // ✅ Cargar descripciones desde el servidor
-// ✅ Cargar descripciones desde el servidor
 async function cargarDescripciones() {
   try {
     const respuesta = await fetch("http://localhost:3000/api/descripcion");
@@ -82,7 +81,10 @@ function mostrarFormularioAgregar() {
     .off("click")
     .on("click", guardarDescripcion);
 
-  $("#formularioDescripcion").show();
+    $("#formularioDescripcion").show();
+    document
+      .getElementById("formularioDescripcion")
+      .scrollIntoView({ behavior: "smooth" });
 }
 
 
@@ -185,6 +187,9 @@ function editarDescripcion(id) {
     .on("click", guardarDescripcion);
 
   $("#formularioDescripcion").show();
+  document
+    .getElementById("formularioDescripcion")
+    .scrollIntoView({ behavior: "smooth" });
 }
 
 // ✅ Eliminar una descripción

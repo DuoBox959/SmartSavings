@@ -81,6 +81,9 @@ function mostrarFormularioAgregar() {
   $("#botonesFormulario button:first").off("click").on("click", guardarOpinion);
 
   $("#formularioOpinion").show();
+  document
+    .getElementById("formularioOpinion")
+    .scrollIntoView({ behavior: "smooth" });
 }
 
 // ✅ Guardar una opinión (crear o editar)
@@ -150,6 +153,9 @@ function editarOpinion(id) {
   $("#botonesFormulario button:first").off("click").on("click", guardarOpinion);
 
   $("#formularioOpinion").show();
+  document
+    .getElementById("formularioOpinion")
+    .scrollIntoView({ behavior: "smooth" });
 }
 
 // ✅ Eliminar una opinión
