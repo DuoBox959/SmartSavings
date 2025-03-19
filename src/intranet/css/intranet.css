@@ -8,75 +8,6 @@ body {
   transition: margin-left 0.3s ease-in-out;
 }
 
-/* 📂 Sidebar */
-.sidebar {
-  width: 250px;
-  background: #2c3e50;
-  color: white;
-  height: 100vh;
-  padding: 20px;
-  position: fixed;
-  left: 0;
-  top: 0;
-  transition: transform 0.3s ease-in-out;
-}
-
-/* 📌 Título del Sidebar */
-.sidebar h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 22px;
-}
-
-/* 📌 Lista del menú */
-.sidebar ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-/* 📌 Elementos del menú */
-.sidebar ul li {
-  padding: 12px 15px;
-  border-radius: 5px;
-  transition: background 0.3s;
-}
-
-/* 📌 Enlaces del menú */
-.sidebar ul li a {
-  color: white;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  font-size: 16px;
-}
-
-/* 📌 Iconos */
-.sidebar ul li i {
-  margin-right: 10px;
-  font-size: 18px;
-}
-
-/* 📌 Efecto hover */
-.sidebar ul li:hover {
-  background: #34495e;
-}
-
-/* 🔘 Botón para ocultar/mostrar sidebar */
-.toggle-sidebar {
-  position: fixed;
-  top: 15px;
-  left: 260px;
-  background: white;
-  border: none;
-  font-size: 20px;
-  padding: 10px;
-  cursor: pointer;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  transition: left 0.3s ease-in-out;
-  border-radius: 5px;
-}
-
 /* 📊 Contenido principal */
 .main-content {
   margin-left: 250px;
@@ -85,15 +16,7 @@ body {
   transition: margin-left 0.3s ease-in-out;
 }
 
-/* 🟢 Modo oculto del sidebar */
-.sidebar.hidden {
-  transform: translateX(-100%);
-}
-
-.toggle-sidebar.hidden {
-  left: 10px;
-}
-
+/* 🟢 Cuando el sidebar está oculto */
 .main-content.full-width {
   margin-left: 0;
   width: 100%;

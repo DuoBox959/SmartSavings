@@ -9,15 +9,25 @@
 
     <!-- ✅ B. Vinculación de Archivos CSS -->
     <link rel="stylesheet" href="../css/datTable.css" />
+    <link rel="stylesheet" href="../css/global/sidebar.css" /> <!-- Sidebar CSS -->
+
 
     <!-- jQuery y DataTables JS -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 
     <!-- Script de lógica -->
+    <script type="module" src="../js/global/sidebar.js" defer></script> <!-- Sidebar JS -->
     <script type="module" src="../js/descripcionProductos.js"></script>
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+  />
   </head>
   <body>
+    <!-- 📌 Cargar Sidebar de forma dinámica -->
+    <div id="sidebar-container"></div>
+
     <!-- 🏷️ D. Aviso de Información -->
     <div id="aviso" class="aviso-importante">
       <strong>Aviso:</strong> La información puede cambiar en cualquier momento.

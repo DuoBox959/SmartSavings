@@ -9,6 +9,7 @@
 
     <!-- ✅ B. Vinculación de Archivos CSS -->
     <link rel="stylesheet" href="../css/usuarios.css" />
+    <link rel="stylesheet" href="../css/global/sidebar.css" /> <!-- Sidebar CSS -->
 
     <!-- jQuery y DataTables JS -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -16,15 +17,18 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <!-- 🔐 Para encriptar contraseñas -->
+    <script type="module" src="../js/global/sidebar.js" defer></script> <!-- Sidebar JS -->
     <script type="module" src="../js/usuarios.js"></script>
     <!-- Lógica de gestión de usuarios -->
+      <!-- ✅ C. Librerías Externas -->
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+  />
   </head>
   <body>
-    <!-- 🏷️ D. Aviso de Información -->
-    <div id="aviso" class="aviso-importante">
-      <strong>Aviso:</strong> La base de datos es pública y los datos pueden
-      estar desactualizados.
-    </div>
+    <!-- 📌 Cargar Sidebar de forma dinámica -->
+    <div id="sidebar-container"></div>
 
     <!-- 📌 E. Título y Botón Agregar -->
     <h1>Gestión de Usuarios</h1>
