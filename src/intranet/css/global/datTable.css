@@ -214,6 +214,28 @@ body {
     background-color: #d32f2f;
     transform: scale(1.05);
   }
+
+  /* 📝 Estilo para el Textarea */
+textarea {
+  width: 100%;
+  height: 100px; 
+  padding: 10px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  resize: vertical;
+  background: #ffffff;
+  color: #333;
+}
+
+/* 📝 Focus en el Textarea */
+textarea:focus {
+  border-color: #78ce9a;
+  outline: none;
+  box-shadow: 0 0 5px rgba(120, 206, 154, 0.5);
+}
+
   
   /* 🌐 Estilo Responsive */
   @media (max-width: 576px) {
