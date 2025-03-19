@@ -1,14 +1,18 @@
 BACKEND
-Arreglar que no se suba dos img en producto en la carpeta update y dividir la carpeta en años
-Poner que funcione los Reportes y Configuración.
-Que aparezca el nombre de las cosas no la id en tablas
-Quiero que no pueda acceder a ninguna pagina de intranet si no estas conectado
-Arreglar precio historico para que ponga año y el precio.
-Poner la ventana de inicio de sesion mas bonito he puesto la funcion pero no la coge
-OPINIONES: Poner que el campo fecha no sea editable y se genere automaticamente y no tengas que ponerlo manual
+1-Arreglar que no se suba dos img en producto en la carpeta update y dividir la carpeta en años
+2-Poner que funcione los Reportes y Configuración.
+3-Que aparezca el nombre de las cosas no la id en tablas
+4-Quiero que no pueda acceder a ninguna pagina de intranet si no estas conectado
+5-Arreglar precio historico para que ponga año y el precio.
+6-Poner la ventana de inicio de sesion mas bonito he puesto la funcion pero no la coge
+7-OPINIONES: Poner que el campo fecha no sea editable y se genere automaticamente y no tengas que ponerlo manual
+8-Poner bien la cnfiguracion para que puedas editar los datos del usuario activo, ver que poner en notificaciones y que hacer con el apartado seguridad
+9-En Reportes hacerlo todo mas profesionalpara que realmente se vean los datos de la estadistica y en productos mensuales ver los productos mejor valorados ese mes o algo que se nos ocurra.
+10-Hacer mas profesional el panel de control: aportar ideas.
 
 FRONTEND
-Poner la ventana de inicio de sesion mas bonito y las ventanas emergentes que haya tambien todo esto con sweetalert.
-Arreglar gestion de productos para que coja los datos de la base de datos
-Mirar si en compararprecio hay que arreglar algo una vez gestion de producto este arreglado.
-Poner mas bonito el gestion de producto que las venntanas parezcan mas profesional un estilo a idealo 
+1-Poner la ventana de inicio de sesion mas bonito y las ventanas emergentes que haya tambien todo esto con sweetalert.
+2-Arreglar gestion de productos para que coja los datos de la base de datos y ajustar el boton de volvr atras
+3-Hacer un nav en gestion de productos para dividirlo en refresco comida etc
+4-Mirar si en compararprecio hay que arreglar algo una vez gestion de producto este arreglado.
+5-Poner mas bonito el gestion de producto que las venntanas parezcan mas profesional un estilo a idealo 
