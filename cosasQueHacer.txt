@@ -5,4 +5,4 @@ Que aparezca el nombre de las cosas no la id en tablas
 Quiero que no pueda acceder a ninguna pagina de intranet si no estas conectado
 Arreglar precio historico para que ponga año y el precio.
 Poner la ventana de inicio de sesion mas bonito he puesto la funcion pero no la coge
-// 🅸 CRUD DE OPINIONES: Poner que el campo fecha no sea editable y se genere automaticamente y no tengas que ponerlo manual
+OPINIONES: Poner que el campo fecha no sea editable y se genere automaticamente y no tengas que ponerlo manual
