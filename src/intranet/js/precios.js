@@ -28,8 +28,7 @@ async function cargarPrecios() {
     const precios = await respuesta.json();
 
     preciosCache = precios;
-    preciosTable.clear();
-
+    preciosTable.clear(); // Limpiamos la tabla antes de actualizar
     precios.forEach((precio) => {
       preciosTable.row.add([
         precio._id || "N/A",
@@ -41,19 +40,32 @@ async function cargarPrecios() {
           ? precio.precioDescuento.toFixed(2) + " €"
           : "N/A",
         precio.unidadLote || "N/A",
-        precio.precioHistorico && Array.isArray(precio.precioHistorico)
-          ? precio.precioHistorico
-              .map((p) => (typeof p === "number" ? p.toFixed(2) : "N/A"))
-              .join(", ") + " €"
-          : "N/A",
+        `<button class="btn btn-primary" onclick="verPrecioHistorico('${precio._id}')">Ver Precio Histórico</button>`, // 🔹 Nuevo botón
         accionesHTML(precio._id),
       ]);
     });
 
-    preciosTable.draw();
+preciosTable.draw();
+
   } catch (error) {
     console.error("❌ Error al cargar precios:", error);
   }
+}
+function verPrecioHistorico(id) {
+  const precio = preciosCache.find((p) => p._id === id);
+  if (!precio) return;
+
+  const preciosHistoricos = Array.isArray(precio.precioHistorico)
+    ? precio.precioHistorico.map((p) => (typeof p === "number" ? p.toFixed(2) + " €" : "N/A")).join(", ")
+    : "No disponible";
+
+  Swal.fire({
+    title: "💰 Historial de Precios",
+    text: preciosHistoricos,
+    icon: "info",
+    confirmButtonText: "Aceptar",
+    width: "600px",
+  });
 }
 
 // 🟢 Generar HTML para editar y eliminar
@@ -182,3 +194,4 @@ window.mostrarFormularioAgregar = mostrarFormularioAgregar;
 window.guardarCambiosDesdeFormulario = guardarCambiosDesdeFormulario;
 window.cerrarFormulario = cerrarFormulario;
 window.cargarPrecios = cargarPrecios;
+window.verPrecioHistorico = verPrecioHistorico;

@@ -238,6 +238,62 @@ async function eliminarUsuario(id) {
     console.error("❌ Error eliminando usuario:", err);
   }
 }
+function mostrarMensajeInicioSesion(usuarioNombre) {
+  Swal.fire({
+    title: "¡Bienvenido! 🎉",
+    html: `
+      <h3 style="color:#333">Inicio de sesión exitoso</h3>
+      <p style="font-size:18px;">Hola, <b>${usuarioNombre}</b>, nos alegra verte de nuevo. 😊</p>
+    `,
+    icon: "success",
+    confirmButtonText: "Ir al Panel",
+    confirmButtonColor: "#3085d6",
+    timer: 4000, // Se cierra en 4 segundos automáticamente
+    timerProgressBar: true,
+    backdrop: `
+      rgba(0,0,0,0.7)
+      url("https://media.giphy.com/media/xT9IgG50Fb7Mi0prBC/giphy.gif")
+      center center
+      no-repeat
+    `
+  }).then(() => {
+    window.location.href = "/src/intranet/html/intranet.html"; // Redirigir tras aceptar
+  });
+}
+
+
+async function iniciarSesion() {
+  const email = document.getElementById("emailUsuario").value;
+  const password = document.getElementById("passwordUsuario").value;
+
+  try {
+    const response = await fetch("http://localhost:3000/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Error al iniciar sesión");
+    }
+    console.log("Datos recibidos del backend:", data);
+
+    // ✅ Si el login es exitoso, mostramos SweetAlert2
+    mostrarMensajeInicioSesion(data.nombre);
+
+  } catch (error) {
+    console.error("❌ Error al iniciar sesión:", error);
+    Swal.fire({
+      title: "Error",
+      text: "Correo o contraseña incorrectos",
+      icon: "error",
+      confirmButtonText: "Intentar de nuevo",
+    });
+  }
+}
+
 
 // 🟢 Formatear fecha
 function formatearFecha(fechaISO) {
@@ -264,3 +320,4 @@ window.mostrarFormularioAgregar = mostrarFormularioAgregar;
 window.guardarCambiosDesdeFormulario = guardarCambiosDesdeFormulario;
 window.cerrarFormulario = cerrarFormulario;
 window.cargarUsuarios = cargarUsuarios;
+window,mostrarMensajeInicioSesion = mostrarMensajeInicioSesion;

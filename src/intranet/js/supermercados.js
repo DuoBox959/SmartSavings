@@ -28,22 +28,39 @@ async function cargarSupermercados() {
 
     supermercadosCache = supermercados; // Guardamos en caché
 
-    supermercadosTable.clear(); // Limpiamos tabla antes de actualizar
+    supermercadosTable.clear(); // Limpiamos la tabla antes de actualizar
     supermercados.forEach((supermercado) => {
       supermercadosTable.row.add([
         supermercado._id,
         supermercado.Nombre || "Sin Nombre",
         supermercado.Pais || "Desconocido",
         supermercado.Ciudad || "Desconocida",
-        formatoUbicacion(supermercado.Ubicacion), // 🔹 Función para convertir el array en texto
+        `<button class="btn btn-primary" onclick="verUbicacion('${supermercado._id}')">📍 Ver Ubicación</button>`, // 🔹 Nuevo botón
         accionesHTML(supermercado._id),
       ]);
     });
+    
 
     supermercadosTable.draw();
   } catch (error) {
     console.error("❌ Error al cargar supermercados:", error);
   }
+}
+function verUbicacion(id) {
+  const supermercado = supermercadosCache.find((s) => s._id === id);
+  if (!supermercado) return;
+
+  const ubicacion = Array.isArray(supermercado.Ubicacion)
+    ? supermercado.Ubicacion.join(", ")
+    : "Ubicación no disponible";
+
+  Swal.fire({
+    title: "📍 Ubicación del Supermercado",
+    text: ubicacion,
+    icon: "info",
+    confirmButtonText: "Aceptar",
+    width: "600px",
+  });
 }
 
 // ✅ Función para convertir `Ubicacion` de array a string
@@ -180,3 +197,4 @@ window.cerrarFormulario = cerrarFormulario;
 window.editarSupermercado = editarSupermercado;
 window.eliminarSupermercado = eliminarSupermercado;
 window.cargarSupermercados = cargarSupermercados;
+window.verUbicacion = verUbicacion;

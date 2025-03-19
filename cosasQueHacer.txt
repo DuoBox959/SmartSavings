@@ -1,4 +1,8 @@
- <!-- 📌 Sidebar de Navegación --> ponerlo en un documento aparte global y arrastrarlo a todos los apartados de la intranet.
- Correción de tablas en lo que ponga server.js
- Poner que funcione los Reportes y Configuración.
- que aparezca el nombre de las cosas no la id en tablas
+BACKEND
+Arreglar que no se suba dos img en producto en la carpeta update y dividir la carpeta en años
+Poner que funcione los Reportes y Configuración.
+Que aparezca el nombre de las cosas no la id en tablas
+Quiero que no pueda acceder a ninguna pagina de intranet si no estas conectado
+Arreglar precio historico para que ponga año y el precio.
+Poner la ventana de inicio de sesion mas bonito he puesto la funcion pero no la coge
+// 🅸 CRUD DE OPINIONES: Poner que el campo fecha no sea editable y se genere automaticamente y no tengas que ponerlo manual

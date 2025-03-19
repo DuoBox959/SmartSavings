@@ -22,26 +22,37 @@ $(document).ready(() => {
 });
 
 // ✅ Cargar descripciones desde el servidor
+// ✅ Cargar descripciones desde el servidor
 async function cargarDescripciones() {
   try {
     const respuesta = await fetch("http://localhost:3000/api/descripcion");
     const descripciones = await respuesta.json();
 
     descripcionCache = descripciones; // Guardamos en caché para editar/eliminar
-
     descripcionTable.clear(); // Limpiar la tabla antes de actualizar
 
     descripciones.forEach((descripcion) => {
+      // ✅ Escapar los valores para evitar errores con comillas
+      const utilidad = encodeURIComponent(descripcion.Utilidad || "Sin información");
+      const ingredientes = encodeURIComponent(
+        Array.isArray(descripcion.Ingredientes)
+          ? descripcion.Ingredientes.join(", ")
+          : "Sin ingredientes"
+      );
+
       descripcionTable.row.add([
         descripcion._id || "N/A",
         descripcion.Producto_id || "N/A",
         descripcion.Tipo || "N/A",
         descripcion.Subtipo || "N/A",
-        descripcion.Utilidad || "N/A",
-        Array.isArray(descripcion.Ingredientes)
-          ? descripcion.Ingredientes.join(", ")
-          : "N/A",
-        accionesHTML(descripcion._id), // Generar botones de acciones
+
+        // ✅ Botón para ver Utilidad
+        `<button class="btn-ver" onclick="verUtilidad('${utilidad}')">Ver Utilidad</button>`,
+
+        // ✅ Botón para ver Ingredientes
+        `<button class="btn-ver" onclick="verIngredientes('${ingredientes}')">Ver Ingredientes</button>`,
+
+        accionesHTML(descripcion._id), // Botones de Editar/Eliminar
       ]);
     });
 
@@ -50,6 +61,7 @@ async function cargarDescripciones() {
     console.error("❌ Error al cargar descripciones:", error);
   }
 }
+
 
 // ✅ Función para generar botones de acciones
 function accionesHTML(id) {
@@ -72,6 +84,7 @@ function mostrarFormularioAgregar() {
 
   $("#formularioDescripcion").show();
 }
+
 
 // ✅ Guardar una descripción (crear o editar)
 async function guardarDescripcion() {
@@ -128,6 +141,31 @@ async function guardarDescripcion() {
     alert(`❌ Error: ${err.message}`);
   }
 }
+// ✅ Mostrar la Utilidad en una ventana modal grande
+window.verUtilidad = function (utilidad) {
+  Swal.fire({
+    title: "📌 Utilidad del Producto",
+    html: `<p style="font-size: 18px;">${decodeURIComponent(utilidad)}</p>`,
+    icon: "info",
+    width: "600px", // Ajusta el ancho
+    padding: "20px",
+    confirmButtonText: "Aceptar",
+  });
+};
+
+// ✅ Mostrar los Ingredientes en una ventana modal grande
+window.verIngredientes = function (ingredientes) {
+  Swal.fire({
+    title: "🥗 Ingredientes",
+    html: `<p style="font-size: 18px; text-align: left;">${decodeURIComponent(ingredientes)}</p>`,
+    icon: "info",
+    width: "600px", // Ajusta el ancho
+    padding: "20px",
+    confirmButtonText: "Aceptar",
+  });
+};
+
+
 
 // ✅ Editar una descripción
 function editarDescripcion(id) {

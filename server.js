@@ -242,8 +242,6 @@ app.delete("/api/usuarios/:id", async (req, res) => {
 // 🅳️ CRUD DE PRODUCTOS
 // =============================================
 
-// ✅ MIRAR PARA QUE INSERTE PRODUCTO Y SE RECARGUE LA PAGINA Crear nuevo producto
-
 /**
  * ✅ Crear un nuevo producto con imagen (Create)
  * Ruta: POST /api/productos
@@ -817,7 +815,7 @@ app.delete("/api/proveedor/:id", async (req, res) => {
 });
 
 // =============================================
-// 🅸 CRUD DE OPINIONES: Poner que el campo fecha no sea editable y se genere automaticamente y no tengas que ponerlo manual
+// 🅸 CRUD DE OPINIONES: 
 // =============================================
 
 /**

@@ -36,7 +36,7 @@ async function cargarOpiniones() {
         opinion._id || "N/A",
         opinion.Producto_id || "N/A",
         opinion.Usuario_id || "N/A",
-        opinion.Opinion || "N/A",
+        `<button class="btn-opinion" onclick="verOpinion('${opinion._id}')">Ver Opinión</button>`, 
         opinion.Calificacion || "N/A",
         new Date(opinion.Fecha).toLocaleDateString(), // Convertir fecha
         accionesHTML(opinion._id), // Generar botones de acciones
@@ -47,6 +47,20 @@ async function cargarOpiniones() {
   } catch (error) {
     console.error("❌ Error al cargar opiniones:", error);
   }
+}
+
+// ✅ Mostrar la opinión en un modal o alerta
+function verOpinion(id) {
+  const opinion = opinionesCache.find((o) => o._id === id);
+  if (!opinion) return;
+
+  Swal.fire({
+    title: "Opinión del Usuario",
+    text: opinion.Opinion,
+    icon: "info",
+    confirmButtonText: "Aceptar",
+    width: "50%", // Ajustar tamaño
+  });
 }
 
 // ✅ Función para generar botones de acciones
@@ -170,3 +184,4 @@ window.cerrarFormulario = cerrarFormulario;
 window.editarOpinion = editarOpinion;
 window.eliminarOpinion = eliminarOpinion;
 window.cargarOpiniones = cargarOpiniones;
+window.verOpinion = verOpinion;
