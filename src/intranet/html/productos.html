@@ -11,13 +11,12 @@
     <link rel="stylesheet" href="../css/producto.css" />
 
     <!-- 🅲 Librerías y Scripts Necesarios -->
+    <script type="module" src="../js/global/sidebar.js" defer></script> <!-- Sidebar JS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery -->
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script> <!-- DataTables -->
-    <!-- <script src="../../libs/pouchdb-9.0.0.min.js"></script> --> <!-- PouchDB -->
     <script src="../../valid/validaciones.js"></script> <!-- Validaciones -->
     <script type="module" src="../js/productos.js"></script> <!-- Lógica de productos -->
     <script src="../js/global/auth.js"></script> <!--Comprobacion de autenticacion-->
-    <script type="module" src="../js/global/sidebar.js" defer></script> <!-- Sidebar JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert2 -->
 
     <!-- 🅳 Librerías de Iconos -->
@@ -45,9 +44,9 @@
             <th>Nombre</th>
             <th>Marca</th>
             <th>Peso</th>
-            <th>Proveedor_id</th>
-            <th>Supermercado_id</th>
-            <th>Usuario_id</th>
+            <th>Proveedor</th>
+            <th>Supermercado</th>
+            <th>Usuario</th>
             <th>Estado</th>
             <th>Acciones</th>
           </tr>
@@ -89,17 +88,18 @@
         <option value="L">Litros (L)</option>
       </select>
 
-      <!-- 🔹 Campo: Proveedor ID -->
-      <label for="idProveedor">Proveedor ID:</label>
-      <input type="text" id="idProveedor" />
+      <!-- 🔹 Campo: Proveedor -->
+      <label for="idProveedor">Proveedor:</label>
+      <select id="idProveedor"></select>
 
-      <!-- 🔹 Campo: Supermercado ID -->
-      <label for="idSupermercado">Supermercado ID:</label>
-      <input type="text" id="idSupermercado" />
+      <!-- 🔹 Campo: Supermercado -->
+      <label for="idSupermercado">Supermercado:</label>
+      <select id="idSupermercado"></select>
 
-      <!-- 🔹 Campo: Usuario ID -->
-      <label for="idUsuario">Usuario ID:</label>
-      <input type="text" id="idUsuario" />
+      <!-- 🔹 Campo: Usuario -->
+      <label for="idUsuario">Usuario:</label>
+      <select id="idUsuario"></select>
+
 
       <!-- 🔹 Campo: Estado del Producto -->
       <label for="Estado">Estado:</label>

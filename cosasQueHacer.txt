@@ -8,6 +8,7 @@ BACKEND
 7-Poner bien la cnfiguracion para que puedas editar los datos del usuario activo, ver que poner en notificaciones y que hacer con el apartado seguridad
 8-En Reportes hacerlo todo mas profesionalpara que realmente se vean los datos de la estadistica y en productos mensuales ver los productos mejor valorados ese mes o algo que se nos ocurra.
 9-Hacer mas profesional el panel de control: aportar ideas.
+10-Pequeño error del sidebar
 
 FRONTEND
 1-Poner la ventana de inicio de sesion mas bonito y las ventanas emergentes que haya tambien todo esto con sweetalert.

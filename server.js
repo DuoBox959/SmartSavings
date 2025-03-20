@@ -252,24 +252,45 @@ app.post("/api/productos", upload.single("Imagen"), async (req, res) => {
       return res.status(400).json({ error: "No se ha subido ninguna imagen" });
     }
 
+    // Convertir IDs a ObjectId solo si existen
+    const proveedorId = req.body.Proveedor_id ? new ObjectId(req.body.Proveedor_id) : null;
+    const supermercadoId = req.body.Supermercado_id ? new ObjectId(req.body.Supermercado_id) : null;
+    const usuarioId = req.body.Usuario_id ? new ObjectId(req.body.Usuario_id) : null;
+
     const nuevoProducto = {
       Nombre: req.body.Nombre,
-      Imagen: `/uploads/${req.file.filename}`, // Guardamos la ruta de la imagen
+      Imagen: `/uploads/${req.file.filename}`,
       Marca: req.body.Marca,
       Peso: req.body.Peso,
       UnidadPeso: req.body.UnidadPeso,
       Estado: req.body.Estado,
-      Proveedor_id: req.body.Proveedor_id,
-      Supermercado_id: req.body.Supermercado_id,
-      Usuario_id: req.body.Usuario_id,
+      Proveedor_id: proveedorId,
+      Supermercado_id: supermercadoId,
+      Usuario_id: usuarioId,
     };
 
     const resultado = await db.collection("Productos").insertOne(nuevoProducto);
     nuevoProducto._id = resultado.insertedId;
 
+    // 🔍 Obtener nombres de las otras colecciones
+    const proveedor = proveedorId
+      ? await db.collection("Proveedor").findOne({ _id: proveedorId })
+      : null;
+    const supermercado = supermercadoId
+      ? await db.collection("Supermercados").findOne({ _id: supermercadoId })
+      : null;
+    const usuario = usuarioId
+      ? await db.collection("Usuarios").findOne({ _id: usuarioId })
+      : null;
+
     res.status(201).json({
       message: "Producto creado correctamente",
-      producto: nuevoProducto,
+      producto: {
+        ...nuevoProducto,
+        Proveedor_id: proveedor ? proveedor.Nombre : "N/A",
+        Supermercado_id: supermercado ? supermercado.Nombre : "N/A",
+        Usuario_id: usuario ? usuario.nombre : "N/A",
+      },
     });
   } catch (err) {
     console.error("❌ Error en backend:", err);
@@ -277,19 +298,61 @@ app.post("/api/productos", upload.single("Imagen"), async (req, res) => {
   }
 });
 
+
 /**
  * ✅ Obtener todos los productos (Read)
  * Ruta: GET /api/productos
  */
 app.get("/api/productos", async (req, res) => {
   try {
-    const productos = await db.collection("Productos").find().toArray();
+    const productos = await db.collection("Productos").aggregate([
+      {
+        $lookup: {
+          from: "Proveedor", // Conectar con la colección de Proveedor
+          localField: "Proveedor_id",
+          foreignField: "_id",
+          as: "ProveedorInfo",
+        },
+      },
+      {
+        $lookup: {
+          from: "Supermercados", // Conectar con la colección de Supermercados
+          localField: "Supermercado_id",
+          foreignField: "_id",
+          as: "SupermercadoInfo",
+        },
+      },
+      {
+        $lookup: {
+          from: "Usuarios", // Conectar con la colección de Usuarios
+          localField: "Usuario_id",
+          foreignField: "_id",
+          as: "UsuarioInfo",
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          Nombre: 1,
+          Imagen: 1,
+          Marca: 1,
+          Peso: 1,
+          UnidadPeso: 1,
+          Estado: 1,
+          Proveedor_id: { $arrayElemAt: ["$ProveedorInfo.Nombre", 0] }, // Nombre del proveedor
+          Supermercado_id: { $arrayElemAt: ["$SupermercadoInfo.Nombre", 0] }, // Nombre del supermercado
+          Usuario_id: { $arrayElemAt: ["$UsuarioInfo.nombre", 0] }, // Nombre del usuario
+        },
+      },
+    ]).toArray();
+
     res.json(productos);
   } catch (err) {
     console.error("❌ Error obteniendo productos:", err);
     res.status(500).json({ error: "Error al obtener productos" });
   }
 });
+
 
 /**
  * ✅ Actualizar producto existente (Update)
