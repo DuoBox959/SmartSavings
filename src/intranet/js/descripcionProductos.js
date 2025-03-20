@@ -185,7 +185,7 @@ async function editarDescripcion(id) {
 
   // 🛠️ Buscar el producto por ID para obtener su nombre correcto
   const producto = productosCache.find((p) => p._id === descripcion.Producto_id);
-  const nombreProducto = producto ? producto.Nombre : "Producto no encontrado";
+  const nombreProducto = producto ? producto.Nombre : "Nombre de producto, no editable.";
 
   // 🛠️ Si el producto no está en el select, agregarlo
   const selectProducto = $("#productoID");
