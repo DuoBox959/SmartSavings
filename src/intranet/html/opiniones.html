@@ -8,7 +8,8 @@
 
     <!-- 🅱️ Vinculación de Archivos CSS -->
     <link rel="stylesheet" href="../css/global/datTable.css" />
-    <link rel="stylesheet" href="../css/global/sidebar.css" /> <!-- Sidebar CSS -->
+    <link rel="stylesheet" href="../css/global/sidebar.css" />
+    <!-- Sidebar CSS -->
 
     <!-- 🅲 Librerías Externas -->
     <link
@@ -23,8 +24,10 @@
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 
     <!-- 🅴 Script de Lógica -->
-    <script src="../js/global/auth.js"></script> <!--Comprobacion de autenticacion-->
-    <script type="module" src="../js/global/sidebar.js" defer></script> <!-- Sidebar JS -->
+    <script src="../js/global/auth.js"></script>
+    <!--Comprobacion de autenticacion-->
+    <script type="module" src="../js/global/sidebar.js" defer></script>
+    <!-- Sidebar JS -->
     <script type="module" src="../js/opiniones.js"></script>
   </head>
 
@@ -41,8 +44,8 @@
       <thead>
         <tr>
           <th>ID</th>
-          <th>Producto ID</th>
-          <th>Usuario ID</th>
+          <th>Producto</th>
+          <th>Usuario</th>
           <th>Opinión</th>
           <th>Calificación</th>
           <th>Fecha</th>
@@ -62,11 +65,15 @@
 
         <!-- 🔹 Campo: Producto ID -->
         <label for="productoID">Producto ID:</label>
-        <input type="text" id="productoID" required />
+        <!-- <input type="text" id="productoID" required /> -->
+        <select id="productoID" required>
+          <option value="">Selecciona un producto</option>
+        </select>
 
         <!-- 🔹 Campo: Usuario ID -->
         <label for="usuarioID">Usuario ID:</label>
-        <input type="text" id="usuarioID" required />
+        <!-- <input type="text" id="usuarioID" required /> -->
+        <select id="usuarioID" required></select>
 
         <!-- 🔹 Campo: Opinión -->
         <label for="textoOpinion">Opinión:</label>
@@ -84,8 +91,7 @@
 
         <!-- 🔹 Campo: Fecha de la Opinión -->
         <label for="fechaOpinion">Fecha:</label>
-       <input type="date" id="fechaOpinion" required disabled />
-
+        <input type="date" id="fechaOpinion" required disabled />
 
         <!-- 🅺 Botones del Formulario -->
         <div id="botonesFormulario">

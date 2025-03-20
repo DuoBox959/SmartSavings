@@ -41,7 +41,9 @@ async function cargarProductos() {
 
       productosTable.row.add([
         producto._id,
-        `<img src="${producto.Imagen || ""}" alt="${producto.Nombre}" width="50" />`,
+        `<img src="${producto.Imagen || ""}" alt="${
+          producto.Nombre
+        }" width="50" />`,
         producto.Nombre,
         producto.Marca,
         pesoConUnidad,
@@ -58,8 +60,6 @@ async function cargarProductos() {
     console.error("❌ Error al cargar productos:", error);
   }
 }
-
-
 
 // 🟢 Generar HTML para editar y eliminar
 function accionesHTML(id) {
@@ -82,7 +82,9 @@ async function mostrarFormularioAgregar() {
     .on("click", guardarCambiosDesdeFormulario);
 
   $("#formularioProducto").show();
-  document.getElementById("formularioProducto").scrollIntoView({ behavior: "smooth" });
+  document
+    .getElementById("formularioProducto")
+    .scrollIntoView({ behavior: "smooth" });
 }
 
 // 🟢 Guardar nuevo producto
@@ -120,30 +122,41 @@ async function guardarCambiosDesdeFormulario(event) {
 
     await cargarOpcionesSelects();
 
-    const proveedorNombre = obtenerNombre(data.producto.Proveedor_id, proveedoresCache);
-    const supermercadoNombre = obtenerNombre(data.producto.Supermercado_id, supermercadosCache);
-    const usuarioNombre = obtenerNombre(data.producto.Usuario_id, usuariosCache);
+    const proveedorNombre = obtenerNombre(
+      data.producto.Proveedor_id,
+      proveedoresCache
+    );
+    const supermercadoNombre = obtenerNombre(
+      data.producto.Supermercado_id,
+      supermercadosCache
+    );
+    const usuarioNombre = obtenerNombre(
+      data.producto.Usuario_id,
+      usuariosCache
+    );
 
-    productosTable.row.add([
-      data.producto._id,
-      `<img src="${data.producto.Imagen || ""}" alt="${data.producto.Nombre}" width="50" />`,
-      data.producto.Nombre,
-      data.producto.Marca,
-      `${data.producto.Peso} ${data.producto.UnidadPeso}`,
-      proveedorNombre || "N/A",
-      supermercadoNombre || "N/A",
-      usuarioNombre || "N/A",
-      data.producto.Estado,
-      accionesHTML(data.producto._id),
-    ]).draw();
+    productosTable.row
+      .add([
+        data.producto._id,
+        `<img src="${data.producto.Imagen || ""}" alt="${
+          data.producto.Nombre
+        }" width="50" />`,
+        data.producto.Nombre,
+        data.producto.Marca,
+        `${data.producto.Peso} ${data.producto.UnidadPeso}`,
+        proveedorNombre || "N/A",
+        supermercadoNombre || "N/A",
+        usuarioNombre || "N/A",
+        data.producto.Estado,
+        accionesHTML(data.producto._id),
+      ])
+      .draw();
 
     cerrarFormulario();
   } catch (err) {
     console.error("❌ Error guardando producto:", err);
   }
 }
-
-
 
 // 🟢 Editar producto
 async function editarProducto(id) {
@@ -168,7 +181,9 @@ async function editarProducto(id) {
     .on("click", guardarEdicionProducto);
 
   $("#formularioProducto").show();
-  document.getElementById("formularioProducto").scrollIntoView({ behavior: "smooth" });
+  document
+    .getElementById("formularioProducto")
+    .scrollIntoView({ behavior: "smooth" });
 }
 
 // 🟢 Guardar cambios en la edición
@@ -205,9 +220,11 @@ async function guardarEdicionProducto() {
 async function cargarOpcionesSelects() {
   try {
     const [proveedores, supermercados, usuarios] = await Promise.all([
-      fetch("http://localhost:3000/api/proveedor").then(res => res.json()),
-      fetch("http://localhost:3000/api/supermercados").then(res => res.json()),
-      fetch("http://localhost:3000/api/usuarios").then(res => res.json()),
+      fetch("http://localhost:3000/api/proveedor").then((res) => res.json()),
+      fetch("http://localhost:3000/api/supermercados").then((res) =>
+        res.json()
+      ),
+      fetch("http://localhost:3000/api/usuarios").then((res) => res.json()),
     ]);
 
     llenarSelect("#idProveedor", proveedores);
@@ -223,9 +240,12 @@ function llenarSelect(selector, datos) {
   const select = document.querySelector(selector);
   select.innerHTML = '<option value="">Seleccione una opción</option>';
   datos.forEach((item) => {
-    select.innerHTML += `<option value="${item._id}">${item.Nombre || item.nombre}</option>`;
+    select.innerHTML += `<option value="${item._id}">${
+      item.Nombre || item.nombre
+    }</option>`;
   });
 }
+
 async function eliminarProducto(id) {
   const confirmacion = confirm("¿Estás seguro de eliminar este producto?");
   if (!confirmacion) return;
@@ -242,6 +262,7 @@ async function eliminarProducto(id) {
     console.error("❌ Error eliminando producto:", err);
   }
 }
+
 // 🟢 Cerrar formulario
 function cerrarFormulario() {
   $("#formularioProducto").hide();
@@ -249,7 +270,6 @@ function cerrarFormulario() {
     "#productoID, #nombreProducto, #marcaProducto, #pesoProducto, #estadoProducto"
   ).val("");
 }
-
 
 // 🟢 Exponer funciones globales
 window.editarProducto = editarProducto;

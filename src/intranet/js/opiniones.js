@@ -1,6 +1,8 @@
 // ✅ Variables Globales
 let opinionesTable;
 let opinionesCache = [];
+let productosCache = [];
+let usuariosCache = [];
 
 // ✅ Iniciar DataTable y cargar opiniones cuando el documento esté listo
 $(document).ready(() => {
@@ -9,8 +11,8 @@ $(document).ready(() => {
     autoWidth: false,
     columns: [
       { title: "ID" },
-      { title: "Producto ID" },
-      { title: "Usuario ID" },
+      { title: "Producto" },
+      { title: "Usuario" },
       { title: "Opinión" },
       { title: "Calificación" },
       { title: "Fecha" },
@@ -18,7 +20,7 @@ $(document).ready(() => {
     ],
   });
 
-  cargarOpiniones();
+  cargarDatosIniciales();
 });
 
 // ✅ Cargar opiniones desde el servidor
@@ -34,9 +36,9 @@ async function cargarOpiniones() {
     opiniones.forEach((opinion) => {
       opinionesTable.row.add([
         opinion._id || "N/A",
-        opinion.Producto_id || "N/A",
-        opinion.Usuario_id || "N/A",
-        `<button class="btn-opinion" onclick="verOpinion('${opinion._id}')">Ver Opinión</button>`, 
+        opinion.Producto_nombre || "N/A",
+        opinion.Usuario_nombre || "N/A",
+        `<button class="btn-opinion" onclick="verOpinion('${opinion._id}')">Ver Opinión</button>`,
         opinion.Calificacion || "N/A",
         new Date(opinion.Fecha).toLocaleDateString(), // Convertir fecha
         accionesHTML(opinion._id), // Generar botones de acciones
@@ -49,7 +51,66 @@ async function cargarOpiniones() {
   }
 }
 
-// ✅ Mostrar la opinión en un modal o alerta
+// ✅ Cargar productos, usuarios y opiniones
+async function cargarDatosIniciales() {
+  try {
+    const [productos, usuarios, opiniones] = await Promise.all([
+      fetch("http://localhost:3000/api/productos").then((res) => res.json()),
+      fetch("http://localhost:3000/api/usuarios").then((res) => res.json()),
+      fetch("http://localhost:3000/api/opiniones").then((res) => res.json()),
+    ]);
+
+    productosCache = productos;
+    usuariosCache = usuarios;
+    opinionesCache = opiniones;
+
+    llenarSelect("#productoID", productos);
+    llenarSelect("#usuarioID", usuarios);
+
+    actualizarTablaOpiniones();
+  } catch (error) {
+    console.error("❌ Error al cargar datos iniciales:", error);
+  }
+}
+
+// ✅ Actualizar la tabla con nombres en lugar de IDs
+function actualizarTablaOpiniones() {
+  opinionesTable.clear();
+  opinionesCache.forEach((opinion) => {
+    const productoNombre = obtenerNombre(opinion.Producto_id, productosCache);
+    const usuarioNombre = obtenerNombre(opinion.Usuario_id, usuariosCache);
+
+    opinionesTable.row.add([
+      opinion._id || "N/A",
+      productoNombre || "N/A",
+      usuarioNombre || "N/A",
+      `<button class="btn-opinion" onclick="verOpinion('${opinion._id}')">Ver Opinión</button>`,
+      opinion.Calificacion || "N/A",
+      new Date(opinion.Fecha).toLocaleDateString(),
+      accionesHTML(opinion._id),
+    ]);
+  });
+  opinionesTable.draw();
+}
+
+// ✅ Función auxiliar para obtener nombres
+function obtenerNombre(id, lista) {
+  const item = lista.find((el) => el._id === id);
+  return item ? item.Nombre || item.nombre : "Desconocido";
+}
+
+// ✅ Llenar selects con nombres en lugar de IDs
+function llenarSelect(selector, datos) {
+  const select = document.querySelector(selector);
+  select.innerHTML = '<option value="">Seleccione una opción</option>';
+  datos.forEach((item) => {
+    select.innerHTML += `<option value="${item._id}">${
+      item.Nombre || item.nombre
+    }</option>`;
+  });
+}
+
+// ✅ Mostrar la opinión en un modal
 function verOpinion(id) {
   const opinion = opinionesCache.find((o) => o._id === id);
   if (!opinion) return;
@@ -59,11 +120,11 @@ function verOpinion(id) {
     text: opinion.Opinion,
     icon: "info",
     confirmButtonText: "Aceptar",
-    width: "50%", // Ajustar tamaño
+    width: "50%",
   });
 }
 
-// ✅ Función para generar botones de acciones
+// ✅ Generar botones de acciones
 function accionesHTML(id) {
   return `
     <button onclick="editarOpinion('${id}')">✏️ Editar</button>
@@ -72,11 +133,12 @@ function accionesHTML(id) {
 }
 
 // ✅ Mostrar formulario para agregar una opinión
-function mostrarFormularioAgregar() {
+async function mostrarFormularioAgregar() {
   $("#formTitulo").text("Añadir Opinión");
-  $("#opinionID, #productoID, #usuarioID, #textoOpinion, #calificacionOpinion").val("");
+  $(
+    "#opinionID, #productoID, #usuarioID, #textoOpinion, #calificacionOpinion"
+  ).val("");
 
-  // 🆕 Establecer la fecha actual y habilitarla solo en creación
   const fechaActual = new Date().toISOString().split("T")[0];
   $("#fechaOpinion").val(fechaActual).prop("disabled", false);
 
@@ -86,59 +148,6 @@ function mostrarFormularioAgregar() {
   document
     .getElementById("formularioOpinion")
     .scrollIntoView({ behavior: "smooth" });
-}
-
-
-// ✅ Guardar una opinión (crear o editar)
-async function guardarOpinion() {
-  const id = $("#opinionID").val();
-  const producto_id = $("#productoID").val().trim();
-  const usuario_id = $("#usuarioID").val().trim();
-  const opinionTexto = $("#textoOpinion").val().trim();
-  const calificacion = $("#calificacionOpinion").val().trim();
-
-  // 📌 Validar los campos obligatorios
-  if (!producto_id || !usuario_id || !opinionTexto) {
-    alert("⚠️ Producto ID, Usuario ID y Opinión son obligatorios.");
-    return;
-  }
-
-  const opinion = {
-    Producto_id: producto_id, // Se enviará como string, pero el backend lo convertirá en ObjectId
-    Usuario_id: usuario_id,
-    Opinion: opinionTexto,
-    Calificacion: calificacion ? parseInt(calificacion, 10) : null,
-  };
-
-  try {
-    let response;
-    if (id) {
-      // Actualizar opinión
-      response = await fetch(`http://localhost:3000/api/opiniones/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(opinion),
-      });
-    } else {
-      // Crear nueva opinión
-      response = await fetch("http://localhost:3000/api/opiniones", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(opinion),
-      });
-    }
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || "Error al guardar opinión");
-    }
-
-    await cargarOpiniones();
-    cerrarFormulario();
-  } catch (err) {
-    console.error("❌ Error guardando opinión:", err);
-    alert(`❌ Error: ${err.message}`);
-  }
 }
 
 // ✅ Editar una opinión
@@ -152,9 +161,7 @@ function editarOpinion(id) {
   $("#usuarioID").val(opinion.Usuario_id);
   $("#textoOpinion").val(opinion.Opinion);
   $("#calificacionOpinion").val(opinion.Calificacion);
-  $("#fechaOpinion").val(opinion.Fecha.split("T")[0]); // Establecer la fecha
-
-  // ❌ Deshabilitar el campo de fecha para evitar edición
+  $("#fechaOpinion").val(opinion.Fecha.split("T")[0]);
   $("#fechaOpinion").prop("disabled", true);
 
   $("#botonesFormulario button:first").off("click").on("click", guardarOpinion);
@@ -165,6 +172,62 @@ function editarOpinion(id) {
     .scrollIntoView({ behavior: "smooth" });
 }
 
+// ✅ Guardar una opinión (crear o editar)
+async function guardarOpinion() {
+  const id = $("#opinionID").val();
+  const producto_id = $("#productoID").val().trim();
+  const usuario_id = $("#usuarioID").val().trim();
+  const opinionTexto = $("#textoOpinion").val().trim();
+  const calificacion = $("#calificacionOpinion").val().trim();
+
+  if (!producto_id || !usuario_id || !opinionTexto) {
+    alert("⚠️ Producto, Usuario y Opinión son obligatorios.");
+    return;
+  }
+
+  const opinion = {
+    Producto_id: producto_id,
+    Usuario_id: usuario_id,
+    Opinion: opinionTexto,
+    Calificacion: calificacion ? parseInt(calificacion, 10) : null,
+  };
+
+  try {
+    let response;
+    if (id) {
+      response = await fetch(`http://localhost:3000/api/opiniones/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(opinion),
+      });
+    } else {
+      response = await fetch("http://localhost:3000/api/opiniones", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(opinion),
+      });
+    }
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Error al guardar opinión");
+    }
+
+    await cargarDatosIniciales();
+    cerrarFormulario();
+  } catch (err) {
+    console.error("❌ Error guardando opinión:", err);
+    alert(`❌ Error: ${err.message}`);
+  }
+}
+
+// ✅ Cerrar el formulario
+function cerrarFormulario() {
+  $("#formularioOpinion").hide();
+  $(
+    "#opinionID, #productoID, #usuarioID, #textoOpinion, #calificacionOpinion"
+  ).val("");
+}
 
 // ✅ Eliminar una opinión
 async function eliminarOpinion(id) {
@@ -178,24 +241,27 @@ async function eliminarOpinion(id) {
 
     if (!response.ok) throw new Error("Error al eliminar opinión");
 
-    await cargarOpiniones();
+    // 🟢 Eliminar la fila directamente del DataTable
+    opinionesTable.rows().every(function () {
+      const rowData = this.data();
+      if (rowData[0] === id) {
+        this.remove();
+      }
+    });
+
+    opinionesTable.draw(); // Refrescar la tabla sin recargar todo
+
+    // 🟢 También actualizar el cache eliminando la opinión eliminada
+    opinionesCache = opinionesCache.filter((opinion) => opinion._id !== id);
   } catch (err) {
     console.error("❌ Error eliminando opinión:", err);
   }
 }
 
-// ✅ Cerrar el formulario de opinión
-function cerrarFormulario() {
-  $("#formularioOpinion").hide();
-  $(
-    "#opinionID, #productoID, #usuarioID, #textoOpinion, #calificacionOpinion"
-  ).val("");
-}
-
-// ✅ Exponer funciones globales para que sean accesibles en el HTML
+// ✅ Exponer funciones globales
 window.mostrarFormularioAgregar = mostrarFormularioAgregar;
 window.cerrarFormulario = cerrarFormulario;
 window.editarOpinion = editarOpinion;
 window.eliminarOpinion = eliminarOpinion;
-window.cargarOpiniones = cargarOpiniones;
 window.verOpinion = verOpinion;
+window.cargarDatosIniciales = cargarDatosIniciales;
