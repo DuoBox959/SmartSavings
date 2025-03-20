@@ -63,36 +63,60 @@ document.addEventListener("DOMContentLoaded", function () {
   toggleCollapsible("verMasBackend", "collapsible-backend");
   toggleCollapsible("verMasFrontend", "collapsible-frontend");
 
-  // 📊 MÉTRICAS Y ESTADÍSTICAS - Gráficos con Chart.js
-  if (typeof Chart !== "undefined") {
-    const usoSistemaData = {
-      labels: ["Inicio de Sesión", "Consultas de Productos", "Comparaciones", "Reportes Generados"],
-      datasets: [{
-        label: "Uso del Sistema",
-        data: [50, 120, 80, 40], // Datos simulados
-        backgroundColor: ["#007BFF", "#28A745", "#FFC107", "#DC3545"]
-      }]
-    };
-
-    const actividadUsuariosData = {
-      labels: ["Semana 1", "Semana 2", "Semana 3", "Semana 4"],
-      datasets: [{
-        label: "Usuarios Activos",
-        data: [200, 180, 220, 190], // Datos simulados
-        backgroundColor: "#17A2B8"
-      }]
-    };
-
-    new Chart(document.getElementById("usoSistemaChart"), {
-      type: "bar",
-      data: usoSistemaData
-    });
-
-    new Chart(document.getElementById("actividadUsuariosChart"), {
-      type: "line",
-      data: actividadUsuariosData
-    });
-  } else {
-    console.error("❌ Error: Chart.js no está cargado.");
+  // 📊 Cargar métricas dinámicamente desde la API
+  async function cargarMetricas() {
+    try {
+      const response = await fetch("http://localhost:3000/api/metricas");
+      const data = await response.json();
+  
+      if (!data) throw new Error("No se recibieron datos");
+  
+      // 📊 Extraer datos de la API
+      const categorias = data.usoSistema.map((item) => item.categoria);
+      const valores = data.usoSistema.map((item) => item.cantidad);
+  
+      const semanas = data.actividadUsuarios.map((item) => item.semana);
+      const usuarios = data.actividadUsuarios.map((item) => item.usuarios);
+  
+      // 🔹 Crear los gráficos con datos reales
+      new Chart(document.getElementById("usoSistemaChart"), {
+        type: "bar",
+        data: {
+          labels: categorias,
+          datasets: [
+            {
+              label: "Uso del Sistema",
+              data: valores,
+              backgroundColor: ["#007BFF", "#28A745", "#FFC107", "#DC3545"],
+            },
+          ],
+        },
+      });
+  
+      new Chart(document.getElementById("actividadUsuariosChart"), {
+        type: "line",
+        data: {
+          labels: semanas,
+          datasets: [
+            {
+              label: "Usuarios Activos",
+              data: usuarios,
+              backgroundColor: "#17A2B8",
+              borderColor: "#17A2B8",
+              fill: false,
+            },
+          ],
+        },
+      });
+  
+      console.log("✅ Gráficos cargados con datos reales");
+    } catch (error) {
+      console.error("❌ Error cargando métricas:", error);
+    }
   }
+  
+  // 📢 Llamar a la función cuando se cargue la página
+  document.addEventListener("DOMContentLoaded", cargarMetricas);
+  
+  
 });
