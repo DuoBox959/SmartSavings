@@ -4,11 +4,9 @@ BACKEND
 3-Que aparezca el nombre de las cosas no la id en tablas
 4-Arreglar precio historico para que ponga año y el precio.
 5-Poner la ventana de inicio de sesion mas bonito he puesto la funcion pero no la coge
-6-HECHO OPINIONES: Poner que el campo fecha no sea editable y se genere automaticamente y no tengas que ponerlo manual
-7-Poner bien la cnfiguracion para que puedas editar los datos del usuario activo, ver que poner en notificaciones y que hacer con el apartado seguridad
-8-En Reportes hacerlo todo mas profesionalpara que realmente se vean los datos de la estadistica y en productos mensuales ver los productos mejor valorados ese mes o algo que se nos ocurra.
-9-Hacer mas profesional el panel de control: aportar ideas.
-10-Pequeño error del sidebar
+6-Poner bien la cnfiguracion para que puedas editar los datos del usuario activo, ver que poner en notificaciones y que hacer con el apartado seguridad
+7-En Reportes hacerlo todo mas profesionalpara que realmente se vean los datos de la estadistica y en productos mensuales ver los productos mejor valorados ese mes o algo que se nos ocurra.
+8-Hacer mas profesional el panel de control: aportar ideas.
 
 FRONTEND
 1-Poner la ventana de inicio de sesion mas bonito y las ventanas emergentes que haya tambien todo esto con sweetalert.
