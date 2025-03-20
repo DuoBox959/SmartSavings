@@ -1,74 +1,110 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <!-- 🅰️ Configuración del Documento -->
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <!-- 🅰️ Configuración General -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Intranet - Panel de Control</title>
 
-    <!-- 🅱️ Vinculación de Archivos CSS -->
-    <link rel="stylesheet" href="../css/intranet.css" />
-    <link rel="stylesheet" href="../css/global/sidebar.css" /> <!-- Sidebar CSS -->
+    <!-- 🅱️ Estilos CSS -->
+    <link rel="stylesheet" href="../css/intranet.css">
+    <link rel="stylesheet" href="../css/global/sidebar.css">
 
     <!-- 🅲 Librerías Externas -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-    />
-  </head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
 
-  <body>
-    <!-- 🅳 Contenedor donde se cargará el Sidebar -->
+<body>
+    <!-- 📌 Sidebar -->
     <div id="sidebar-container"></div>
 
-    <!-- 🅴 Contenido Principal -->
+    <!-- 📌 Contenido Principal -->
     <main class="main-content" id="main-content">
-      <!-- 🅵 Barra Superior -->
-      <header class="topbar">
-        <!-- 🔍 Barra de Búsqueda -->
-        <div class="search-box">
-          <input
-            type="text"
-            placeholder="Buscar..."
-            aria-label="Buscar en la intranet"
-          />
-          <button><i class="fas fa-search"></i></button>
+        <!-- 🔹 Barra Superior -->
+        <header class="topbar">
+            <div class="search-box">
+                <input type="text" placeholder="Buscar..." aria-label="Buscar en la intranet">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+
+            <div class="topbar-icons">
+                <i class="fas fa-bell" aria-label="Notificaciones"></i>
+                <i class="fas fa-envelope" aria-label="Mensajes"></i>
+                <i class="fas fa-user-circle" aria-label="Perfil de usuario"></i>
+
+                <!-- 🔹 Nombre del Usuario -->
+                <span id="userWelcome" class="user-welcome"></span>
+
+                <!-- 🔴 Botón de Cerrar Sesión -->
+                <button class="logout">Cerrar Sesión</button>
+            </div>
+        </header>
+
+        <!-- 📌 Sección de Dashboard -->
+        <section class="dashboard">
+          <!-- 🔔 Próximo Evento -->
+          <div class="event-box">
+              <h2>Próximo Evento</h2>
+              <p>Hacer tareas Pendientes</p>
+              <div class="countdown">12:03:19</div>
+          </div>
+      
+          <!-- 📰 Últimas Noticias -->
+          <div class="news-box">
+              <h2>Últimas Noticias</h2>
+              <p>Arreglado todas las tablas Intranet.</p>
+              <p>Nuevo diseño de Intranet.</p>
+          </div>
+         <!-- 📈 MÉTRICAS Y ESTADÍSTICAS -->
+          <div class="metrics-box">
+            <h2>📊 Métricas y Estadísticas</h2>
+            <div class="charts-container">
+                <canvas id="usoSistemaChart"></canvas>
+                <canvas id="actividadUsuariosChart"></canvas>
+            </div>
         </div>
+        <div class="task-box">
+          <h2>📝 Tareas Pendientes</h2>
+          <!-- 🔧 BACKEND -->
+          <h3><strong>🖥️ BACKEND</strong></h3>
+          <ul class="collapsible collapsible-backend">
+              <li>1️⃣ Arreglar que no se suban dos imágenes en la carpeta `update` y dividir la carpeta en años.</li>
+              <li>2️⃣ Hacer que funcionen los módulos de <strong>Reportes</strong> y <strong>Configuración</strong>.</li>
+              <li>3️⃣ Mostrar los nombres en lugar de los ID en las tablas.</li>
+              <li>4️⃣ Ajustar precio histórico para que muestre el año y el precio correspondiente.</li>
+              <li>5️⃣ Mejorar el diseño de la ventana de inicio de sesión.</li>
+              <li>6️⃣ Configurar la edición de datos en <strong>Configuración</strong>, definir qué hacer con <strong>Notificaciones</strong> y <strong>Seguridad</strong>.</li>
+              <li>7️⃣ Profesionalizar el módulo de <strong>Reportes</strong> para que se visualicen estadísticas relevantes.</li>
+              <li>8️⃣ Hacer más profesional el <strong>Panel de Control</strong> (💡 Aportar ideas).</li>
+          </ul>
+          <button id="verMasBackend" class="ver-mas">Ver más</button>
+      
+          <!-- 🎨 FRONTEND -->
+          <h3><strong>🎨 FRONTEND</strong></h3>
+          <ul class="collapsible collapsible-frontend">
+              <li>1️⃣ Mejorar el diseño de la ventana de inicio de sesión con <strong>SweetAlert</strong>.</li>
+              <li>2️⃣ Implementar correctamente la <strong>Configuración de la cuenta</strong>.</li>
+              <li>3️⃣ Agregar una barra de navegación en <strong>Gestión de Productos</strong>.</li>
+              <li>4️⃣ Mejorar la interfaz de <strong>Gestión de Productos</strong> estilo <strong>Idealo</strong>.</li>
+              <li>5️⃣ Reemplazar los ID de las tiendas por sus nombres en <strong>Comparar Precios</strong>.</li>
+              <li>6️⃣ Habilitar el <strong>Registro de Usuarios</strong>.</li>
+              <li>7️⃣ Permitir minimizar el <strong>Chatbot</strong>.</li>
+              <li>8️⃣ Corregir la función de edición en <strong>Productos</strong>.</li>
+              <li>9️⃣ Hacer que el <strong>Comparador de Precios</strong> funcione correctamente.</li>
+          </ul>
+          <button id="verMasFrontend" class="ver-mas">Ver más</button>
+      </div>
+      
+     
 
-        <!-- 🔔 Iconos de Notificación y Perfil -->
-        <div class="topbar-icons">
-          <i class="fas fa-bell" aria-label="Notificaciones"></i>
-          <i class="fas fa-envelope" aria-label="Mensajes"></i>
-          <i class="fas fa-user-circle" aria-label="Perfil de usuario"></i>
-
-          <!-- 🔹 Aquí se mostrará el nombre del usuario -->
-          <span id="userWelcome" class="user-welcome"></span>
-
-          <!-- 🔴 Botón de Cerrar Sesión -->
-          <button class="logout">Cerrar Sesión</button>
-        </div>
-      </header>
-
-      <!-- 🅶 Sección de Contenido Principal -->
-      <section class="dashboard">
-        <!-- 🔔 Próximo Evento -->
-        <div class="event-box">
-          <h2>Próximo Evento</h2>
-          <p>Solución de los errores en tabla</p>
-          <div class="countdown">12:03:19:36</div>
-        </div>
-
-        <!-- 📰 Últimas Noticias -->
-        <div class="news-box">
-          <h2>Últimas Noticias</h2>
-          <p>Nuevas tablas en Intranet.</p>
-          <p>Nuevo diseño de Intranet.</p>
-        </div>
-      </section>
+          
+        </section>
     </main>
 
-    <!-- 🅷 Vinculación del Archivo JavaScript -->
+    <!-- 📌 Scripts -->
     <script type="module" src="../js/intranet.js" defer></script>
     <script src="../js/global/sidebar.js" defer></script>
-  </body>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</body>
 </html>
