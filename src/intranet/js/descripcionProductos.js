@@ -169,10 +169,6 @@ async function guardarDescripcion(event) {
   }
 }
 
-
-
-
-
 // ✅ Editar una descripción (CORREGIDO, SOLO UNA FUNCIÓN)
 async function editarDescripcion(id) {
   const descripcion = descripcionCache.find((d) => d._id === id);
@@ -209,8 +205,6 @@ async function editarDescripcion(id) {
   $("#formularioDescripcion").show();
   document.getElementById("formularioDescripcion").scrollIntoView({ behavior: "smooth" });
 }
-
-
 
 // ✅ Mostrar la Utilidad en una ventana modal grande
 window.verUtilidad = function (utilidad) {
