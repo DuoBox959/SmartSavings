@@ -1,15 +1,16 @@
 // 🔹 Variables globales
 let preciosTable;
 let preciosCache = [];
+let productosCache = {}; // 🆕 Guardar productos en caché para acceso rápido
 
-// 🔹 Iniciar DataTable y cargar precios cuando el documento esté listo
-$(document).ready(() => {
+// 🔹 Iniciar DataTable y cargar datos cuando el documento esté listo
+$(document).ready(async () => {
   preciosTable = $("#preciosTable").DataTable({
     destroy: true,
     autoWidth: false,
     columns: [
       { title: "ID" },
-      { title: "Producto ID" },
+      { title: "Producto" },
       { title: "Precio Actual" },
       { title: "Precio Descuento" },
       { title: "Unidad/Lote" },
@@ -18,8 +19,39 @@ $(document).ready(() => {
     ],
   });
 
-  cargarPrecios();
+  // 🆕 Esperar a que los productos se carguen antes de los precios
+  await cargarProductos();
+  await cargarPrecios();
 });
+
+// 🟢 Cargar productos y llenar el select
+async function cargarProductos() {
+  try {
+    const respuesta = await fetch("http://localhost:3000/api/productos");
+    const productos = await respuesta.json();
+
+    if (!Array.isArray(productos))
+      throw new Error("Formato incorrecto en productos");
+
+    // Guardar productos en caché con estructura { id: nombre }
+    productos.forEach((producto) => {
+      productosCache[producto._id] = producto.Nombre; // 🔥 Asegurar que la clave es correcta
+    });
+
+    // Llenar el select de productos
+    const select = $("#productoID");
+    select.empty().append('<option value="">Selecciona un producto</option>');
+    productos.forEach((producto) => {
+      select.append(
+        `<option value="${producto._id}">${producto.Nombre}</option>`
+      );
+    });
+
+    console.log("✅ Productos cargados:", productosCache);
+  } catch (error) {
+    console.error("❌ Error al cargar productos:", error);
+  }
+}
 
 // 🟢 Cargar precios desde servidor Express
 async function cargarPrecios() {
@@ -27,12 +59,19 @@ async function cargarPrecios() {
     const respuesta = await fetch("http://localhost:3000/api/precios");
     const precios = await respuesta.json();
 
+    if (!Array.isArray(precios))
+      throw new Error("Formato incorrecto en precios");
+
     preciosCache = precios;
     preciosTable.clear(); // Limpiamos la tabla antes de actualizar
+
     precios.forEach((precio) => {
+      const nombreProducto =
+        productosCache[precio.producto_id] || "Producto Desconocido"; // 🛠️ Ahora sí debería aparecer bien
+
       preciosTable.row.add([
         precio._id || "N/A",
-        precio.producto_id || "N/A",
+        nombreProducto, // 🔄 Mostrar nombre del producto correctamente
         typeof precio.precioActual === "number"
           ? precio.precioActual.toFixed(2) + " €"
           : "N/A",
@@ -40,23 +79,26 @@ async function cargarPrecios() {
           ? precio.precioDescuento.toFixed(2) + " €"
           : "N/A",
         precio.unidadLote || "N/A",
-        `<button class="btn btn-primary" onclick="verPrecioHistorico('${precio._id}')">Ver Precio Histórico</button>`, // 🔹 Nuevo botón
+        `<button class="btn btn-primary" onclick="verPrecioHistorico('${precio._id}')">Ver Precio Histórico</button>`,
         accionesHTML(precio._id),
       ]);
     });
 
-preciosTable.draw();
-
+    console.log("✅ Precios cargados con nombres de productos:", precios);
+    preciosTable.draw();
   } catch (error) {
     console.error("❌ Error al cargar precios:", error);
   }
 }
+
 function verPrecioHistorico(id) {
   const precio = preciosCache.find((p) => p._id === id);
   if (!precio) return;
 
   const preciosHistoricos = Array.isArray(precio.precioHistorico)
-    ? precio.precioHistorico.map((p) => (typeof p === "number" ? p.toFixed(2) + " €" : "N/A")).join(", ")
+    ? precio.precioHistorico
+        .map((p) => (typeof p === "number" ? p.toFixed(2) + " €" : "N/A"))
+        .join(", ")
     : "No disponible";
 
   Swal.fire({

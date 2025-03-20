@@ -8,7 +8,8 @@
 
     <!-- 🅱️ Vinculación de Archivos CSS -->
     <link rel="stylesheet" href="../css/global/datTable.css" />
-    <link rel="stylesheet" href="../css/global/sidebar.css" /> <!-- Sidebar CSS -->
+    <link rel="stylesheet" href="../css/global/sidebar.css" />
+    <!-- Sidebar CSS -->
 
     <!-- 🅲 Librerías Externas -->
     <link
@@ -22,8 +23,10 @@
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 
     <!-- 🅴 Script de Lógica -->
-    <script src="../js/global/auth.js"></script> <!--Comprobacion de autenticacion-->
-    <script type="module" src="../js/global/sidebar.js" defer></script> <!-- Sidebar JS -->
+    <script src="../js/global/auth.js"></script>
+    <!--Comprobacion de autenticacion-->
+    <script type="module" src="../js/global/sidebar.js" defer></script>
+    <!-- Sidebar JS -->
     <script type="module" src="../js/precios.js"></script>
   </head>
 
@@ -61,7 +64,9 @@
 
         <!-- 🔹 Campo: Producto ID -->
         <label for="productoID">Producto ID:</label>
-        <input type="text" id="productoID" required />
+        <select id="productoID" required>
+          <option value="">Selecciona un producto</option>
+        </select>
 
         <!-- 🔹 Campo: Precio Actual -->
         <label for="precioActual">Precio Actual:</label>
@@ -76,7 +81,9 @@
         <input type="text" id="unidadLote" />
 
         <!-- 🔹 Campo: Precio Histórico -->
-        <label for="precioHistorico">Precio Histórico (separado por comas):</label>
+        <label for="precioHistorico"
+          >Precio Histórico (separado por comas):</label
+        >
         <input type="text" id="precioHistorico" />
 
         <!-- 🅺 Botones del Formulario -->
