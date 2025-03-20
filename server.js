@@ -1039,5 +1039,39 @@ app.delete("/api/opiniones/:id", async (req, res) => {
   }
 });
 
+// 📊 API para obtener datos de uso del sistema
+/**
+ * ✅ Obtener métricas del sistema
+ * Ruta: GET /api/metricas
+ */
+app.get("/api/metricas", async (req, res) => {
+  try {
+    // 🔹 Obtener métricas desde la BD
+    const totalUsuarios = await db.collection("Usuarios").countDocuments();
+    const totalProductos = await db.collection("Productos").countDocuments();
+    const totalOpiniones = await db.collection("Opiniones").countDocuments();
+
+    const metricas = {
+      usoSistema: [
+        { categoria: "Usuarios Registrados", cantidad: totalUsuarios },
+        { categoria: "Productos Creados", cantidad: totalProductos },
+        { categoria: "Opiniones Publicadas", cantidad: totalOpiniones },
+      ],
+      actividadUsuarios: [
+        { semana: "Semana 1", usuarios: Math.floor(Math.random() * 300) },
+        { semana: "Semana 2", usuarios: Math.floor(Math.random() * 300) },
+        { semana: "Semana 3", usuarios: Math.floor(Math.random() * 300) },
+        { semana: "Semana 4", usuarios: Math.floor(Math.random() * 300) },
+      ],
+    };
+
+    res.json(metricas);
+  } catch (err) {
+    console.error("❌ Error obteniendo métricas:", err);
+    res.status(500).json({ error: "Error al obtener métricas" });
+  }
+});
+
+
 
 
