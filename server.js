@@ -661,13 +661,22 @@ app.post("/api/descripcion", async (req, res) => {
   try {
     const { Producto_id, Tipo, Subtipo, Utilidad, Ingredientes } = req.body;
 
-    // ✅ Solo validar Producto_id y Tipo
+    // ✅ Validar que se envió un Producto_id válido
     if (!Producto_id || !Tipo) {
       return res.status(400).json({ error: "Producto ID y Tipo son obligatorios" });
     }
 
+    const productoObjectId = new ObjectId(Producto_id);
+
+    // 🔍 Buscar el nombre del producto en la BD
+    const producto = await db.collection("Productos").findOne({ _id: productoObjectId });
+
+    if (!producto) {
+      return res.status(404).json({ error: "Producto no encontrado" });
+    }
+
     const nuevaDescripcion = {
-      Producto_id: new ObjectId(Producto_id), // Convertir a ObjectId
+      Producto_id: productoObjectId,
       Tipo,
       Subtipo: Subtipo || null,
       Utilidad: Utilidad || null,
@@ -678,7 +687,11 @@ app.post("/api/descripcion", async (req, res) => {
 
     res.status(201).json({
       message: "Descripción creada correctamente",
-      descripcion: { ...nuevaDescripcion, _id: resultado.insertedId },
+      descripcion: {
+        ...nuevaDescripcion,
+        _id: resultado.insertedId,
+        Producto_id: producto.Nombre, // 🔹 Devolvemos el nombre del producto en lugar del ID
+      },
     });
 
   } catch (err) {
@@ -693,13 +706,34 @@ app.post("/api/descripcion", async (req, res) => {
  */
 app.get("/api/descripcion", async (req, res) => {
   try {
-    const descripciones = await db.collection("Descripcion").find().toArray();
+    const descripciones = await db.collection("Descripcion").aggregate([
+      {
+        $lookup: {
+          from: "Productos", // Colección de productos
+          localField: "Producto_id", // Campo en la colección de Descripcion
+          foreignField: "_id", // Campo en la colección de Productos
+          as: "ProductoInfo", // Nombre del campo resultante
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          Producto_id: { $arrayElemAt: ["$ProductoInfo.Nombre", 0] }, // Obtener nombre del producto
+          Tipo: 1,
+          Subtipo: 1,
+          Utilidad: 1,
+          Ingredientes: 1,
+        },
+      },
+    ]).toArray();
+
     res.json(descripciones);
   } catch (err) {
     console.error("❌ Error obteniendo descripciones:", err);
     res.status(500).json({ error: "Error al obtener descripciones" });
   }
 });
+
 
 /**
  * ✅ Actualizar descripcion existente (Update)
@@ -708,8 +742,9 @@ app.get("/api/descripcion", async (req, res) => {
 app.put("/api/descripcion/:id", async (req, res) => {
   try {
     const { id } = req.params;
+
     if (!ObjectId.isValid(id)) {
-      return res.status(400).json({ error: "ID no válido" });
+      return res.status(400).json({ error: "ID de descripción no válido" });
     }
 
     const updateData = req.body;
@@ -717,9 +752,21 @@ app.put("/api/descripcion/:id", async (req, res) => {
     if (updateData.Producto_id) {
       updateData.Producto_id = new ObjectId(updateData.Producto_id);
     }
-    
+
     if (updateData.Ingredientes) {
-      updateData.Ingredientes = Array.isArray(updateData.Ingredientes) ? updateData.Ingredientes : updateData.Ingredientes.split(",").map(i => i.trim());
+      updateData.Ingredientes = Array.isArray(updateData.Ingredientes)
+        ? updateData.Ingredientes
+        : updateData.Ingredientes.split(",").map((i) => i.trim());
+    }
+
+    // 🔍 Buscar el nombre del producto si se está actualizando
+    let productoNombre = null;
+    if (updateData.Producto_id) {
+      const producto = await db.collection("Productos").findOne({ _id: updateData.Producto_id });
+      if (!producto) {
+        return res.status(404).json({ error: "Producto no encontrado" });
+      }
+      productoNombre = producto.Nombre;
     }
 
     const result = await db.collection("Descripcion").updateOne(
@@ -731,10 +778,18 @@ app.put("/api/descripcion/:id", async (req, res) => {
       return res.status(404).json({ error: "Descripción no encontrada o sin cambios" });
     }
 
-    res.json({ message: "Descripción actualizada correctamente" });
+    res.json({
+      message: "Descripción actualizada correctamente",
+      descripcion: {
+        ...updateData,
+        Producto_id: productoNombre || updateData.Producto_id, // 🔹 Devolvemos el nombre si fue actualizado
+      },
+    });
+
   } catch (err) {
-    console.error("❌ Error actualizando descripción:", err);
-    res.status(500).json({ error: "Error al actualizar descripción" });
+    console.error("❌ Error actualizando descripción:", err.message);
+    res.status(500).json({ error: err.message });
+
   }
 });
 

@@ -40,7 +40,7 @@
       <thead>
         <tr>
           <th>ID</th>
-          <th>Producto ID</th>
+          <th>Producto</th>
           <th>Tipo</th>
           <th>Subtipo</th>
           <th>Utilidad</th>
@@ -60,9 +60,12 @@
         <input type="hidden" id="descripcionID" />
 
         <!-- 🔹 Producto ID -->
-        <label for="productoID">Producto ID:</label>
-        <input type="text" id="productoID" required />
-
+        <label for="productoID">Producto:</label>
+        <label for="productoID">Producto:</label>
+        <select id="productoID" required>
+          <option value="">Selecciona un producto</option> 
+        </select>
+        
         <!-- 🔹 Tipo -->
         <label for="tipoProducto">Tipo:</label>
         <input type="text" id="tipoProducto" required />
