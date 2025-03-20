@@ -21,7 +21,7 @@ let db;
 // 📌 Configuración de almacenamiento para imágenes con Multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/"); // Carpeta donde se guardarán las imágenes
+    cb(null, "uploads/2025/"); // Carpeta donde se guardarán las imágenes
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + path.extname(file.originalname)); // Renombrar archivo con timestamp
@@ -259,7 +259,7 @@ app.post("/api/productos", upload.single("Imagen"), async (req, res) => {
 
     const nuevoProducto = {
       Nombre: req.body.Nombre,
-      Imagen: `/uploads/${req.file.filename}`,
+      Imagen: `/uploads/2025/${req.file.filename}`,
       Marca: req.body.Marca,
       Peso: req.body.Peso,
       UnidadPeso: req.body.UnidadPeso,
