@@ -74,9 +74,11 @@ function accionesHTML(id) {
 // ✅ Mostrar formulario para agregar una opinión
 function mostrarFormularioAgregar() {
   $("#formTitulo").text("Añadir Opinión");
-  $(
-    "#opinionID, #productoID, #usuarioID, #textoOpinion, #calificacionOpinion"
-  ).val("");
+  $("#opinionID, #productoID, #usuarioID, #textoOpinion, #calificacionOpinion").val("");
+
+  // 🆕 Establecer la fecha actual y habilitarla solo en creación
+  const fechaActual = new Date().toISOString().split("T")[0];
+  $("#fechaOpinion").val(fechaActual).prop("disabled", false);
 
   $("#botonesFormulario button:first").off("click").on("click", guardarOpinion);
 
@@ -85,6 +87,7 @@ function mostrarFormularioAgregar() {
     .getElementById("formularioOpinion")
     .scrollIntoView({ behavior: "smooth" });
 }
+
 
 // ✅ Guardar una opinión (crear o editar)
 async function guardarOpinion() {
@@ -149,6 +152,10 @@ function editarOpinion(id) {
   $("#usuarioID").val(opinion.Usuario_id);
   $("#textoOpinion").val(opinion.Opinion);
   $("#calificacionOpinion").val(opinion.Calificacion);
+  $("#fechaOpinion").val(opinion.Fecha.split("T")[0]); // Establecer la fecha
+
+  // ❌ Deshabilitar el campo de fecha para evitar edición
+  $("#fechaOpinion").prop("disabled", true);
 
   $("#botonesFormulario button:first").off("click").on("click", guardarOpinion);
 
@@ -157,6 +164,7 @@ function editarOpinion(id) {
     .getElementById("formularioOpinion")
     .scrollIntoView({ behavior: "smooth" });
 }
+
 
 // ✅ Eliminar una opinión
 async function eliminarOpinion(id) {

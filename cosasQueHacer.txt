@@ -2,14 +2,12 @@ BACKEND
 1-Arreglar que no se suba dos img en producto en la carpeta update y dividir la carpeta en años
 2-Poner que funcione los Reportes y Configuración.
 3-Que aparezca el nombre de las cosas no la id en tablas
-4-Quiero que no pueda acceder a ninguna pagina de intranet si no estas conectado
-5-Arreglar precio historico para que ponga año y el precio.
-6-Poner la ventana de inicio de sesion mas bonito he puesto la funcion pero no la coge
-7-OPINIONES: Poner que el campo fecha no sea editable y se genere automaticamente y no tengas que ponerlo manual
-8-Poner bien la cnfiguracion para que puedas editar los datos del usuario activo, ver que poner en notificaciones y que hacer con el apartado seguridad
-9-En Reportes hacerlo todo mas profesionalpara que realmente se vean los datos de la estadistica y en productos mensuales ver los productos mejor valorados ese mes o algo que se nos ocurra.
-10-Hacer mas profesional el panel de control: aportar ideas.
-
+4-Arreglar precio historico para que ponga año y el precio.
+5-Poner la ventana de inicio de sesion mas bonito he puesto la funcion pero no la coge
+6-HECHO OPINIONES: Poner que el campo fecha no sea editable y se genere automaticamente y no tengas que ponerlo manual
+7-Poner bien la cnfiguracion para que puedas editar los datos del usuario activo, ver que poner en notificaciones y que hacer con el apartado seguridad
+8-En Reportes hacerlo todo mas profesionalpara que realmente se vean los datos de la estadistica y en productos mensuales ver los productos mejor valorados ese mes o algo que se nos ocurra.
+9-Hacer mas profesional el panel de control: aportar ideas.
 
 FRONTEND
 1-Poner la ventana de inicio de sesion mas bonito y las ventanas emergentes que haya tambien todo esto con sweetalert.
