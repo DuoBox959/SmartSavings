@@ -67,17 +67,21 @@ document.addEventListener("DOMContentLoaded", function () {
   async function cargarMetricas() {
     try {
       const response = await fetch("http://localhost:3000/api/metricas");
+      if (!response.ok) {
+        throw new Error(`Error HTTP: ${response.status}`);
+      }
+
       const data = await response.json();
-  
+
       if (!data) throw new Error("No se recibieron datos");
-  
+
       // 📊 Extraer datos de la API
       const categorias = data.usoSistema.map((item) => item.categoria);
       const valores = data.usoSistema.map((item) => item.cantidad);
-  
+
       const semanas = data.actividadUsuarios.map((item) => item.semana);
       const usuarios = data.actividadUsuarios.map((item) => item.usuarios);
-  
+
       // 🔹 Crear los gráficos con datos reales
       new Chart(document.getElementById("usoSistemaChart"), {
         type: "bar",
@@ -92,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
           ],
         },
       });
-  
+
       new Chart(document.getElementById("actividadUsuariosChart"), {
         type: "line",
         data: {
@@ -108,15 +112,13 @@ document.addEventListener("DOMContentLoaded", function () {
           ],
         },
       });
-  
+
       console.log("✅ Gráficos cargados con datos reales");
     } catch (error) {
       console.error("❌ Error cargando métricas:", error);
     }
   }
-  
-  // 📢 Llamar a la función cuando se cargue la página
-  document.addEventListener("DOMContentLoaded", cargarMetricas);
-  
-  
+
+  // 📢 Llamar a la función para obtener métricas
+  cargarMetricas();
 });
