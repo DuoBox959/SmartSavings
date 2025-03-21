@@ -2,8 +2,9 @@ function inicializarChatbot() {
   const chatBody = document.getElementById("chat-body");
   const chatInput = document.getElementById("chat-input");
   const sendBtn = document.getElementById("send-btn");
+  const minimizeBtn = document.getElementById("minimize-btn"); // 👈 Ahora sí lo definimos correctamente
 
-  if (!chatBody || !chatInput || !sendBtn) {
+  if (!chatBody || !chatInput || !sendBtn || !minimizeBtn) {
     console.warn("⏳ Chatbot aún no está disponible. Reintentando...");
     setTimeout(inicializarChatbot, 500);
     return;
@@ -11,6 +12,19 @@ function inicializarChatbot() {
 
   console.log("✅ Chatbot inicializado correctamente.");
   let WIT_ACCESS_TOKEN = ""; // Se cargará desde el backend
+
+  // 🔽 Lógica del botón de minimizar
+  let minimized = false;
+
+  minimizeBtn.addEventListener("click", () => {
+    minimized = !minimized;
+
+    chatBody.style.display = minimized ? "none" : "block";
+    chatInput.style.display = minimized ? "none" : "inline-block";
+    sendBtn.style.display = minimized ? "none" : "inline-block";
+
+    minimizeBtn.textContent = minimized ? "+" : "–";
+  });
 
   async function fetchAccessToken() {
     try {

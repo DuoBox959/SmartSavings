@@ -83,3 +83,18 @@
 #send-btn:hover {
     background: #0056b3;
 }
+
+#minimize-btn {
+    float: right;
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  
+  #chat-body,
+  #chat-input,
+  #send-btn {
+    transition: all 0.3s ease;
+  }
+  

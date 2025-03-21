@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reportes - Intranet</title>
 
-    <!-- 🅱️ Vinculación de Archivos CSS -->
+    <!-- 🅱️ Estilos CSS -->
     <link rel="stylesheet" href="../css/reportes.css">
-    <link rel="stylesheet" href="../css/global/sidebar.css" /> <!-- Sidebar CSS -->
+    <link rel="stylesheet" href="../css/global/sidebar.css" />
 
     <!-- 🅲 Librerías Externas -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -17,70 +17,66 @@
     <!-- 🅳 Scripts -->
     <script src="../js/global/auth.js"></script> <!--Comprobacion de autenticacion-->
     <script type="module" src="../js/global/sidebar.js" defer></script>
+    <script src="../js/reportes.js" defer></script> <!-- Script principal de reportes -->
 
 </head>
 <body>
 
-    <!-- 🅴 Cargar Sidebar de forma dinámica -->
+    <!-- 🅴 Sidebar -->
     <div id="sidebar-container"></div>
 
     <!-- 🅵 Contenido Principal -->
     <main class="main-content">
-        <h1>Reportes</h1>
+        <h1>📊 Reportes</h1>
 
         <!-- 🅶 Resumen General -->
         <div class="report-summary">
             <div class="card">
                 <h3>Usuarios Registrados</h3>
-                <p>👤 450</p>
+                <p>👤 <span id="totalUsuarios">0</span></p>
                 <h3>Usuarios Activos</h3>
-                <p>👤 450</p>
+                <p>🟢 <span id="usuariosActivos">0</span></p>
             </div>
             <div class="card">
-                <h3>Productos en Stock</h3>
-                <p>📦 850</p>
+                <h3>Total de Productos</h3>
+                <p>📦 <span id="totalProductos">0</span></p>
             </div>
             <div class="card">
-                <h3>Órdenes Procesadas</h3>
-                <p>🛒 120</p>
+                <h3>Productos Más Comparados</h3>
+                <p>📊 <span id="productosMasComparados">-</span></p>
             </div>
             <div class="card">
-                <h3>Productos Mensuales</h3>
-                <p>25,000</p>
+                <h3>Supermercados en la Plataforma</h3>
+                <p>🏪 <span id="totalSupermercados">0</span></p>
             </div>
         </div>
 
-        <!-- 🅷 Gráfico de Subida de Productos -->
+        <!-- 🅷 Gráfico de Comparaciones por Categoría -->
         <div class="chart-container">
-            <h2>Productos Mensuales</h2>
-            <!-- <canvas id="productoChart"></canvas> -->
+            <h2>📈 Comparaciones por Categoría</h2>
+            <canvas id="comparacionesChart"></canvas>
         </div>
 
         <!-- 🅸 Gráfico de Distribución de Usuarios -->
         <div class="chart-container">
-            <h2>Distribución de Usuarios</h2>
-            <!-- <canvas id="usuariosChart"></canvas> -->
+            <h2>👥 Distribución de Usuarios</h2>
+            <canvas id="usuariosChart"></canvas>
         </div>
 
         <!-- 🅹 Historial de Actividad -->
         <div class="activity-log">
-            <h2>Últimos Movimientos</h2>
+            <h2>📝 Últimos Movimientos</h2>
             <table>
-                <tr>
-                    <th>Fecha</th>
-                    <th>Usuario</th>
-                    <th>Acción</th>
-                </tr>
-                <tr>
-                    <td>18/03/2025</td>
-                    <td>Juan Pérez</td>
-                    <td>Actualizó un producto</td>
-                </tr>
-                <tr>
-                    <td>17/03/2025</td>
-                    <td>María López</td>
-                    <td>Registró un nuevo usuario</td>
-                </tr>
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Usuario</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="historial-tbody">
+                    <!-- 🔹 Aquí se insertarán las filas dinámicamente -->
+                </tbody>
             </table>
         </div>
 
