@@ -1072,6 +1072,52 @@ app.get("/api/metricas", async (req, res) => {
   }
 });
 
+// 📊 API para los reportes
+/**
+ * 
+ * Ruta: GET /api/reportes
+ */
+app.get("/api/reportes", async (req, res) => {
+  try {
+    // 📊 Obtener métricas reales desde MongoDB
+    const totalUsuarios = await db.collection("Usuarios").countDocuments();
+    const usuariosActivos = await db.collection("Usuarios").countDocuments({ activo: true }); // Si tienes un campo 'activo'
 
+    const totalProductos = await db.collection("Productos").countDocuments();
+    const totalSupermercados = await db.collection("Supermercados").countDocuments();
 
+    // 🔹 Obtener los productos más comparados (asumiendo que hay un campo 'comparaciones')
+    const productosMasComparados = await db.collection("Productos")
+      .find()
+      .sort({ comparaciones: -1 })
+      .limit(1)
+      .toArray();
+
+    const productoMasComparado = productosMasComparados.length > 0 ? productosMasComparados[0].Nombre : "N/A";
+
+    // 📈 Comparaciones por categoría
+    const comparacionesPorCategoria = await db.collection("Productos").aggregate([
+      { $group: { _id: "$Categoria", total: { $sum: "$comparaciones" } } },
+      { $sort: { total: -1 } }
+    ]).toArray();
+
+    // 📝 Obtener el historial de actividad
+    const historial = await db.collection("Historial").find().sort({ fecha: -1 }).limit(10).toArray();
+
+    // 📌 Enviar la respuesta con los datos reales
+    res.json({
+      totalUsuarios,
+      usuariosActivos,
+      totalProductos,
+      totalSupermercados,
+      productoMasComparado,
+      comparacionesPorCategoria,
+      historial
+    });
+
+  } catch (error) {
+    console.error("❌ Error obteniendo reportes:", error);
+    res.status(500).json({ error: "Error al obtener reportes" });
+  }
+});
 
