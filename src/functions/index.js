@@ -56,7 +56,13 @@ function manejarCookies() {
     });
 
     rechazarBtn.addEventListener("click", () => {
-      alert("Debes aceptar las cookies para poder acceder a la página.");
+      // Reemplazamos el alert() por SweetAlert2
+      Swal.fire({
+        icon: 'warning',
+        title: '⚠️ Cookies Rechazadas',
+        text: 'Debes aceptar las cookies para poder acceder a la página.',
+        confirmButtonText: 'Aceptar'
+      });
     });
   }
 }
@@ -132,8 +138,13 @@ function restringirAccesoProductos() {
 
         if (!user) {
           event.preventDefault(); // Bloquea la navegación
-          // Mostrar una alerta para que el usuario sepa que debe iniciar sesión
-          alert("Debes iniciar sesión para acceder a esta sección.");
+          // Mostrar una alerta de SweetAlert2 en lugar del alert tradicional
+          Swal.fire({
+            icon: 'warning',
+            title: '⚠️ Acceso restringido',
+            text: 'Debes iniciar sesión para acceder a esta sección.',
+            confirmButtonText: 'Aceptar'
+          });
         }
       });
     });

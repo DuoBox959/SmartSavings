@@ -17,7 +17,12 @@ loginForm.addEventListener("submit", async (event) => {
   const password = passwordInput.value;
 
   if (!email || !password) {
-    alert("⚠️ Por favor, completa todos los campos.");
+    Swal.fire({
+      icon: 'warning',
+      title: '⚠️ Campos incompletos',
+      text: 'Por favor, completa todos los campos.',
+      confirmButtonText: 'Aceptar'
+    });
     return;
   }
 
@@ -42,10 +47,25 @@ loginForm.addEventListener("submit", async (event) => {
       role: data.user.rol
     }));
 
-    alert(`✅ Inicio de sesión exitoso. ¡Bienvenido, ${data.user.nombre}!`);
-    window.location.href = "index.html"; // Redirigir a la página principal
+    // Mostrar mensaje de éxito con SweetAlert2
+    Swal.fire({
+      icon: 'success',
+      title: `✅ Inicio de sesión exitoso`,
+      text: `¡Bienvenido, ${data.user.nombre}!`,
+      confirmButtonText: 'Aceptar'
+    }).then(() => {
+      // Redirigir a la página principal después de cerrar la alerta
+      window.location.href = "index.html"; // Redirigir a la página principal
+    });
+
   } catch (error) {
     console.error("❌ Error en login:", error);
-    alert(error.message);
+    // Mostrar mensaje de error con SweetAlert2
+    Swal.fire({
+      icon: 'error',
+      title: '¡Error!',
+      text: error.message,
+      confirmButtonText: 'Aceptar'
+    });
   }
 });
