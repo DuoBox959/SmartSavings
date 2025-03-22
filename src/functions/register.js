@@ -1,12 +1,16 @@
-import { db } from "../libs/dbuser.js";
 import { volverAtras } from "../functions/global/funciones.js";
 
-const registerForm = document.querySelector("form");
+// Obtener el botón y agregarle el event listener
+const backButton = document.querySelector(".back-button");
+
+backButton.addEventListener("click", volverAtras);
+
+
+const registerForm = document.getElementById("register-form");
 const usernameInput = document.getElementById("username");
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
-
-window.volverAtras = volverAtras;
+const roleSelect = document.getElementById("role");
 
 registerForm.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -14,6 +18,7 @@ registerForm.addEventListener("submit", async (event) => {
   const username = usernameInput.value.trim();
   const email = emailInput.value.trim();
   const password = passwordInput.value.trim();
+  const role = roleSelect.value;  // Obtener el rol seleccionado
 
   // Validación de campos
   if (!username || !email || !password) {
@@ -21,24 +26,32 @@ registerForm.addEventListener("submit", async (event) => {
     return;
   }
 
+  // Crear objeto para el nuevo usuario
+  const newUser = {
+    nombre: username,
+    pass: password,
+    email: email,
+    rol: role,  // Asignar el rol seleccionado
+  };
+
   try {
-    // Crear un nuevo usuario en la base de datos
-    const newUser = {
-      _id: new Date().toISOString(),
-      name: username,
-      email: email,
-      password: password,
-    };
+    // Enviar los datos al servidor usando fetch
+    const response = await fetch("http://localhost:3000/api/usuarios", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newUser),
+    });
 
-    await db.put(newUser);
+    const data = await response.json();
 
-    // Guardar el usuario en sessionStorage para mantenerlo autenticado
-    sessionStorage.setItem("user", JSON.stringify(newUser));
-
-    alert("Usuario registrado correctamente. Redirigiendo al inicio...");
-
-    // Redirigir al index ya logueado
-    window.location.href = "index.html";
+    if (response.ok) {
+      alert("Usuario registrado correctamente. Redirigiendo al inicio...");
+      window.location.href = "index.html";
+    } else {
+      throw new Error(data.error || "Error al registrar el usuario.");
+    }
   } catch (error) {
     console.error("Error al registrar el usuario:", error);
     alert("Error al registrar el usuario. Por favor, inténtalo de nuevo.");

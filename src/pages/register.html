@@ -8,9 +8,6 @@
     <!-- ✅ Estilos CSS -->
     <link rel="stylesheet" href="../style/register.css" />
 
-    <!-- ✅ Librería PouchDB (Base de Datos Local) -->
-    <script src="../libs/pouchdb-9.0.0.min.js"></script>
-
     <!-- ✅ Archivos JS para validaciones y lógica de registro -->
     <script type="module" src="../functions/global/funciones.js" defer></script>
     <script type="module" src="../functions/register.js" defer></script>
@@ -30,7 +27,7 @@
       <div class="right-section">
         <h2>Regístrate en ComparaTú</h2>
 
-        <form action="#" method="post">
+        <form id="register-form">
           <!-- 🔹 Campo: Email -->
           <label for="email">Email</label>
           <input
@@ -55,7 +52,7 @@
             minúscula.</small
           >
 
-          <!-- 🔹 Campo: Nombre de usuario -->
+          <!-- 🔹 Campo: Usuario -->
           <label for="username">Usuario</label>
           <input
             type="text"
@@ -67,7 +64,15 @@
           <small
             >Solo caracteres alfanuméricos y guiones. No puede iniciar ni
             terminar con guión.</small
-          >
+          />
+
+          <!-- 🔹 Campo: Rol -->
+          <label for="role">Rol</label>
+          <select id="role" name="role" required>
+            <option value="Usuario">Usuario</option>
+            <option value="Administrador">Administrador</option>
+            <option value="Invitado">Invitado</option>
+          </select>
 
           <!-- 🔥 Botón para registrarse -->
           <button type="submit">Continuar →</button>
@@ -78,9 +83,8 @@
           </p>
 
           <!-- 🔙 Botón para regresar atrás -->
-          <button type="button" class="back-button" onclick="volverAtras()">
-            Volver Atrás
-          </button>
+          <button type="button" class="back-button">Volver Atrás</button>
+
 
           <!-- 📜 Políticas y términos -->
           <p class="terms">
