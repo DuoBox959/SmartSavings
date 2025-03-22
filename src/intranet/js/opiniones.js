@@ -231,8 +231,18 @@ function cerrarFormulario() {
 
 // ✅ Eliminar una opinión
 async function eliminarOpinion(id) {
-  const confirmacion = confirm("¿Estás seguro de eliminar esta opinión?");
-  if (!confirmacion) return;
+  const result = await Swal.fire({
+    title: "¿Estás seguro?",
+    text: "Esta acción no se puede deshacer",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar",
+  });
+
+  if (!result.isConfirmed) return;
 
   try {
     const response = await fetch(`http://localhost:3000/api/opiniones/${id}`, {
@@ -253,8 +263,11 @@ async function eliminarOpinion(id) {
 
     // 🟢 También actualizar el cache eliminando la opinión eliminada
     opinionesCache = opinionesCache.filter((opinion) => opinion._id !== id);
+
+    await Swal.fire("Eliminado", "La opinión ha sido eliminada.", "success");
   } catch (err) {
     console.error("❌ Error eliminando opinión:", err);
+    Swal.fire("Error", "No se pudo eliminar la opinión.", "error");
   }
 }
 

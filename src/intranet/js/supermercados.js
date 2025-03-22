@@ -170,8 +170,18 @@ function editarSupermercado(id) {
 
 // ✅ Eliminar un supermercado
 async function eliminarSupermercado(id) {
-  const confirmacion = confirm("¿Estás seguro de eliminar este supermercado?");
-  if (!confirmacion) return;
+  const result = await Swal.fire({
+    title: "¿Estás seguro?",
+    text: "Esta acción no se puede deshacer",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar",
+  });
+
+  if (!result.isConfirmed) return;
 
   try {
     const response = await fetch(
@@ -183,9 +193,12 @@ async function eliminarSupermercado(id) {
 
     if (!response.ok) throw new Error("Error al eliminar supermercado");
 
+    await Swal.fire("Eliminado", "El supermercado ha sido eliminado.", "success");
+
     await cargarSupermercados();
   } catch (err) {
     console.error("❌ Error eliminando supermercado:", err);
+    Swal.fire("Error", "No se pudo eliminar el supermercado.", "error");
   }
 }
 

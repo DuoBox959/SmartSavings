@@ -135,8 +135,18 @@ function editarProveedor(id) {
 }
 // 🟢 Eliminar proveedor
 async function eliminarProveedor(id) {
-  const confirmacion = confirm("❗ ¿Estás seguro de eliminar este proveedor?");
-  if (!confirmacion) return;
+  const result = await Swal.fire({
+    title: "¿Estás seguro?",
+    text: "Esta acción no se puede deshacer",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar",
+  });
+
+  if (!result.isConfirmed) return;
 
   try {
     const response = await fetch(`http://localhost:3000/api/proveedor/${id}`, {
@@ -145,9 +155,12 @@ async function eliminarProveedor(id) {
 
     if (!response.ok) throw new Error("❌ Error al eliminar proveedor");
 
+    await Swal.fire("Eliminado", "El proveedor ha sido eliminado.", "success");
+
     await cargarProveedores(); // Recargar la tabla después de eliminar
   } catch (err) {
     console.error("❌ Error eliminando proveedor:", err);
+    Swal.fire("Error", "No se pudo eliminar el proveedor.", "error");
   }
 }
 

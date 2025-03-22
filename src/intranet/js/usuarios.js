@@ -223,8 +223,18 @@ function editarUsuario(id) {
 
 // 🟢 Eliminar usuario
 async function eliminarUsuario(id) {
-  const confirmacion = confirm("¿Estás seguro de eliminar este usuario?");
-  if (!confirmacion) return;
+  const result = await Swal.fire({
+    title: "¿Estás seguro?",
+    text: "Esta acción no se puede deshacer",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar",
+  });
+
+  if (!result.isConfirmed) return;
 
   try {
     const response = await fetch(`http://localhost:3000/api/usuarios/${id}`, {
@@ -233,11 +243,15 @@ async function eliminarUsuario(id) {
 
     if (!response.ok) throw new Error("Error al eliminar usuario");
 
+    await Swal.fire("Eliminado", "El usuario ha sido eliminado.", "success");
+
     await cargarUsuarios();
   } catch (err) {
     console.error("❌ Error eliminando usuario:", err);
+    Swal.fire("Error", "No se pudo eliminar el usuario.", "error");
   }
 }
+
 function mostrarMensajeInicioSesion(usuarioNombre) {
   Swal.fire({
     title: "¡Bienvenido! 🎉",

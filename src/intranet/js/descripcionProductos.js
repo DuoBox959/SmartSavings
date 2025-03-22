@@ -232,8 +232,18 @@ window.verIngredientes = function (ingredientes) {
 
 // ✅ Eliminar una descripción
 async function eliminarDescripcion(id) {
-  const confirmacion = confirm("¿Estás seguro de eliminar esta descripción?");
-  if (!confirmacion) return;
+  const result = await Swal.fire({
+    title: "¿Estás seguro?",
+    text: "Esta acción no se puede deshacer",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar",
+  });
+
+  if (!result.isConfirmed) return;
 
   try {
     const response = await fetch(`http://localhost:3000/api/descripcion/${id}`, {
@@ -242,9 +252,12 @@ async function eliminarDescripcion(id) {
 
     if (!response.ok) throw new Error("Error al eliminar descripción");
 
+    await Swal.fire("Eliminado", "La descripción ha sido eliminada.", "success");
+
     await cargarDescripciones();
   } catch (err) {
     console.error("❌ Error eliminando descripción:", err);
+    Swal.fire("Error", "No se pudo eliminar la descripción.", "error");
   }
 }
 

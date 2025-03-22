@@ -247,8 +247,18 @@ function llenarSelect(selector, datos) {
 }
 
 async function eliminarProducto(id) {
-  const confirmacion = confirm("¿Estás seguro de eliminar este producto?");
-  if (!confirmacion) return;
+  const result = await Swal.fire({
+    title: "¿Estás seguro?",
+    text: "Esta acción no se puede deshacer",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar",
+  });
+
+  if (!result.isConfirmed) return;
 
   try {
     const response = await fetch(`http://localhost:3000/api/productos/${id}`, {
@@ -257,9 +267,12 @@ async function eliminarProducto(id) {
 
     if (!response.ok) throw new Error("Error al eliminar producto");
 
+    await Swal.fire("Eliminado", "El producto ha sido eliminado.", "success");
+
     await cargarProductos();
   } catch (err) {
     console.error("❌ Error eliminando producto:", err);
+    Swal.fire("Error", "No se pudo eliminar el producto.", "error");
   }
 }
 
