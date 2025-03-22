@@ -258,6 +258,28 @@ async function eliminarOpinion(id) {
   }
 }
 
+document.addEventListener("DOMContentLoaded", function () {
+  const calificacionInput = document.getElementById("calificacionOpinion");
+
+  function validarRangoInput(input, min, max) {
+      let valor = parseInt(input.value, 10);
+
+      if (isNaN(valor)) return; // Evita errores si el input está vacío
+
+      if (valor < min) {
+          input.value = min;
+      } else if (valor > max) {
+          input.value = max;
+      }
+  }
+
+  if (calificacionInput) {
+      calificacionInput.addEventListener("input", function () {
+          validarRangoInput(calificacionInput, 1, 10);
+      });
+  }
+});
+
 // ✅ Exponer funciones globales
 window.mostrarFormularioAgregar = mostrarFormularioAgregar;
 window.cerrarFormulario = cerrarFormulario;
