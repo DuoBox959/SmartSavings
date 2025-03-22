@@ -127,6 +127,38 @@ form button:hover {
   background: #185f1a;
 }
 
+/* 🎛️ Estilo para el Select */
+form select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #b0bec5;
+  border-radius: 5px;
+  font-size: 14px;
+  background: #ffffff;
+  color: #1e3c5a;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* 📌 Agregar un icono de flecha personalizada */
+form select::-ms-expand {
+  display: none;
+}
+
+form select:focus {
+  border-color: #237f27;
+  outline: none;
+}
+
+/* 📌 Ajuste cuando el select está deshabilitado */
+form select:disabled {
+  background: #e0e0e0;
+  color: #999;
+  cursor: not-allowed;
+}
+
 /* 📌 Ajuste del texto "¿Ya tienes cuenta? Inicia sesión aquí" */
 .login-link {
   text-align: center;
