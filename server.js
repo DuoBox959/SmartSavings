@@ -238,6 +238,25 @@ app.delete("/api/usuarios/:id", async (req, res) => {
   }
 });
 
+// 🔍 Buscar usuario por email para eliminarlo desde el lado cliente
+app.get("/api/usuarios/email/:email", async (req, res) => {
+  try {
+    const { email } = req.params;
+
+    const user = await db.collection("Usuarios").findOne({ email: email });
+
+    if (!user) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
+    }
+
+    res.json(user);
+  } catch (err) {
+    console.error("❌ Error al buscar usuario:", err);
+    res.status(500).json({ error: "Error al buscar usuario" });
+  }
+});
+
+
 // =============================================
 // 🅳️ CRUD DE PRODUCTOS
 // =============================================

@@ -5,7 +5,6 @@ const backButton = document.querySelector(".back-button");
 
 backButton.addEventListener("click", volverAtras);
 
-
 const registerForm = document.getElementById("register-form");
 const usernameInput = document.getElementById("username");
 const emailInput = document.getElementById("email");
@@ -47,13 +46,25 @@ registerForm.addEventListener("submit", async (event) => {
     const data = await response.json();
 
     if (response.ok) {
-      alert("Usuario registrado correctamente. Redirigiendo al inicio...");
-      window.location.href = "index.html";
+      Swal.fire({
+        icon: "success",
+        title: "Registro exitoso",
+        text: "Usuario registrado correctamente. Redirigiendo al inicio...",
+        confirmButtonText: "Aceptar",
+      }).then(() => {
+        window.location.href = "index.html";
+      });
     } else {
       throw new Error(data.error || "Error al registrar el usuario.");
     }
-  } catch (error) {
-    console.error("Error al registrar el usuario:", error);
-    alert("Error al registrar el usuario. Por favor, inténtalo de nuevo.");
-  }
+    
+    } catch (error) {
+      console.error("Error al registrar el usuario:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Error al registrar el usuario. Por favor, inténtalo de nuevo.",
+        confirmButtonText: "Intentar de nuevo",
+      });
+    }
 });
