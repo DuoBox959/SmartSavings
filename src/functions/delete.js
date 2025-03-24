@@ -104,3 +104,31 @@ function configurarFormulario() {
     }
   });
 }
+
+// Función para mostrar/ocultar contraseñas
+function configurarMostrarContrasena() {
+  const passwordField = document.getElementById("password");
+  const confirmPasswordField = document.getElementById("confirm-password");
+  const togglePasswordButton = document.getElementById("togglePassword");
+  const toggleConfirmPasswordButton = document.getElementById("toggleConfirmPassword");
+
+  if (!passwordField || !confirmPasswordField || !togglePasswordButton || !toggleConfirmPasswordButton) return;
+
+  togglePasswordButton.addEventListener("click", () => {
+    const isPassword = passwordField.type === "password";
+    passwordField.type = isPassword ? "text" : "password";
+    togglePasswordButton.textContent = isPassword ? "👁️‍🗨️" : "👁️"; // Cambiar icono: ojo gris cuando está oculto, ojo abierto cuando está visible
+  });
+
+  toggleConfirmPasswordButton.addEventListener("click", () => {
+    const isConfirmPassword = confirmPasswordField.type === "password";
+    confirmPasswordField.type = isConfirmPassword ? "text" : "password";
+    toggleConfirmPasswordButton.textContent = isConfirmPassword ? "👁️‍🗨️" : "👁️"; // Cambiar icono: ojo gris cuando está oculto, ojo abierto cuando está visible
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  configurarMostrarContrasena();
+});
+
+
