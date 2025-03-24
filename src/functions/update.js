@@ -107,7 +107,7 @@ function configurarFormulario() {
       console.log("Datos enviados:", updateData); // Asegúrate de ver los datos enviados
 
       // Hacer la solicitud PUT al servidor
-      const response = await fetch(`/api/usuarios/${currentUser.id}`, {
+        const response = await fetch(`http://localhost:3000/api/usuarios/${currentUser.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -115,13 +115,14 @@ function configurarFormulario() {
         body: JSON.stringify(updateData),
       });
 
-      // Verificar si la respuesta es exitosa
+     // Verificar si la respuesta es exitosa
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Error desconocido");
+        const errorText = await response.text(); // Leer como texto para evitar errores de parseo
+        throw new Error(`Error: ${response.status} - ${errorText}`);
       }
 
-      const data = await response.json(); // Procesar la respuesta en JSON
+      const data = await response.json(); // Si pasó el if, aquí ya es seguro parsear JSON
+
       console.log(data);
       alert("Datos actualizados correctamente.");
 
