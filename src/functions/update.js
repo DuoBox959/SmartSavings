@@ -76,6 +76,7 @@ function manejarUsuario() {
 }
 
 // Configurar la lógica del formulario de actualización
+// Configurar la lógica del formulario de actualización
 function configurarFormulario() {
   const form = document.querySelector("form");
   form.addEventListener("submit", async (event) => {
@@ -96,48 +97,68 @@ function configurarFormulario() {
     }
 
     try {
-      // Crear el objeto con los nuevos datos
-      const updateData = {
-        nombre: username || currentUser.name,
-        email: email || currentUser.email,
-        pass: password || currentUser.password,
-        rol: role || currentUser.role, // Agregar el rol
-      };
-
-      console.log("Datos enviados:", updateData); // Asegúrate de ver los datos enviados
-
-      // Hacer la solicitud PUT al servidor
-        const response = await fetch(`http://localhost:3000/api/usuarios/${currentUser.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updateData),
+      // Confirmación con SweetAlert
+      const result = await Swal.fire({
+        title: '¿Estás seguro?',
+        text: '¿Quieres actualizar los datos?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, actualizar',
+        cancelButtonText: 'Cancelar',
       });
 
-     // Verificar si la respuesta es exitosa
-      if (!response.ok) {
-        const errorText = await response.text(); // Leer como texto para evitar errores de parseo
-        throw new Error(`Error: ${response.status} - ${errorText}`);
+      // Si el usuario confirma, proceder con la actualización
+      if (result.isConfirmed) {
+        // Crear el objeto con los nuevos datos
+        const updateData = {
+          nombre: username || currentUser.name,
+          email: email || currentUser.email,
+          pass: password || currentUser.password,
+          rol: role || currentUser.role, // Agregar el rol
+        };
+
+        console.log("Datos enviados:", updateData); // Asegúrate de ver los datos enviados
+
+        // Hacer la solicitud PUT al servidor
+        const response = await fetch(`http://localhost:3000/api/usuarios/${currentUser.id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updateData),
+        });
+
+        // Verificar si la respuesta es exitosa
+        if (!response.ok) {
+          const errorText = await response.text(); // Leer como texto para evitar errores de parseo
+          throw new Error(`Error: ${response.status} - ${errorText}`);
+        }
+
+        const data = await response.json(); // Si pasó el if, aquí ya es seguro parsear JSON
+
+        console.log(data);
+
+        // Mostrar un mensaje de éxito con SweetAlert
+        await Swal.fire({
+          title: '¡Éxito!',
+          text: 'Los datos se han actualizado correctamente, redirigiendo a Inicio.',
+          icon: 'success',
+          confirmButtonText: 'Aceptar',
+        });
+
+        // Actualizar los datos en sessionStorage/localStorage
+        const updatedUser = {
+          ...currentUser,
+          name: data.usuario.nombre,
+          email: data.usuario.email,
+          role: data.usuario.rol,
+        };
+        sessionStorage.setItem("user", JSON.stringify(updatedUser));
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+
+        // Redirigir al index ya logueado
+        window.location.href = "index.html";
       }
-
-      const data = await response.json(); // Si pasó el if, aquí ya es seguro parsear JSON
-
-      console.log(data);
-      alert("Datos actualizados correctamente.");
-
-      // Actualizar los datos en sessionStorage/localStorage
-      const updatedUser = {
-        ...currentUser,
-        name: data.usuario.nombre,
-        email: data.usuario.email,
-        role: data.usuario.rol,
-      };
-      sessionStorage.setItem("user", JSON.stringify(updatedUser));
-      localStorage.setItem("user", JSON.stringify(updatedUser));
-
-      // Redirigir al index ya logueado
-      window.location.href = "index.html";
     } catch (error) {
       console.error("Error al actualizar los datos del usuario:", error);
     }
