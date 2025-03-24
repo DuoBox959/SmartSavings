@@ -76,7 +76,7 @@ async function cargarPrecios() {
           ? precio.precioActual.toFixed(2) + " €"
           : "N/A",
         typeof precio.precioDescuento === "number"
-          ? precio.precioDescuento.toFixed(2) + " €"
+          ? precio.precioDescuento.toFixed(0) + " %"
           : "N/A",
         precio.unidadLote || "N/A",
         `<button class="btn btn-primary" onclick="verPrecioHistorico('${precio._id}')">Ver Precio Histórico</button>`,
