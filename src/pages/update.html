@@ -8,9 +8,6 @@
     <!-- ✅ Estilos CSS -->
     <link rel="stylesheet" href="../style/update.css" />
 
-    <!-- ✅ Librería PouchDB (Base de Datos Local) -->
-    <script src="../libs/pouchdb-9.0.0.min.js"></script>
-
     <!-- ✅ Archivo JS para la lógica de actualización de cuenta -->
     <script type="module" src="../functions/update.js" defer></script>
   </head>
@@ -48,6 +45,14 @@
             name="password"
             placeholder="Actualiza tu contraseña"
           />
+
+          <!-- 🔹 Campo: Rol -->
+          <label for="role">Rol:</label>
+          <select id="role" name="role">
+            <option value="invitado">Invitado</option>
+            <option value="usuario">Usuario</option>
+            <option value="administrador">Administrador</option>
+          </select>
 
           <!-- 🔥 Botón para actualizar datos -->
           <button type="submit">Actualizar datos</button>

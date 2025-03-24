@@ -41,11 +41,12 @@ loginForm.addEventListener("submit", async (event) => {
     }
 
     // ✅ Guardar la sesión
-    sessionStorage.setItem("user", JSON.stringify({ 
-      name: data.user.nombre, 
-      email: data.user.email,
-      role: data.user.rol
-    }));
+sessionStorage.setItem("user", JSON.stringify({ 
+  id: data.user._id,  // Agregar el ID aquí
+  name: data.user.nombre, 
+  email: data.user.email,
+  role: data.user.rol
+}));
 
     // Mostrar mensaje de éxito con SweetAlert2
     Swal.fire({

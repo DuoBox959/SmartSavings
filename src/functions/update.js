@@ -1,7 +1,5 @@
 // Importar funciones necesarias
-import { gestionarUsuarioAutenticado } from "../functions/global/header.js";
 import { cerrarSesion, volverAtras } from "../functions/global/funciones.js";
-import { db, findUserByEmail } from "../libs/dbuser.js"; // Importar la base de datos y la función de búsqueda
 
 // Asignar funciones a `window`
 window.volverAtras = volverAtras;
@@ -9,8 +7,6 @@ window.volverAtras = volverAtras;
 // Evento que se ejecuta cuando el DOM se ha cargado completamente
 document.addEventListener("DOMContentLoaded", async () => {
   try {
-    // await cargarHeaderFooter();
-    gestionarUsuarioAutenticado();
     manejarUsuario();
     configurarFormulario(); // Configurar la lógica del formulario
   } catch (error) {
@@ -22,12 +18,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 function manejarUsuario() {
   let user = null;
   try {
+    // Intentar obtener el usuario desde sessionStorage o localStorage
     user =
       JSON.parse(sessionStorage.getItem("user")) ||
       JSON.parse(localStorage.getItem("user"));
   } catch (error) {
     console.error("Error al leer los datos del usuario:", error);
   }
+
+  // Verificar que el usuario está correctamente asignado
+  if (!user || !user.id) {
+    console.error("No se encontró un usuario válido.");
+    return;
+  }
+
+  // Imprimir el objeto user para ver qué contiene
+  console.log("Usuario en manejarUsuario:", user);
 
   const registerLink = document.getElementById("registerLink");
   const loginLink = document.getElementById("loginLink");
@@ -37,7 +43,7 @@ function manejarUsuario() {
   const logout = document.getElementById("logout");
   const deleteAccount = document.getElementById("deleteAccount");
 
-  // 🛑 Verificar si los elementos existen antes de modificarlos
+  // Mostrar los enlaces de usuario o registro
   if (registerLink && loginLink && userDropdown) {
     if (user) {
       registerLink.style.display = "none";
@@ -78,44 +84,59 @@ function configurarFormulario() {
     const username = document.getElementById("username").value;
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
+    const role = document.getElementById("role").value; // Obtener el rol seleccionado
 
     const currentUser =
       JSON.parse(sessionStorage.getItem("user")) ||
       JSON.parse(localStorage.getItem("user"));
 
-    if (!currentUser || !currentUser.email) {
-      return console.error("No se encontró un usuario autenticado.");
+    // Verificar que currentUser y currentUser.id estén presentes
+    if (!currentUser || !currentUser.id) {
+      return console.error("No se encontró un usuario autenticado o el ID es inválido.");
     }
 
     try {
-      const userDoc = await findUserByEmail(currentUser.email);
+      // Crear el objeto con los nuevos datos
+      const updateData = {
+        nombre: username || currentUser.name,
+        email: email || currentUser.email,
+        pass: password || currentUser.password,
+        rol: role || currentUser.role, // Agregar el rol
+      };
 
-      if (userDoc) {
-        // Actualizar los campos del usuario
-        userDoc.name = username || userDoc.name;
-        userDoc.email = email || userDoc.email;
-        userDoc.password = password || userDoc.password;
+      console.log("Datos enviados:", updateData); // Asegúrate de ver los datos enviados
 
-        // Guardar los cambios en la base de datos
-        await db.put(userDoc);
-        console.log("Datos actualizados con éxito.");
+      // Hacer la solicitud PUT al servidor
+      const response = await fetch(`/api/usuarios/${currentUser.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updateData),
+      });
 
-        // Actualizar los datos en sessionStorage/localStorage
-        const updatedUser = {
-          ...currentUser,
-          name: userDoc.name,
-          email: userDoc.email,
-        };
-        sessionStorage.setItem("user", JSON.stringify(updatedUser));
-        localStorage.setItem("user", JSON.stringify(updatedUser));
-
-        alert("Datos actualizados correctamente.");
-
-        // Redirigir al index ya logueado
-        window.location.href = "index.html";
-      } else {
-        console.error("Usuario no encontrado en la base de datos.");
+      // Verificar si la respuesta es exitosa
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Error desconocido");
       }
+
+      const data = await response.json(); // Procesar la respuesta en JSON
+      console.log(data);
+      alert("Datos actualizados correctamente.");
+
+      // Actualizar los datos en sessionStorage/localStorage
+      const updatedUser = {
+        ...currentUser,
+        name: data.usuario.nombre,
+        email: data.usuario.email,
+        role: data.usuario.rol,
+      };
+      sessionStorage.setItem("user", JSON.stringify(updatedUser));
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+
+      // Redirigir al index ya logueado
+      window.location.href = "index.html";
     } catch (error) {
       console.error("Error al actualizar los datos del usuario:", error);
     }
