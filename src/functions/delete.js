@@ -30,11 +30,26 @@ async function eliminarUsuario(userId) {
 // Configurar la lógica del formulario de eliminación
 function configurarFormulario() {
   const form = document.querySelector("form");
+  const usernameInput = document.getElementById("username");
+  const emailInput = document.getElementById("email");
+
+  // Obtener datos del usuario desde sessionStorage o localStorage
+  const currentUser = JSON.parse(sessionStorage.getItem("user")) || JSON.parse(localStorage.getItem("user"));
+
+  if (currentUser) {
+    usernameInput.value = currentUser.name || "";
+    emailInput.value = currentUser.email || "";
+
+    // Hacer los campos de solo lectura
+    usernameInput.setAttribute("readonly", true);
+    emailInput.setAttribute("readonly", true);
+  }
+
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    const username = document.getElementById("username").value;
-    const email = document.getElementById("email").value;
+    const username = usernameInput.value;
+    const email = emailInput.value;
     const password = document.getElementById("password").value;
     const confirmPassword = document.getElementById("confirm-password").value;
 
@@ -42,8 +57,6 @@ function configurarFormulario() {
       Swal.fire("Error", "Las contraseñas no coinciden.", "error");
       return;
     }
-
-    const currentUser = JSON.parse(sessionStorage.getItem("user")) || JSON.parse(localStorage.getItem("user"));
 
     if (!currentUser || currentUser.email !== email) {
       Swal.fire("Error", "No se encontró un usuario autenticado o el email no coincide.", "error");
@@ -54,12 +67,11 @@ function configurarFormulario() {
       const response = await fetch(`http://localhost:3000/api/usuarios/email/${email}`);
       const userData = await response.json();
       
-      if (!response.ok || userData.pass !== password || userData.nombre !== username) {
+      if (!response.ok || userData.pass !== password || userData.name !== username) {
         Swal.fire("Error", "Los datos proporcionados no coinciden con la cuenta.", "error");
         return;
       }
 
-      // 🔥 Confirmación antes de eliminar
       Swal.fire({
         title: "¿Estás seguro?",
         text: "Esta acción no se puede deshacer.",
