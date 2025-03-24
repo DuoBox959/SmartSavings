@@ -20,7 +20,7 @@ async function eliminarUsuario(userId) {
       throw new Error("Error al eliminar la cuenta");
     }
 
-    return await response.json();
+    return await response.json(); // Suponiendo que el servidor devuelve un mensaje de éxito
   } catch (error) {
     console.error("Error en la solicitud:", error);
     Swal.fire("Error", "No se pudo eliminar la cuenta. Inténtalo de nuevo.", "error");
@@ -66,8 +66,10 @@ function configurarFormulario() {
     try {
       const response = await fetch(`http://localhost:3000/api/usuarios/email/${email}`);
       const userData = await response.json();
+
+      console.log(userData);  // Imprimir la respuesta de la API para verificar la estructura
       
-      if (!response.ok || userData.pass !== password || userData.name !== username) {
+      if (!response.ok || userData.pass !== password || userData.nombre !== username) {
         Swal.fire("Error", "Los datos proporcionados no coinciden con la cuenta.", "error");
         return;
       }
@@ -83,7 +85,8 @@ function configurarFormulario() {
         cancelButtonText: "Cancelar"
       }).then(async (result) => {
         if (result.isConfirmed) {
-          await eliminarUsuario(userData._id);
+          // Llamada a la función eliminarUsuario pasando el ID del usuario
+          await eliminarUsuario(currentUser.id);
           sessionStorage.removeItem("user");
           localStorage.removeItem("user");
 
@@ -130,5 +133,6 @@ function configurarMostrarContrasena() {
 document.addEventListener("DOMContentLoaded", () => {
   configurarMostrarContrasena();
 });
+
 
 
