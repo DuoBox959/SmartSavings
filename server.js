@@ -453,6 +453,56 @@ app.delete("/api/productos/:id", async (req, res) => {
     res.status(500).json({ error: "Error al eliminar producto" });
   }
 });
+/**
+ * ✅ Obtener precios con nombre de producto y supermercado
+ * Ruta: GET /api/comparador-precios NUEVO
+ */
+app.get("/api/comparador-precios", async (req, res) => {
+  try {
+    const precios = await db.collection("Precios").aggregate([
+      {
+        $lookup: {
+          from: "Productos",
+          localField: "producto_id",
+          foreignField: "_id",
+          as: "ProductoInfo"
+        }
+      },
+      {
+        $unwind: "$ProductoInfo" // 🧨 Para poder usar los campos de Producto directamente
+      },
+      {
+        $lookup: {
+          from: "Supermercados",
+          localField: "ProductoInfo.Supermercado_id",
+          foreignField: "_id",
+          as: "SupermercadoInfo"
+        }
+      },
+      {
+        $unwind: "$SupermercadoInfo" // 🧨 También lo desenrollamos
+      },
+      {
+        $project: {
+          _id: 1,
+          precioActual: 1,
+          precioDescuento: 1,
+          unidadLote: 1,
+          Nombre: "$ProductoInfo.Nombre",
+          Supermercado: "$SupermercadoInfo.Nombre",
+          Peso: "$ProductoInfo.Peso",
+          UnidadPeso: "$ProductoInfo.UnidadPeso"
+        }
+      }
+    ]).toArray();
+
+    res.json(precios);
+  } catch (err) {
+    console.error("❌ Error en /api/comparador-precios:", err);
+    res.status(500).json({ error: "Error al obtener precios para comparación" });
+  }
+});
+
 
 // =============================================
 // 🅴 CRUD DE PRECIOS: Ver porque no sale lista de precio historico y convertirlo en boton para verlos todos

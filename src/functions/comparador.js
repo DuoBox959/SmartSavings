@@ -60,6 +60,7 @@ async function cargarProductos() {
   }
 }
 
+
 // 🏪 Cargar tiendas desde MongoDB según el producto seleccionado
 async function cargarTiendas(selectElement = null) {
   const productoSeleccionado = document.getElementById("producto").value;
@@ -70,17 +71,11 @@ async function cargarTiendas(selectElement = null) {
   const selects = selectElement ? [selectElement] : [tienda1Select, tienda2Select];
 
   try {
-    const response = await fetch(`${API_URL}/productos`);
+    const response = await fetch(`${API_URL}/comparador-precios`);
     const productos = await response.json();
 
-    if (!productos.length) {
-      console.warn("⚠️ No hay tiendas en la base de datos.");
-      return;
-    }
-
-    // Filtrar tiendas según el producto
     const nombresTiendas = [
-      ...new Set(productos.filter((p) => p.Nombre === productoSeleccionado).map((p) => p.Supermercado_id))
+      ...new Set(productos.filter((p) => p.Nombre === productoSeleccionado).map((p) => p.Supermercado))
     ].sort();
 
     selects.forEach((select) => crearOpciones(select, nombresTiendas));
@@ -88,6 +83,7 @@ async function cargarTiendas(selectElement = null) {
     console.error("❌ Error al cargar tiendas:", err);
   }
 }
+
 
 // ➕ Añadir un selector de tienda extra
 let contadorTiendas = 3;
@@ -130,6 +126,7 @@ function anadirSelectorTienda() {
 }
 
 // 📊 Comparar precios entre tiendas seleccionadas
+
 async function compararPrecios() {
   const productoSeleccionado = document.getElementById("producto").value;
   const resultadoDiv = document.getElementById("resultadoComparacion");
@@ -149,7 +146,7 @@ async function compararPrecios() {
   }
 
   try {
-    const response = await fetch(`${API_URL}/precios`);
+    const response = await fetch(`${API_URL}/comparador-precios`);
     const precios = await response.json();
 
     if (!precios.length) {
@@ -157,32 +154,84 @@ async function compararPrecios() {
       return;
     }
 
-    const preciosFiltrados = tiendasSeleccionadas.map((tienda) => {
-      const precio = precios.find((p) => p.producto_id === productoSeleccionado && p.Supermercado_id === tienda);
-      return {
-        tienda,
-        precioActual: parseFloat(precio?.precioActual || 0),
-        precioDescuento: parseFloat(precio?.precioDescuento || 0),
-        unidadLote: precio?.unidadLote || "N/A",
-      };
-    });
+    const preciosFiltrados = precios
+      .filter(p => p.Nombre === productoSeleccionado && tiendasSeleccionadas.includes(p.Supermercado))
+      .map(p => ({
+        tienda: p.Supermercado,
+        precioActual: parseFloat(p.precioActual || 0),
+        precioDescuento: parseFloat(p.precioDescuento || 0),
+        unidadLote: p.unidadLote || "N/A",
+        peso: parseFloat(p.Peso || 1),
+        unidadPeso: p.UnidadPeso || "KG"
+      }));
 
+    // ✅ Usamos Math.min y find como prefieres
     const precioMasBarato = Math.min(...preciosFiltrados.map((p) => p.precioActual));
     const tiendaMasBarata = preciosFiltrados.find((p) => p.precioActual === precioMasBarato);
 
-    let resultadoHTML = `<h3 style="text-align: center;">Comparación de Precios para "${productoSeleccionado}"</h3><ul>`;
-    preciosFiltrados.forEach(({ tienda, precioActual, precioDescuento, unidadLote }) => {
+    let tiendaMasEconomica = null;
+    let precioPorUnidadMin = Infinity;
+
+    let resultadoHTML = `
+      <h3 style="text-align: center; margin-bottom: 20px;">Comparación de Precios para "${productoSeleccionado}"</h3>
+      <table style="width:100%; border-collapse: collapse; text-align: center;">
+        <thead style="background-color: #f5f5f5;">
+          <tr>
+            <th style="border: 1px solid #ccc; padding: 8px;">Tienda</th>
+            <th style="border: 1px solid #ccc; padding: 8px;">Precio Actual</th>
+            <th style="border: 1px solid #ccc; padding: 8px;">Descuento</th>
+            <th style="border: 1px solid #ccc; padding: 8px;">Unidad/Lote</th>
+            <th style="border: 1px solid #ccc; padding: 8px;">Peso (KG)</th>
+            <th style="border: 1px solid #ccc; padding: 8px;">€/KG</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+
+    preciosFiltrados.forEach(({ tienda, precioActual, precioDescuento, unidadLote, peso, unidadPeso }) => {
+      // Extraer peso
+      let pesoEnKG;
+      const match = unidadLote.match(/([\d.,]+)\s*(KG|kg|L|l|UN|un|u)/);
+      if (match) {
+        pesoEnKG = parseFloat(match[1].replace(",", ".")) || peso;
+      } else {
+        pesoEnKG = peso;
+      }
+
+
+      const precioPorUnidad = precioActual / pesoEnKG;
+
+      // Determinar opción más económica por €/KG
+      if (precioPorUnidad < precioPorUnidadMin) {
+        precioPorUnidadMin = precioPorUnidad;
+        tiendaMasEconomica = { tienda, precioPorUnidad };
+      }
+
       resultadoHTML += `
-        <li><strong>${tienda}</strong>: 
-        <br>🔹 Precio Actual: <strong>${precioActual.toFixed(2)} €</strong>
-        <br>🔹 Precio con Descuento: <strong>${precioDescuento.toFixed(2)} €</strong>
-        <br>🔹 Unidad/Lote: <strong>${unidadLote}</strong>
-        </li><br>`;
+        <tr>
+          <td style="border: 1px solid #ccc; padding: 8px;"><strong>${tienda}</strong></td>
+          <td style="border: 1px solid #ccc; padding: 8px;"><u>${precioActual.toFixed(2)} €</u></td>
+          <td style="border: 1px solid #ccc; padding: 8px;"><u>${precioDescuento.toFixed(2)} €</u></td>
+          <td style="border: 1px solid #ccc; padding: 8px;"><u>${unidadLote}</u></td>
+          <td style="border: 1px solid #ccc; padding: 8px;">${peso.toFixed(2)} ${unidadPeso}</td>
+          <td style="border: 1px solid #ccc; padding: 8px;">${precioPorUnidad.toFixed(2)} €/kg</td>
+        </tr>
+      `;
     });
 
-    resultadoHTML += "</ul>";
-    resultadoHTML += `<p>🎯 <strong>La tienda más barata</strong> es <strong>${tiendaMasBarata.tienda}</strong> con un precio de <strong>${tiendaMasBarata.precioActual.toFixed(2)} €</strong>.</p><br>`;
+    resultadoHTML += `
+        </tbody>
+      </table>
+      <p style="margin-top: 20px; font-size: 1.05em; color: #2c3e50;">
+        🎯 <strong>La opción más económica</strong> es <strong>${tiendaMasEconomica.tienda}</strong>, con un mejor rendimiento en relación €/kg (${tiendaMasEconomica.precioPorUnidad.toFixed(2)} €/kg).
+      </p>
+      <p style="font-size: 1.05em; color: #2c3e50;">
+        💰 <strong>La tienda más barata</strong> es <strong>${tiendaMasBarata.tienda}</strong> con un precio total de <strong>${tiendaMasBarata.precioActual.toFixed(2)} €</strong>.
+      </p>
+    `;
+
     resultadoDiv.innerHTML = resultadoHTML;
+
   } catch (err) {
     console.error("❌ Error al comparar precios:", err);
     resultadoDiv.innerHTML = '<p style="color:red;">Ocurrió un error al comparar precios.</p>';

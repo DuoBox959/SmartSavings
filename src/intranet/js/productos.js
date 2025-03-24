@@ -192,14 +192,15 @@ async function guardarEdicionProducto() {
   if (!id) return;
 
   const formData = new FormData();
-  formData.append("nombre", $("#nombreProducto").val().trim());
-  formData.append("marca", $("#marcaProducto").val().trim());
-  formData.append("peso", $("#pesoProducto").val().trim());
-  formData.append("unidadPeso", $("#unidadPeso").val().trim());
-  formData.append("estado", $("#Estado").val());
-  formData.append("proveedor_id", $("#idProveedor").val().trim());
-  formData.append("supermercado_id", $("#idSupermercado").val().trim());
-  formData.append("usuario_id", $("#idUsuario").val().trim());
+  formData.append("nombre", $("#nombreProducto").val()?.trim() || "");
+  formData.append("marca", $("#marcaProducto").val()?.trim() || "");
+  formData.append("peso", $("#pesoProducto").val()?.trim() || "");
+  formData.append("unidadPeso", $("#unidadPeso").val()?.trim() || "");
+  formData.append("estado", $("#Estado").val()?.trim() || "");
+  formData.append("proveedor_id", $("#idProveedor").val()?.trim() || "");
+  formData.append("supermercado_id", $("#idSupermercado").val()?.trim() || "");
+  formData.append("usuario_id", $("#idUsuario").val()?.trim() || "");
+  
 
   try {
     const response = await fetch(`http://localhost:3000/api/productos/${id}`, {
