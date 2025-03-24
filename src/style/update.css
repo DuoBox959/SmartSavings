@@ -135,3 +135,43 @@ form button:hover {
   box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.2),
     -8px -8px 20px rgba(255, 255, 255, 0.8);
 }
+
+/* 🎭 Estilo para el select de roles */
+form select {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  margin-bottom: 15px;
+  background: #f0f0f0;
+  box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.1),
+    inset -4px -4px 8px rgba(255, 255, 255, 0.7);
+  transition: box-shadow 0.3s ease, background 0.3s ease;
+  appearance: none; /* Oculta la flecha nativa del select */
+  cursor: pointer;
+}
+
+/* 🎯 Efecto al enfocar */
+form select:focus {
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.7);
+  outline: none;
+}
+
+/* 🔽 Personalización de la flecha del select */
+form select::-ms-expand {
+  display: none;
+}
+
+form select:hover {
+  background: #e8e8e8;
+}
+
+/* 🎨 Estilo para opciones dentro del select */
+form select option {
+  background: white;
+  color: #2c3e34;
+  font-size: 16px;
+}
+
