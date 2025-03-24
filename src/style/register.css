@@ -194,6 +194,30 @@ form select:disabled {
   background: #237f27;
 }
 
+/* 📌 Contenedor de contraseña con icono */
+.password-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+/* 📌 Input de contraseña */
+.password-container input {
+  width: 100%;
+  padding-right: 40px; /* Espacio para el icono */
+}
+
+/* 📌 Icono de "ojo" */
+.password-container span {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  color: gray;
+  font-size: 20px;
+  user-select: none;
+}
+
 /* 📜 Estilo para el texto legal */
 .terms {
   font-size: 12px;

@@ -1,45 +1,61 @@
 import { volverAtras } from "../functions/global/funciones.js";
 
-// Obtener el botón y agregarle el event listener
+// Obtener el botón de regreso
 const backButton = document.querySelector(".back-button");
-
 backButton.addEventListener("click", volverAtras);
 
+// Obtener elementos del formulario
 const registerForm = document.getElementById("register-form");
 const usernameInput = document.getElementById("username");
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
 const roleSelect = document.getElementById("role");
+const togglePassword = document.getElementById("togglePassword");
 
+// 🔹 Evento para mostrar/ocultar contraseña
+togglePassword.addEventListener("click", function () {
+  if (passwordInput.type === "password") {
+    passwordInput.type = "text";
+    togglePassword.textContent = "👁️‍🗨️"; // Ojo abierto
+  } else {
+    passwordInput.type = "password";
+    togglePassword.textContent = "👁️"; // Ojo cerrado
+  }
+});
+
+// Evento de envío del formulario
 registerForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const username = usernameInput.value.trim();
   const email = emailInput.value.trim();
   const password = passwordInput.value.trim();
-  const role = roleSelect.value;  // Obtener el rol seleccionado
+  const role = roleSelect.value;
 
   // Validación de campos
   if (!username || !email || !password) {
-    alert("Por favor, completa todos los campos.");
+    Swal.fire({
+      icon: "warning",
+      title: "⚠️ Campos incompletos",
+      text: "Por favor, completa todos los campos.",
+      confirmButtonText: "Aceptar",
+    });
     return;
   }
 
-  // Crear objeto para el nuevo usuario
+  // Crear objeto con datos del usuario
   const newUser = {
     nombre: username,
     pass: password,
     email: email,
-    rol: role,  // Asignar el rol seleccionado
+    rol: role,
   };
 
   try {
-    // Enviar los datos al servidor usando fetch
+    // Enviar los datos al backend
     const response = await fetch("http://localhost:3000/api/usuarios", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newUser),
     });
 
@@ -48,8 +64,8 @@ registerForm.addEventListener("submit", async (event) => {
     if (response.ok) {
       Swal.fire({
         icon: "success",
-        title: "Registro exitoso",
-        text: "Usuario registrado correctamente. Redirigiendo al inicio...",
+        title: "🎉 Registro exitoso",
+        text: "Usuario registrado correctamente. Redirigiendo...",
         confirmButtonText: "Aceptar",
       }).then(() => {
         window.location.href = "index.html";
@@ -57,14 +73,13 @@ registerForm.addEventListener("submit", async (event) => {
     } else {
       throw new Error(data.error || "Error al registrar el usuario.");
     }
-    
-    } catch (error) {
-      console.error("Error al registrar el usuario:", error);
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "Error al registrar el usuario. Por favor, inténtalo de nuevo.",
-        confirmButtonText: "Intentar de nuevo",
-      });
-    }
+  } catch (error) {
+    console.error("❌ Error al registrar el usuario:", error);
+    Swal.fire({
+      icon: "error",
+      title: "❌ Error",
+      text: "Hubo un problema al registrar el usuario. Inténtalo de nuevo.",
+      confirmButtonText: "Intentar de nuevo",
+    });
+  }
 });

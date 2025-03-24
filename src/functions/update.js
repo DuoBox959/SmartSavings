@@ -8,7 +8,8 @@ window.volverAtras = volverAtras;
 document.addEventListener("DOMContentLoaded", async () => {
   try {
     manejarUsuario();
-    configurarFormulario(); // Configurar la lógica del formulario
+    configurarFormulario();
+    configurarMostrarContrasena();
   } catch (error) {
     console.error("Hubo un error durante la inicialización:", error);
   }
@@ -75,7 +76,6 @@ function manejarUsuario() {
   }
 }
 
-// Configurar la lógica del formulario de actualización
 // Configurar la lógica del formulario de actualización
 function configurarFormulario() {
   const form = document.querySelector("form");
@@ -162,5 +162,19 @@ function configurarFormulario() {
     } catch (error) {
       console.error("Error al actualizar los datos del usuario:", error);
     }
+  });
+}
+
+// Función para mostrar/ocultar contraseña
+function configurarMostrarContrasena() {
+  const passwordField = document.getElementById("password");
+  const toggleButton = document.getElementById("togglePassword");
+
+  if (!passwordField || !toggleButton) return;
+
+  toggleButton.addEventListener("click", () => {
+    const isPassword = passwordField.type === "password";
+    passwordField.type = isPassword ? "text" : "password";
+    toggleButton.textContent = isPassword ? "👁️‍🗨️" : "👁️"; // Cambiar icono
   });
 }
