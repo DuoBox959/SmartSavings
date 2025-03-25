@@ -24,6 +24,7 @@
   <body>
     <div id="sidebar-container"></div>
     <h1>Gestión de Datos Personales</h1>
+    <button onclick="mostrarFormularioAgregar()">Añadir Usuario</button>
 
     <table id="datosPersonalesTable" class="display">
       <thead>
@@ -37,9 +38,53 @@
           <th>Idioma</th>
           <th>Zona Horaria</th>
           <th>Notif. Email</th>
+          <th>Acciones</th> 
         </tr>
       </thead>
       <tbody></tbody>
     </table>
+    <!-- 🔽 Formulario oculto para crear/editar -->
+<div id="formularioDatos" style="display:none">
+  <h2 id="formTitulo">Añadir Datos Personales</h2>
+  <form onsubmit="return false;">
+    <input type="hidden" id="datoID" />
+
+    <label>Nombre:</label>
+    <input type="text" id="nombre" required />
+
+    <label>Apellidos:</label>
+    <input type="text" id="apellidos" />
+
+    <label>Usuario ID:</label>
+    <input type="text" id="usuarioId" required />
+
+    <label>Fecha de Nacimiento:</label>
+    <input type="date" id="fechaNacimiento" />
+
+    <label>Género:</label>
+    <select id="genero">
+      <option value="">Seleccionar</option>
+      <option value="Masculino">Masculino</option>
+      <option value="Femenino">Femenino</option>
+      <option value="Otro">Otro</option>
+    </select>
+
+    <label>Idioma:</label>
+    <input type="text" id="idioma" placeholder="Ej. Español" />
+
+    <label>Zona Horaria:</label>
+    <input type="text" id="zonaHoraria" placeholder="Ej. UTC-5" />
+
+    <label>
+      <input type="checkbox" id="notificaciones" /> Recibir notificaciones por correo
+    </label>
+
+    <div id="botonesFormulario">
+      <button type="button">Guardar</button>
+      <button type="button" onclick="cerrarFormulario()">Cancelar</button>
+    </div>
+  </form>
+</div>
+
   </body>
 </html>
