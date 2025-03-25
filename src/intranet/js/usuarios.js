@@ -1,190 +1,318 @@
 // 🔹 Variables globales
-let datosPersonalesTable;
-let datosPersonalesCache = [];
+let usuariosTable;
+let usuariosCache = [];
 
-// 🔹 Iniciar DataTable y cargar datos cuando el documento esté listo
+// 🔹 Iniciar DataTable y cargar usuarios cuando el documento esté listo
 $(document).ready(() => {
-  datosPersonalesTable = $("#datosPersonalesTable").DataTable({
+  usuariosTable = $("#usuariosTable").DataTable({
     destroy: true,
     autoWidth: false,
     columns: [
       { title: "ID" },
       { title: "Nombre" },
-      { title: "Apellidos" },
-      { title: "Usuario ID" },
-      { title: "Fecha Nacimiento" },
-      { title: "Género" },
-      { title: "Idioma" },
-      { title: "Zona Horaria" },
-      { title: "Notif. Correo" },
-      { title: "Acciones" }
+      { title: "Password" },
+      { title: "Email" },
+      { title: "Fecha Registro" },
+      { title: "Rol" },
+      { title: "Acciones" },
     ],
   });
 
-  cargarDatosPersonales();
+  cargarUsuarios(); // ✅ Llama la nueva función fetch
 });
 
-// 🟢 Cargar datos desde servidor Express
-async function cargarDatosPersonales() {
+// 🟢 Cargar usuarios desde servidor Express
+
+async function cargarUsuarios() {
   try {
-    const respuesta = await fetch("http://localhost:3000/api/datos-personales");
-    const datos = await respuesta.json();
+    const respuesta = await fetch("http://localhost:3000/api/usuarios");
+    const usuarios = await respuesta.json();
 
-    datosPersonalesCache = datos; // Actualizamos cache
-    datosPersonalesTable.clear();
+    usuariosCache = usuarios; // 👈 ACTUALIZAMOS EL CACHE GLOBAL
 
-    datos.forEach((dato) => {
-      datosPersonalesTable.row.add([
-        dato._id || "N/A",
-        dato.nombre || "",
-        dato.apellidos || "",
-        dato.usuario_id || "N/A",
-        formatearFecha(dato.fechaNacimiento),
-        dato.genero || "",
-        dato.idioma || "",
-        dato.zonaHoraria || "",
-        dato.recibirNotificaciones ? "✅" : "❌",
-        accionesHTML(dato._id),
+    usuariosTable.clear(); // ✅ Limpiamos tabla antes de cargar nuevos
+    usuarios.forEach((usuario) => {
+      // ✅ Ahora 'usuario' está definido
+      usuariosTable.row.add([
+        usuario._id,
+        usuario.nombre,
+        "********",
+        usuario.email,
+        formatearFecha(usuario.fechaRegistro || new Date().toISOString()),
+        usuario.rol,
+        accionesHTML(usuario._id),
       ]);
     });
 
-    datosPersonalesTable.draw();
+    usuariosTable.draw(); // ✅ Renderizar cambios
   } catch (error) {
-    console.error("❌ Error al cargar datos personales:", error);
+    console.error("❌ Error al cargar usuarios:", error);
   }
 }
 
 // 🟢 Generar HTML para editar y eliminar
 function accionesHTML(id) {
   return `
-    <button onclick="editarDato('${id}')">✏️ Editar</button>
-    <button class="btn-eliminar" onclick="eliminarDato('${id}')">🗑️ Eliminar</button>
+    <button onclick="editarUsuario('${id}')">✏️ Editar</button>
+    <button class="btn-eliminar" onclick="eliminarUsuario('${id}')">🗑️ Eliminar</button>
   `;
 }
 
 // 🟢 Mostrar formulario para agregar
 function mostrarFormularioAgregar() {
-  $("#formTitulo").text("Añadir Datos Personales");
-  $("#datoID, #nombre, #apellidos, #usuarioId, #fechaNacimiento, #genero, #idioma, #zonaHoraria").val("");
-  $("#notificaciones").prop("checked", false);
+  $("#formTitulo").text("Añadir Usuario");
+  $("#usuarioID, #nombreUsuario, #emailUsuario, #passwordUsuario").val("");
+  $("#rolUsuario").val("usuario");
 
+  // ✅ Mostrar fecha actual en el campo de fecha (formato DD/MM/AAAA)
+  const fechaActual = new Date();
+  $("#fechaRegistroUsuario").val(
+    fechaActual.toLocaleDateString("es-ES", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    })
+  );
+
+  // ✅ Cambiar la función del botón Guardar para CREAR usuario
   $("#botonesFormulario button:first")
     .off("click")
     .on("click", guardarCambiosDesdeFormulario);
 
-  $("#formularioDatos").show();
+  $("#formularioUsuario").show();
   document
-    .getElementById("formularioDatos")
+    .getElementById("formularioUsuario")
     .scrollIntoView({ behavior: "smooth" });
 }
 
-// 🟢 Guardar (crear o editar)
+// 🟢 Guardar (crear)
 async function guardarCambiosDesdeFormulario() {
-  const id = $("#datoID").val();
-  const body = {
-    nombre: $("#nombre").val(),
-    apellidos: $("#apellidos").val(),
-    usuario_id: $("#usuarioId").val(),
-    fechaNacimiento: $("#fechaNacimiento").val(),
-    genero: $("#genero").val(),
-    idioma: $("#idioma").val(),
-    zonaHoraria: $("#zonaHoraria").val(),
-    recibirNotificaciones: $("#notificaciones").is(":checked")
-  };
+  const id = $("#usuarioID").val();
+  const nombre = $("#nombreUsuario").val();
+  let password = $("#passwordUsuario").val();
+  const email = $("#emailUsuario").val();
+  const rol = $("#rolUsuario").val();
 
-  if (!body.nombre || !body.usuario_id) {
-    alert("⚠️ El nombre y el ID de usuario son obligatorios.");
+  // ✅ Validar que todos los campos estén llenos
+  if (!nombre || !email || !password) {
+    alert("⚠️ Todos los campos son obligatorios.");
     return;
   }
+
+  const usuario = {
+    nombre,
+    pass: password,
+    email,
+    rol,
+  };
+
+  console.log("📤 Enviando datos al backend:", usuario); // 🔍 Ver qué se envía
 
   try {
     let response;
     if (id) {
-      // PUT
-      response = await fetch(`http://localhost:3000/api/datos-personales/${id}`, {
+      // PUT = actualizar usuario
+      response = await fetch(`http://localhost:3000/api/usuarios/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
+        body: JSON.stringify(usuario),
       });
     } else {
-      // POST
-      response = await fetch("http://localhost:3000/api/datos-personales", {
+      // POST = nuevo usuario
+      response = await fetch("http://localhost:3000/api/usuarios", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
+        body: JSON.stringify(usuario),
       });
     }
 
-    if (!response.ok) throw new Error("Error al guardar");
+    if (!response.ok) throw new Error("Error al guardar usuario");
 
-    Swal.fire("✅ Guardado", "Los datos han sido guardados.", "success");
-    await cargarDatosPersonales();
+    const data = await response.json();
+    console.log("✅ Respuesta del backend:", data); // 🔍 Ver respuesta del servidor
+
+    // ❗ Posible problema: si `data.usuario` es undefined, evitar el error
+    if (!data.usuario) {
+      console.error("❌ Error: El backend no devolvió el usuario creado.");
+      return;
+    }
+
+    // ✅ Si el usuario fue creado, actualizar la tabla sin recargar la página
+    if (!id) {
+      usuariosTable.row
+        .add([
+          data.usuario._id, // 🔹 Aquí es donde el error podría ocurrir
+          data.usuario.nombre,
+          "********", // 🔹 No mostrar la contraseña
+          data.usuario.email,
+          formatearFecha(data.usuario.fechaRegistro), // ✅ Ahora la fecha viene del backend
+          data.usuario.rol,
+          accionesHTML(data.usuario._id),
+        ])
+        .draw();
+    }
+
     cerrarFormulario();
   } catch (err) {
-    console.error("❌ Error guardando datos:", err);
-    Swal.fire("Error", "No se pudieron guardar los datos", "error");
+    console.error("❌ Error guardando usuario:", err);
   }
 }
 
-// 🟢 Editar dato personal
-function editarDato(id) {
-  const dato = datosPersonalesCache.find((d) => d._id === id);
-  if (!dato) return;
+// 🟢 Guardar cambios en la edición de un usuario existente
+async function guardarEdicionUsuario() {
+  const id = $("#usuarioID").val();
+  if (!id) {
+    console.error("❌ No hay un ID de usuario válido.");
+    return;
+  }
 
-  $("#formTitulo").text("Editar Datos Personales");
-  $("#datoID").val(dato._id);
-  $("#nombre").val(dato.nombre || "");
-  $("#apellidos").val(dato.apellidos || "");
-  $("#usuarioId").val(dato.usuario_id || "");
-  $("#fechaNacimiento").val(dato.fechaNacimiento || "");
-  $("#genero").val(dato.genero || "");
-  $("#idioma").val(dato.idioma || "");
-  $("#zonaHoraria").val(dato.zonaHoraria || "");
-  $("#notificaciones").prop("checked", dato.recibirNotificaciones || false);
+  const nombre = $("#nombreUsuario").val();
+  const password = $("#passwordUsuario").val();
+  const email = $("#emailUsuario").val();
+  const rol = $("#rolUsuario").val();
 
+  // ✅ Solo enviar los campos que se han modificado
+  const usuarioActualizado = {};
+  if (nombre) usuarioActualizado.nombre = nombre;
+  if (password) usuarioActualizado.pass = password;
+  if (email) usuarioActualizado.email = email;
+  if (rol) usuarioActualizado.rol = rol;
+
+  console.log("📤 Enviando datos para editar usuario:", usuarioActualizado);
+
+  try {
+    const response = await fetch(`http://localhost:3000/api/usuarios/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(usuarioActualizado),
+    });
+
+    if (!response.ok) throw new Error("Error al actualizar usuario");
+
+    console.log("✅ Usuario actualizado correctamente");
+
+    await cargarUsuarios();
+    cerrarFormulario();
+  } catch (err) {
+    console.error("❌ Error actualizando usuario:", err);
+  }
+}
+
+// 🟢 Editar usuario
+function editarUsuario(id) {
+  const usuario = usuariosCache.find((u) => u._id === id);
+  if (!usuario) return;
+
+  $("#formTitulo").text("Editar Usuario");
+  $("#usuarioID").val(usuario._id);
+  $("#nombreUsuario").val(usuario.nombre || "");
+  $("#emailUsuario").val(usuario.email || "");
+  $("#passwordUsuario").val(usuario.password || ""); // 🔹val(""); No mostrar la contraseña real
+  $("#rolUsuario").val(usuario.rol || "usuario");
+
+  // ✅ Cambia la función del botón Guardar para edición
   $("#botonesFormulario button:first")
     .off("click")
-    .on("click", guardarCambiosDesdeFormulario);
+    .on("click", guardarEdicionUsuario);
 
-  $("#formularioDatos").show();
+  $("#formularioUsuario").show();
   document
-    .getElementById("formularioDatos")
+    .getElementById("formularioUsuario")
     .scrollIntoView({ behavior: "smooth" });
 }
 
-// 🟢 Eliminar dato personal
-async function eliminarDato(id) {
-  const confirmacion = await Swal.fire({
+// 🟢 Eliminar usuario
+async function eliminarUsuario(id) {
+  const result = await Swal.fire({
     title: "¿Estás seguro?",
-    text: "Esto eliminará los datos personales.",
+    text: "Esta acción no se puede deshacer",
     icon: "warning",
     showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
     confirmButtonText: "Sí, eliminar",
-    cancelButtonText: "Cancelar"
+    cancelButtonText: "Cancelar",
   });
 
-  if (!confirmacion.isConfirmed) return;
+  if (!result.isConfirmed) return;
 
   try {
-    const response = await fetch(`http://localhost:3000/api/datos-personales/${id}`, {
+    const response = await fetch(`http://localhost:3000/api/usuarios/${id}`, {
       method: "DELETE",
     });
 
-    if (!response.ok) throw new Error("Error al eliminar");
+    if (!response.ok) throw new Error("Error al eliminar usuario");
 
-    Swal.fire("Eliminado", "Los datos fueron eliminados.", "success");
-    await cargarDatosPersonales();
+    await Swal.fire("Eliminado", "El usuario ha sido eliminado.", "success");
+
+    await cargarUsuarios();
   } catch (err) {
-    console.error("❌ Error eliminando datos:", err);
-    Swal.fire("Error", "No se pudieron eliminar los datos", "error");
+    console.error("❌ Error eliminando usuario:", err);
+    Swal.fire("Error", "No se pudo eliminar el usuario.", "error");
   }
 }
 
+function mostrarMensajeInicioSesion(usuarioNombre) {
+  Swal.fire({
+    title: "¡Bienvenido! 🎉",
+    html: `
+      <h3 style="color:#333">Inicio de sesión exitoso</h3>
+      <p style="font-size:18px;">Hola, <b>${usuarioNombre}</b>, nos alegra verte de nuevo. 😊</p>
+    `,
+    icon: "success",
+    confirmButtonText: "Ir al Panel",
+    confirmButtonColor: "#3085d6",
+    timer: 4000, // Se cierra en 4 segundos automáticamente
+    timerProgressBar: true,
+    backdrop: `
+      rgba(0,0,0,0.7)
+      url("https://media.giphy.com/media/xT9IgG50Fb7Mi0prBC/giphy.gif")
+      center center
+      no-repeat
+    `
+  }).then(() => {
+    window.location.href = "/src/intranet/html/intranet.html"; // Redirigir tras aceptar
+  });
+}
+
+
+async function iniciarSesion() {
+  const email = document.getElementById("emailUsuario").value;
+  const password = document.getElementById("passwordUsuario").value;
+
+  try {
+    const response = await fetch("http://localhost:3000/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Error al iniciar sesión");
+    }
+    console.log("Datos recibidos del backend:", data);
+
+    // ✅ Si el login es exitoso, mostramos SweetAlert2
+    mostrarMensajeInicioSesion(data.nombre);
+
+  } catch (error) {
+    console.error("❌ Error al iniciar sesión:", error);
+    Swal.fire({
+      title: "Error",
+      text: "Correo o contraseña incorrectos",
+      icon: "error",
+      confirmButtonText: "Intentar de nuevo",
+    });
+  }
+}
+
+
 // 🟢 Formatear fecha
 function formatearFecha(fechaISO) {
-  if (!fechaISO) return "N/A";
   const fecha = new Date(fechaISO);
-  if (isNaN(fecha.getTime())) return fechaISO;
+  if (isNaN(fecha.getTime())) return fechaISO; // Si es string no ISO, se devuelve tal cual
   return fecha.toLocaleDateString("es-ES", {
     day: "2-digit",
     month: "2-digit",
@@ -194,15 +322,16 @@ function formatearFecha(fechaISO) {
 
 // 🟢 Cerrar formulario
 function cerrarFormulario() {
-  $("#formularioDatos").hide();
-  $("#datoID, #nombre, #apellidos, #usuarioId, #fechaNacimiento, #genero, #idioma, #zonaHoraria").val("");
-  $("#notificaciones").prop("checked", false);
+  $("#formularioUsuario").hide();
+  $("#usuarioID, #nombreUsuario, #emailUsuario, #passwordUsuario").val("");
 }
 
+
 // 🟢 Exponer funciones globales
-window.editarDato = editarDato;
-window.eliminarDato = eliminarDato;
+window.editarUsuario = editarUsuario;
+window.eliminarUsuario = eliminarUsuario;
 window.mostrarFormularioAgregar = mostrarFormularioAgregar;
 window.guardarCambiosDesdeFormulario = guardarCambiosDesdeFormulario;
 window.cerrarFormulario = cerrarFormulario;
-window.cargarDatosPersonales = cargarDatosPersonales;
+window.cargarUsuarios = cargarUsuarios;
+window,mostrarMensajeInicioSesion = mostrarMensajeInicioSesion;
