@@ -1191,3 +1191,173 @@ app.get("/api/reportes", async (req, res) => {
   }
 });
 
+// =============================================
+// 🅳️ CRUD DE DATOS PERSONALES
+// =============================================
+
+/**
+ * ✅ Crear un nuevo dato personal (Create)
+ * Ruta: POST /api/datos-personales
+ */
+app.post("/api/datos-personales", async (req, res) => {
+  try {
+    const data = req.body;
+    data.usuario_id = new ObjectId(data.usuario_id);
+
+    const result = await db.collection("DatosUsuario").insertOne(data);
+    res.status(201).json({ message: "Datos guardados correctamente", id: result.insertedId });
+  } catch (err) {
+    console.error("❌ Error guardando datos personales:", err);
+    res.status(500).json({ error: "Error en el servidor" });
+  }
+});
+
+/**
+ * ✅ Obtener todos los datos personales (Read)
+ * Ruta: GET /api/datos-personales
+ */
+app.get("/api/datos-personales", async (req, res) => {
+  try {
+    const datos = await db.collection("DatosUsuario").find().toArray();
+    res.json(datos);
+  } catch (err) {
+    console.error("❌ Error obteniendo datos personales:", err);
+    res.status(500).json({ error: "Error en el servidor" });
+  }
+});
+
+/**
+ * ✅ Actualizar dato personal existente (Update)
+ * Ruta: PUT /api/datos-personales/:id
+ */
+app.put("/api/datos-personales/:id", async (req, res) => {
+  try {
+    const usuarioId = new ObjectId(req.params.id);
+    const data = req.body;
+
+    const result = await db.collection("DatosUsuario").updateOne(
+      { usuario_id: usuarioId },
+      { $set: data },
+      { upsert: true } // crea si no existe
+    );
+
+    res.json({ message: "Datos personales actualizados correctamente" });
+  } catch (err) {
+    console.error("❌ Error actualizando datos personales:", err);
+    res.status(500).json({ error: "Error en el servidor" });
+  }
+});
+
+/**
+ * ✅ Eliminar Dato personal (Delete)
+ * Ruta: DELETE /api/datos-personales/:id
+ */
+app.delete("/api/datos-personales/:id", async (req, res) => {
+  try {
+    const usuarioId = new ObjectId(req.params.id);
+    const result = await db.collection("DatosUsuario").deleteOne({ usuario_id: usuarioId });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ error: "Datos no encontrados" });
+    }
+
+    res.json({ message: "Datos personales eliminados correctamente" });
+  } catch (err) {
+    console.error("❌ Error eliminando datos personales:", err);
+    res.status(500).json({ error: "Error en el servidor" });
+  }
+});
+
+
+// =============================================
+// 🅴 CRUD DE HISTORIAL / ACTIVIDAD DEL USUARIO
+// =============================================
+
+/**
+ * ✅ Crear nuevo registro de actividad (Create)
+ * Ruta: POST /api/historial
+ */
+app.post("/api/historial", async (req, res) => {
+  try {
+    const { usuario_id, accion } = req.body;
+
+    const nuevoMovimiento = {
+      usuario_id: new ObjectId(usuario_id),
+      accion,
+      fecha: new Date() // guardamos fecha actual
+    };
+
+    await db.collection("HistorialUsuario").insertOne(nuevoMovimiento);
+    res.status(201).json({ message: "Movimiento registrado correctamente" });
+  } catch (err) {
+    console.error("❌ Error registrando historial:", err);
+    res.status(500).json({ error: "Error en el servidor" });
+  }
+});
+
+/**
+ * ✅ Obtener el historial de un usuario (Read)
+ * Ruta: GET /api/historial/:usuarioId
+ */
+app.get("/api/historial/:usuarioId", async (req, res) => {
+  try {
+    const usuarioId = new ObjectId(req.params.usuarioId);
+
+    const historial = await db.collection("HistorialUsuario")
+      .find({ usuario_id: usuarioId })
+      .sort({ fecha: -1 }) // más recientes primero
+      .limit(20)
+      .toArray();
+
+    res.json(historial);
+  } catch (err) {
+    console.error("❌ Error obteniendo historial:", err);
+    res.status(500).json({ error: "Error en el servidor" });
+  }
+});
+
+/**
+ * ✅ Actualizar una entrada del historial (Update)
+ * Ruta: PUT /api/historial/:id
+ */
+app.put("/api/historial/:id", async (req, res) => {
+  try {
+    const id = new ObjectId(req.params.id);
+    const data = req.body;
+
+    const result = await db.collection("HistorialUsuario").updateOne(
+      { _id: id },
+      { $set: data }
+    );
+
+    if (result.modifiedCount === 0) {
+      return res.status(404).json({ error: "Movimiento no encontrado" });
+    }
+
+    res.json({ message: "Movimiento actualizado correctamente" });
+  } catch (err) {
+    console.error("❌ Error actualizando historial:", err);
+    res.status(500).json({ error: "Error en el servidor" });
+  }
+});
+
+/**
+ * ✅ Eliminar entrada del historial (Delete)
+ * Ruta: DELETE /api/historial/:id
+ */
+app.delete("/api/historial/:id", async (req, res) => {
+  try {
+    const id = new ObjectId(req.params.id);
+
+    const result = await db.collection("HistorialUsuario").deleteOne({ _id: id });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ error: "Movimiento no encontrado" });
+    }
+
+    res.json({ message: "Movimiento eliminado correctamente" });
+  } catch (err) {
+    console.error("❌ Error eliminando historial:", err);
+    res.status(500).json({ error: "Error en el servidor" });
+  }
+});
