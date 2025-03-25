@@ -10,7 +10,7 @@
 
     <!-- ✅ Lógica del Login -->
     <script type="module" src="../js/login.js" defer></script>
-    
+
     <!-- ✅ Librería SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
@@ -30,16 +30,20 @@
             placeholder="Ingresa tu email o nombre de usuario"
             required
           />
-
+          
           <!-- 🔹 Campo: Contraseña -->
           <label for="password">Contraseña:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Ingresa tu contraseña"
-            required
-          />
+          <div class="password-container">
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Ingresa tu contraseña"
+              required
+            />
+            <span id="togglePassword" class="eye-icon">👁️</span>
+            <!-- Aquí va el icono de ojo -->
+          </div>
 
           <!-- 🔥 Botón para Iniciar Sesión -->
           <button type="submit">Iniciar Sesión</button>

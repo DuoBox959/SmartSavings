@@ -1,7 +1,17 @@
-// Seleccionamos elementos del formulario
+// Seleccionamos los elementos del formulario
 const loginForm = document.querySelector("form");
 const emailOrUsernameInput = document.getElementById("emailOrUsername");
 const passwordInput = document.getElementById("password");
+const togglePassword = document.getElementById("togglePassword");  // El icono del ojo
+
+// Evento de click para mostrar/ocultar contraseña
+togglePassword.addEventListener("click", () => {
+  const type = passwordInput.type === "password" ? "text" : "password";
+  passwordInput.type = type;
+
+  // Cambiar el icono del ojo (puedes poner diferentes emojis o usar un icono SVG si prefieres)
+  togglePassword.textContent = type === "password" ? "👁️" : "👁️‍🗨️"; // Cambia el icono según el tipo
+});
 
 // Evento de submit
 loginForm.addEventListener("submit", async (event) => {
