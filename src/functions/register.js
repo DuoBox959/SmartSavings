@@ -9,7 +9,6 @@ const registerForm = document.getElementById("register-form");
 const usernameInput = document.getElementById("username");
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
-const roleSelect = document.getElementById("role");
 const togglePassword = document.getElementById("togglePassword");
 
 // 🔹 Evento para mostrar/ocultar contraseña
@@ -30,7 +29,7 @@ registerForm.addEventListener("submit", async (event) => {
   const username = usernameInput.value.trim();
   const email = emailInput.value.trim();
   const password = passwordInput.value.trim();
-  const role = roleSelect.value;
+  const role = "usuario"; // Valor por defecto
 
   // Validación de campos
   if (!username || !email || !password) {

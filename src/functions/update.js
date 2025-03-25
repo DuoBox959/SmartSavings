@@ -85,7 +85,6 @@ function configurarFormulario() {
     const username = document.getElementById("username").value;
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
-    const role = document.getElementById("role").value; // Obtener el rol seleccionado
 
     const currentUser =
       JSON.parse(sessionStorage.getItem("user")) ||
@@ -114,7 +113,6 @@ function configurarFormulario() {
           nombre: username || currentUser.name,
           email: email || currentUser.email,
           pass: password || currentUser.password,
-          rol: role || currentUser.role, // Agregar el rol
         };
 
         console.log("Datos enviados:", updateData); // Asegúrate de ver los datos enviados
@@ -151,7 +149,6 @@ function configurarFormulario() {
           ...currentUser,
           name: data.usuario.nombre,
           email: data.usuario.email,
-          role: data.usuario.rol,
         };
         sessionStorage.setItem("user", JSON.stringify(updatedUser));
         localStorage.setItem("user", JSON.stringify(updatedUser));
