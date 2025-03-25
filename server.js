@@ -1363,3 +1363,53 @@ app.delete("/api/historial/:id", async (req, res) => {
     res.status(500).json({ error: "Error en el servidor" });
   }
 });
+
+/**
+ * ✅ Obtener toda la actividad (Read)
+ * Ruta: GET /api/historial
+ */
+app.get("/api/historial", async (req, res) => {
+  try {
+    const historial = await db.collection("HistorialUsuario")
+      .find()
+      .sort({ fecha: -1 }) // Más reciente primero
+      .toArray();
+
+    res.json(historial);
+  } catch (err) {
+    console.error("❌ Error obteniendo historial:", err);
+    res.status(500).json({ error: "Error en el servidor" });
+  }
+});
+ 
+
+/**
+ * ✅ Obtener usuarios activos en los últimos 7 días
+ * Ruta: GET /api/usuarios/activos-recientes
+ */
+app.get("/api/usuarios/activos-recientes", async (req, res) => {
+  try {
+    const hace7dias = new Date();
+    hace7dias.setDate(hace7dias.getDate() - 7);
+
+    const activos = await db.collection("HistorialUsuario").aggregate([
+      {
+        $match: {
+          fecha: { $gte: hace7dias }
+        }
+      },
+      {
+        $group: {
+          _id: "$usuario_id"
+        }
+      }
+    ]).toArray();
+
+    const idsActivos = activos.map(entry => entry._id.toString());
+
+    res.json({ activos: idsActivos });
+  } catch (err) {
+    console.error("❌ Error obteniendo usuarios activos:", err);
+    res.status(500).json({ error: "Error en el servidor" });
+  }
+});
