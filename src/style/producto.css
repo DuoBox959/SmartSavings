@@ -292,3 +292,37 @@ body {
 #form-editar-producto button:hover {
   background-color: #2e7d32;
 }
+
+.nav-categorias {
+  background-color: #365a7e;
+  padding: 15px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.nav-categorias ul {
+  display: flex;
+  list-style: none;
+  gap: 40px;
+}
+
+.nav-categorias li a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #ffffff;
+  font-weight: bold;
+  text-decoration: none;
+  transition: transform 0.3s;
+}
+
+.nav-categorias li a img {
+  width: 32px;
+  height: 32px;
+  margin-bottom: 5px;
+  filter: brightness(0) invert(1);
+}
+
+.nav-categorias li a:hover {
+  transform: scale(1.1);
+}

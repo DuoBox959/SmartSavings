@@ -70,7 +70,33 @@ function mostrarFormularioAgregar() {
 
   $("#botonesFormulario button:first")
     .off("click")
-    .on("click", guardarCambiosDesdeFormulario);
+    .on("click", guardarDato);
+
+  $("#formularioDatos").show();
+  document
+    .getElementById("formularioDatos")
+    .scrollIntoView({ behavior: "smooth" });
+}
+
+// 🟢 Editar dato personal
+function editarDato(id) {
+  const dato = datosPersonalesCache.find((d) => d._id === id);
+  if (!dato) return;
+
+  $("#formTitulo").text("Editar Datos Personales");
+  $("#datoID").val(dato._id);
+  $("#nombre").val(dato.nombre || "");
+  $("#apellidos").val(dato.apellidos || "");
+  $("#usuarioId").val(dato.usuario_id || "");
+  $("#fechaNacimiento").val(dato.fechaNacimiento?.split("T")[0] || "");
+  $("#genero").val(dato.genero || "");
+  $("#idioma").val(dato.idioma || "");
+  $("#zonaHoraria").val(dato.zonaHoraria || "");
+  $("#notificaciones").prop("checked", dato.recibirNotificaciones || false);
+
+  $("#botonesFormulario button:first")
+    .off("click")
+    .on("click", guardarDato);
 
   $("#formularioDatos").show();
   document
@@ -79,12 +105,12 @@ function mostrarFormularioAgregar() {
 }
 
 // 🟢 Guardar (crear o editar)
-async function guardarCambiosDesdeFormulario() {
+async function guardarDato() {
   const id = $("#datoID").val();
   const body = {
-    nombre: $("#nombre").val(),
-    apellidos: $("#apellidos").val(),
-    usuario_id: $("#usuarioId").val(),
+    nombre: $("#nombre").val().trim(),
+    apellidos: $("#apellidos").val().trim(),
+    usuario_id: $("#usuarioId").val().trim(),
     fechaNacimiento: $("#fechaNacimiento").val(),
     genero: $("#genero").val(),
     idioma: $("#idioma").val(),
@@ -100,14 +126,14 @@ async function guardarCambiosDesdeFormulario() {
   try {
     let response;
     if (id) {
-      // PUT
+      // PUT (editar)
       response = await fetch(`http://localhost:3000/api/datos-personales/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
     } else {
-      // POST
+      // POST (crear)
       response = await fetch("http://localhost:3000/api/datos-personales", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -124,32 +150,6 @@ async function guardarCambiosDesdeFormulario() {
     console.error("❌ Error guardando datos:", err);
     Swal.fire("Error", "No se pudieron guardar los datos", "error");
   }
-}
-
-// 🟢 Editar dato personal
-function editarDato(id) {
-  const dato = datosPersonalesCache.find((d) => d._id === id);
-  if (!dato) return;
-
-  $("#formTitulo").text("Editar Datos Personales");
-  $("#datoID").val(dato._id);
-  $("#nombre").val(dato.nombre || "");
-  $("#apellidos").val(dato.apellidos || "");
-  $("#usuarioId").val(dato.usuario_id || "");
-  $("#fechaNacimiento").val(dato.fechaNacimiento || "");
-  $("#genero").val(dato.genero || "");
-  $("#idioma").val(dato.idioma || "");
-  $("#zonaHoraria").val(dato.zonaHoraria || "");
-  $("#notificaciones").prop("checked", dato.recibirNotificaciones || false);
-
-  $("#botonesFormulario button:first")
-    .off("click")
-    .on("click", guardarCambiosDesdeFormulario);
-
-  $("#formularioDatos").show();
-  document
-    .getElementById("formularioDatos")
-    .scrollIntoView({ behavior: "smooth" });
 }
 
 // 🟢 Eliminar dato personal
@@ -203,6 +203,6 @@ function cerrarFormulario() {
 window.editarDato = editarDato;
 window.eliminarDato = eliminarDato;
 window.mostrarFormularioAgregar = mostrarFormularioAgregar;
-window.guardarCambiosDesdeFormulario = guardarCambiosDesdeFormulario;
+window.guardarDato = guardarDato;
 window.cerrarFormulario = cerrarFormulario;
 window.cargarDatosPersonales = cargarDatosPersonales;

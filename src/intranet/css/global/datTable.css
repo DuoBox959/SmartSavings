@@ -98,7 +98,9 @@ body {
 #formularioProveedor,
 #formularioDescripcion,
 #formularioOpinion,
-#formularioSupermercado {
+#formularioSupermercado,
+#formularioDatos,
+#formularioActividad  {
   display: none;
   background: white;
   color: #333;
@@ -117,7 +119,9 @@ body {
 #formularioProveedor h2,
 #formularioDescripcion h2,
 #formularioOpinion h2,
-#formularioSupermercado h2 {
+#formularioSupermercado h2,
+#formularioDatos h2,
+#formularioActividad h2 {
   font-size: 1.8em;
   margin-bottom: 20px;
   text-align: center;
@@ -137,7 +141,12 @@ body {
 #formularioOpinion input,
 #formularioOpinion select,
 #formularioSupermercado input,
-#formularioSupermercado select {
+#formularioSupermercado select,
+#formularioDatos input,
+#formularioDatos select,
+#formularioActividad input,
+#formularioActividad select
+ {
   width: 100%;
   padding: 10px;
   margin-bottom: 15px;
@@ -161,7 +170,9 @@ body {
 #formularioProveedor button:nth-child(1),
 #formularioDescripcion button:nth-child(1),
 #formularioOpinion button:nth-child(1),
-#formularioSupermercado button:nth-child(1) {
+#formularioSupermercado button:nth-child(1),
+#formularioDatos button:nth-child(1),
+#formularioActividad button:nth-child(1){
   background-color: #4caf50;
   color: white;
 }
@@ -171,7 +182,9 @@ body {
 #formularioProveedor button:nth-child(1):hover,
 #formularioDescripcion button:nth-child(1):hover,
 #formularioOpinion button:nth-child(1):hover,
-#formularioSupermercado button:nth-child(1):hover {
+#formularioSupermercado button:nth-child(1):hover,
+#formularioDatos button:nth-child(1):hover,
+#formularioActividad button:nth-child(1):hover{
   background-color: #388e3c;
   transform: scale(1.05);
 }
@@ -182,7 +195,9 @@ body {
 #formularioProveedor button:nth-child(2),
 #formularioDescripcion button:nth-child(2),
 #formularioOpinion button:nth-child(2),
-#formularioSupermercado button:nth-child(2) {
+#formularioSupermercado button:nth-child(2),
+#formularioDatos button:nth-child(2),
+#formularioActividad button:nth-child(2) {
   background-color: #ba3d33;
   color: white;
 }
@@ -192,7 +207,9 @@ body {
 #formularioProveedor button:nth-child(2):hover,
 #formularioDescripcion button:nth-child(2):hover,
 #formularioOpinion button:nth-child(2):hover,
-#formularioSupermercado button:nth-child(2):hover {
+#formularioSupermercado button:nth-child(2):hover,
+#formularioDatos button:nth-child(2):hover,
+#formularioActividad button:nth-child(2):hover{
   background-color: #d32f2f;
   transform: scale(1.05);
 }

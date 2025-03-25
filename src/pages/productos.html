@@ -14,6 +14,11 @@
     <!-- Estilos específicos de la página -->
     <link rel="stylesheet" href="../style/global/footer.css" />
     <!-- Estilos del pie de página -->
+<!-- Font Awesome CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
 
     <!-- ✅ Librerías y scripts necesarios -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -26,7 +31,30 @@
   <body>
     <!-- 🧩 Header dinámico (cargado desde JS) -->
     <div id="header"></div>
-
+    <nav class="nav-categorias">
+      <ul>
+        <li>
+          <a href="#alimentacion">
+            <i class="fas fa-utensils"></i>
+            <span>Alimentación</span>
+          </a>
+        </li>
+        <li>
+          <a href="#drogueria">
+            <i class="fas fa-briefcase-medical"></i>
+            <span>Droguería y salud</span>
+          </a>
+        </li>
+        <li>
+          <a href="#mascotas">
+            <i class="fas fa-dog"></i>
+            <span>Mascotas</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    
+    
     <!-- 📌 Contenedor principal -->
     <div class="productos-container" id="productos-container">
       <!-- 🔹 Aquí se insertarán dinámicamente las tarjetas de productos -->
