@@ -68,21 +68,23 @@ app.get("/", (req, res) => {
  */
 app.post("/api/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { emailOrUsername, password } = req.body;
 
     // ⚠️ Verificar datos ingresados
-    if (!email || !password) {
-      return res.status(400).json({ error: "Email y contraseña son requeridos" });
+    if (!emailOrUsername || !password) {
+      return res.status(400).json({ error: "Email o nombre de usuario y contraseña son requeridos" });
     }
 
-    // 🔍 Buscar usuario en la BD
-    const user = await db.collection("Usuarios").findOne({ email });
+    // 🔍 Buscar usuario por email o nombre de usuario
+    const user = await db.collection("Usuarios").findOne({
+      $or: [{ email: emailOrUsername }, { nombre: emailOrUsername }]
+    });
 
     if (!user) {
       return res.status(404).json({ error: "Usuario no encontrado" });
     }
 
-    // 🔑 Comparar la contraseña directamente (SIN bcrypt)
+    // 🔑 Comparar la contraseña directamente (SIN bcrypt, aunque se recomienda usarlo)
     if (user.pass !== password) {
       return res.status(401).json({ error: "Contraseña incorrecta" });
     }

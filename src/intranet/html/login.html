@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
-    <!-- 🅰️ Configuración del Documento -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login - ComparaTú</title>
 
-    <!-- 🅱️ Estilos CSS -->
+    <!-- ✅ Estilos CSS -->
     <link rel="stylesheet" href="../css/login.css" />
 
-    <!-- 🅲 Lógica del Login -->
+    <!-- ✅ Lógica del Login -->
     <script type="module" src="../js/login.js" defer></script>
     
     <!-- ✅ Librería SweetAlert2 -->
@@ -17,20 +16,18 @@
   </head>
 
   <body>
-    <!-- 🅳 Contenedor Principal -->
     <div class="container">
       <div class="form-container">
         <h1>Inicia Sesión en Intranet</h1>
 
-        <!-- 🅴 Formulario de Inicio de Sesión -->
         <form action="#" method="post">
-          <!-- 🔹 Campo: Email -->
-          <label for="email">Email:</label>
+          <!-- 🔹 Campo: Email o Nombre de Usuario -->
+          <label for="emailOrUsername">Email o Nombre de Usuario:</label>
           <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="Ingresa tu email"
+            type="text"
+            id="emailOrUsername"
+            name="emailOrUsername"
+            placeholder="Ingresa tu email o nombre de usuario"
             required
           />
 
@@ -44,7 +41,7 @@
             required
           />
 
-          <!-- 🅵 Botón para Iniciar Sesión -->
+          <!-- 🔥 Botón para Iniciar Sesión -->
           <button type="submit">Iniciar Sesión</button>
         </form>
       </div>

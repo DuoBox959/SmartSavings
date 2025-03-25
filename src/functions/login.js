@@ -2,7 +2,7 @@ import { volverAtras } from "../functions/global/funciones.js";
 
 // Seleccionamos elementos del formulario
 const loginForm = document.querySelector("form");
-const emailInput = document.getElementById("email");
+const emailOrUsernameInput = document.getElementById("emailOrUsername");
 const passwordInput = document.getElementById("password");
 const togglePassword = document.getElementById("togglePassword");
 
@@ -20,14 +20,14 @@ togglePassword.addEventListener("click", function () {
   }
 });
 
-// Evento de submit (sin cambios)
+// Evento de submit (modificado para aceptar email o username)
 loginForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  const email = emailInput.value.trim();
+  const emailOrUsername = emailOrUsernameInput.value.trim();
   const password = passwordInput.value;
 
-  if (!email || !password) {
+  if (!emailOrUsername || !password) {
     Swal.fire({
       icon: "warning",
       title: "⚠️ Campos incompletos",
@@ -41,7 +41,7 @@ loginForm.addEventListener("submit", async (event) => {
     const response = await fetch("http://localhost:3000/api/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ emailOrUsername, password }),
     });
 
     const data = await response.json();
@@ -78,5 +78,4 @@ loginForm.addEventListener("submit", async (event) => {
     });
   }
 });
-
 
