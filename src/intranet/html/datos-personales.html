@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Datos Personales</title>
+
+    <!-- ✅ CSS -->
+    <link rel="stylesheet" href="../css/global/datTable.css" />
+    <link rel="stylesheet" href="../css/global/sidebar.css" />
+
+    <!-- ✅ Librerías -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- ✅ Scripts Proyecto -->
+    <script src="../js/global/auth.js"></script>
+    <script type="module" src="../js/global/sidebar.js" defer></script>
+    <script type="module" src="../js/datos-personales.js"></script>
+  </head>
+
+  <body>
+    <div id="sidebar-container"></div>
+    <h1>Gestión de Datos Personales</h1>
+
+    <table id="datosPersonalesTable" class="display">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Usuario ID</th>
+          <th>Nombre</th>
+          <th>Apellidos</th>
+          <th>Fecha Nac.</th>
+          <th>Género</th>
+          <th>Idioma</th>
+          <th>Zona Horaria</th>
+          <th>Notif. Email</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </body>
+</html>
