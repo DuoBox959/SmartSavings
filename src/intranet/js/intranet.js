@@ -18,18 +18,32 @@ document.addEventListener("DOMContentLoaded", function () {
   // 🕒 Iniciar cuenta regresiva para el evento
   function iniciarCuentaRegresiva() {
     const countdownElement = document.querySelector(".countdown");
-    let tiempo = 12 * 3600 + 3 * 60 + 19; // 12 horas, 3 minutos, 19 segundos
-
-    setInterval(() => {
-      if (tiempo >= 0) {
-        let horas = String(Math.floor(tiempo / 3600)).padStart(2, '0');
-        let minutos = String(Math.floor((tiempo % 3600) / 60)).padStart(2, '0');
-        let segundos = String(tiempo % 60).padStart(2, '0');
-        countdownElement.innerHTML = `${horas}:${minutos}:${segundos}`;
-        tiempo--;
+  
+    // 🎯 Fecha fija del evento: 11 de abril a las 00:00:00
+    const fechaEvento = new Date("2025-04-11T00:00:00");
+  
+    function actualizarCuentaRegresiva() {
+      const ahora = new Date().getTime();
+      const destino = fechaEvento.getTime();
+      const diferencia = destino - ahora;
+  
+      if (diferencia <= 0) {
+        countdownElement.innerHTML = "¡El evento ha comenzado!";
+        return;
       }
-    }, 1000);
+  
+      const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+      const horas = String(Math.floor((diferencia / (1000 * 60 * 60)) % 24)).padStart(2, "0");
+      const minutos = String(Math.floor((diferencia / (1000 * 60)) % 60)).padStart(2, "0");
+      const segundos = String(Math.floor((diferencia / 1000) % 60)).padStart(2, "0");
+  
+      countdownElement.innerHTML = `${dias}d ${horas}:${minutos}:${segundos}`;
+    }
+  
+    actualizarCuentaRegresiva();
+    setInterval(actualizarCuentaRegresiva, 1000);
   }
+  
 
   iniciarCuentaRegresiva();
 
