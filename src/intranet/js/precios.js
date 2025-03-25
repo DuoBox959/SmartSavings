@@ -14,6 +14,7 @@ $(document).ready(async () => {
       { title: "Precio Actual" },
       { title: "Precio Descuento" },
       { title: "Unidad/Lote" },
+      { title: "Precio por Unidad/Lote" }, 
       { title: "Precio Histórico" },
       { title: "Acciones" },
     ],
@@ -78,7 +79,10 @@ async function cargarPrecios() {
         typeof precio.precioDescuento === "number"
           ? precio.precioDescuento.toFixed(0) + " %"
           : "N/A",
-        precio.unidadLote || "N/A",
+          precio.unidadLote || "N/A",
+          typeof precio.precioUnidadLote === "number"
+            ? precio.precioUnidadLote.toFixed(2) + " €"
+            : "N/A",
         `<button class="btn btn-primary" onclick="verPrecioHistorico('${precio._id}')">Ver Precio Histórico</button>`,
         accionesHTML(precio._id),
       ]);
@@ -142,6 +146,7 @@ async function guardarCambiosDesdeFormulario() {
   const precioActual = parseFloat($("#precioActual").val());
   const precioDescuento = parseFloat($("#precioDescuento").val()) || null;
   const unidadLote = $("#unidadLote").val();
+  const precioUnidadLote = parseFloat($("#precioUnidadLote").val()) || null;
   const precioHistorico = $("#precioHistorico")
     .val()
     .split(",")
@@ -158,6 +163,7 @@ async function guardarCambiosDesdeFormulario() {
     precioActual,
     precioDescuento,
     unidadLote,
+    precioUnidadLote,
     precioHistorico,
   };
 
@@ -197,6 +203,7 @@ function editarPrecio(id) {
   $("#precioActual").val(precio.precioActual);
   $("#precioDescuento").val(precio.precioDescuento || "");
   $("#unidadLote").val(precio.unidadLote || "");
+  $("#precioUnidadLote").val(precio.precioUnidadLote || "");
   $("#precioHistorico").val(
     precio.precioHistorico ? precio.precioHistorico.join(", ") : ""
   );
@@ -246,7 +253,7 @@ async function eliminarPrecio(id) {
 function cerrarFormulario() {
   $("#formularioPrecio").hide();
   $(
-    "#precioID, #productoID, #precioActual, #precioDescuento, #unidadLote, #precioHistorico"
+    "#precioID, #productoID, #precioActual, #precioDescuento, #unidadLote, #precioUnidadLote, #precioHistorico"
   ).val("");
 }
 

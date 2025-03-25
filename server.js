@@ -514,7 +514,7 @@ app.get("/api/comparador-precios", async (req, res) => {
  */
 app.post("/api/precios", async (req, res) => {
   try {
-    let { producto_id, precioActual, precioDescuento, unidadLote, precioHistorico } = req.body;
+    let { producto_id, precioActual, precioDescuento, unidadLote, precioUnidadLote, precioHistorico } = req.body;
 
     // ✅ Convertir a números, asegurando que sean válidos
     precioActual = parseFloat(precioActual) || 0;
@@ -533,6 +533,7 @@ app.post("/api/precios", async (req, res) => {
       precioActual,
       precioDescuento,
       unidadLote,
+      precioUnidadLote: precioUnidadLote ? parseFloat(precioUnidadLote) : null, 
       precioHistorico,
     };
 

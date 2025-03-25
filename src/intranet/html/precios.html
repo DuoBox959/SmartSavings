@@ -47,6 +47,7 @@
           <th>Precio Actual</th>
           <th>Precio Descuento</th>
           <th>Unidad/Lote</th>
+          <th>Precio Unidad/Lote</th>
           <th>Precio Histórico</th>
           <th>Acciones</th>
         </tr>
@@ -79,6 +80,10 @@
         <!-- 🔹 Campo: Unidad o Lote -->
         <label for="unidadLote">Unidad/Lote:</label>
         <input type="text" id="unidadLote" />
+
+        <!-- después de unidadLote -->
+        <label for="precioUnidadLote">Precio por Unidad/Lote:</label>
+        <input type="number" id="precioUnidadLote" step="0.01" />
 
         <!-- 🔹 Campo: Precio Histórico -->
         <label for="precioHistorico"
