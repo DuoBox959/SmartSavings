@@ -39,22 +39,28 @@ async function cargarUsuarios() {
   try {
     const [usuariosRes, historialRes] = await Promise.all([
       fetch("http://localhost:3000/api/usuarios"),
-      fetch("http://localhost:3000/api/historial")
+      fetch("http://localhost:3000/api/historial") // 👈 Esta tabla SÍ existe
     ]);
 
     const usuarios = await usuariosRes.json();
     const historial = await historialRes.json();
 
     usuariosCache = usuarios;
-
     usuariosTable.clear();
 
-    usuarios.forEach((usuario) => {
-      const actividad = historial.find(
-        (registro) => registro.usuario === usuario.nombre
-      );
+    // 🔄 Mapea el historial por usuario_id para búsqueda rápida
+    const historialMap = new Map();
+    historial.forEach(registro => {
+      const userId = registro.usuario_id?.toString();
+      const fechaActual = new Date(registro.fecha);
+      if (!historialMap.has(userId) || historialMap.get(userId) < fechaActual) {
+        historialMap.set(userId, fechaActual); // guarda la última actividad
+      }
+    });
 
-      const estado = generarEstadoHTML(actividad?.fecha);
+    usuarios.forEach((usuario) => {
+      const actividadFecha = historialMap.get(usuario._id.toString());
+      const estado = generarEstadoHTML(actividadFecha);
 
       usuariosTable.row.add([
         usuario._id,
@@ -73,6 +79,7 @@ async function cargarUsuarios() {
     console.error("❌ Error al cargar usuarios o historial:", error);
   }
 }
+
 
 function generarEstadoHTML(fechaUltimaConexion) {
   if (!fechaUltimaConexion) {

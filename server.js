@@ -1474,3 +1474,80 @@ app.get("/api/historial-reciente", async (req, res) => {
   }
 });
 
+/**
+ * 📊 Usuarios activos por semana real
+ * Ruta: GET /api/usuarios/activos-semanales
+ */
+app.get("/api/usuarios/activos-semanales", async (req, res) => {
+  try {
+    const ahora = new Date();
+    const semanas = [];
+
+    // 🔹 Calcular las últimas 4 semanas ISO
+    for (let i = 3; i >= 0; i--) {
+      const fecha = new Date(ahora);
+      fecha.setDate(ahora.getDate() - i * 7);
+
+      const semanaISO = getISOWeek(fecha);
+      const año = fecha.getFullYear();
+
+      semanas.push({ semana: semanaISO, año });
+    }
+
+    // 🔍 Obtener actividad de historial real
+    const hace28dias = new Date();
+    hace28dias.setDate(hace28dias.getDate() - 28);
+
+    const actividad = await db.collection("HistorialUsuario").aggregate([
+      {
+        $match: { fecha: { $gte: hace28dias } }
+      },
+      {
+        $project: {
+          usuario_id: 1,
+          semana: { $isoWeek: "$fecha" },
+          anio: { $isoWeekYear: "$fecha" }
+        }
+      },
+      {
+        $group: {
+          _id: { semana: "$semana", anio: "$anio" },
+          usuarios: { $addToSet: "$usuario_id" }
+        }
+      },
+      {
+        $project: {
+          semana: "$_id.semana",
+          anio: "$_id.anio",
+          usuarios: { $size: "$usuarios" }
+        }
+      }
+    ]).toArray();
+
+    // 🔄 Mapear con 0 si no hay actividad en alguna semana
+    const resultadoFinal = semanas.map(({ semana, año }) => {
+      const encontrado = actividad.find(
+        (a) => a.semana === semana && a.anio === año
+      );
+
+      return {
+        semana: `Semana ${semana} (${año})`,
+        usuarios: encontrado ? encontrado.usuarios : 0
+      };
+    });
+
+    res.json(resultadoFinal);
+  } catch (err) {
+    console.error("❌ Error en /activos-semanales:", err);
+    res.status(500).json({ error: "Error al obtener usuarios activos" });
+  }
+});
+
+function getISOWeek(date) {
+  const tempDate = new Date(date.getTime());
+  tempDate.setHours(0, 0, 0, 0);
+  tempDate.setDate(tempDate.getDate() + 4 - (tempDate.getDay() || 7));
+  const yearStart = new Date(tempDate.getFullYear(), 0, 1);
+  const weekNo = Math.ceil((((tempDate - yearStart) / 86400000) + 1) / 7);
+  return weekNo;
+}

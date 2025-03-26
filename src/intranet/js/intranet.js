@@ -93,9 +93,6 @@ document.addEventListener("DOMContentLoaded", function () {
       const categorias = data.usoSistema.map((item) => item.categoria);
       const valores = data.usoSistema.map((item) => item.cantidad);
 
-      const semanas = data.actividadUsuarios.map((item) => item.semana);
-      const usuarios = data.actividadUsuarios.map((item) => item.usuarios);
-
       // 🔹 Crear los gráficos con datos reales
       new Chart(document.getElementById("usoSistemaChart"), {
         type: "bar",
@@ -111,22 +108,6 @@ document.addEventListener("DOMContentLoaded", function () {
         },
       });
 
-      new Chart(document.getElementById("actividadUsuariosChart"), {
-        type: "line",
-        data: {
-          labels: semanas,
-          datasets: [
-            {
-              label: "Usuarios Activos",
-              data: usuarios,
-              backgroundColor: "#17A2B8",
-              borderColor: "#17A2B8",
-              fill: false,
-            },
-          ],
-        },
-      });
-
       console.log("✅ Gráficos cargados con datos reales");
     } catch (error) {
       console.error("❌ Error cargando métricas:", error);
@@ -135,4 +116,35 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // 📢 Llamar a la función para obtener métricas
   cargarMetricas();
+  cargarGraficoUsuariosActivos();
+
 });
+// 🔹 Cargar gráfico de usuarios activos reales por semana
+async function cargarGraficoUsuariosActivos() {
+  try {
+    const response = await fetch("http://localhost:3000/api/usuarios/activos-semanales");
+    const datos = await response.json();
+
+    const semanas = datos.map(item => item.semana);
+    const usuarios = datos.map(item => item.usuarios);
+
+    new Chart(document.getElementById("actividadUsuariosChart"), {
+      type: "line",
+      data: {
+        labels: semanas,
+        datasets: [{
+          label: "Usuarios Activos",
+          data: usuarios,
+          borderColor: "#17A2B8",
+          backgroundColor: "#17A2B880",
+          fill: true,
+          tension: 0.4
+        }]
+      }
+    });
+
+  } catch (error) {
+    console.error("❌ Error cargando usuarios activos:", error);
+  }
+}
+

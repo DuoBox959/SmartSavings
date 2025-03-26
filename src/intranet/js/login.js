@@ -63,6 +63,7 @@ loginForm.addEventListener("submit", async (event) => {
         rol: data.user.rol.toLowerCase(),
       })
     );
+    await registrarActividadHistorial(data.user._id, "Inicio de sesión");
 
     Swal.fire({
       icon: "success",
@@ -85,3 +86,18 @@ loginForm.addEventListener("submit", async (event) => {
     });
   }
 });
+
+async function registrarActividadHistorial(usuarioId, accionTexto) {
+  try {
+    await fetch("http://localhost:3000/api/historial", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        usuario_id: usuarioId,
+        accion: accionTexto,
+      }),
+    });
+  } catch (error) {
+    console.error("❌ Error al registrar historial:", error);
+  }
+}
