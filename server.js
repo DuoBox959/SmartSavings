@@ -1177,35 +1177,57 @@ app.get("/api/metricas", async (req, res) => {
  */
 app.get("/api/reportes", async (req, res) => {
   try {
-    // 📊 Obtener métricas reales desde MongoDB
     const totalUsuarios = await db.collection("Usuarios").countDocuments();
-    const usuariosActivos = await db.collection("Usuarios").countDocuments({ activo: true }); // Si tienes un campo 'activo'
+
+    const hace7dias = new Date();
+    hace7dias.setDate(hace7dias.getDate() - 7);
+    const usuariosActivos = await db.collection("HistorialUsuario").aggregate([
+      { $match: { fecha: { $gte: hace7dias } } },
+      { $group: { _id: "$usuario_id" } }
+    ]).toArray();
 
     const totalProductos = await db.collection("Productos").countDocuments();
     const totalSupermercados = await db.collection("Supermercados").countDocuments();
 
-    // 🔹 Obtener los productos más comparados (asumiendo que hay un campo 'comparaciones')
     const productosMasComparados = await db.collection("Productos")
       .find()
       .sort({ comparaciones: -1 })
       .limit(1)
       .toArray();
 
-    const productoMasComparado = productosMasComparados.length > 0 ? productosMasComparados[0].Nombre : "N/A";
+    const productoMasComparado = productosMasComparados.length > 0
+      ? productosMasComparados[0].Nombre
+      : "N/A";
 
-    // 📈 Comparaciones por categoría
     const comparacionesPorCategoria = await db.collection("Productos").aggregate([
       { $group: { _id: "$Categoria", total: { $sum: "$comparaciones" } } },
       { $sort: { total: -1 } }
     ]).toArray();
 
-    // 📝 Obtener el historial de actividad
-    const historial = await db.collection("Historial").find().sort({ fecha: -1 }).limit(10).toArray();
+    const historial = await db.collection("HistorialUsuario").aggregate([
+      {
+        $lookup: {
+          from: "Usuarios",
+          localField: "usuario_id",
+          foreignField: "_id",
+          as: "usuarioInfo"
+        }
+      },
+      { $unwind: "$usuarioInfo" },
+      {
+        $project: {
+          fecha: 1,
+          accion: 1,
+          usuario: "$usuarioInfo.nombre"
+        }
+      },
+      { $sort: { fecha: -1 } },
+      { $limit: 10 }
+    ]).toArray();
 
-    // 📌 Enviar la respuesta con los datos reales
     res.json({
       totalUsuarios,
-      usuariosActivos,
+      usuariosActivos: usuariosActivos.length,
       totalProductos,
       totalSupermercados,
       productoMasComparado,
@@ -1218,6 +1240,7 @@ app.get("/api/reportes", async (req, res) => {
     res.status(500).json({ error: "Error al obtener reportes" });
   }
 });
+
 
 // =============================================
 // 🅳️ CRUD DE DATOS PERSONALES
