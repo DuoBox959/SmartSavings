@@ -47,15 +47,31 @@ async function cargarProductos() {
 
 async function editarProducto(id) {
   try {
-    const response = await fetch(`${API_URL}/${id}`);
-    const producto = await response.json();
+    // Obtener datos del producto
+    const responseProducto = await fetch(`${API_URL}/${id}`);
+    const producto = await responseProducto.json();
 
+    // Obtener todos los precios y filtrar por producto_id
+    const responsePrecios = await fetch(`http://localhost:3000/api/precios`);
+    const precios = await responsePrecios.json();
+    const precioData = precios.find(p => p.producto_id === id) || {};
+
+    // Obtener todos los supermercados y filtrar por _id
+    const responseSupermercados = await fetch(`http://localhost:3000/api/supermercados`);
+    const supermercados = await responseSupermercados.json();
+    const supermercado = supermercados.find(s => s._id === producto.Supermercado_id) || {};
+    
     document.getElementById("edit-producto-id").value = producto._id;
     document.getElementById("edit-nombre").value = producto.Nombre;
     document.getElementById("edit-marca").value = producto.Marca;
+    document.getElementById("edit-precio").value = precioData.precioActual || "";
+    document.getElementById("edit-precioDescuento").value = precioData.precioDescuento || "";
     document.getElementById("edit-peso").value = producto.Peso;
     document.getElementById("edit-unidadPeso").value = producto.UnidadPeso;
+    document.getElementById("edit-proveedor").value = producto.Proveedor_id;
     document.getElementById("edit-supermercado").value = producto.Supermercado_id;
+    document.getElementById("edit-ciudad").value = supermercado.Ciudad || "";
+    document.getElementById("edit-estado").value = producto.Estado;
 
     document.getElementById("modal-editar").style.display = "flex";
   } catch (err) {
@@ -69,9 +85,14 @@ async function guardarCambiosDesdeFormulario() {
     const productoActualizado = {
       Nombre: document.getElementById("edit-nombre").value,
       Marca: document.getElementById("edit-marca").value,
+      Precio: parseFloat(document.getElementById("edit-precio").value) || 0,
+      PrecioDescuento: parseFloat(document.getElementById("edit-precioDescuento").value) || 0,
       Peso: parseFloat(document.getElementById("edit-peso").value),
       UnidadPeso: document.getElementById("edit-unidadPeso").value,
-      Supermercado_id: document.getElementById("edit-supermercado").value
+      Proveedor_id: document.getElementById("edit-proveedor").value,
+      Supermercado_id: document.getElementById("edit-supermercado").value,
+      Ciudad: document.getElementById("edit-ciudad").value,
+      Estado: document.getElementById("edit-estado").value
     };
 
     await fetch(`${API_URL}/${id}`, {
