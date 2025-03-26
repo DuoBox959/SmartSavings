@@ -25,6 +25,12 @@ $(document).ready(() => {
   });
 
   cargarProductos();
+
+  // ✨ Agregar limpieza automática de espacios en nombre y marca
+  $("#nombreProducto, #marcaProducto").on("blur", function () {
+    const valorSinEspacios = $(this).val().trim();
+    $(this).val(valorSinEspacios);
+  });
 });
 
 // 🟢 Cargar productos desde servidor Express
@@ -92,9 +98,9 @@ async function guardarCambiosDesdeFormulario(event) {
   event.preventDefault();
 
   const formData = new FormData();
-  formData.append("Nombre", $("#nombreProducto").val());
+  formData.append("Nombre", $("#nombreProducto").val().trim());
   formData.append("Imagen", $("#imgProducto")[0].files[0]);
-  formData.append("Marca", $("#marcaProducto").val());
+  formData.append("Marca", $("#marcaProducto").val().trim());
   formData.append("Peso", $("#pesoProducto").val());
   formData.append("UnidadPeso", $("#unidadPeso").val());
   formData.append("Estado", $("#Estado").val());

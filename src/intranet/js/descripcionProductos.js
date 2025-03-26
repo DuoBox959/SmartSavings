@@ -20,6 +20,20 @@ $(document).ready(() => {
   });
 
   cargarDescripciones();
+
+    // 🧼 Limpiar espacios al salir de los inputs
+    $("#tipoProducto, #subtipoProducto, #utilidadProducto, #ingredientesProducto").on("blur", function () {
+      const limpio = $(this).val().trim();
+      $(this).val(limpio);
+    });
+  
+    // 🚫 BONUS: prevenir espacios al inicio mientras se escribe
+    $("#tipoProducto, #subtipoProducto, #utilidadProducto, #ingredientesProducto").on("input", function () {
+      if (this.value.startsWith(" ")) {
+        this.value = this.value.trimStart();
+      }
+    });
+  
 });
 
 // ✅ Cargar descripciones desde el servidor

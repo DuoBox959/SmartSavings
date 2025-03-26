@@ -18,6 +18,18 @@ $(document).ready(() => {
   });
 
   cargarSupermercados();
+
+    // 🧼 Limpiar espacios extra en inputs de supermercado
+    $("#nombreSupermercado, #paisSupermercado, #ciudadSupermercado, #ubicacionSupermercado")
+    .on("blur", function () {
+      $(this).val($(this).val().trim());
+    })
+    .on("input", function () {
+      if (this.value.startsWith(" ")) {
+        this.value = this.value.trimStart();
+      }
+    });
+
 });
 
 // ✅ Cargar supermercados desde el servidor

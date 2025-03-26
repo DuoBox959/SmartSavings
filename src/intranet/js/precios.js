@@ -23,6 +23,19 @@ $(document).ready(async () => {
   // 🆕 Esperar a que los productos se carguen antes de los precios
   await cargarProductos();
   await cargarPrecios();
+
+    // 🧼 Limpiar espacios innecesarios en unidadLote y precioHistorico
+    $("#unidadLote, #precioHistorico").on("blur", function () {
+      $(this).val($(this).val().trim());
+    });
+  
+    // 🚫 BONUS: Prevenir espacios al inicio mientras se escribe
+    $("#unidadLote, #precioHistorico").on("input", function () {
+      if (this.value.startsWith(" ")) {
+        this.value = this.value.trimStart();
+      }
+    });
+  
 });
 
 // 🟢 Cargar productos y llenar el select

@@ -21,6 +21,20 @@ $(document).ready(() => {
   });
 
   cargarDatosIniciales();
+
+    // 🧼 Limpiar espacios en el campo de Opinión
+    $("#textoOpinion").on("blur", function () {
+      const limpio = $(this).val().trim();
+      $(this).val(limpio);
+    });
+  
+    // 🚫 BONUS: Prevenir espacios al inicio
+    $("#textoOpinion").on("input", function () {
+      if (this.value.startsWith(" ")) {
+        this.value = this.value.trimStart();
+      }
+    });
+  
 });
 
 // ✅ Cargar opiniones desde el servidor

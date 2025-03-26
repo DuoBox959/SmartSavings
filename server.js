@@ -1260,14 +1260,17 @@ app.get("/api/datos-personales", async (req, res) => {
  */
 app.put("/api/datos-personales/:id", async (req, res) => {
   try {
-    const usuarioId = new ObjectId(req.params.id);
+    const id = new ObjectId(req.params.id);
     const data = req.body;
 
     const result = await db.collection("DatosUsuario").updateOne(
-      { usuario_id: usuarioId },
-      { $set: data },
-      { upsert: true } // crea si no existe
+      { _id: id }, // 👈 CORRECTO
+      { $set: data }
     );
+
+    if (result.modifiedCount === 0) {
+      return res.status(404).json({ error: "Datos personales no encontrados o sin cambios" });
+    }
 
     res.json({ message: "Datos personales actualizados correctamente" });
   } catch (err) {
@@ -1276,25 +1279,27 @@ app.put("/api/datos-personales/:id", async (req, res) => {
   }
 });
 
+
 /**
  * ✅ Eliminar Dato personal (Delete)
  * Ruta: DELETE /api/datos-personales/:id
  */
 app.delete("/api/datos-personales/:id", async (req, res) => {
   try {
-    const usuarioId = new ObjectId(req.params.id);
-    const result = await db.collection("DatosUsuario").deleteOne({ usuario_id: usuarioId });
+    const datoId = new ObjectId(req.params.id);
+    const result = await db.collection("DatosUsuario").deleteOne({ _id: datoId });
 
     if (result.deletedCount === 0) {
-      return res.status(404).json({ error: "Datos no encontrados" });
+      return res.status(404).json({ error: "Dato no encontrado" });
     }
 
-    res.json({ message: "Datos personales eliminados correctamente" });
+    res.json({ message: "Dato personal eliminado correctamente" });
   } catch (err) {
-    console.error("❌ Error eliminando datos personales:", err);
+    console.error("❌ Error eliminando dato personal:", err);
     res.status(500).json({ error: "Error en el servidor" });
   }
 });
+
 
 
 // =============================================
@@ -1331,11 +1336,27 @@ app.get("/api/historial/:usuarioId", async (req, res) => {
   try {
     const usuarioId = new ObjectId(req.params.usuarioId);
 
-    const historial = await db.collection("HistorialUsuario")
-      .find({ usuario_id: usuarioId })
-      .sort({ fecha: -1 }) // más recientes primero
-      .limit(20)
-      .toArray();
+    const historial = await db.collection("HistorialUsuario").aggregate([
+      { $match: { usuario_id: usuarioId } },
+      {
+        $lookup: {
+          from: "Usuarios",
+          localField: "usuario_id",
+          foreignField: "_id",
+          as: "usuario"
+        }
+      },
+      { $unwind: "$usuario" },
+      {
+        $project: {
+          fecha: 1,
+          accion: 1,
+          usuario: "$usuario.nombre" // 👈 nombre del usuario
+        }
+      },
+      { $sort: { fecha: -1 } },
+      { $limit: 20 }
+    ]).toArray();
 
     res.json(historial);
   } catch (err) {
@@ -1343,6 +1364,7 @@ app.get("/api/historial/:usuarioId", async (req, res) => {
     res.status(500).json({ error: "Error en el servidor" });
   }
 });
+
 
 /**
  * ✅ Actualizar una entrada del historial (Update)
@@ -1413,29 +1435,42 @@ app.get("/api/historial", async (req, res) => {
  * ✅ Obtener usuarios activos en los últimos 7 días
  * Ruta: GET /api/usuarios/activos-recientes
  */
-app.get("/api/usuarios/activos-recientes", async (req, res) => {
+app.get("/api/historial-reciente", async (req, res) => {
   try {
     const hace7dias = new Date();
     hace7dias.setDate(hace7dias.getDate() - 7);
 
-    const activos = await db.collection("HistorialUsuario").aggregate([
+    const movimientos = await db.collection("HistorialUsuario").aggregate([
       {
         $match: {
           fecha: { $gte: hace7dias }
         }
       },
       {
-        $group: {
-          _id: "$usuario_id"
+        $lookup: {
+          from: "Usuarios",
+          localField: "usuario_id",
+          foreignField: "_id",
+          as: "Usuario"
         }
-      }
+      },
+      {
+        $unwind: "$Usuario"
+      },
+      {
+        $project: {
+          fecha: 1,
+          accion: 1,
+          usuario: "$Usuario.nombre"
+        }
+      },
+      { $sort: { fecha: -1 } }
     ]).toArray();
 
-    const idsActivos = activos.map(entry => entry._id.toString());
-
-    res.json({ activos: idsActivos });
+    res.json(movimientos);
   } catch (err) {
-    console.error("❌ Error obteniendo usuarios activos:", err);
-    res.status(500).json({ error: "Error en el servidor" });
+    console.error("❌ Error obteniendo historial reciente:", err);
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 });
+

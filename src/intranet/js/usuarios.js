@@ -19,6 +19,17 @@ $(document).ready(() => {
   });
 
   cargarUsuarios(); // ✅ Llama la nueva función fetch
+  // 🧼 Eliminar espacios extra en campos de usuario
+  $("#nombreUsuario, #emailUsuario, #passwordUsuario").on("blur", function () {
+    const limpio = $(this).val().trim();
+    $(this).val(limpio);
+  });
+  $("#nombreUsuario, #emailUsuario, #passwordUsuario").on("input", function () {
+    if (this.value.startsWith(" ")) {
+      this.value = this.value.trimStart();
+    }
+  });
+
 });
 
 // 🟢 Cargar usuarios desde servidor Express

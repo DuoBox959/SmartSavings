@@ -22,6 +22,19 @@ $(document).ready(() => {
   });
 
   cargarDatosPersonales();
+    // 🧼 Quitar espacios al salir del input
+    $("#nombre, #apellidos, #idioma, #zonaHoraria").on("blur", function () {
+      const limpio = $(this).val().trim();
+      $(this).val(limpio);
+    });
+  
+    // 🚫 BONUS: evitar escribir espacios al inicio
+    $("#nombre, #apellidos, #idioma, #zonaHoraria").on("input", function () {
+      if (this.value.startsWith(" ")) {
+        this.value = this.value.trimStart();
+      }
+    });
+  
 });
 
 // 🟢 Cargar datos desde servidor Express
@@ -30,8 +43,8 @@ async function cargarDatosPersonales() {
     const respuesta = await fetch("http://localhost:3000/api/datos-personales");
     const datos = await respuesta.json();
 
-    datosPersonalesCache = datos; // Actualizamos cache
-    datosPersonalesTable.clear();
+    datosPersonalesCache = datos; // 👈 Cache para editar
+    datosPersonalesTable.clear().draw(); // Limpia completamente la tabla
 
     datos.forEach((dato) => {
       datosPersonalesTable.row.add([
@@ -44,15 +57,16 @@ async function cargarDatosPersonales() {
         dato.idioma || "",
         dato.zonaHoraria || "",
         dato.recibirNotificaciones ? "✅" : "❌",
-        accionesHTML(dato._id),
+        accionesHTML(dato._id), // Botones de acción
       ]);
     });
 
-    datosPersonalesTable.draw();
+    datosPersonalesTable.draw(); // 🔁 Redibuja todo
   } catch (error) {
     console.error("❌ Error al cargar datos personales:", error);
   }
 }
+
 
 // 🟢 Generar HTML para editar y eliminar
 function accionesHTML(id) {
@@ -84,7 +98,7 @@ function editarDato(id) {
   if (!dato) return;
 
   $("#formTitulo").text("Editar Datos Personales");
-  $("#datoID").val(dato._id);
+  $("#datoID").val(dato._id); // 👈 Este ID debe ir correctamente
   $("#nombre").val(dato.nombre || "");
   $("#apellidos").val(dato.apellidos || "");
   $("#usuarioId").val(dato.usuario_id || "");
@@ -103,6 +117,7 @@ function editarDato(id) {
     .getElementById("formularioDatos")
     .scrollIntoView({ behavior: "smooth" });
 }
+
 
 // 🟢 Guardar (crear o editar)
 async function guardarDato() {
@@ -126,14 +141,14 @@ async function guardarDato() {
   try {
     let response;
     if (id) {
-      // PUT (editar)
+      // ✅ PUT = editar
       response = await fetch(`http://localhost:3000/api/datos-personales/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
     } else {
-      // POST (crear)
+      // ✅ POST = crear
       response = await fetch("http://localhost:3000/api/datos-personales", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -143,14 +158,23 @@ async function guardarDato() {
 
     if (!response.ok) throw new Error("Error al guardar");
 
-    Swal.fire("✅ Guardado", "Los datos han sido guardados.", "success");
+    const mensaje = id ? "Datos actualizados correctamente" : "Datos añadidos correctamente";
+    Swal.fire("✅ Éxito", mensaje, "success");
+
+    // ✅ Limpiar ID para evitar modo edición persistente
+    $("#datoID").val("");
+
+    // ⚠️ Recargar datos actualizados sin duplicar
     await cargarDatosPersonales();
     cerrarFormulario();
+
   } catch (err) {
     console.error("❌ Error guardando datos:", err);
     Swal.fire("Error", "No se pudieron guardar los datos", "error");
   }
 }
+
+
 
 // 🟢 Eliminar dato personal
 async function eliminarDato(id) {

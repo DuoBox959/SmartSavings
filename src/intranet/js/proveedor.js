@@ -17,6 +17,19 @@ $(document).ready(() => {
   });
 
   cargarProveedores();
+
+    // 🧼 Limpiar espacios innecesarios en los inputs de proveedor
+    $("#nombreProveedor, #paisProveedor, #comunidadAutonoma").on("blur", function () {
+      $(this).val($(this).val().trim());
+    });
+  
+    // 🚫 BONUS: prevenir espacios al inicio mientras escribe
+    $("#nombreProveedor, #paisProveedor, #comunidadAutonoma").on("input", function () {
+      if (this.value.startsWith(" ")) {
+        this.value = this.value.trimStart();
+      }
+    });
+  
 });
 
 // 🟢 Cargar proveedores desde el servidor

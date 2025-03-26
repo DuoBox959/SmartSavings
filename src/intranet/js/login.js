@@ -3,6 +3,18 @@ const loginForm = document.querySelector("form");
 const emailOrUsernameInput = document.getElementById("emailOrUsername");
 const passwordInput = document.getElementById("password");
 const togglePassword = document.getElementById("togglePassword");  // El icono del ojo
+// 🧼 Evitar espacios iniciales y limpiar en blur
+[emailOrUsernameInput, passwordInput].forEach((input) => {
+  input.addEventListener("input", () => {
+    if (input.value.startsWith(" ")) {
+      input.value = input.value.trimStart();
+    }
+  });
+
+  input.addEventListener("blur", () => {
+    input.value = input.value.trim();
+  });
+});
 
 // Evento de click para mostrar/ocultar contraseña
 togglePassword.addEventListener("click", () => {

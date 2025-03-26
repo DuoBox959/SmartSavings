@@ -31,10 +31,26 @@ document.addEventListener("DOMContentLoaded", async function () {
         const user = JSON.parse(sessionStorage.getItem("user"));
         if (!user) return;
   
-        const nombre = document.getElementById("username").value;
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
-  
+        const nombreInput = document.getElementById("username");
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+        
+        // Limpieza automática en tiempo real
+        [nombreInput, emailInput, passwordInput].forEach((input) => {
+          input.addEventListener("input", () => {
+            if (input.value.startsWith(" ")) {
+              input.value = input.value.trimStart();
+            }
+          });
+          input.addEventListener("blur", () => {
+            input.value = input.value.trim();
+          });
+        });
+        
+        const nombre = nombreInput.value.trim();
+        const email = emailInput.value.trim();
+        const password = passwordInput.value.trim();
+        
         const updateData = { nombre, email };
         if (password.trim() !== "") updateData.pass = password; // 🔐 Solo enviar si cambia la contraseña
   

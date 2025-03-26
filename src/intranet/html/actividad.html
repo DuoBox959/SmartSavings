@@ -1,66 +1,39 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Historial de Actividad</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Historial de Actividad</title>
 
-    <!-- ✅ CSS -->
-    <link rel="stylesheet" href="../css/global/datTable.css" />
-    <link rel="stylesheet" href="../css/global/sidebar.css" />
+  <!-- ✅ CSS -->
+  <link rel="stylesheet" href="../css/global/datTable.css" />
+  <link rel="stylesheet" href="../css/global/sidebar.css" />
 
-    <!-- ✅ Librerías Externas -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- ✅ Librerías -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <!-- ✅ Scripts del Proyecto -->
-    <script src="../js/global/auth.js"></script>
-    <script type="module" src="../js/global/sidebar.js" defer></script>
-    <script type="module" src="../js/actividad.js"></script>
-  </head>
+  <!-- ✅ Scripts -->
+  <script src="../js/global/auth.js"></script>
+  <script type="module" src="../js/global/sidebar.js" defer></script>
+  <script type="module" src="../js/actividad.js"></script>
+</head>
 
-  <body>
-    <div id="sidebar-container"></div>
+<body>
+  <div id="sidebar-container"></div>
+  <h1>📋 Historial de Actividad</h1>
 
-    <h1>Historial de Actividad de Usuarios</h1>
-    <button onclick="mostrarFormularioAgregar()">Registrar Actividad</button>
-
-    <table id="actividadTable" class="display">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Usuario ID</th>
-          <th>Última Acción</th>
-          <th>Fecha</th>
-          <th>Activo Últimos 7 días</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-
-    <!-- ✅ Formulario oculto -->
-    <div id="formularioActividad" style="display: none">
-      <h2 id="formTitulo">Registrar Actividad</h2>
-      <form onsubmit="return false;">
-        <input type="hidden" id="actividadID" />
-
-        <label for="usuarioId">Usuario ID:</label>
-        <input type="text" id="usuarioId" required />
-
-        <label for="accion">Acción:</label>
-        <input type="text" id="accion" required />
-
-        <label for="fechaActividad">Fecha:</label>
-        <input type="datetime-local" id="fechaActividad" />
-
-        <div id="botonesFormulario">
-          <button type="button">Guardar</button>
-          <button type="button" onclick="cerrarFormulario()">Cancelar</button>
-        </div>
-      </form>
-    </div>
-  </body>
+  <table id="actividadTable" class="display">
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Acción</th>
+        <th>Usuario</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</body>
 </html>
