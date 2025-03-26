@@ -1,125 +1,93 @@
 document.addEventListener("DOMContentLoaded", async function () {
-    // 🟢 Obtener datos del usuario
-    async function cargarDatosUsuario() {
-      try {
-        const user = JSON.parse(sessionStorage.getItem("user"));
-        if (!user) {
-          window.location.href = "../html/login.html"; // 🔴 Redirigir si no hay sesión
-          return;
-        }
-  
-        // 🟢 Obtener datos reales del usuario
-        const response = await fetch(`http://localhost:3000/api/usuarios/${user._id}`);
-        const data = await response.json();
-  
-        if (!response.ok) throw new Error(data.error || "Error al obtener datos");
-  
-        // 🟢 Llenar los campos con los datos reales
-        document.getElementById("username").value = data.nombre;
-        document.getElementById("email").value = data.email;
-        document.getElementById("2fa").checked = data.dosFactores || false;
-  
-        console.log("✅ Datos de usuario cargados:", data);
-      } catch (error) {
-        console.error("❌ Error cargando datos del usuario:", error);
-      }
+  // 🔐 Verificar sesión y cargar datos reales
+  async function cargarDatosUsuario() {
+    try {
+      const user = JSON.parse(sessionStorage.getItem("user"));
+      if (!user) return (window.location.href = "../html/login.html");
+
+      const res = await fetch(`http://localhost:3000/api/usuarios/${user._id}`);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "No se pudieron obtener los datos");
+
+      document.getElementById("username").value = data.nombre;
+      document.getElementById("email").value = data.email;
+      document.getElementById("2fa").checked = data.dosFactores || false;
+
+      // Guardamos ID en memoria para los siguientes cambios
+      sessionStorage.setItem("userIdReal", data._id);
+
+      console.log("✅ Datos cargados:", data);
+    } catch (err) {
+      console.error("❌ Error al cargar datos:", err);
     }
-  
-    // 🟢 Guardar cambios en perfil
-    document.querySelector(".config-section button").addEventListener("click", async function () {
-      try {
-        const user = JSON.parse(sessionStorage.getItem("user"));
-        if (!user) return;
-  
-        const nombreInput = document.getElementById("username");
-        const emailInput = document.getElementById("email");
-        const passwordInput = document.getElementById("password");
-        
-        // Limpieza automática en tiempo real
-        [nombreInput, emailInput, passwordInput].forEach((input) => {
-          input.addEventListener("input", () => {
-            if (input.value.startsWith(" ")) {
-              input.value = input.value.trimStart();
-            }
-          });
-          input.addEventListener("blur", () => {
-            input.value = input.value.trim();
-          });
-        });
-        
-        const nombre = nombreInput.value.trim();
-        const email = emailInput.value.trim();
-        const password = passwordInput.value.trim();
-        
-        const updateData = { nombre, email };
-        if (password.trim() !== "") updateData.pass = password; // 🔐 Solo enviar si cambia la contraseña
-  
-        const response = await fetch(`http://localhost:3000/api/usuarios/${user._id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(updateData),
-        });
-  
-        const result = await response.json();
-        if (!response.ok) throw new Error(result.error || "Error al actualizar usuario");
-  
-        alert("✅ Perfil actualizado correctamente.");
-        document.getElementById("password").value = ""; // 🔒 Limpiar campo de contraseña
-  
-        console.log("✅ Usuario actualizado:", result);
-      } catch (error) {
-        console.error("❌ Error actualizando usuario:", error);
-      }
-    });
-  
-    // 🟢 Actualizar Seguridad (2FA)
-    document.getElementById("2fa").addEventListener("change", async function () {
-      try {
-        const user = JSON.parse(sessionStorage.getItem("user"));
-        if (!user) return;
-  
-        const response = await fetch(`http://localhost:3000/api/usuarios/${user._id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ dosFactores: this.checked }),
-        });
-  
-        const result = await response.json();
-        if (!response.ok) throw new Error(result.error || "Error al actualizar seguridad");
-  
-        alert("🔐 Seguridad actualizada correctamente.");
-        console.log("✅ Seguridad actualizada:", result);
-      } catch (error) {
-        console.error("❌ Error actualizando seguridad:", error);
-      }
-    });
-  
-    // 🟢 Guardar Preferencias de Notificaciones
-    document.querySelector(".config-section:last-child button").addEventListener("click", async function () {
-      try {
-        const user = JSON.parse(sessionStorage.getItem("user"));
-        if (!user) return;
-  
-        const notificacionesCorreo = document.querySelector(".config-section:last-child input[type='checkbox']:nth-child(1)").checked;
-        const notificacionesPush = document.querySelector(".config-section:last-child input[type='checkbox']:nth-child(2)").checked;
-  
-        const response = await fetch(`http://localhost:3000/api/usuarios/${user._id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ notificacionesCorreo, notificacionesPush }),
-        });
-  
-        const result = await response.json();
-        if (!response.ok) throw new Error(result.error || "Error al actualizar notificaciones");
-  
-        alert("📩 Notificaciones actualizadas correctamente.");
-        console.log("✅ Notificaciones actualizadas:", result);
-      } catch (error) {
-        console.error("❌ Error actualizando notificaciones:", error);
-      }
-    });
-  
-    // 📌 Cargar los datos al abrir la página
-    cargarDatosUsuario();
+  }
+
+  // 🟢 Guardar NUEVA CONTRASEÑA
+  document.getElementById("btnGuardarPerfil").addEventListener("click", async function () {
+    const nuevaPassword = document.getElementById("password").value.trim();
+    if (!nuevaPassword) {
+      return alert("⚠️ Ingresa una nueva contraseña.");
+    }
+
+    try {
+      const id = sessionStorage.getItem("userIdReal");
+      const res = await fetch(`http://localhost:3000/api/usuarios/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ pass: nuevaPassword }),
+      });
+
+      const result = await res.json();
+      if (!res.ok) throw new Error(result.error || "Error al actualizar contraseña");
+
+      document.getElementById("password").value = "";
+      alert("✅ Contraseña actualizada con éxito");
+    } catch (err) {
+      console.error("❌ Error actualizando contraseña:", err);
+    }
   });
-  
+
+  // 🟢 Seguridad (2FA)
+  document.getElementById("2fa").addEventListener("change", async function () {
+    const userId = sessionStorage.getItem("userIdReal");
+    try {
+      const res = await fetch(`http://localhost:3000/api/usuarios/${userId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ dosFactores: this.checked }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Error al cambiar seguridad");
+      alert("🔐 Seguridad actualizada correctamente.");
+    } catch (err) {
+      console.error("❌ Error en seguridad:", err);
+    }
+  });
+
+  // 🟢 Guardar Notificaciones
+  document.querySelector(".config-section:last-child button").addEventListener("click", async function () {
+    const userId = sessionStorage.getItem("userIdReal");
+
+    const notificacionesCorreo = document.querySelectorAll(".config-section:last-child input[type='checkbox']")[0].checked;
+    const notificacionesPush = document.querySelectorAll(".config-section:last-child input[type='checkbox']")[1].checked;
+
+    try {
+      const res = await fetch(`http://localhost:3000/api/usuarios/${userId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ notificacionesCorreo, notificacionesPush }),
+      });
+
+      const result = await res.json();
+      if (!res.ok) throw new Error(result.error || "Error al actualizar preferencias");
+
+      alert("📩 Preferencias de notificación guardadas.");
+    } catch (err) {
+      console.error("❌ Error en notificaciones:", err);
+    }
+  });
+
+  // 🚀 Al cargar la página
+  cargarDatosUsuario();
+});

@@ -1,7 +1,7 @@
 // 🔹 Variables globales
 let datosPersonalesTable;
 let datosPersonalesCache = [];
-
+let usuariosCache = [];
 // 🔹 Iniciar DataTable y cargar datos cuando el documento esté listo
 $(document).ready(() => {
   datosPersonalesTable = $("#datosPersonalesTable").DataTable({
@@ -11,7 +11,7 @@ $(document).ready(() => {
       { title: "ID" },
       { title: "Nombre" },
       { title: "Apellidos" },
-      { title: "Usuario ID" },
+      { title: "Usuario" },
       { title: "Fecha Nacimiento" },
       { title: "Género" },
       { title: "Idioma" },
@@ -20,8 +20,10 @@ $(document).ready(() => {
       { title: "Acciones" }
     ],
   });
-
+  cargarUsuariosEnSelect();
   cargarDatosPersonales();
+
+
     // 🧼 Quitar espacios al salir del input
     $("#nombre, #apellidos, #idioma, #zonaHoraria").on("blur", function () {
       const limpio = $(this).val().trim();
@@ -36,6 +38,12 @@ $(document).ready(() => {
     });
   
 });
+function obtenerNombreUsuario(usuarioId) {
+  const usuario = usuariosCache.find(u => u._id === usuarioId);
+  console.log("👤 Buscando usuario:", usuarioId, "=>", usuario?.nombre);
+
+  return usuario ? usuario.nombre : "Desconocido";
+}
 
 // 🟢 Cargar datos desde servidor Express
 async function cargarDatosPersonales() {
@@ -51,7 +59,7 @@ async function cargarDatosPersonales() {
         dato._id || "N/A",
         dato.nombre || "",
         dato.apellidos || "",
-        dato.usuario_id || "N/A",
+        obtenerNombreUsuario(dato.usuario_id) || "Desconocido",
         formatearFecha(dato.fechaNacimiento),
         dato.genero || "",
         dato.idioma || "",
@@ -77,46 +85,48 @@ function accionesHTML(id) {
 }
 
 // 🟢 Mostrar formulario para agregar
-function mostrarFormularioAgregar() {
+async function mostrarFormularioAgregar() {
   $("#formTitulo").text("Añadir Datos Personales");
   $("#datoID, #nombre, #apellidos, #usuarioId, #fechaNacimiento, #genero, #idioma, #zonaHoraria").val("");
   $("#notificaciones").prop("checked", false);
+
+  await cargarUsuariosEnSelect(); // 💥 Aquí
 
   $("#botonesFormulario button:first")
     .off("click")
     .on("click", guardarDato);
 
   $("#formularioDatos").show();
-  document
-    .getElementById("formularioDatos")
-    .scrollIntoView({ behavior: "smooth" });
+  document.getElementById("formularioDatos").scrollIntoView({ behavior: "smooth" });
 }
 
+
 // 🟢 Editar dato personal
-function editarDato(id) {
+async function editarDato(id) {
   const dato = datosPersonalesCache.find((d) => d._id === id);
   if (!dato) return;
 
   $("#formTitulo").text("Editar Datos Personales");
-  $("#datoID").val(dato._id); // 👈 Este ID debe ir correctamente
+  $("#datoID").val(dato._id);
   $("#nombre").val(dato.nombre || "");
   $("#apellidos").val(dato.apellidos || "");
-  $("#usuarioId").val(dato.usuario_id || "");
   $("#fechaNacimiento").val(dato.fechaNacimiento?.split("T")[0] || "");
   $("#genero").val(dato.genero || "");
   $("#idioma").val(dato.idioma || "");
   $("#zonaHoraria").val(dato.zonaHoraria || "");
   $("#notificaciones").prop("checked", dato.recibirNotificaciones || false);
 
+  await cargarUsuariosEnSelect(); // 💥 Aquí
+  $("#usuarioId").val(dato.usuario_id || ""); // 👈 Seleccionar el correcto
+
   $("#botonesFormulario button:first")
     .off("click")
     .on("click", guardarDato);
 
   $("#formularioDatos").show();
-  document
-    .getElementById("formularioDatos")
-    .scrollIntoView({ behavior: "smooth" });
+  document.getElementById("formularioDatos").scrollIntoView({ behavior: "smooth" });
 }
+
 
 
 // 🟢 Guardar (crear o editar)
@@ -214,6 +224,26 @@ function formatearFecha(fechaISO) {
     month: "2-digit",
     year: "numeric",
   });
+}
+async function cargarUsuariosEnSelect() {
+  try {
+    const res = await fetch("http://localhost:3000/api/usuarios");
+    const usuarios = await res.json();
+
+    usuariosCache = usuarios; // Reutilizamos para mostrar nombre en la tabla
+
+    const select = document.getElementById("usuarioId");
+    select.innerHTML = '<option value="">Selecciona un usuario</option>';
+
+    usuarios.forEach((u) => {
+      const option = document.createElement("option");
+      option.value = u._id;
+      option.textContent = u.nombre;
+      select.appendChild(option);
+    });
+  } catch (err) {
+    console.error("❌ Error cargando usuarios:", err);
+  }
 }
 
 // 🟢 Cerrar formulario

@@ -32,19 +32,22 @@
       <h1>Configuración</h1>
 
       <!-- 🅶 Configuración de Usuario -->
-      <div class="config-section">
-        <h2>Perfil de Usuario</h2>
-        <label for="username">Nombre:</label>
-        <input type="text" id="username" value="Usuario Ejemplo" />
+     <!-- 🅶 Configuración de Usuario -->
+<div class="config-section">
+  <h2>Perfil de Usuario</h2>
 
-        <label for="email">Correo Electrónico:</label>
-        <input type="email" id="email" value="usuario@empresa.com" />
+  <label for="username">Nombre:</label>
+  <input type="text" id="username" disabled /> <!-- 🔒 Solo lectura -->
 
-        <label for="password">Nueva Contraseña:</label>
-        <input type="password" id="password" />
+  <label for="email">Correo Electrónico:</label>
+  <input type="email" id="email" disabled /> <!-- 🔒 Solo lectura -->
 
-        <button>Guardar Cambios</button>
-      </div>
+  <label for="password">Nueva Contraseña:</label>
+  <input type="password" id="password" placeholder="Ingresa nueva contraseña" />
+
+  <button id="btnGuardarPerfil">Guardar Cambios</button>
+</div>
+
 
       <!-- 🅷 Seguridad -->
       <div class="config-section">
