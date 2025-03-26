@@ -14,7 +14,7 @@
     <!-- Estilos específicos de la página -->
     <link rel="stylesheet" href="../style/global/footer.css" />
     <!-- Estilos del pie de página -->
-<!-- Font Awesome CDN -->
+    <!-- Font Awesome CDN -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
@@ -56,8 +56,7 @@
         </li>
       </ul>
     </nav>
-    
-    
+
     <!-- 📌 Contenedor principal -->
     <div class="productos-container" id="productos-container">
       <!-- 🔹 Aquí se insertarán dinámicamente las tarjetas de productos -->
@@ -67,54 +66,56 @@
     <button class="back-button" onclick="volverAtras()">Volver Atrás</button>
 
     <!-- 📝 Modal para editar producto -->
-<div id="modal-editar" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="cerrarFormulario()">&times;</span>
-    <h2>Editar Producto</h2>
-    <form id="form-editar-producto">
-      <label>Nombre:</label>
-      <input type="text" id="edit-nombre" required />
+    <div id="modal-editar" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="cerrarFormulario()">&times;</span>
+        <h2>Editar Producto</h2>
+        <form id="form-editar-producto">
+          <label>Nombre:</label>
+          <input type="text" id="edit-nombre" required />
 
-      <label>Marca:</label>
-      <input type="text" id="edit-marca" />
+          <label>Marca:</label>
+          <input type="text" id="edit-marca" />
 
-      <label>Precio (€):</label>
-      <input type="number" id="edit-precio" step="0.01" />
+          <label>Precio (€):</label>
+          <input type="number" id="edit-precio" step="0.01" />
 
-      <label>Precio Descuento (€):</label>
-      <input type="number" id="edit-precioDescuento" step="0.01" />
+          <label>Precio Descuento (€):</label>
+          <input type="number" id="edit-precioDescuento" step="0.01" />
 
-      <label>Peso:</label>
-      <input type="number" id="edit-peso" step="0.01" />
+          <label>Peso:</label>
+          <input type="number" id="edit-peso" step="0.01" />
 
-      <label>Unidad de Peso:</label>
-      <select id="edit-unidadPeso">
-        <option value="kg">Kilogramos (kg)</option>
-        <option value="g">Gramos (g)</option>
-        <option value="l">Litros (l)</option>
-      </select>
+          <label>Unidad de Peso:</label>
+          <select id="edit-unidadPeso">
+            <option value="kg">Kilogramos (kg)</option>
+            <option value="g">Gramos (g)</option>
+            <option value="l">Litros (l)</option>
+          </select>
 
-      <label>Proveedor:</label>
-      <input type="text" id="edit-proveedor" />
+          <label>Proveedor:</label>
+          <input type="text" id="edit-proveedor" />
 
-      <label>Supermercado:</label>
-      <input type="text" id="edit-supermercado" />
+          <label>Supermercado:</label>
+          <input type="text" id="edit-supermercado" />
 
-      <label>Ciudad:</label>
-      <input type="text" id="edit-ciudad" />
+          <label>Ciudad:</label>
+          <input type="text" id="edit-ciudad" />
 
-      <label>Estado:</label>
-      <input type="text" id="edit-estado" />
+          <label>Estado:</label>
+          <select id="edit-estado">
+            <option value="En stock">En stock</option>
+            <option value="Sin stock">Sin stock</option>
+          </select>
 
-      <input type="hidden" id="edit-producto-id" />
-      <!-- ID oculto para saber qué producto actualizar -->
-      <button type="button" onclick="guardarCambiosDesdeFormulario()">
-        Guardar Cambios
-      </button>
-    </form>
-  </div>
-</div>
-
+          <input type="hidden" id="edit-producto-id" />
+          <!-- ID oculto para saber qué producto actualizar -->
+          <button type="button" onclick="guardarCambiosDesdeFormulario()">
+            Guardar Cambios
+          </button>
+        </form>
+      </div>
+    </div>
 
     <!-- 🧩 Footer dinámico (cargado desde JS) -->
     <div id="footer"></div>

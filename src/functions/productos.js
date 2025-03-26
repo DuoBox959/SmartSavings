@@ -61,17 +61,21 @@ async function editarProducto(id) {
     const supermercados = await responseSupermercados.json();
     const supermercado = supermercados.find(s => s._id === producto.Supermercado_id) || {};
     
+    // Asignar los valores al formulario de edición
     document.getElementById("edit-producto-id").value = producto._id;
     document.getElementById("edit-nombre").value = producto.Nombre;
     document.getElementById("edit-marca").value = producto.Marca;
     document.getElementById("edit-precio").value = precioData.precioActual || "";
     document.getElementById("edit-precioDescuento").value = precioData.precioDescuento || "";
     document.getElementById("edit-peso").value = producto.Peso;
-    document.getElementById("edit-unidadPeso").value = producto.UnidadPeso;
+    document.getElementById("edit-unidadPeso").value = producto.UnidadPeso.toLowerCase();
     document.getElementById("edit-proveedor").value = producto.Proveedor_id;
     document.getElementById("edit-supermercado").value = producto.Supermercado_id;
     document.getElementById("edit-ciudad").value = supermercado.Ciudad || "";
-    document.getElementById("edit-estado").value = producto.Estado;
+    
+    // Normalizar el valor de "Estado" al cargar (convertirlo a "En stock" o "Sin stock")
+    const estadoNormalizado = producto.Estado.trim().toLowerCase() === "sin stock" ? "Sin stock" : "En stock";
+    document.getElementById("edit-estado").value = estadoNormalizado;
 
     document.getElementById("modal-editar").style.display = "flex";
   } catch (err) {
@@ -88,11 +92,11 @@ async function guardarCambiosDesdeFormulario() {
       Precio: parseFloat(document.getElementById("edit-precio").value) || 0,
       PrecioDescuento: parseFloat(document.getElementById("edit-precioDescuento").value) || 0,
       Peso: parseFloat(document.getElementById("edit-peso").value),
-      UnidadPeso: document.getElementById("edit-unidadPeso").value,
+      UnidadPeso: document.getElementById("edit-unidadPeso").value.toUpperCase(),  // Normalizar a mayúsculas al guardar
       Proveedor_id: document.getElementById("edit-proveedor").value,
       Supermercado_id: document.getElementById("edit-supermercado").value,
       Ciudad: document.getElementById("edit-ciudad").value,
-      Estado: document.getElementById("edit-estado").value
+      Estado: document.getElementById("edit-estado").value.trim() === "Sin stock" ? "Sin Stock" : "En Stock"  // Normalizar el valor
     };
 
     await fetch(`${API_URL}/${id}`, {
