@@ -430,6 +430,32 @@ app.put("/api/productos/:id", upload.single("Imagen"), async (req, res) => {
 });
 
 /**
+ * ✅ Obtener un producto por ID (Read)
+ * Ruta: GET /api/productos/:id
+ */
+app.get("/api/productos/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ error: "ID de producto no válido" });
+    }
+
+    const producto = await db.collection("Productos").findOne({ _id: new ObjectId(id) });
+
+    if (!producto) {
+      return res.status(404).json({ error: "Producto no encontrado" });
+    }
+
+    res.json(producto);
+  } catch (err) {
+    console.error("❌ Error obteniendo producto:", err);
+    res.status(500).json({ error: "Error al obtener producto" });
+  }
+});
+
+
+/**
  * ✅ Eliminar producto (Delete)
  * Ruta: DELETE /api/productos/:id
  */
