@@ -93,13 +93,25 @@ function cerrarFormulario() {
 
 async function eliminarProducto(id) {
   try {
-    const confirmacion = confirm("¿Seguro que deseas eliminar este producto?");
-    if (!confirmacion) return;
+    const resultado = await Swal.fire({
+      title: "¿Estás seguro?",
+      text: "Esta acción no se puede deshacer.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar"
+    });
+
+    if (!resultado.isConfirmed) return;
 
     await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+    Swal.fire("Eliminado", "El producto ha sido eliminado.", "success");
     cargarProductos();
   } catch (err) {
     console.error("Error al eliminar el producto:", err);
+    Swal.fire("Error", "Hubo un problema al eliminar el producto.", "error");
   }
 }
 
