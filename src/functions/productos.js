@@ -49,6 +49,7 @@ async function editarProducto(id) {
   try {
     // Obtener datos del producto
     const responseProducto = await fetch(`${API_URL}/${id}`);
+    if (!responseProducto.ok) throw new Error("Producto no encontrado");
     const producto = await responseProducto.json();
 
     // Obtener todos los precios y filtrar por producto_id
@@ -61,6 +62,18 @@ async function editarProducto(id) {
     const supermercados = await responseSupermercados.json();
     const supermercado = supermercados.find(s => s._id === producto.Supermercado_id) || {};
     
+    // Obtener todos los proveedores y filtrar por _id
+    let proveedor = {};
+    try {
+      const responseProveedores = await fetch(`http://localhost:3000/api/proveedor`);
+      if (responseProveedores.ok) {
+        const proveedores = await responseProveedores.json();
+        proveedor = proveedores.find(p => p._id === producto.Proveedor_id) || {};
+      }
+    } catch (err) {
+      console.error("No se pudo cargar los proveedores", err);
+    }
+
     // Asignar los valores al formulario de edición
     document.getElementById("edit-producto-id").value = producto._id;
     document.getElementById("edit-nombre").value = producto.Nombre;
@@ -69,8 +82,11 @@ async function editarProducto(id) {
     document.getElementById("edit-precioDescuento").value = precioData.precioDescuento || "";
     document.getElementById("edit-peso").value = producto.Peso;
     document.getElementById("edit-unidadPeso").value = producto.UnidadPeso.toLowerCase();
-    document.getElementById("edit-proveedor").value = producto.Proveedor_id;
-    document.getElementById("edit-supermercado").value = producto.Supermercado_id;
+    
+    // Asignar nombres de proveedor y supermercado en lugar de sus IDs
+    document.getElementById("edit-proveedor").value = proveedor.Nombre || "Proveedor desconocido"; // Aquí asignamos el nombre
+    document.getElementById("edit-supermercado").value = supermercado.Nombre || "Supermercado desconocido"; // Aquí asignamos el nombre
+    
     document.getElementById("edit-ciudad").value = supermercado.Ciudad || "";
     
     // Normalizar el valor de "Estado" al cargar (convertirlo a "En stock" o "Sin stock")
@@ -80,8 +96,10 @@ async function editarProducto(id) {
     document.getElementById("modal-editar").style.display = "flex";
   } catch (err) {
     console.error("Error al cargar el producto para edición:", err);
+    Swal.fire("Error", "Hubo un problema al cargar el producto para edición.", "error");
   }
 }
+
 
 async function guardarCambiosDesdeFormulario() {
   try {
