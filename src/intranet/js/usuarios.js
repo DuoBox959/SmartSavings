@@ -14,6 +14,7 @@ $(document).ready(() => {
       { title: "Email" },
       { title: "Fecha Registro" },
       { title: "Rol" },
+      { title: "Estado" }, 
       { title: "Acciones" },
     ],
   });
@@ -36,14 +37,25 @@ $(document).ready(() => {
 
 async function cargarUsuarios() {
   try {
-    const respuesta = await fetch("http://localhost:3000/api/usuarios");
-    const usuarios = await respuesta.json();
+    const [usuariosRes, historialRes] = await Promise.all([
+      fetch("http://localhost:3000/api/usuarios"),
+      fetch("http://localhost:3000/api/historial")
+    ]);
 
-    usuariosCache = usuarios; // 👈 ACTUALIZAMOS EL CACHE GLOBAL
+    const usuarios = await usuariosRes.json();
+    const historial = await historialRes.json();
 
-    usuariosTable.clear(); // ✅ Limpiamos tabla antes de cargar nuevos
+    usuariosCache = usuarios;
+
+    usuariosTable.clear();
+
     usuarios.forEach((usuario) => {
-      // ✅ Ahora 'usuario' está definido
+      const actividad = historial.find(
+        (registro) => registro.usuario === usuario.nombre
+      );
+
+      const estado = generarEstadoHTML(actividad?.fecha);
+
       usuariosTable.row.add([
         usuario._id,
         usuario.nombre,
@@ -51,13 +63,30 @@ async function cargarUsuarios() {
         usuario.email,
         formatearFecha(usuario.fechaRegistro || new Date().toISOString()),
         usuario.rol,
+        estado,
         accionesHTML(usuario._id),
       ]);
     });
 
-    usuariosTable.draw(); // ✅ Renderizar cambios
+    usuariosTable.draw();
   } catch (error) {
-    console.error("❌ Error al cargar usuarios:", error);
+    console.error("❌ Error al cargar usuarios o historial:", error);
+  }
+}
+
+function generarEstadoHTML(fechaUltimaConexion) {
+  if (!fechaUltimaConexion) {
+    return `🔴 Inactivo (sin actividad)`;
+  }
+
+  const fecha = new Date(fechaUltimaConexion);
+  const ahora = new Date();
+  const diferenciaDias = Math.floor((ahora - fecha) / (1000 * 60 * 60 * 24));
+
+  if (diferenciaDias <= 7) {
+    return `<span style="color:green; font-weight:bold;">🟢 Activo</span>`;
+  } else {
+    return `<span style="color:red;">🔴 Inactivo desde ${fecha.toLocaleDateString("es-ES")}</span>`;
   }
 }
 
