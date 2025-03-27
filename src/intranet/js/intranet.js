@@ -18,32 +18,38 @@ document.addEventListener("DOMContentLoaded", function () {
   // 🕒 Iniciar cuenta regresiva para el evento
   function iniciarCuentaRegresiva() {
     const countdownElement = document.querySelector(".countdown");
-  
+
     // 🎯 Fecha fija del evento: 11 de abril a las 00:00:00
     const fechaEvento = new Date("2025-04-11T00:00:00");
-  
+
     function actualizarCuentaRegresiva() {
       const ahora = new Date().getTime();
       const destino = fechaEvento.getTime();
       const diferencia = destino - ahora;
-  
+
       if (diferencia <= 0) {
         countdownElement.innerHTML = "¡El evento ha comenzado!";
         return;
       }
-  
+
       const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
-      const horas = String(Math.floor((diferencia / (1000 * 60 * 60)) % 24)).padStart(2, "0");
-      const minutos = String(Math.floor((diferencia / (1000 * 60)) % 60)).padStart(2, "0");
-      const segundos = String(Math.floor((diferencia / 1000) % 60)).padStart(2, "0");
-  
+      const horas = String(
+        Math.floor((diferencia / (1000 * 60 * 60)) % 24)
+      ).padStart(2, "0");
+      const minutos = String(
+        Math.floor((diferencia / (1000 * 60)) % 60)
+      ).padStart(2, "0");
+      const segundos = String(Math.floor((diferencia / 1000) % 60)).padStart(
+        2,
+        "0"
+      );
+
       countdownElement.innerHTML = `${dias}d ${horas}:${minutos}:${segundos}`;
     }
-  
+
     actualizarCuentaRegresiva();
     setInterval(actualizarCuentaRegresiva, 1000);
   }
-  
 
   iniciarCuentaRegresiva();
 
@@ -117,14 +123,25 @@ document.addEventListener("DOMContentLoaded", function () {
   // 📢 Llamar a la función para obtener métricas
   cargarMetricas();
   cargarGraficoUsuariosActivos();
-
 });
-// 🔹 Cargar gráfico de usuarios activos reales por semana
+
 async function cargarGraficoUsuariosActivos() {
   try {
     console.log("📡 Enviando solicitud a /api/usuarios/activos-semanales");
 
-    const response = await fetch("http://localhost:3000/api/usuarios/activos-semanales");
+    // Obtener el ID del usuario
+    const userId = obtenerIDUsuario();
+    console.log("🆔 ID de usuario enviado a la API:", userId);
+
+    if (!userId) {
+      throw new Error(
+        "❌ No se encontró un ID de usuario válido en sessionStorage"
+      );
+    }
+
+    const response = await fetch(
+      `http://localhost:3000/api/usuarios/activos-semanales?userId=${userId}`
+    );
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -133,37 +150,43 @@ async function cargarGraficoUsuariosActivos() {
 
     const datos = await response.json();
 
-    // 🔎 Validar tipo de datos
     if (!Array.isArray(datos)) {
       console.error("❌ La respuesta no es un array:", datos);
       throw new Error("La respuesta no contiene un array válido");
     }
 
-    // ✅ Debug: Mostrar datos recibidos
     console.log("✅ Datos recibidos:", datos);
 
-    const semanas = datos.map(item => item.semana);
-    const usuarios = datos.map(item => item.usuarios);
+    const semanas = datos.map((item) => item.semana);
+    const usuarios = datos.map((item) => item.usuarios);
 
     new Chart(document.getElementById("actividadUsuariosChart"), {
       type: "line",
       data: {
         labels: semanas,
-        datasets: [{
-          label: "Usuarios Activos",
-          data: usuarios,
-          borderColor: "#17A2B8",
-          backgroundColor: "#17A2B880",
-          fill: true,
-          tension: 0.4
-        }]
-      }
+        datasets: [
+          {
+            label: "Usuarios Activos",
+            data: usuarios,
+            borderColor: "#17A2B8",
+            backgroundColor: "#17A2B880",
+            fill: true,
+            tension: 0.4,
+          },
+        ],
+      },
     });
-
   } catch (error) {
-    console.error("❌ Error cargando usuarios activos:", error.message || error);
+    console.error(
+      "❌ Error cargando usuarios activos:",
+      error.message || error
+    );
   }
 }
 
+function obtenerIDUsuario() {
+  const usuario = JSON.parse(sessionStorage.getItem("user"));
+  console.log("🔍 Usuario obtenido de sessionStorage:", usuario);
 
-
+  return usuario ? usuario._id : null;
+}

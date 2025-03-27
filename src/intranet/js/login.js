@@ -64,6 +64,8 @@ loginForm.addEventListener("submit", async (event) => {
       rol: data.user.rol.toLowerCase(),
     }));
 
+    console.log("✅ Usuario guardado en sessionStorage:", JSON.parse(sessionStorage.getItem("user")));
+
     // 🕓 Historial
     await registrarActividadHistorial(data.user._id, "Inicio de sesión");
 

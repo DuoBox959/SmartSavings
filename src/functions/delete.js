@@ -9,12 +9,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function eliminarUsuario(userId) {
   try {
-    const response = await fetch(`http://localhost:3000/api/usuarios/${userId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetch(
+      `http://localhost:3000/api/usuarios/${userId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     if (!response.ok) {
       throw new Error("Error al eliminar la cuenta");
@@ -23,7 +26,11 @@ async function eliminarUsuario(userId) {
     return await response.json(); // Suponiendo que el servidor devuelve un mensaje de éxito
   } catch (error) {
     console.error("Error en la solicitud:", error);
-    Swal.fire("Error", "No se pudo eliminar la cuenta. Inténtalo de nuevo.", "error");
+    Swal.fire(
+      "Error",
+      "No se pudo eliminar la cuenta. Inténtalo de nuevo.",
+      "error"
+    );
   }
 }
 
@@ -34,7 +41,9 @@ function configurarFormulario() {
   const emailInput = document.getElementById("email");
 
   // Obtener datos del usuario desde sessionStorage o localStorage
-  const currentUser = JSON.parse(sessionStorage.getItem("user")) || JSON.parse(localStorage.getItem("user"));
+  const currentUser =
+    JSON.parse(sessionStorage.getItem("user")) ||
+    JSON.parse(localStorage.getItem("user"));
 
   if (currentUser) {
     usernameInput.value = currentUser.name || "";
@@ -59,18 +68,32 @@ function configurarFormulario() {
     }
 
     if (!currentUser || currentUser.email !== email) {
-      Swal.fire("Error", "No se encontró un usuario autenticado o el email no coincide.", "error");
+      Swal.fire(
+        "Error",
+        "No se encontró un usuario autenticado o el email no coincide.",
+        "error"
+      );
       return;
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/api/usuarios/email/${email}`);
+      const response = await fetch(
+        `http://localhost:3000/api/usuarios/email/${email}`
+      );
       const userData = await response.json();
 
-      console.log(userData);  // Imprimir la respuesta de la API para verificar la estructura
-      
-      if (!response.ok || userData.pass !== password || userData.nombre !== username) {
-        Swal.fire("Error", "Los datos proporcionados no coinciden con la cuenta.", "error");
+      console.log(userData); // Imprimir la respuesta de la API para verificar la estructura
+
+      if (
+        !response.ok ||
+        userData.pass !== password ||
+        userData.nombre !== username
+      ) {
+        Swal.fire(
+          "Error",
+          "Los datos proporcionados no coinciden con la cuenta.",
+          "error"
+        );
         return;
       }
 
@@ -82,10 +105,40 @@ function configurarFormulario() {
         confirmButtonColor: "#d33",
         cancelButtonColor: "#3085d6",
         confirmButtonText: "Sí, eliminar",
-        cancelButtonText: "Cancelar"
+        cancelButtonText: "Cancelar",
       }).then(async (result) => {
         if (result.isConfirmed) {
-          // Llamada a la función eliminarUsuario pasando el ID del usuario
+          // Nueva verificación con SweetAlert para solicitar la contraseña
+          const { value: inputPassword } = await Swal.fire({
+            title: "Verificación de identidad",
+            text: "Por favor, ingresa tu contraseña para confirmar.",
+            input: "password",
+            inputPlaceholder: "Tu contraseña",
+            inputAttributes: {
+              autocapitalize: "off",
+              autocorrect: "off",
+            },
+            showCancelButton: true,
+            confirmButtonText: "Confirmar",
+            cancelButtonText: "Cancelar",
+          });
+
+          if (!inputPassword) {
+            Swal.fire("Cancelado", "Eliminación de cuenta cancelada.", "info");
+            return;
+          }
+
+          // Validar si la contraseña ingresada coincide con la del usuario
+          if (inputPassword !== password) {
+            Swal.fire(
+              "Error",
+              "Contraseña incorrecta. Inténtalo de nuevo.",
+              "error"
+            );
+            return;
+          }
+
+          // Si la contraseña es correcta, proceder con la eliminación
           await eliminarUsuario(currentUser.id);
           sessionStorage.removeItem("user");
           localStorage.removeItem("user");
@@ -94,16 +147,19 @@ function configurarFormulario() {
             title: "Cuenta eliminada",
             text: "Tu cuenta ha sido eliminada correctamente, redirigiendo a Inicio.",
             icon: "success",
-            confirmButtonText: "Aceptar"
+            confirmButtonText: "Aceptar",
           }).then(() => {
             window.location.href = "../pages/index.html";
           });
         }
       });
-
     } catch (error) {
       console.error("Error al procesar la solicitud:", error);
-      Swal.fire("Error", "Hubo un problema con la eliminación de la cuenta.", "error");
+      Swal.fire(
+        "Error",
+        "Hubo un problema con la eliminación de la cuenta.",
+        "error"
+      );
     }
   });
 }
@@ -113,9 +169,17 @@ function configurarMostrarContrasena() {
   const passwordField = document.getElementById("password");
   const confirmPasswordField = document.getElementById("confirm-password");
   const togglePasswordButton = document.getElementById("togglePassword");
-  const toggleConfirmPasswordButton = document.getElementById("toggleConfirmPassword");
+  const toggleConfirmPasswordButton = document.getElementById(
+    "toggleConfirmPassword"
+  );
 
-  if (!passwordField || !confirmPasswordField || !togglePasswordButton || !toggleConfirmPasswordButton) return;
+  if (
+    !passwordField ||
+    !confirmPasswordField ||
+    !togglePasswordButton ||
+    !toggleConfirmPasswordButton
+  )
+    return;
 
   togglePasswordButton.addEventListener("click", () => {
     const isPassword = passwordField.type === "password";
@@ -133,6 +197,3 @@ function configurarMostrarContrasena() {
 document.addEventListener("DOMContentLoaded", () => {
   configurarMostrarContrasena();
 });
-
-
-

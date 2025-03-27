@@ -1,68 +1,75 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
+  <head>
     <!-- 🅰️ Configuración General -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Intranet - Panel de Control</title>
 
     <!-- 🅱️ Estilos CSS -->
-    <link rel="stylesheet" href="../css/intranet.css">
-    <link rel="stylesheet" href="../css/global/sidebar.css">
+    <link rel="stylesheet" href="../css/intranet.css" />
+    <link rel="stylesheet" href="../css/global/sidebar.css" />
 
     <!-- 🅲 Librerías Externas -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-</head>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+  </head>
 
-<body>
+  <body>
     <!-- 📌 Sidebar -->
     <div id="sidebar-container"></div>
 
     <!-- 📌 Contenido Principal -->
     <main class="main-content" id="main-content">
-        <!-- 🔹 Barra Superior -->
-        <header class="topbar">
-            <div class="search-box">
-                <input type="text" placeholder="Buscar..." aria-label="Buscar en la intranet">
-                <button><i class="fas fa-search"></i></button>
-            </div>
+      <!-- 🔹 Barra Superior -->
+      <header class="topbar">
+        <div class="search-box">
+          <input
+            type="text"
+            placeholder="Buscar..."
+            aria-label="Buscar en la intranet"
+          />
+          <button><i class="fas fa-search"></i></button>
+        </div>
 
-            <div class="topbar-icons">
-                <i class="fas fa-bell" aria-label="Notificaciones"></i>
-                <i class="fas fa-envelope" aria-label="Mensajes"></i>
-                <i class="fas fa-user-circle" aria-label="Perfil de usuario"></i>
+        <div class="topbar-icons">
+          <i class="fas fa-bell" aria-label="Notificaciones"></i>
+          <i class="fas fa-envelope" aria-label="Mensajes"></i>
+          <i class="fas fa-user-circle" aria-label="Perfil de usuario"></i>
 
-                <!-- 🔹 Nombre del Usuario -->
-                <span id="userWelcome" class="user-welcome"></span>
+          <!-- 🔹 Nombre del Usuario -->
+          <span id="userWelcome" class="user-welcome"></span>
 
-                <!-- 🔴 Botón de Cerrar Sesión -->
-                <button class="logout">Cerrar Sesión</button>
-            </div>
-        </header>
+          <!-- 🔴 Botón de Cerrar Sesión -->
+          <button class="logout">Cerrar Sesión</button>
+        </div>
+      </header>
 
-        <!-- 📌 Sección de Dashboard -->
-        <section class="dashboard">
-          <!-- 🔔 Próximo Evento -->
-          <div class="event-box">
-              <h2>Próximo Evento</h2>
-              <p>Terminar pagina web en:</p>
-              <div class="countdown">12:03:19</div>
+      <!-- 📌 Sección de Dashboard -->
+      <section class="dashboard">
+        <!-- 🔔 Próximo Evento -->
+        <div class="event-box">
+          <h2>Próximo Evento</h2>
+          <p>Terminar pagina web en:</p>
+          <div class="countdown">12:03:19</div>
+        </div>
+
+        <!-- 📰 Últimas Noticias -->
+        <div class="news-box">
+          <h2>Últimas Noticias</h2>
+          <p>Arreglado los inicios de sesión.</p>
+          <p>Nuevas tablas en Intranet.</p>
+          <p>El tipo y subtipo esta en descripcion producto</p>
+        </div>
+        <!-- 📈 MÉTRICAS Y ESTADÍSTICAS -->
+        <div class="metrics-box">
+          <h2>📊 Métricas y Estadísticas</h2>
+          <div class="charts-container">
+            <canvas id="usoSistemaChart"></canvas>
+            <canvas id="actividadUsuariosChart"></canvas>
           </div>
-      
-          <!-- 📰 Últimas Noticias -->
-          <div class="news-box">
-              <h2>Últimas Noticias</h2>
-              <p>Arreglado los inicios de sesión.</p>
-              <p>Nuevas tablas en Intranet.</p>
-              <p>El tipo y subtipo esta en descripcion producto</p>
-          </div>
-         <!-- 📈 MÉTRICAS Y ESTADÍSTICAS -->
-          <div class="metrics-box">
-            <h2>📊 Métricas y Estadísticas</h2>
-            <div class="charts-container">
-                <canvas id="usoSistemaChart"></canvas>
-                <canvas id="actividadUsuariosChart"></canvas>
-            </div>
         </div>
         <div class="task-box">
           <!--  1️⃣ 2️⃣ 3️⃣ 4️⃣ 5️⃣ 6️⃣ 7️⃣ 8️⃣ 9️⃣ 🔟  -->
@@ -70,37 +77,76 @@
           <!-- 🔧 BACKEND -->
           <h3><strong>🖥️ BACKEND</strong></h3>
           <ul class="collapsible collapsible-backend">
-                <li>1️⃣ Hacer que funcione confirmacion por sms en <strong>Configuración</strong> </li>
-                <li>2️⃣ Ajustar <strong>precio histórico</strong> para que muestre el año y el precio correspondiente.</li>
-                <li>3️⃣ Añadir <strong>eliminación de cuenta</strong> con confirmación por contraseña usando <strong>SweetAlert2</strong> y validación contra la base de datos. (Ruben)</li>
-                <li>4️⃣ Validaciones en los formularios (validar que ese gmail existe y enviar mensaje de confirmacion) (Javi)</li>
-                <li>Arreglar graficos (Ruben)</li>
-                
-            </ul>
+            <li>
+              1️⃣ Hacer que funcione confirmacion por sms en
+              <strong>Configuración</strong>
+            </li>
+            <li>
+              2️⃣ Ajustar <strong>precio histórico</strong> para que muestre el
+              año y el precio correspondiente.
+            </li>
+            <li>
+              3️⃣ Añadir <strong>eliminación de cuenta</strong> con confirmación
+              por contraseña usando <strong>SweetAlert2</strong> y validación
+              contra la base de datos. (Ruben)
+            </li>
+            <li>
+              4️⃣ Validaciones en los formularios (validar que ese gmail existe y
+              enviar mensaje de confirmacion) (Javi)
+            </li>
+            <li>Arreglar graficos (Ruben)</li>
+          </ul>
           <button id="verMasBackend" class="ver-mas">Ver más</button>
-      
+
           <!-- 🎨 FRONTEND -->
           <h3><strong>🎨 FRONTEND</strong></h3>
           <ul class="collapsible collapsible-frontend">
-            <li>1️⃣ Implementar correctamente la <strong>Configuración de la cuenta</strong>.</li>
-            <li>2️⃣ Hacer funcionar la <strong>barra de navegación</strong> en <strong>Gestión de Productos</strong>.</li>
-            <li>3️⃣ Mejorar la interfaz de <strong>Gestión de Productos</strong> al estilo <strong>Idealo</strong>, para que al acceder a un producto aparezca toda la información.</li>
-            <li>4️⃣ En el <strong>Comparador de Precios</strong>, hacer que compare los productos <strong>Jamón serrano</strong> entre las tres tiendas disponibles. Actualmente no compara con <strong>Dia</strong> debido a un descuento. Revisar la <strong>tabla de Precios</strong></li>
-            <li>6️⃣ Corregir la función de <strong>edición</strong> en <strong>Gestión de Productos</strong>, y añadir la <strong>inserción</strong> correctamente. (Javi)</li>
-            <li>7️⃣ Hacer bien los <strong>cálculos del porcentaje y precio por lote</strong> en el comparador, para que esos valores también determinen si es más económico o no.</li>
-            <li>8️⃣ Hacer que cuando escribas en un formulario, buscador o login no haya espacios en blanco ni al principiio ni al final</li>  
+            <li>
+              1️⃣ Implementar correctamente la
+              <strong>Configuración de la cuenta</strong>.
+            </li>
+            <li>
+              2️⃣ Hacer funcionar la <strong>barra de navegación</strong> en
+              <strong>Gestión de Productos</strong>.
+            </li>
+            <li>
+              3️⃣ Mejorar la interfaz de <strong>Gestión de Productos</strong> al
+              estilo <strong>Idealo</strong>, para que al acceder a un producto
+              aparezca toda la información.
+            </li>
+            <li>
+              4️⃣ En el <strong>Comparador de Precios</strong>, hacer que compare
+              los productos <strong>Jamón serrano</strong> entre las tres
+              tiendas disponibles. Actualmente no compara con
+              <strong>Dia</strong> debido a un descuento. Revisar la
+              <strong>tabla de Precios</strong>
+            </li>
+            <li>
+              6️⃣ Corregir la función de <strong>edición</strong> en
+              <strong>Gestión de Productos</strong>, y añadir la
+              <strong>inserción</strong> correctamente. (Javi)
+            </li>
+            <li>
+              7️⃣ Hacer bien los
+              <strong>cálculos del porcentaje y precio por lote</strong> en el
+              comparador, para que esos valores también determinen si es más
+              económico o no.
+            </li>
+            <li>
+              8️⃣ Hacer que cuando escribas en un formulario, buscador o login no
+              haya espacios en blanco ni al principiio ni al final
+            </li>
             <li>9️⃣ Validaciones en los formularios</li>
-        </ul>          
-          
+          </ul>
+
           <button id="verMasFrontend" class="ver-mas">Ver más</button>
-      </div>          
-        </section>
+        </div>
+      </section>
     </main>
 
     <!-- 📌 Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script type="module" src="../js/intranet.js" defer></script>
     <script src="../js/global/sidebar.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-</body>
+  </body>
 </html>
