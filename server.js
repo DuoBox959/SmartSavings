@@ -258,6 +258,30 @@ app.get("/api/usuarios/email/:email", async (req, res) => {
   }
 });
 
+/**
+ * ✅ Obtener un usuario por ID (Read)
+ * Ruta: GET /api/usuarios/:id
+ */
+app.get("/api/usuarios/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ error: "ID no válido" });
+    }
+
+    const user = await db.collection("Usuarios").findOne({ _id: new ObjectId(id) });
+
+    if (!user) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
+    }
+
+    res.json(user);
+  } catch (err) {
+    console.error("❌ Error obteniendo usuario por ID:", err);
+    res.status(500).json({ error: "Error en el servidor" });
+  }
+});
 
 // =============================================
 // 🅳️ CRUD DE PRODUCTOS

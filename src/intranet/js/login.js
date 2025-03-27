@@ -54,10 +54,12 @@ loginForm.addEventListener("submit", async (event) => {
     if (!response.ok) {
       throw new Error(data.error || "Error en el inicio de sesión");
     }
+    console.log("📦 Datos guardados en sessionStorage:", data.user);
 
     sessionStorage.setItem(
       "user",
       JSON.stringify({
+        _id: data.user._id,
         name: data.user.nombre,
         email: data.user.email,
         rol: data.user.rol.toLowerCase(),
