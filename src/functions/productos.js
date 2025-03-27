@@ -104,31 +104,39 @@ async function editarProducto(id) {
 async function guardarCambiosDesdeFormulario() {
   try {
     const id = document.getElementById("edit-producto-id").value;
-    const productoActualizado = {
-      Nombre: document.getElementById("edit-nombre").value,
-      Marca: document.getElementById("edit-marca").value,
-      Precio: parseFloat(document.getElementById("edit-precio").value) || 0,
-      PrecioDescuento: parseFloat(document.getElementById("edit-precioDescuento").value) || 0,
-      Peso: parseFloat(document.getElementById("edit-peso").value),
-      UnidadPeso: document.getElementById("edit-unidadPeso").value.toUpperCase(),  // Normalizar a mayúsculas al guardar
-      Proveedor_id: document.getElementById("edit-proveedor").value,
-      Supermercado_id: document.getElementById("edit-supermercado").value,
-      Ciudad: document.getElementById("edit-ciudad").value,
-      Estado: document.getElementById("edit-estado").value.trim() === "Sin stock" ? "Sin Stock" : "En Stock"  // Normalizar el valor
-    };
 
-    await fetch(`${API_URL}/${id}`, {
+    // Crear FormData para enviar datos en formato adecuado al backend
+    const formData = new FormData();
+    formData.append("nombre", document.getElementById("edit-nombre").value);
+    formData.append("marca", document.getElementById("edit-marca").value);
+    formData.append("peso", document.getElementById("edit-peso").value);
+    formData.append("unidadPeso", document.getElementById("edit-unidadPeso").value);
+    formData.append("estado", document.getElementById("edit-estado").value);
+    
+    // Solo incluir IDs válidos si existen
+    const proveedor = document.getElementById("edit-proveedor").value;
+    if (proveedor) formData.append("proveedor_id", proveedor);
+
+    const supermercado = document.getElementById("edit-supermercado").value;
+    if (supermercado) formData.append("supermercado_id", supermercado);
+
+    // Enviar datos al servidor
+    const response = await fetch(`${API_URL}/${id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(productoActualizado)
+      body: formData,  // ✅ Enviamos FormData en lugar de JSON
     });
 
+    if (!response.ok) throw new Error("Error en la actualización");
+
+    Swal.fire("Éxito", "Producto actualizado correctamente", "success");
     cerrarFormulario();
-    cargarProductos();
+    cargarProductos();  // Recargar la lista de productos
   } catch (err) {
     console.error("Error al guardar cambios:", err);
+    Swal.fire("Error", "Hubo un problema al actualizar el producto.", "error");
   }
 }
+
 
 function cerrarFormulario() {
   document.getElementById("modal-editar").style.display = "none";
