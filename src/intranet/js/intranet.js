@@ -122,8 +122,25 @@ document.addEventListener("DOMContentLoaded", function () {
 // 🔹 Cargar gráfico de usuarios activos reales por semana
 async function cargarGraficoUsuariosActivos() {
   try {
+    console.log("📡 Enviando solicitud a /api/usuarios/activos-semanales");
+
     const response = await fetch("http://localhost:3000/api/usuarios/activos-semanales");
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Error ${response.status}: ${errorText}`);
+    }
+
     const datos = await response.json();
+
+    // 🔎 Validar tipo de datos
+    if (!Array.isArray(datos)) {
+      console.error("❌ La respuesta no es un array:", datos);
+      throw new Error("La respuesta no contiene un array válido");
+    }
+
+    // ✅ Debug: Mostrar datos recibidos
+    console.log("✅ Datos recibidos:", datos);
 
     const semanas = datos.map(item => item.semana);
     const usuarios = datos.map(item => item.usuarios);
@@ -144,7 +161,9 @@ async function cargarGraficoUsuariosActivos() {
     });
 
   } catch (error) {
-    console.error("❌ Error cargando usuarios activos:", error);
+    console.error("❌ Error cargando usuarios activos:", error.message || error);
   }
 }
+
+
 

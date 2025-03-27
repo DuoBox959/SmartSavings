@@ -1,47 +1,50 @@
-// Seleccionamos los elementos del formulario
+import * as validaciones from '../../valid/validaciones.js';
+
+// 🧩 Elementos del DOM
 const loginForm = document.querySelector("form");
 const emailOrUsernameInput = document.getElementById("emailOrUsername");
 const passwordInput = document.getElementById("password");
-const togglePassword = document.getElementById("togglePassword");  // El icono del ojo
-// 🧼 Evitar espacios iniciales y limpiar en blur
+const togglePassword = document.getElementById("togglePassword");
+
+// 🧼 Limpieza de espacios iniciales
 [emailOrUsernameInput, passwordInput].forEach((input) => {
   input.addEventListener("input", () => {
-    if (input.value.startsWith(" ")) {
-      input.value = input.value.trimStart();
-    }
+    input.value = input.value.trimStart();
   });
 
   input.addEventListener("blur", () => {
-    input.value = input.value.trim();
+    input.value = validaciones.limpiarEspacios(input.value);
   });
 });
 
-// Evento de click para mostrar/ocultar contraseña
+// 👁️ Mostrar/Ocultar contraseña
 togglePassword.addEventListener("click", () => {
   const type = passwordInput.type === "password" ? "text" : "password";
   passwordInput.type = type;
-
-  // Cambiar el icono del ojo (puedes poner diferentes emojis o usar un icono SVG si prefieres)
-  togglePassword.textContent = type === "password" ? "👁️" : "👁️‍🗨️"; // Cambia el icono según el tipo
+  togglePassword.textContent = type === "password" ? "👁️" : "👁️‍🗨️";
 });
 
-// Evento de submit
+// 🚀 Login con validaciones
 loginForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  const emailOrUsername = emailOrUsernameInput.value.trim();
-  const password = passwordInput.value.trim();
+  const emailOrUsername = validaciones.limpiarEspacios(emailOrUsernameInput.value);
+  const password = validaciones.limpiarEspacios(passwordInput.value);
 
-  if (!emailOrUsername || !password) {
-    Swal.fire({
-      icon: "warning",
-      title: "⚠️ Campos incompletos",
-      text: "Por favor, completa todos los campos.",
-      confirmButtonText: "Aceptar",
-    });
-    return;
+  // 🔒 Validaciones
+  if (validaciones.camposVacios(emailOrUsername, password)) {
+    return validaciones.mostrarAlertaError("⚠️ Campos incompletos", "Por favor, completa todos los campos.");
   }
 
+  if (emailOrUsername.includes("@") && !validaciones.esEmailValido(emailOrUsername)) {
+    return validaciones.mostrarAlertaError("📧 Email inválido", "El formato del correo electrónico no es válido.");
+  }
+
+  if (!validaciones.esPasswordSegura(password)) {
+    return validaciones.mostrarAlertaError("🔐 Contraseña insegura", "La contraseña debe tener al menos 6 caracteres.");
+  }
+
+  // 📡 Enviar al backend
   try {
     const response = await fetch("http://localhost:3000/api/login", {
       method: "POST",
@@ -51,53 +54,49 @@ loginForm.addEventListener("submit", async (event) => {
 
     const data = await response.json();
 
-    if (!response.ok) {
-      throw new Error(data.error || "Error en el inicio de sesión");
-    }
-    console.log("📦 Datos guardados en sessionStorage:", data.user);
+    if (!response.ok) throw new Error(data.error || "Error en el inicio de sesión");
 
-    sessionStorage.setItem(
-      "user",
-      JSON.stringify({
-        _id: data.user._id,
-        name: data.user.nombre,
-        email: data.user.email,
-        rol: data.user.rol.toLowerCase(),
-      })
-    );
+    // 💾 Guardar sesión
+    sessionStorage.setItem("user", JSON.stringify({
+      _id: data.user._id,
+      name: data.user.nombre,
+      email: data.user.email,
+      rol: data.user.rol.toLowerCase(),
+    }));
+
+    // 🕓 Historial
     await registrarActividadHistorial(data.user._id, "Inicio de sesión");
 
+    // 🎉 Éxito
     Swal.fire({
       icon: "success",
       title: `✅ Bienvenido, ${data.user.nombre}!`,
       text: "Inicio de sesión exitoso.",
-      confirmButtonText: "Aceptar",
+      confirmButtonText: "Continuar",
     }).then(() => {
-      if (data.user.rol.toLowerCase() === "admin") {
-        window.location.href = "../html/intranet.html";
-      } else {
-        window.location.href = "../../pages/index.html";
-      }
+      const ruta = data.user.rol.toLowerCase() === "admin"
+        ? "../html/intranet.html"
+        : "../../pages/index.html";
+      window.location.href = ruta;
     });
+
   } catch (error) {
     Swal.fire({
       icon: "error",
-      title: "¡Error!",
+      title: "Error de autenticación",
       text: error.message,
       confirmButtonText: "Aceptar",
     });
   }
 });
 
+// 🕓 Registro de actividad
 async function registrarActividadHistorial(usuarioId, accionTexto) {
   try {
     await fetch("http://localhost:3000/api/historial", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        usuario_id: usuarioId,
-        accion: accionTexto,
-      }),
+      body: JSON.stringify({ usuario_id: usuarioId, accion: accionTexto }),
     });
   } catch (error) {
     console.error("❌ Error al registrar historial:", error);
