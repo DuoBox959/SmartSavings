@@ -53,8 +53,9 @@ function esPasswordSegura(password, longitudMinima = 6) {
 
 // 🔡 Eliminar espacios iniciales y finales
 function limpiarEspacios(texto) {
-  return texto.trim();
+  return texto.replace(/\s+/g, " ").trim();
 }
+
 
 // 🔤 Convertir a minúsculas
 function aMinusculas(texto) {
@@ -75,3 +76,12 @@ function mostrarAlertaError(titulo, mensaje) {
     confirmButtonText: "Aceptar",
   });
 }
+
+// ✅ Exporta todas las necesarias
+export {
+  limpiarEspacios,
+  esEmailValido,
+  esPasswordSegura,
+  camposVacios,
+  mostrarAlertaError
+};

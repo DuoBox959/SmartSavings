@@ -1528,26 +1528,12 @@ app.get("/api/historial-reciente", async (req, res) => {
 app.get("/api/usuarios/activos-semanales", async (req, res) => {
   try {
     const ahora = new Date();
-    const semanas = [];
-
-    // 🔹 Calcular las últimas 4 semanas ISO
-    for (let i = 3; i >= 0; i--) {
-      const fecha = new Date(ahora);
-      fecha.setDate(ahora.getDate() - i * 7);
-
-      const semanaISO = getISOWeek(fecha);
-      const año = fecha.getFullYear();
-
-      semanas.push({ semana: semanaISO, año });
-    }
-
-    // 🔍 Obtener actividad de historial real
     const hace28dias = new Date();
     hace28dias.setDate(hace28dias.getDate() - 28);
 
     const actividad = await db.collection("HistorialUsuario").aggregate([
       {
-        $match: { fecha: { $gte: hace28dias } }
+        $match: { fecha: { $gte: hace28dias } } // 🔥 NO SE USA ObjectId AQUÍ
       },
       {
         $project: {
@@ -1571,17 +1557,20 @@ app.get("/api/usuarios/activos-semanales", async (req, res) => {
       }
     ]).toArray();
 
-    // 🔄 Mapear con 0 si no hay actividad en alguna semana
-    const resultadoFinal = semanas.map(({ semana, año }) => {
-      const encontrado = actividad.find(
-        (a) => a.semana === semana && a.anio === año
-      );
+    // 🧠 Crear array de semanas ISO con 0 si falta
+    const resultadoFinal = Array.from({ length: 4 }, (_, i) => {
+      const fecha = new Date();
+      fecha.setDate(fecha.getDate() - i * 7);
+      const semanaISO = getISOWeek(fecha);
+      const anio = fecha.getFullYear();
+
+      const encontrado = actividad.find(a => a.semana === semanaISO && a.anio === anio);
 
       return {
-        semana: `Semana ${semana} (${año})`,
+        semana: `Semana ${semanaISO} (${anio})`,
         usuarios: encontrado ? encontrado.usuarios : 0
       };
-    });
+    }).reverse();
 
     res.json(resultadoFinal);
   } catch (err) {
