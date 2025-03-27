@@ -22,19 +22,18 @@ $(document).ready(() => {
 
   cargarDatosIniciales();
 
-    // 🧼 Limpiar espacios en el campo de Opinión
-    $("#textoOpinion").on("blur", function () {
-      const limpio = $(this).val().trim();
-      $(this).val(limpio);
-    });
-  
-    // 🚫 BONUS: Prevenir espacios al inicio
-    $("#textoOpinion").on("input", function () {
-      if (this.value.startsWith(" ")) {
-        this.value = this.value.trimStart();
-      }
-    });
-  
+  // 🧼 Limpiar espacios en el campo de Opinión
+  $("#textoOpinion").on("blur", function () {
+    const limpio = $(this).val().trim();
+    $(this).val(limpio);
+  });
+
+  // 🚫 BONUS: Prevenir espacios al inicio
+  $("#textoOpinion").on("input", function () {
+    if (this.value.startsWith(" ")) {
+      this.value = this.value.trimStart();
+    }
+  });
 });
 
 // ✅ Cargar opiniones desde el servidor
@@ -289,21 +288,21 @@ document.addEventListener("DOMContentLoaded", function () {
   const calificacionInput = document.getElementById("calificacionOpinion");
 
   function validarRangoInput(input, min, max) {
-      let valor = parseInt(input.value, 10);
+    let valor = parseInt(input.value, 10);
 
-      if (isNaN(valor)) return; // Evita errores si el input está vacío
+    if (isNaN(valor)) return; // Evita errores si el input está vacío
 
-      if (valor < min) {
-          input.value = min;
-      } else if (valor > max) {
-          input.value = max;
-      }
+    if (valor < min) {
+      input.value = min;
+    } else if (valor > max) {
+      input.value = max;
+    }
   }
 
   if (calificacionInput) {
-      calificacionInput.addEventListener("input", function () {
-          validarRangoInput(calificacionInput, 1, 10);
-      });
+    calificacionInput.addEventListener("input", function () {
+      validarRangoInput(calificacionInput, 1, 10);
+    });
   }
 });
 

@@ -19,8 +19,10 @@ $(document).ready(() => {
 
   cargarSupermercados();
 
-    // 🧼 Limpiar espacios extra en inputs de supermercado
-    $("#nombreSupermercado, #paisSupermercado, #ciudadSupermercado, #ubicacionSupermercado")
+  // 🧼 Limpiar espacios extra en inputs de supermercado
+  $(
+    "#nombreSupermercado, #paisSupermercado, #ciudadSupermercado, #ubicacionSupermercado"
+  )
     .on("blur", function () {
       $(this).val($(this).val().trim());
     })
@@ -29,7 +31,6 @@ $(document).ready(() => {
         this.value = this.value.trimStart();
       }
     });
-
 });
 
 // ✅ Cargar supermercados desde el servidor
@@ -51,7 +52,6 @@ async function cargarSupermercados() {
         accionesHTML(supermercado._id),
       ]);
     });
-    
 
     supermercadosTable.draw();
   } catch (error) {
@@ -174,10 +174,10 @@ function editarSupermercado(id) {
     .off("click")
     .on("click", guardarSupermercado);
 
-    $("#formularioSupermercado").show();
-    document
-      .getElementById("formularioSupermercado")
-      .scrollIntoView({ behavior: "smooth" });
+  $("#formularioSupermercado").show();
+  document
+    .getElementById("formularioSupermercado")
+    .scrollIntoView({ behavior: "smooth" });
 }
 
 // ✅ Eliminar un supermercado
@@ -205,7 +205,11 @@ async function eliminarSupermercado(id) {
 
     if (!response.ok) throw new Error("Error al eliminar supermercado");
 
-    await Swal.fire("Eliminado", "El supermercado ha sido eliminado.", "success");
+    await Swal.fire(
+      "Eliminado",
+      "El supermercado ha sido eliminado.",
+      "success"
+    );
 
     await cargarSupermercados();
   } catch (err) {

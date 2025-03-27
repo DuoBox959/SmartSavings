@@ -27,14 +27,20 @@ async function cargarProductos() {
     productos.forEach((producto) => {
       const productoHTML = `
         <div class="product-card">
-            <img src="${producto.Imagen || "default.jpg"}" alt="${producto.Nombre}">
+            <img src="${producto.Imagen || "default.jpg"}" alt="${
+        producto.Nombre
+      }">
             <h3>${producto.Nombre}</h3>
             <p class="marca">${producto.Marca || "Marca desconocida"}</p>
             <p class="peso">Peso: ${producto.Peso} ${producto.UnidadPeso}</p>
             <p class="estado">Estado: ${producto.Estado}</p>
             <div class="acciones">
-                <button class="btn-editar" onclick="editarProducto('${producto._id}')">✏️ Editar</button>
-                <button class="btn-eliminar" onclick="eliminarProducto('${producto._id}')">🗑️ Eliminar</button>
+                <button class="btn-editar" onclick="editarProducto('${
+                  producto._id
+                }')">✏️ Editar</button>
+                <button class="btn-eliminar" onclick="eliminarProducto('${
+                  producto._id
+                }')">🗑️ Eliminar</button>
             </div>
         </div>
       `;
@@ -55,20 +61,26 @@ async function editarProducto(id) {
     // Obtener todos los precios y filtrar por producto_id
     const responsePrecios = await fetch(`http://localhost:3000/api/precios`);
     const precios = await responsePrecios.json();
-    const precioData = precios.find(p => p.producto_id === id) || {};
+    const precioData = precios.find((p) => p.producto_id === id) || {};
 
     // Obtener todos los supermercados y filtrar por _id
-    const responseSupermercados = await fetch(`http://localhost:3000/api/supermercados`);
+    const responseSupermercados = await fetch(
+      `http://localhost:3000/api/supermercados`
+    );
     const supermercados = await responseSupermercados.json();
-    const supermercado = supermercados.find(s => s._id === producto.Supermercado_id) || {};
-    
+    const supermercado =
+      supermercados.find((s) => s._id === producto.Supermercado_id) || {};
+
     // Obtener todos los proveedores y filtrar por _id
     let proveedor = {};
     try {
-      const responseProveedores = await fetch(`http://localhost:3000/api/proveedor`);
+      const responseProveedores = await fetch(
+        `http://localhost:3000/api/proveedor`
+      );
       if (responseProveedores.ok) {
         const proveedores = await responseProveedores.json();
-        proveedor = proveedores.find(p => p._id === producto.Proveedor_id) || {};
+        proveedor =
+          proveedores.find((p) => p._id === producto.Proveedor_id) || {};
       }
     } catch (err) {
       console.error("No se pudo cargar los proveedores", err);
@@ -78,28 +90,39 @@ async function editarProducto(id) {
     document.getElementById("edit-producto-id").value = producto._id;
     document.getElementById("edit-nombre").value = producto.Nombre;
     document.getElementById("edit-marca").value = producto.Marca;
-    document.getElementById("edit-precio").value = precioData.precioActual || "";
-    document.getElementById("edit-precioDescuento").value = precioData.precioDescuento || "";
+    document.getElementById("edit-precio").value =
+      precioData.precioActual || "";
+    document.getElementById("edit-precioDescuento").value =
+      precioData.precioDescuento || "";
     document.getElementById("edit-peso").value = producto.Peso;
-    document.getElementById("edit-unidadPeso").value = producto.UnidadPeso.toLowerCase();
-    
+    document.getElementById("edit-unidadPeso").value =
+      producto.UnidadPeso.toLowerCase();
+
     // Asignar nombres de proveedor y supermercado en lugar de sus IDs
-    document.getElementById("edit-proveedor").value = proveedor.Nombre || "Proveedor desconocido"; // Aquí asignamos el nombre
-    document.getElementById("edit-supermercado").value = supermercado.Nombre || "Supermercado desconocido"; // Aquí asignamos el nombre
-    
+    document.getElementById("edit-proveedor").value =
+      proveedor.Nombre || "Proveedor desconocido"; // Aquí asignamos el nombre
+    document.getElementById("edit-supermercado").value =
+      supermercado.Nombre || "Supermercado desconocido"; // Aquí asignamos el nombre
+
     document.getElementById("edit-ciudad").value = supermercado.Ciudad || "";
-    
+
     // Normalizar el valor de "Estado" al cargar (convertirlo a "En stock" o "Sin stock")
-    const estadoNormalizado = producto.Estado.trim().toLowerCase() === "sin stock" ? "Sin stock" : "En stock";
+    const estadoNormalizado =
+      producto.Estado.trim().toLowerCase() === "sin stock"
+        ? "Sin stock"
+        : "En stock";
     document.getElementById("edit-estado").value = estadoNormalizado;
 
     document.getElementById("modal-editar").style.display = "flex";
   } catch (err) {
     console.error("Error al cargar el producto para edición:", err);
-    Swal.fire("Error", "Hubo un problema al cargar el producto para edición.", "error");
+    Swal.fire(
+      "Error",
+      "Hubo un problema al cargar el producto para edición.",
+      "error"
+    );
   }
 }
-
 
 async function guardarCambiosDesdeFormulario() {
   try {
@@ -110,9 +133,12 @@ async function guardarCambiosDesdeFormulario() {
     formData.append("nombre", document.getElementById("edit-nombre").value);
     formData.append("marca", document.getElementById("edit-marca").value);
     formData.append("peso", document.getElementById("edit-peso").value);
-    formData.append("unidadPeso", document.getElementById("edit-unidadPeso").value);
+    formData.append(
+      "unidadPeso",
+      document.getElementById("edit-unidadPeso").value
+    );
     formData.append("estado", document.getElementById("edit-estado").value);
-    
+
     // Solo incluir IDs válidos si existen
     const proveedor = document.getElementById("edit-proveedor").value;
     if (proveedor) formData.append("proveedor_id", proveedor);
@@ -123,20 +149,19 @@ async function guardarCambiosDesdeFormulario() {
     // Enviar datos al servidor
     const response = await fetch(`${API_URL}/${id}`, {
       method: "PUT",
-      body: formData,  // ✅ Enviamos FormData en lugar de JSON
+      body: formData, // ✅ Enviamos FormData en lugar de JSON
     });
 
     if (!response.ok) throw new Error("Error en la actualización");
 
     Swal.fire("Éxito", "Producto actualizado correctamente", "success");
     cerrarFormulario();
-    cargarProductos();  // Recargar la lista de productos
+    cargarProductos(); // Recargar la lista de productos
   } catch (err) {
     console.error("Error al guardar cambios:", err);
     Swal.fire("Error", "Hubo un problema al actualizar el producto.", "error");
   }
 }
-
 
 function cerrarFormulario() {
   document.getElementById("modal-editar").style.display = "none";
@@ -152,7 +177,7 @@ async function eliminarProducto(id) {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Sí, eliminar",
-      cancelButtonText: "Cancelar"
+      cancelButtonText: "Cancelar",
     });
 
     if (!resultado.isConfirmed) return;

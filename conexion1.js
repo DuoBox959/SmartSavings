@@ -16,7 +16,7 @@ async function conectarDB() {
       db = client.db(dbName);
     } catch (err) {
       console.error("❌ Error al conectar con MongoDB:", err);
-      throw new Error('Conexión a MongoDB fallida');
+      throw new Error("Conexión a MongoDB fallida");
     }
   }
   return db;

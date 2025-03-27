@@ -1,4 +1,4 @@
-// ✅ Variables Globales 
+// ✅ Variables Globales
 let descripcionTable;
 let descripcionCache = [];
 let productosCache = [];
@@ -21,19 +21,22 @@ $(document).ready(() => {
 
   cargarDescripciones();
 
-    // 🧼 Limpiar espacios al salir de los inputs
-    $("#tipoProducto, #subtipoProducto, #utilidadProducto, #ingredientesProducto").on("blur", function () {
-      const limpio = $(this).val().trim();
-      $(this).val(limpio);
-    });
-  
-    // 🚫 BONUS: prevenir espacios al inicio mientras se escribe
-    $("#tipoProducto, #subtipoProducto, #utilidadProducto, #ingredientesProducto").on("input", function () {
-      if (this.value.startsWith(" ")) {
-        this.value = this.value.trimStart();
-      }
-    });
-  
+  // 🧼 Limpiar espacios al salir de los inputs
+  $(
+    "#tipoProducto, #subtipoProducto, #utilidadProducto, #ingredientesProducto"
+  ).on("blur", function () {
+    const limpio = $(this).val().trim();
+    $(this).val(limpio);
+  });
+
+  // 🚫 BONUS: prevenir espacios al inicio mientras se escribe
+  $(
+    "#tipoProducto, #subtipoProducto, #utilidadProducto, #ingredientesProducto"
+  ).on("input", function () {
+    if (this.value.startsWith(" ")) {
+      this.value = this.value.trimStart();
+    }
+  });
 });
 
 // ✅ Cargar descripciones desde el servidor
@@ -46,7 +49,9 @@ async function cargarDescripciones() {
     descripcionTable.clear();
 
     descripciones.forEach((descripcion) => {
-      const utilidad = encodeURIComponent(descripcion.Utilidad || "Sin información");
+      const utilidad = encodeURIComponent(
+        descripcion.Utilidad || "Sin información"
+      );
       const ingredientes = encodeURIComponent(
         Array.isArray(descripcion.Ingredientes)
           ? descripcion.Ingredientes.join(", ")
@@ -108,7 +113,7 @@ async function mostrarFormularioAgregar() {
   $("#subtipoProducto").val("");
   $("#utilidadProducto").val("");
   $("#ingredientesProducto").val("");
-  
+
   await cargarOpcionesSelects();
 
   $("#botonesFormulario button:first")
@@ -116,7 +121,9 @@ async function mostrarFormularioAgregar() {
     .on("click", guardarDescripcion);
 
   $("#formularioDescripcion").show();
-  document.getElementById("formularioDescripcion").scrollIntoView({ behavior: "smooth" });
+  document
+    .getElementById("formularioDescripcion")
+    .scrollIntoView({ behavior: "smooth" });
 }
 
 // ✅ Guardar una descripción (crear o editar)
@@ -127,8 +134,12 @@ async function guardarDescripcion(event) {
   const producto_id = $("#productoID").val().trim(); // 🔹 Debe ser un ObjectId válido
 
   // 🛠️ Si el producto seleccionado tiene un nombre en vez de un ID, buscar su ID en `productosCache`
-  const productoEncontrado = productosCache.find((p) => p.Nombre === producto_id);
-  const productoIdReal = productoEncontrado ? productoEncontrado._id : producto_id;
+  const productoEncontrado = productosCache.find(
+    (p) => p.Nombre === producto_id
+  );
+  const productoIdReal = productoEncontrado
+    ? productoEncontrado._id
+    : producto_id;
 
   // 🛠️ Verificar que Producto_id es un ObjectId válido antes de enviarlo
   if (!productoIdReal.match(/^[0-9a-fA-F]{24}$/)) {
@@ -143,7 +154,11 @@ async function guardarDescripcion(event) {
     Subtipo: $("#subtipoProducto").val().trim() || null,
     Utilidad: $("#utilidadProducto").val().trim() || null,
     Ingredientes: $("#ingredientesProducto").val().trim()
-      ? $("#ingredientesProducto").val().trim().split(",").map((i) => i.trim())
+      ? $("#ingredientesProducto")
+          .val()
+          .trim()
+          .split(",")
+          .map((i) => i.trim())
       : [],
   };
 
@@ -198,12 +213,19 @@ async function editarDescripcion(id) {
   await cargarOpcionesSelects();
 
   // 🛠️ Buscar el producto por ID para obtener su nombre correcto
-  const producto = productosCache.find((p) => p._id === descripcion.Producto_id);
-  const nombreProducto = producto ? producto.Nombre : "Nombre de producto, no editable.";
+  const producto = productosCache.find(
+    (p) => p._id === descripcion.Producto_id
+  );
+  const nombreProducto = producto
+    ? producto.Nombre
+    : "Nombre de producto, no editable.";
 
   // 🛠️ Si el producto no está en el select, agregarlo
   const selectProducto = $("#productoID");
-  if (selectProducto.find(`option[value='${descripcion.Producto_id}']`).length === 0) {
+  if (
+    selectProducto.find(`option[value='${descripcion.Producto_id}']`).length ===
+    0
+  ) {
     selectProducto.append(
       `<option value="${descripcion.Producto_id}" selected>${nombreProducto}</option>`
     );
@@ -217,7 +239,9 @@ async function editarDescripcion(id) {
     .on("click", guardarDescripcion);
 
   $("#formularioDescripcion").show();
-  document.getElementById("formularioDescripcion").scrollIntoView({ behavior: "smooth" });
+  document
+    .getElementById("formularioDescripcion")
+    .scrollIntoView({ behavior: "smooth" });
 }
 
 // ✅ Mostrar la Utilidad en una ventana modal grande
@@ -236,7 +260,9 @@ window.verUtilidad = function (utilidad) {
 window.verIngredientes = function (ingredientes) {
   Swal.fire({
     title: "🥗 Ingredientes",
-    html: `<p style="font-size: 18px; text-align: left;">${decodeURIComponent(ingredientes)}</p>`,
+    html: `<p style="font-size: 18px; text-align: left;">${decodeURIComponent(
+      ingredientes
+    )}</p>`,
     icon: "info",
     width: "600px",
     padding: "20px",
@@ -260,13 +286,20 @@ async function eliminarDescripcion(id) {
   if (!result.isConfirmed) return;
 
   try {
-    const response = await fetch(`http://localhost:3000/api/descripcion/${id}`, {
-      method: "DELETE",
-    });
+    const response = await fetch(
+      `http://localhost:3000/api/descripcion/${id}`,
+      {
+        method: "DELETE",
+      }
+    );
 
     if (!response.ok) throw new Error("Error al eliminar descripción");
 
-    await Swal.fire("Eliminado", "La descripción ha sido eliminada.", "success");
+    await Swal.fire(
+      "Eliminado",
+      "La descripción ha sido eliminada.",
+      "success"
+    );
 
     await cargarDescripciones();
   } catch (err) {
@@ -278,7 +311,9 @@ async function eliminarDescripcion(id) {
 // ✅ Cerrar el formulario de descripción
 function cerrarFormulario() {
   $("#formularioDescripcion").hide();
-  $("#descripcionID, #productoID, #tipoProducto, #subtipoProducto, #utilidadProducto, #ingredientesProducto").val("");
+  $(
+    "#descripcionID, #productoID, #tipoProducto, #subtipoProducto, #utilidadProducto, #ingredientesProducto"
+  ).val("");
 }
 
 // ✅ Exponer funciones globales

@@ -1,72 +1,71 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
+  <head>
     <!-- 🅰️ Configuración del Documento -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Reportes - Intranet</title>
 
     <!-- 🅱️ Estilos CSS -->
-    <link rel="stylesheet" href="../css/reportes.css">
+    <link rel="stylesheet" href="../css/reportes.css" />
     <link rel="stylesheet" href="../css/global/sidebar.css" />
 
     <!-- 🅲 Librerías Externas -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Librería para gráficos -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Librería para gráficos -->
 
     <!-- 🅳 Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="../js/reportes.js" defer></script>
-    <script src="../js/global/auth.js"></script> <!--Comprobacion de autenticacion-->
+    <script src="../js/global/auth.js"></script>
+    <!--Comprobacion de autenticacion-->
     <script type="module" src="../js/global/sidebar.js" defer></script>
-
-</head>
-<body>
-
+  </head>
+  <body>
     <!-- 🅴 Sidebar -->
     <div id="sidebar-container"></div>
 
     <!-- 🅵 Contenido Principal -->
     <main class="main-content">
-        <h1>📊 Reportes</h1>
+      <h1>📊 Reportes</h1>
 
-        <!-- 🅶 Resumen General -->
-        <div class="report-summary">
-            <div class="card">
-                <h3>Usuarios Registrados</h3>
-                <p>👤 <span id="totalUsuarios">0</span></p>
-                <h3>Usuarios Activos</h3>
-                <p>🟢 <span id="usuariosActivos">0</span></p>
-            </div>
-            <div class="card">
-                <h3>Total de Productos</h3>
-                <p>📦 <span id="totalProductos">0</span></p>
-            </div>
-            <div class="card">
-                <h3>Productos Más Comparados</h3>
-                <p>📊 <span id="productosMasComparados">-</span></p>
-            </div>
-            <div class="card">
-                <h3>Supermercados en la Plataforma</h3>
-                <p>🏪 <span id="totalSupermercados">0</span></p>
-            </div>
+      <!-- 🅶 Resumen General -->
+      <div class="report-summary">
+        <div class="card">
+          <h3>Usuarios Registrados</h3>
+          <p>👤 <span id="totalUsuarios">0</span></p>
+          <h3>Usuarios Activos</h3>
+          <p>🟢 <span id="usuariosActivos">0</span></p>
         </div>
-
-        <!-- 🅷 Gráfico de Comparaciones por Categoría -->
-        <div class="chart-container">
-            <h2>📈 Comparaciones por Categoría</h2>
-            <canvas id="comparacionesChart"></canvas>
+        <div class="card">
+          <h3>Total de Productos</h3>
+          <p>📦 <span id="totalProductos">0</span></p>
         </div>
-
-        <!-- 🅸 Gráfico de Distribución de Usuarios -->
-        <div class="chart-container">
-            <h2>👥 Distribución de Usuarios</h2>
-            <canvas id="usuariosChart"></canvas>
+        <div class="card">
+          <h3>Productos Más Comparados</h3>
+          <p>📊 <span id="productosMasComparados">-</span></p>
         </div>
+        <div class="card">
+          <h3>Supermercados en la Plataforma</h3>
+          <p>🏪 <span id="totalSupermercados">0</span></p>
+        </div>
+      </div>
 
-   
+      <!-- 🅷 Gráfico de Comparaciones por Categoría -->
+      <div class="chart-container">
+        <h2>📈 Comparaciones por Categoría</h2>
+        <canvas id="comparacionesChart"></canvas>
+      </div>
 
+      <!-- 🅸 Gráfico de Distribución de Usuarios -->
+      <div class="chart-container">
+        <h2>👥 Distribución de Usuarios</h2>
+        <canvas id="usuariosChart"></canvas>
+      </div>
     </main>
-
-</body>
+  </body>
 </html>

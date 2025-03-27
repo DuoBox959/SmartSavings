@@ -92,18 +92,20 @@ function configurarFormulario() {
 
     // Verificar que currentUser y currentUser.id estén presentes
     if (!currentUser || !currentUser.id) {
-      return console.error("No se encontró un usuario autenticado o el ID es inválido.");
+      return console.error(
+        "No se encontró un usuario autenticado o el ID es inválido."
+      );
     }
 
     try {
       // Confirmación con SweetAlert
       const result = await Swal.fire({
-        title: '¿Estás seguro?',
-        text: '¿Quieres actualizar los datos?',
-        icon: 'warning',
+        title: "¿Estás seguro?",
+        text: "¿Quieres actualizar los datos?",
+        icon: "warning",
         showCancelButton: true,
-        confirmButtonText: 'Sí, actualizar',
-        cancelButtonText: 'Cancelar',
+        confirmButtonText: "Sí, actualizar",
+        cancelButtonText: "Cancelar",
       });
 
       // Si el usuario confirma, proceder con la actualización
@@ -118,13 +120,16 @@ function configurarFormulario() {
         console.log("Datos enviados:", updateData); // Asegúrate de ver los datos enviados
 
         // Hacer la solicitud PUT al servidor
-        const response = await fetch(`http://localhost:3000/api/usuarios/${currentUser.id}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updateData),
-        });
+        const response = await fetch(
+          `http://localhost:3000/api/usuarios/${currentUser.id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updateData),
+          }
+        );
 
         // Verificar si la respuesta es exitosa
         if (!response.ok) {
@@ -138,10 +143,10 @@ function configurarFormulario() {
 
         // Mostrar un mensaje de éxito con SweetAlert
         await Swal.fire({
-          title: '¡Éxito!',
-          text: 'Los datos se han actualizado correctamente, redirigiendo a Inicio.',
-          icon: 'success',
-          confirmButtonText: 'Aceptar',
+          title: "¡Éxito!",
+          text: "Los datos se han actualizado correctamente, redirigiendo a Inicio.",
+          icon: "success",
+          confirmButtonText: "Aceptar",
         });
 
         // Actualizar los datos en sessionStorage/localStorage

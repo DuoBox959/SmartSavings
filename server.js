@@ -41,7 +41,10 @@ const upload = multer({ storage: storage });
 
     // 🔍 Verificar si la colección "usuarios" existe
     const collections = await db.listCollections().toArray();
-    console.log("📌 Colecciones disponibles:", collections.map(c => c.name));
+    console.log(
+      "📌 Colecciones disponibles:",
+      collections.map((c) => c.name)
+    );
 
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
@@ -72,12 +75,16 @@ app.post("/api/login", async (req, res) => {
 
     // ⚠️ Verificar datos ingresados
     if (!emailOrUsername || !password) {
-      return res.status(400).json({ error: "Email o nombre de usuario y contraseña son requeridos" });
+      return res
+        .status(400)
+        .json({
+          error: "Email o nombre de usuario y contraseña son requeridos",
+        });
     }
 
     // 🔍 Buscar usuario por email o nombre de usuario
     const user = await db.collection("Usuarios").findOne({
-      $or: [{ email: emailOrUsername }, { nombre: emailOrUsername }]
+      $or: [{ email: emailOrUsername }, { nombre: emailOrUsername }],
     });
 
     if (!user) {
@@ -99,7 +106,6 @@ app.post("/api/login", async (req, res) => {
         rol: user.rol,
       },
     });
-
   } catch (err) {
     console.error("❌ Error en login:", err);
     res.status(500).json({ error: "Error en el servidor" });
@@ -124,7 +130,9 @@ app.post("/api/usuarios", async (req, res) => {
 
     if (!nombre || !pass || !email || !rol) {
       console.error("❌ Faltan datos obligatorios.");
-      return res.status(400).json({ error: "Todos los campos son obligatorios" });
+      return res
+        .status(400)
+        .json({ error: "Todos los campos son obligatorios" });
     }
 
     const nuevoUsuario = {
@@ -132,7 +140,7 @@ app.post("/api/usuarios", async (req, res) => {
       pass,
       email,
       fechaRegistro: new Date().toISOString(),
-      rol
+      rol,
     };
 
     console.log("📤 Insertando en MongoDB:", nuevoUsuario);
@@ -144,11 +152,13 @@ app.post("/api/usuarios", async (req, res) => {
       console.log("✅ Usuario agregado correctamente:", nuevoUsuario);
       return res.status(201).json({
         message: "Usuario creado correctamente",
-        usuario: nuevoUsuario // Ahora sí devuelve el usuario con el _id
+        usuario: nuevoUsuario, // Ahora sí devuelve el usuario con el _id
       });
     } else {
       console.error("❌ Error al insertar usuario en MongoDB.");
-      return res.status(500).json({ error: "Error al guardar el usuario en la base de datos" });
+      return res
+        .status(500)
+        .json({ error: "Error al guardar el usuario en la base de datos" });
     }
   } catch (err) {
     console.error("❌ Error creando usuario:", err);
@@ -197,16 +207,20 @@ app.put("/api/usuarios/:id", async (req, res) => {
 
     console.log("📤 Actualizando usuario en MongoDB:", updateData);
 
-    const result = await db.collection("Usuarios").updateOne(
-      { _id: objectId },
-      { $set: updateData }
-    );
+    const result = await db
+      .collection("Usuarios")
+      .updateOne({ _id: objectId }, { $set: updateData });
 
     if (result.modifiedCount === 0) {
-      return res.status(404).json({ error: "Usuario no encontrado o sin cambios" });
+      return res
+        .status(404)
+        .json({ error: "Usuario no encontrado o sin cambios" });
     }
 
-    res.json({ message: "Usuario actualizado correctamente", usuario: updateData });
+    res.json({
+      message: "Usuario actualizado correctamente",
+      usuario: updateData,
+    });
   } catch (err) {
     console.error("❌ Error actualizando usuario:", err);
     res.status(500).json({ error: "Error al actualizar usuario" });
@@ -270,7 +284,9 @@ app.get("/api/usuarios/:id", async (req, res) => {
       return res.status(400).json({ error: "ID no válido" });
     }
 
-    const user = await db.collection("Usuarios").findOne({ _id: new ObjectId(id) });
+    const user = await db
+      .collection("Usuarios")
+      .findOne({ _id: new ObjectId(id) });
 
     if (!user) {
       return res.status(404).json({ error: "Usuario no encontrado" });
@@ -298,9 +314,15 @@ app.post("/api/productos", upload.single("Imagen"), async (req, res) => {
     }
 
     // Convertir IDs a ObjectId solo si existen
-    const proveedorId = req.body.Proveedor_id ? new ObjectId(req.body.Proveedor_id) : null;
-    const supermercadoId = req.body.Supermercado_id ? new ObjectId(req.body.Supermercado_id) : null;
-    const usuarioId = req.body.Usuario_id ? new ObjectId(req.body.Usuario_id) : null;
+    const proveedorId = req.body.Proveedor_id
+      ? new ObjectId(req.body.Proveedor_id)
+      : null;
+    const supermercadoId = req.body.Supermercado_id
+      ? new ObjectId(req.body.Supermercado_id)
+      : null;
+    const usuarioId = req.body.Usuario_id
+      ? new ObjectId(req.body.Usuario_id)
+      : null;
 
     const nuevoProducto = {
       Nombre: req.body.Nombre,
@@ -343,53 +365,55 @@ app.post("/api/productos", upload.single("Imagen"), async (req, res) => {
   }
 });
 
-
 /**
  * ✅ Obtener todos los productos (Read)
  * Ruta: GET /api/productos
  */
 app.get("/api/productos", async (req, res) => {
   try {
-    const productos = await db.collection("Productos").aggregate([
-      {
-        $lookup: {
-          from: "Proveedor", // Conectar con la colección de Proveedor
-          localField: "Proveedor_id",
-          foreignField: "_id",
-          as: "ProveedorInfo",
+    const productos = await db
+      .collection("Productos")
+      .aggregate([
+        {
+          $lookup: {
+            from: "Proveedor", // Conectar con la colección de Proveedor
+            localField: "Proveedor_id",
+            foreignField: "_id",
+            as: "ProveedorInfo",
+          },
         },
-      },
-      {
-        $lookup: {
-          from: "Supermercados", // Conectar con la colección de Supermercados
-          localField: "Supermercado_id",
-          foreignField: "_id",
-          as: "SupermercadoInfo",
+        {
+          $lookup: {
+            from: "Supermercados", // Conectar con la colección de Supermercados
+            localField: "Supermercado_id",
+            foreignField: "_id",
+            as: "SupermercadoInfo",
+          },
         },
-      },
-      {
-        $lookup: {
-          from: "Usuarios", // Conectar con la colección de Usuarios
-          localField: "Usuario_id",
-          foreignField: "_id",
-          as: "UsuarioInfo",
+        {
+          $lookup: {
+            from: "Usuarios", // Conectar con la colección de Usuarios
+            localField: "Usuario_id",
+            foreignField: "_id",
+            as: "UsuarioInfo",
+          },
         },
-      },
-      {
-        $project: {
-          _id: 1,
-          Nombre: 1,
-          Imagen: 1,
-          Marca: 1,
-          Peso: 1,
-          UnidadPeso: 1,
-          Estado: 1,
-          Proveedor_id: { $arrayElemAt: ["$ProveedorInfo.Nombre", 0] }, // Nombre del proveedor
-          Supermercado_id: { $arrayElemAt: ["$SupermercadoInfo.Nombre", 0] }, // Nombre del supermercado
-          Usuario_id: { $arrayElemAt: ["$UsuarioInfo.nombre", 0] }, // Nombre del usuario
+        {
+          $project: {
+            _id: 1,
+            Nombre: 1,
+            Imagen: 1,
+            Marca: 1,
+            Peso: 1,
+            UnidadPeso: 1,
+            Estado: 1,
+            Proveedor_id: { $arrayElemAt: ["$ProveedorInfo.Nombre", 0] }, // Nombre del proveedor
+            Supermercado_id: { $arrayElemAt: ["$SupermercadoInfo.Nombre", 0] }, // Nombre del supermercado
+            Usuario_id: { $arrayElemAt: ["$UsuarioInfo.nombre", 0] }, // Nombre del usuario
+          },
         },
-      },
-    ]).toArray();
+      ])
+      .toArray();
 
     res.json(productos);
   } catch (err) {
@@ -397,7 +421,6 @@ app.get("/api/productos", async (req, res) => {
     res.status(500).json({ error: "Error al obtener productos" });
   }
 });
-
 
 /**
  * ✅ Actualizar producto existente (Update)
@@ -425,28 +448,34 @@ app.put("/api/productos/:id", upload.single("Imagen"), async (req, res) => {
     if (req.body.peso) updateData.Peso = req.body.peso;
     if (req.body.unidadPeso) updateData.UnidadPeso = req.body.unidadPeso;
     if (req.body.estado) updateData.Estado = req.body.estado;
-    if (req.body.proveedor_id) updateData.Proveedor_id = new ObjectId(req.body.proveedor_id);
-    if (req.body.supermercado_id) updateData.Supermercado_id = new ObjectId(req.body.supermercado_id);
-    if (req.body.usuario_id) updateData.Usuario_id = new ObjectId(req.body.usuario_id);
+    if (req.body.proveedor_id)
+      updateData.Proveedor_id = new ObjectId(req.body.proveedor_id);
+    if (req.body.supermercado_id)
+      updateData.Supermercado_id = new ObjectId(req.body.supermercado_id);
+    if (req.body.usuario_id)
+      updateData.Usuario_id = new ObjectId(req.body.usuario_id);
 
     console.log("🛠️ Datos a actualizar:", updateData);
 
     if (Object.keys(updateData).length === 0) {
-      return res.status(200).json({ message: "No hubo cambios en el producto." });
+      return res
+        .status(200)
+        .json({ message: "No hubo cambios en el producto." });
     }
 
-    const result = await db.collection("Productos").updateOne(
-      { _id: objectId },
-      { $set: updateData }
-    );
+    const result = await db
+      .collection("Productos")
+      .updateOne({ _id: objectId }, { $set: updateData });
 
     if (result.matchedCount === 0) {
       return res.status(404).json({ error: "Producto no encontrado" });
     }
 
     console.log("✅ Producto actualizado en MongoDB:", result);
-    res.json({ message: "Producto actualizado correctamente", producto: updateData });
-
+    res.json({
+      message: "Producto actualizado correctamente",
+      producto: updateData,
+    });
   } catch (err) {
     console.error("❌ Error actualizando producto:", err);
     res.status(500).json({ error: "Error al actualizar producto" });
@@ -465,7 +494,9 @@ app.get("/api/productos/:id", async (req, res) => {
       return res.status(400).json({ error: "ID de producto no válido" });
     }
 
-    const producto = await db.collection("Productos").findOne({ _id: new ObjectId(id) });
+    const producto = await db
+      .collection("Productos")
+      .findOne({ _id: new ObjectId(id) });
 
     if (!producto) {
       return res.status(404).json({ error: "Producto no encontrado" });
@@ -477,7 +508,6 @@ app.get("/api/productos/:id", async (req, res) => {
     res.status(500).json({ error: "Error al obtener producto" });
   }
 });
-
 
 /**
  * ✅ Eliminar producto (Delete)
@@ -493,7 +523,9 @@ app.delete("/api/productos/:id", async (req, res) => {
     }
 
     const objectId = new ObjectId(id);
-    const result = await db.collection("Productos").deleteOne({ _id: objectId });
+    const result = await db
+      .collection("Productos")
+      .deleteOne({ _id: objectId });
 
     if (result.deletedCount === 0) {
       return res.status(404).json({ error: "Producto no encontrado" });
@@ -511,50 +543,54 @@ app.delete("/api/productos/:id", async (req, res) => {
  */
 app.get("/api/comparador-precios", async (req, res) => {
   try {
-    const precios = await db.collection("Precios").aggregate([
-      {
-        $lookup: {
-          from: "Productos",
-          localField: "producto_id",
-          foreignField: "_id",
-          as: "ProductoInfo"
-        }
-      },
-      {
-        $unwind: "$ProductoInfo" // 🧨 Para poder usar los campos de Producto directamente
-      },
-      {
-        $lookup: {
-          from: "Supermercados",
-          localField: "ProductoInfo.Supermercado_id",
-          foreignField: "_id",
-          as: "SupermercadoInfo"
-        }
-      },
-      {
-        $unwind: "$SupermercadoInfo" // 🧨 También lo desenrollamos
-      },
-      {
-        $project: {
-          _id: 1,
-          precioActual: 1,
-          precioDescuento: 1,
-          unidadLote: 1,
-          Nombre: "$ProductoInfo.Nombre",
-          Supermercado: "$SupermercadoInfo.Nombre",
-          Peso: "$ProductoInfo.Peso",
-          UnidadPeso: "$ProductoInfo.UnidadPeso"
-        }
-      }
-    ]).toArray();
+    const precios = await db
+      .collection("Precios")
+      .aggregate([
+        {
+          $lookup: {
+            from: "Productos",
+            localField: "producto_id",
+            foreignField: "_id",
+            as: "ProductoInfo",
+          },
+        },
+        {
+          $unwind: "$ProductoInfo", // 🧨 Para poder usar los campos de Producto directamente
+        },
+        {
+          $lookup: {
+            from: "Supermercados",
+            localField: "ProductoInfo.Supermercado_id",
+            foreignField: "_id",
+            as: "SupermercadoInfo",
+          },
+        },
+        {
+          $unwind: "$SupermercadoInfo", // 🧨 También lo desenrollamos
+        },
+        {
+          $project: {
+            _id: 1,
+            precioActual: 1,
+            precioDescuento: 1,
+            unidadLote: 1,
+            Nombre: "$ProductoInfo.Nombre",
+            Supermercado: "$SupermercadoInfo.Nombre",
+            Peso: "$ProductoInfo.Peso",
+            UnidadPeso: "$ProductoInfo.UnidadPeso",
+          },
+        },
+      ])
+      .toArray();
 
     res.json(precios);
   } catch (err) {
     console.error("❌ Error en /api/comparador-precios:", err);
-    res.status(500).json({ error: "Error al obtener precios para comparación" });
+    res
+      .status(500)
+      .json({ error: "Error al obtener precios para comparación" });
   }
 });
-
 
 // =============================================
 // 🅴 CRUD DE PRECIOS: Ver porque no sale lista de precio historico y convertirlo en boton para verlos todos
@@ -566,7 +602,14 @@ app.get("/api/comparador-precios", async (req, res) => {
  */
 app.post("/api/precios", async (req, res) => {
   try {
-    let { producto_id, precioActual, precioDescuento, unidadLote, precioUnidadLote, precioHistorico } = req.body;
+    let {
+      producto_id,
+      precioActual,
+      precioDescuento,
+      unidadLote,
+      precioUnidadLote,
+      precioHistorico,
+    } = req.body;
 
     // ✅ Convertir a números, asegurando que sean válidos
     precioActual = parseFloat(precioActual) || 0;
@@ -585,20 +628,21 @@ app.post("/api/precios", async (req, res) => {
       precioActual,
       precioDescuento,
       unidadLote,
-      precioUnidadLote: precioUnidadLote ? parseFloat(precioUnidadLote) : null, 
+      precioUnidadLote: precioUnidadLote ? parseFloat(precioUnidadLote) : null,
       precioHistorico,
     };
 
     const result = await db.collection("Precios").insertOne(nuevoPrecio);
     nuevoPrecio._id = result.insertedId;
 
-    res.status(201).json({ message: "Precio creado correctamente", precio: nuevoPrecio });
+    res
+      .status(201)
+      .json({ message: "Precio creado correctamente", precio: nuevoPrecio });
   } catch (err) {
     console.error("❌ Error creando Precio:", err);
     res.status(500).json({ error: "Error al crear Precio" });
   }
 });
-
 
 /**
  * ✅ Obtener todos los precios (Read)
@@ -607,7 +651,9 @@ app.post("/api/precios", async (req, res) => {
 app.get("/api/precios", async (req, res) => {
   try {
     if (!db) {
-      return res.status(500).json({ error: "No hay conexión con la base de datos" });
+      return res
+        .status(500)
+        .json({ error: "No hay conexión con la base de datos" });
     }
     const precios = await db.collection("Precios").find().toArray();
     console.log("✅ Precios obtenidos:", precios);
@@ -618,8 +664,6 @@ app.get("/api/precios", async (req, res) => {
   }
 });
 
-
-
 /**
  * ✅ Actualizar precios existente (Update)
  * Ruta: PUT /api/precios/:id
@@ -629,10 +673,9 @@ app.put("/api/precios/:id", async (req, res) => {
     const id = new ObjectId(req.params.id);
     const updateData = req.body;
 
-    const result = await db.collection("Precios").updateOne(
-      { _id: id },
-      { $set: updateData }
-    );
+    const result = await db
+      .collection("Precios")
+      .updateOne({ _id: id }, { $set: updateData });
 
     if (result.modifiedCount === 0) {
       return res.status(404).json({ error: "Precio no encontrado" });
@@ -685,23 +728,26 @@ app.post("/api/supermercados", async (req, res) => {
     const { Nombre, Pais, Ciudad, Ubicacion } = req.body;
 
     if (!Nombre || !Pais || !Ciudad || !Ubicacion) {
-      return res.status(400).json({ error: "Todos los campos son obligatorios" });
+      return res
+        .status(400)
+        .json({ error: "Todos los campos son obligatorios" });
     }
 
     const nuevoSupermercado = { Nombre, Pais, Ciudad, Ubicacion };
 
-    const resultado = await db.collection("Supermercados").insertOne(nuevoSupermercado);
+    const resultado = await db
+      .collection("Supermercados")
+      .insertOne(nuevoSupermercado);
 
     res.status(201).json({
       message: "Supermercado creado correctamente",
-      supermercado: { ...nuevoSupermercado, _id: resultado.insertedId }
+      supermercado: { ...nuevoSupermercado, _id: resultado.insertedId },
     });
   } catch (err) {
     console.error("❌ Error creando Supermercado:", err);
     res.status(500).json({ error: "Error al crear Supermercado" });
   }
 });
-
 
 /**
  * ✅ Obtener todos los supermercados (Read)
@@ -718,7 +764,6 @@ app.get("/api/supermercados", async (req, res) => {
   }
 });
 
-
 /**
  * ✅ Actualizar supermercados existente (Update)
  * Ruta: PUT /api/supermercados/:id
@@ -728,10 +773,9 @@ app.put("/api/supermercados/:id", async (req, res) => {
     const id = new ObjectId(req.params.id);
     const updateData = req.body;
 
-    const result = await db.collection("Supermercados").updateOne(
-      { _id: id },
-      { $set: updateData }
-    );
+    const result = await db
+      .collection("Supermercados")
+      .updateOne({ _id: id }, { $set: updateData });
 
     if (result.modifiedCount === 0) {
       return res.status(404).json({ error: "Supermercado no encontrado" });
@@ -758,7 +802,9 @@ app.delete("/api/supermercados/:id", async (req, res) => {
     }
 
     const objectId = new ObjectId(id);
-    const result = await db.collection("Supermercados").deleteOne({ _id: objectId });
+    const result = await db
+      .collection("Supermercados")
+      .deleteOne({ _id: objectId });
 
     if (result.deletedCount === 0) {
       return res.status(404).json({ error: "Supermercado no encontrado" });
@@ -785,13 +831,17 @@ app.post("/api/descripcion", async (req, res) => {
 
     // ✅ Validar que se envió un Producto_id válido
     if (!Producto_id || !Tipo) {
-      return res.status(400).json({ error: "Producto ID y Tipo son obligatorios" });
+      return res
+        .status(400)
+        .json({ error: "Producto ID y Tipo son obligatorios" });
     }
 
     const productoObjectId = new ObjectId(Producto_id);
 
     // 🔍 Buscar el nombre del producto en la BD
-    const producto = await db.collection("Productos").findOne({ _id: productoObjectId });
+    const producto = await db
+      .collection("Productos")
+      .findOne({ _id: productoObjectId });
 
     if (!producto) {
       return res.status(404).json({ error: "Producto no encontrado" });
@@ -805,7 +855,9 @@ app.post("/api/descripcion", async (req, res) => {
       Ingredientes: Array.isArray(Ingredientes) ? Ingredientes : [],
     };
 
-    const resultado = await db.collection("Descripcion").insertOne(nuevaDescripcion);
+    const resultado = await db
+      .collection("Descripcion")
+      .insertOne(nuevaDescripcion);
 
     res.status(201).json({
       message: "Descripción creada correctamente",
@@ -815,7 +867,6 @@ app.post("/api/descripcion", async (req, res) => {
         Producto_id: producto.Nombre, // 🔹 Devolvemos el nombre del producto en lugar del ID
       },
     });
-
   } catch (err) {
     console.error("❌ Error creando Descripción:", err);
     res.status(500).json({ error: "Error interno del servidor" });
@@ -828,26 +879,29 @@ app.post("/api/descripcion", async (req, res) => {
  */
 app.get("/api/descripcion", async (req, res) => {
   try {
-    const descripciones = await db.collection("Descripcion").aggregate([
-      {
-        $lookup: {
-          from: "Productos", // Colección de productos
-          localField: "Producto_id", // Campo en la colección de Descripcion
-          foreignField: "_id", // Campo en la colección de Productos
-          as: "ProductoInfo", // Nombre del campo resultante
+    const descripciones = await db
+      .collection("Descripcion")
+      .aggregate([
+        {
+          $lookup: {
+            from: "Productos", // Colección de productos
+            localField: "Producto_id", // Campo en la colección de Descripcion
+            foreignField: "_id", // Campo en la colección de Productos
+            as: "ProductoInfo", // Nombre del campo resultante
+          },
         },
-      },
-      {
-        $project: {
-          _id: 1,
-          Producto_id: { $arrayElemAt: ["$ProductoInfo.Nombre", 0] }, // Obtener nombre del producto
-          Tipo: 1,
-          Subtipo: 1,
-          Utilidad: 1,
-          Ingredientes: 1,
+        {
+          $project: {
+            _id: 1,
+            Producto_id: { $arrayElemAt: ["$ProductoInfo.Nombre", 0] }, // Obtener nombre del producto
+            Tipo: 1,
+            Subtipo: 1,
+            Utilidad: 1,
+            Ingredientes: 1,
+          },
         },
-      },
-    ]).toArray();
+      ])
+      .toArray();
 
     res.json(descripciones);
   } catch (err) {
@@ -855,7 +909,6 @@ app.get("/api/descripcion", async (req, res) => {
     res.status(500).json({ error: "Error al obtener descripciones" });
   }
 });
-
 
 /**
  * ✅ Actualizar descripcion existente (Update)
@@ -884,20 +937,23 @@ app.put("/api/descripcion/:id", async (req, res) => {
     // 🔍 Buscar el nombre del producto si se está actualizando
     let productoNombre = null;
     if (updateData.Producto_id) {
-      const producto = await db.collection("Productos").findOne({ _id: updateData.Producto_id });
+      const producto = await db
+        .collection("Productos")
+        .findOne({ _id: updateData.Producto_id });
       if (!producto) {
         return res.status(404).json({ error: "Producto no encontrado" });
       }
       productoNombre = producto.Nombre;
     }
 
-    const result = await db.collection("Descripcion").updateOne(
-      { _id: new ObjectId(id) },
-      { $set: updateData }
-    );
+    const result = await db
+      .collection("Descripcion")
+      .updateOne({ _id: new ObjectId(id) }, { $set: updateData });
 
     if (result.modifiedCount === 0) {
-      return res.status(404).json({ error: "Descripción no encontrada o sin cambios" });
+      return res
+        .status(404)
+        .json({ error: "Descripción no encontrada o sin cambios" });
     }
 
     res.json({
@@ -907,11 +963,9 @@ app.put("/api/descripcion/:id", async (req, res) => {
         Producto_id: productoNombre || updateData.Producto_id, // 🔹 Devolvemos el nombre si fue actualizado
       },
     });
-
   } catch (err) {
     console.error("❌ Error actualizando descripción:", err.message);
     res.status(500).json({ error: err.message });
-
   }
 });
 
@@ -929,7 +983,9 @@ app.delete("/api/descripcion/:id", async (req, res) => {
     }
 
     const objectId = new ObjectId(id);
-    const result = await db.collection("Descripcion").deleteOne({ _id: objectId });
+    const result = await db
+      .collection("Descripcion")
+      .deleteOne({ _id: objectId });
 
     if (result.deletedCount === 0) {
       return res.status(404).json({ error: "Descripcion no encontrado" });
@@ -956,12 +1012,16 @@ app.post("/api/proveedor", async (req, res) => {
 
     // 📌 Validar que los campos obligatorios están presentes
     if (!Nombre || !Pais || !ComunidadAutonoma) {
-      return res.status(400).json({ error: "Todos los campos son obligatorios" });
+      return res
+        .status(400)
+        .json({ error: "Todos los campos son obligatorios" });
     }
 
     const nuevoProveedor = { Nombre, Pais, "C.Autonoma": ComunidadAutonoma };
 
-    const resultado = await db.collection("Proveedor").insertOne(nuevoProveedor);
+    const resultado = await db
+      .collection("Proveedor")
+      .insertOne(nuevoProveedor);
 
     res.status(201).json({
       message: "Proveedor creado correctamente",
@@ -972,7 +1032,6 @@ app.post("/api/proveedor", async (req, res) => {
     res.status(500).json({ error: "Error al crear proveedor" });
   }
 });
-
 
 /**
  * ✅ Obtener todos los proovedores (Read)
@@ -1004,19 +1063,21 @@ app.put("/api/proveedor/:id", async (req, res) => {
     const updateData = {};
     if (req.body.Nombre) updateData.Nombre = req.body.Nombre;
     if (req.body.Pais) updateData.Pais = req.body.Pais;
-    if (req.body["C.Autonoma"]) updateData["C.Autonoma"] = req.body["C.Autonoma"];
+    if (req.body["C.Autonoma"])
+      updateData["C.Autonoma"] = req.body["C.Autonoma"];
 
     if (Object.keys(updateData).length === 0) {
       return res.status(400).json({ error: "No se enviaron cambios" });
     }
 
-    const result = await db.collection("Proveedor").updateOne(
-      { _id: new ObjectId(id) },
-      { $set: updateData }
-    );
+    const result = await db
+      .collection("Proveedor")
+      .updateOne({ _id: new ObjectId(id) }, { $set: updateData });
 
     if (result.modifiedCount === 0) {
-      return res.status(404).json({ error: "Proveedor no encontrado o sin cambios" });
+      return res
+        .status(404)
+        .json({ error: "Proveedor no encontrado o sin cambios" });
     }
 
     res.json({ message: "Proveedor actualizado correctamente" });
@@ -1025,7 +1086,6 @@ app.put("/api/proveedor/:id", async (req, res) => {
     res.status(500).json({ error: "Error al actualizar proveedor" });
   }
 });
-
 
 /**
  * ✅ Eliminar proovedor (Delete)
@@ -1041,7 +1101,9 @@ app.delete("/api/proveedor/:id", async (req, res) => {
     }
 
     const objectId = new ObjectId(id);
-    const result = await db.collection("Proveedor").deleteOne({ _id: objectId });
+    const result = await db
+      .collection("Proveedor")
+      .deleteOne({ _id: objectId });
 
     if (result.deletedCount === 0) {
       return res.status(404).json({ error: "Proveedor no encontrado" });
@@ -1055,7 +1117,7 @@ app.delete("/api/proveedor/:id", async (req, res) => {
 });
 
 // =============================================
-// 🅸 CRUD DE OPINIONES: 
+// 🅸 CRUD DE OPINIONES:
 // =============================================
 
 /**
@@ -1068,7 +1130,9 @@ app.post("/api/opiniones", async (req, res) => {
 
     // ✅ Validar los campos obligatorios
     if (!Producto_id || !Usuario_id || !Opinion) {
-      return res.status(400).json({ error: "Producto ID, Usuario ID y Opinión son obligatorios" });
+      return res
+        .status(400)
+        .json({ error: "Producto ID, Usuario ID y Opinión son obligatorios" });
     }
 
     // ✅ Crear nueva opinión con fecha automática
@@ -1086,13 +1150,11 @@ app.post("/api/opiniones", async (req, res) => {
       message: "Opinión creada correctamente",
       opinion: { ...nuevaOpinion, _id: resultado.insertedId },
     });
-
   } catch (err) {
     console.error("❌ Error creando Opinión:", err);
     res.status(500).json({ error: "Error interno del servidor" });
   }
 });
-
 
 /**
  * ✅ Obtener todas las opiniones (Read)
@@ -1108,7 +1170,6 @@ app.get("/api/opiniones", async (req, res) => {
   }
 });
 
-
 /**
  * ✅ Actualizar opinión existente (Update)
  * Ruta: PUT /api/opiniones/:id
@@ -1118,10 +1179,9 @@ app.put("/api/opiniones/:id", async (req, res) => {
     const id = new ObjectId(req.params.id);
     const updateData = req.body;
 
-    const result = await db.collection("Opiniones").updateOne(
-      { _id: id },
-      { $set: updateData }
-    );
+    const result = await db
+      .collection("Opiniones")
+      .updateOne({ _id: id }, { $set: updateData });
 
     if (result.modifiedCount === 0) {
       return res.status(404).json({ error: "Opinion no encontrada" });
@@ -1148,7 +1208,9 @@ app.delete("/api/opiniones/:id", async (req, res) => {
     }
 
     const objectId = new ObjectId(id);
-    const result = await db.collection("Opiniones").deleteOne({ _id: objectId });
+    const result = await db
+      .collection("Opiniones")
+      .deleteOne({ _id: objectId });
 
     if (result.deletedCount === 0) {
       return res.status(404).json({ error: "Opinion no encontrado" });
@@ -1196,7 +1258,7 @@ app.get("/api/metricas", async (req, res) => {
 
 // 📊 API para los reportes
 /**
- * 
+ *
  * Ruta: GET /api/reportes
  */
 app.get("/api/reportes", async (req, res) => {
@@ -1205,49 +1267,62 @@ app.get("/api/reportes", async (req, res) => {
 
     const hace7dias = new Date();
     hace7dias.setDate(hace7dias.getDate() - 7);
-    const usuariosActivos = await db.collection("HistorialUsuario").aggregate([
-      { $match: { fecha: { $gte: hace7dias } } },
-      { $group: { _id: "$usuario_id" } }
-    ]).toArray();
+    const usuariosActivos = await db
+      .collection("HistorialUsuario")
+      .aggregate([
+        { $match: { fecha: { $gte: hace7dias } } },
+        { $group: { _id: "$usuario_id" } },
+      ])
+      .toArray();
 
     const totalProductos = await db.collection("Productos").countDocuments();
-    const totalSupermercados = await db.collection("Supermercados").countDocuments();
+    const totalSupermercados = await db
+      .collection("Supermercados")
+      .countDocuments();
 
-    const productosMasComparados = await db.collection("Productos")
+    const productosMasComparados = await db
+      .collection("Productos")
       .find()
       .sort({ comparaciones: -1 })
       .limit(1)
       .toArray();
 
-    const productoMasComparado = productosMasComparados.length > 0
-      ? productosMasComparados[0].Nombre
-      : "N/A";
+    const productoMasComparado =
+      productosMasComparados.length > 0
+        ? productosMasComparados[0].Nombre
+        : "N/A";
 
-    const comparacionesPorCategoria = await db.collection("Productos").aggregate([
-      { $group: { _id: "$Categoria", total: { $sum: "$comparaciones" } } },
-      { $sort: { total: -1 } }
-    ]).toArray();
+    const comparacionesPorCategoria = await db
+      .collection("Productos")
+      .aggregate([
+        { $group: { _id: "$Categoria", total: { $sum: "$comparaciones" } } },
+        { $sort: { total: -1 } },
+      ])
+      .toArray();
 
-    const historial = await db.collection("HistorialUsuario").aggregate([
-      {
-        $lookup: {
-          from: "Usuarios",
-          localField: "usuario_id",
-          foreignField: "_id",
-          as: "usuarioInfo"
-        }
-      },
-      { $unwind: "$usuarioInfo" },
-      {
-        $project: {
-          fecha: 1,
-          accion: 1,
-          usuario: "$usuarioInfo.nombre"
-        }
-      },
-      { $sort: { fecha: -1 } },
-      { $limit: 10 }
-    ]).toArray();
+    const historial = await db
+      .collection("HistorialUsuario")
+      .aggregate([
+        {
+          $lookup: {
+            from: "Usuarios",
+            localField: "usuario_id",
+            foreignField: "_id",
+            as: "usuarioInfo",
+          },
+        },
+        { $unwind: "$usuarioInfo" },
+        {
+          $project: {
+            fecha: 1,
+            accion: 1,
+            usuario: "$usuarioInfo.nombre",
+          },
+        },
+        { $sort: { fecha: -1 } },
+        { $limit: 10 },
+      ])
+      .toArray();
 
     res.json({
       totalUsuarios,
@@ -1256,15 +1331,13 @@ app.get("/api/reportes", async (req, res) => {
       totalSupermercados,
       productoMasComparado,
       comparacionesPorCategoria,
-      historial
+      historial,
     });
-
   } catch (error) {
     console.error("❌ Error obteniendo reportes:", error);
     res.status(500).json({ error: "Error al obtener reportes" });
   }
 });
-
 
 // =============================================
 // 🅳️ CRUD DE DATOS PERSONALES
@@ -1280,7 +1353,12 @@ app.post("/api/datos-personales", async (req, res) => {
     data.usuario_id = new ObjectId(data.usuario_id);
 
     const result = await db.collection("DatosUsuario").insertOne(data);
-    res.status(201).json({ message: "Datos guardados correctamente", id: result.insertedId });
+    res
+      .status(201)
+      .json({
+        message: "Datos guardados correctamente",
+        id: result.insertedId,
+      });
   } catch (err) {
     console.error("❌ Error guardando datos personales:", err);
     res.status(500).json({ error: "Error en el servidor" });
@@ -1316,7 +1394,9 @@ app.put("/api/datos-personales/:id", async (req, res) => {
     );
 
     if (result.modifiedCount === 0) {
-      return res.status(404).json({ error: "Datos personales no encontrados o sin cambios" });
+      return res
+        .status(404)
+        .json({ error: "Datos personales no encontrados o sin cambios" });
     }
 
     res.json({ message: "Datos personales actualizados correctamente" });
@@ -1326,7 +1406,6 @@ app.put("/api/datos-personales/:id", async (req, res) => {
   }
 });
 
-
 /**
  * ✅ Eliminar Dato personal (Delete)
  * Ruta: DELETE /api/datos-personales/:id
@@ -1334,7 +1413,9 @@ app.put("/api/datos-personales/:id", async (req, res) => {
 app.delete("/api/datos-personales/:id", async (req, res) => {
   try {
     const datoId = new ObjectId(req.params.id);
-    const result = await db.collection("DatosUsuario").deleteOne({ _id: datoId });
+    const result = await db
+      .collection("DatosUsuario")
+      .deleteOne({ _id: datoId });
 
     if (result.deletedCount === 0) {
       return res.status(404).json({ error: "Dato no encontrado" });
@@ -1346,8 +1427,6 @@ app.delete("/api/datos-personales/:id", async (req, res) => {
     res.status(500).json({ error: "Error en el servidor" });
   }
 });
-
-
 
 // =============================================
 // 🅴 CRUD DE HISTORIAL / ACTIVIDAD DEL USUARIO
@@ -1364,7 +1443,7 @@ app.post("/api/historial", async (req, res) => {
     const nuevoMovimiento = {
       usuario_id: new ObjectId(usuario_id),
       accion,
-      fecha: new Date() // guardamos fecha actual
+      fecha: new Date(), // guardamos fecha actual
     };
 
     await db.collection("HistorialUsuario").insertOne(nuevoMovimiento);
@@ -1383,27 +1462,30 @@ app.get("/api/historial/:usuarioId", async (req, res) => {
   try {
     const usuarioId = new ObjectId(req.params.usuarioId);
 
-    const historial = await db.collection("HistorialUsuario").aggregate([
-      { $match: { usuario_id: usuarioId } },
-      {
-        $lookup: {
-          from: "Usuarios",
-          localField: "usuario_id",
-          foreignField: "_id",
-          as: "usuario"
-        }
-      },
-      { $unwind: "$usuario" },
-      {
-        $project: {
-          fecha: 1,
-          accion: 1,
-          usuario: "$usuario.nombre" // 👈 nombre del usuario
-        }
-      },
-      { $sort: { fecha: -1 } },
-      { $limit: 20 }
-    ]).toArray();
+    const historial = await db
+      .collection("HistorialUsuario")
+      .aggregate([
+        { $match: { usuario_id: usuarioId } },
+        {
+          $lookup: {
+            from: "Usuarios",
+            localField: "usuario_id",
+            foreignField: "_id",
+            as: "usuario",
+          },
+        },
+        { $unwind: "$usuario" },
+        {
+          $project: {
+            fecha: 1,
+            accion: 1,
+            usuario: "$usuario.nombre", // 👈 nombre del usuario
+          },
+        },
+        { $sort: { fecha: -1 } },
+        { $limit: 20 },
+      ])
+      .toArray();
 
     res.json(historial);
   } catch (err) {
@@ -1411,7 +1493,6 @@ app.get("/api/historial/:usuarioId", async (req, res) => {
     res.status(500).json({ error: "Error en el servidor" });
   }
 });
-
 
 /**
  * ✅ Actualizar una entrada del historial (Update)
@@ -1422,10 +1503,9 @@ app.put("/api/historial/:id", async (req, res) => {
     const id = new ObjectId(req.params.id);
     const data = req.body;
 
-    const result = await db.collection("HistorialUsuario").updateOne(
-      { _id: id },
-      { $set: data }
-    );
+    const result = await db
+      .collection("HistorialUsuario")
+      .updateOne({ _id: id }, { $set: data });
 
     if (result.modifiedCount === 0) {
       return res.status(404).json({ error: "Movimiento no encontrado" });
@@ -1446,7 +1526,9 @@ app.delete("/api/historial/:id", async (req, res) => {
   try {
     const id = new ObjectId(req.params.id);
 
-    const result = await db.collection("HistorialUsuario").deleteOne({ _id: id });
+    const result = await db
+      .collection("HistorialUsuario")
+      .deleteOne({ _id: id });
 
     if (result.deletedCount === 0) {
       return res.status(404).json({ error: "Movimiento no encontrado" });
@@ -1465,7 +1547,8 @@ app.delete("/api/historial/:id", async (req, res) => {
  */
 app.get("/api/historial", async (req, res) => {
   try {
-    const historial = await db.collection("HistorialUsuario")
+    const historial = await db
+      .collection("HistorialUsuario")
       .find()
       .sort({ fecha: -1 }) // Más reciente primero
       .toArray();
@@ -1476,7 +1559,6 @@ app.get("/api/historial", async (req, res) => {
     res.status(500).json({ error: "Error en el servidor" });
   }
 });
- 
 
 /**
  * ✅ Obtener usuarios activos en los últimos 7 días
@@ -1487,32 +1569,35 @@ app.get("/api/historial-reciente", async (req, res) => {
     const hace7dias = new Date();
     hace7dias.setDate(hace7dias.getDate() - 7);
 
-    const movimientos = await db.collection("HistorialUsuario").aggregate([
-      {
-        $match: {
-          fecha: { $gte: hace7dias }
-        }
-      },
-      {
-        $lookup: {
-          from: "Usuarios",
-          localField: "usuario_id",
-          foreignField: "_id",
-          as: "Usuario"
-        }
-      },
-      {
-        $unwind: "$Usuario"
-      },
-      {
-        $project: {
-          fecha: 1,
-          accion: 1,
-          usuario: "$Usuario.nombre"
-        }
-      },
-      { $sort: { fecha: -1 } }
-    ]).toArray();
+    const movimientos = await db
+      .collection("HistorialUsuario")
+      .aggregate([
+        {
+          $match: {
+            fecha: { $gte: hace7dias },
+          },
+        },
+        {
+          $lookup: {
+            from: "Usuarios",
+            localField: "usuario_id",
+            foreignField: "_id",
+            as: "Usuario",
+          },
+        },
+        {
+          $unwind: "$Usuario",
+        },
+        {
+          $project: {
+            fecha: 1,
+            accion: 1,
+            usuario: "$Usuario.nombre",
+          },
+        },
+        { $sort: { fecha: -1 } },
+      ])
+      .toArray();
 
     res.json(movimientos);
   } catch (err) {
@@ -1531,31 +1616,34 @@ app.get("/api/usuarios/activos-semanales", async (req, res) => {
     const hace28dias = new Date();
     hace28dias.setDate(hace28dias.getDate() - 28);
 
-    const actividad = await db.collection("HistorialUsuario").aggregate([
-      {
-        $match: { fecha: { $gte: hace28dias } } // 🔥 NO SE USA ObjectId AQUÍ
-      },
-      {
-        $project: {
-          usuario_id: 1,
-          semana: { $isoWeek: "$fecha" },
-          anio: { $isoWeekYear: "$fecha" }
-        }
-      },
-      {
-        $group: {
-          _id: { semana: "$semana", anio: "$anio" },
-          usuarios: { $addToSet: "$usuario_id" }
-        }
-      },
-      {
-        $project: {
-          semana: "$_id.semana",
-          anio: "$_id.anio",
-          usuarios: { $size: "$usuarios" }
-        }
-      }
-    ]).toArray();
+    const actividad = await db
+      .collection("HistorialUsuario")
+      .aggregate([
+        {
+          $match: { fecha: { $gte: hace28dias } }, // 🔥 NO SE USA ObjectId AQUÍ
+        },
+        {
+          $project: {
+            usuario_id: 1,
+            semana: { $isoWeek: "$fecha" },
+            anio: { $isoWeekYear: "$fecha" },
+          },
+        },
+        {
+          $group: {
+            _id: { semana: "$semana", anio: "$anio" },
+            usuarios: { $addToSet: "$usuario_id" },
+          },
+        },
+        {
+          $project: {
+            semana: "$_id.semana",
+            anio: "$_id.anio",
+            usuarios: { $size: "$usuarios" },
+          },
+        },
+      ])
+      .toArray();
 
     // 🧠 Crear array de semanas ISO con 0 si falta
     const resultadoFinal = Array.from({ length: 4 }, (_, i) => {
@@ -1564,11 +1652,13 @@ app.get("/api/usuarios/activos-semanales", async (req, res) => {
       const semanaISO = getISOWeek(fecha);
       const anio = fecha.getFullYear();
 
-      const encontrado = actividad.find(a => a.semana === semanaISO && a.anio === anio);
+      const encontrado = actividad.find(
+        (a) => a.semana === semanaISO && a.anio === anio
+      );
 
       return {
         semana: `Semana ${semanaISO} (${anio})`,
-        usuarios: encontrado ? encontrado.usuarios : 0
+        usuarios: encontrado ? encontrado.usuarios : 0,
       };
     }).reverse();
 
@@ -1584,6 +1674,6 @@ function getISOWeek(date) {
   tempDate.setHours(0, 0, 0, 0);
   tempDate.setDate(tempDate.getDate() + 4 - (tempDate.getDay() || 7));
   const yearStart = new Date(tempDate.getFullYear(), 0, 1);
-  const weekNo = Math.ceil((((tempDate - yearStart) / 86400000) + 1) / 7);
+  const weekNo = Math.ceil(((tempDate - yearStart) / 86400000 + 1) / 7);
   return weekNo;
 }

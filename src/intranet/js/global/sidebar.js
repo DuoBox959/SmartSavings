@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // Activar funcionalidad del botón
       toggleSidebarBtn.addEventListener("click", function () {
         sidebar.classList.toggle("hidden");
-        
+
         // Mover el botón según el estado del sidebar
         if (sidebar.classList.contains("hidden")) {
           toggleSidebarBtn.style.left = "0px"; // Botón a la izquierda cuando el sidebar está oculto
@@ -29,5 +29,3 @@ document.addEventListener("DOMContentLoaded", function () {
     })
     .catch((error) => console.error("Error cargando el sidebar:", error));
 });
-
-  

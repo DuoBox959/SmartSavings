@@ -14,7 +14,7 @@ $(document).ready(async () => {
       { title: "Precio Actual" },
       { title: "Precio Descuento" },
       { title: "Unidad/Lote" },
-      { title: "Precio por Unidad/Lote" }, 
+      { title: "Precio por Unidad/Lote" },
       { title: "Precio Histórico" },
       { title: "Acciones" },
     ],
@@ -24,18 +24,17 @@ $(document).ready(async () => {
   await cargarProductos();
   await cargarPrecios();
 
-    // 🧼 Limpiar espacios innecesarios en unidadLote y precioHistorico
-    $("#unidadLote, #precioHistorico").on("blur", function () {
-      $(this).val($(this).val().trim());
-    });
-  
-    // 🚫 BONUS: Prevenir espacios al inicio mientras se escribe
-    $("#unidadLote, #precioHistorico").on("input", function () {
-      if (this.value.startsWith(" ")) {
-        this.value = this.value.trimStart();
-      }
-    });
-  
+  // 🧼 Limpiar espacios innecesarios en unidadLote y precioHistorico
+  $("#unidadLote, #precioHistorico").on("blur", function () {
+    $(this).val($(this).val().trim());
+  });
+
+  // 🚫 BONUS: Prevenir espacios al inicio mientras se escribe
+  $("#unidadLote, #precioHistorico").on("input", function () {
+    if (this.value.startsWith(" ")) {
+      this.value = this.value.trimStart();
+    }
+  });
 });
 
 // 🟢 Cargar productos y llenar el select
@@ -92,10 +91,10 @@ async function cargarPrecios() {
         typeof precio.precioDescuento === "number"
           ? precio.precioDescuento.toFixed(0) + " %"
           : "N/A",
-          precio.unidadLote || "N/A",
-          typeof precio.precioUnidadLote === "number"
-            ? precio.precioUnidadLote.toFixed(2) + " €"
-            : "N/A",
+        precio.unidadLote || "N/A",
+        typeof precio.precioUnidadLote === "number"
+          ? precio.precioUnidadLote.toFixed(2) + " €"
+          : "N/A",
         `<button class="btn btn-primary" onclick="verPrecioHistorico('${precio._id}')">Ver Precio Histórico</button>`,
         accionesHTML(precio._id),
       ]);

@@ -17,29 +17,27 @@ $(document).ready(() => {
       { title: "Idioma" },
       { title: "Zona Horaria" },
       { title: "Notif. Correo" },
-      { title: "Acciones" }
+      { title: "Acciones" },
     ],
   });
   cargarUsuariosEnSelect();
   cargarDatosPersonales();
 
+  // 🧼 Quitar espacios al salir del input
+  $("#nombre, #apellidos, #idioma, #zonaHoraria").on("blur", function () {
+    const limpio = $(this).val().trim();
+    $(this).val(limpio);
+  });
 
-    // 🧼 Quitar espacios al salir del input
-    $("#nombre, #apellidos, #idioma, #zonaHoraria").on("blur", function () {
-      const limpio = $(this).val().trim();
-      $(this).val(limpio);
-    });
-  
-    // 🚫 BONUS: evitar escribir espacios al inicio
-    $("#nombre, #apellidos, #idioma, #zonaHoraria").on("input", function () {
-      if (this.value.startsWith(" ")) {
-        this.value = this.value.trimStart();
-      }
-    });
-  
+  // 🚫 BONUS: evitar escribir espacios al inicio
+  $("#nombre, #apellidos, #idioma, #zonaHoraria").on("input", function () {
+    if (this.value.startsWith(" ")) {
+      this.value = this.value.trimStart();
+    }
+  });
 });
 function obtenerNombreUsuario(usuarioId) {
-  const usuario = usuariosCache.find(u => u._id === usuarioId);
+  const usuario = usuariosCache.find((u) => u._id === usuarioId);
   console.log("👤 Buscando usuario:", usuarioId, "=>", usuario?.nombre);
 
   return usuario ? usuario.nombre : "Desconocido";
@@ -75,7 +73,6 @@ async function cargarDatosPersonales() {
   }
 }
 
-
 // 🟢 Generar HTML para editar y eliminar
 function accionesHTML(id) {
   return `
@@ -87,19 +84,20 @@ function accionesHTML(id) {
 // 🟢 Mostrar formulario para agregar
 async function mostrarFormularioAgregar() {
   $("#formTitulo").text("Añadir Datos Personales");
-  $("#datoID, #nombre, #apellidos, #usuarioId, #fechaNacimiento, #genero, #idioma, #zonaHoraria").val("");
+  $(
+    "#datoID, #nombre, #apellidos, #usuarioId, #fechaNacimiento, #genero, #idioma, #zonaHoraria"
+  ).val("");
   $("#notificaciones").prop("checked", false);
 
   await cargarUsuariosEnSelect(); // 💥 Aquí
 
-  $("#botonesFormulario button:first")
-    .off("click")
-    .on("click", guardarDato);
+  $("#botonesFormulario button:first").off("click").on("click", guardarDato);
 
   $("#formularioDatos").show();
-  document.getElementById("formularioDatos").scrollIntoView({ behavior: "smooth" });
+  document
+    .getElementById("formularioDatos")
+    .scrollIntoView({ behavior: "smooth" });
 }
-
 
 // 🟢 Editar dato personal
 async function editarDato(id) {
@@ -119,15 +117,13 @@ async function editarDato(id) {
   await cargarUsuariosEnSelect(); // 💥 Aquí
   $("#usuarioId").val(dato.usuario_id || ""); // 👈 Seleccionar el correcto
 
-  $("#botonesFormulario button:first")
-    .off("click")
-    .on("click", guardarDato);
+  $("#botonesFormulario button:first").off("click").on("click", guardarDato);
 
   $("#formularioDatos").show();
-  document.getElementById("formularioDatos").scrollIntoView({ behavior: "smooth" });
+  document
+    .getElementById("formularioDatos")
+    .scrollIntoView({ behavior: "smooth" });
 }
-
-
 
 // 🟢 Guardar (crear o editar)
 async function guardarDato() {
@@ -140,7 +136,7 @@ async function guardarDato() {
     genero: $("#genero").val(),
     idioma: $("#idioma").val(),
     zonaHoraria: $("#zonaHoraria").val(),
-    recibirNotificaciones: $("#notificaciones").is(":checked")
+    recibirNotificaciones: $("#notificaciones").is(":checked"),
   };
 
   if (!body.nombre || !body.usuario_id) {
@@ -152,11 +148,14 @@ async function guardarDato() {
     let response;
     if (id) {
       // ✅ PUT = editar
-      response = await fetch(`http://localhost:3000/api/datos-personales/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
+      response = await fetch(
+        `http://localhost:3000/api/datos-personales/${id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }
+      );
     } else {
       // ✅ POST = crear
       response = await fetch("http://localhost:3000/api/datos-personales", {
@@ -168,7 +167,9 @@ async function guardarDato() {
 
     if (!response.ok) throw new Error("Error al guardar");
 
-    const mensaje = id ? "Datos actualizados correctamente" : "Datos añadidos correctamente";
+    const mensaje = id
+      ? "Datos actualizados correctamente"
+      : "Datos añadidos correctamente";
     Swal.fire("✅ Éxito", mensaje, "success");
 
     // ✅ Limpiar ID para evitar modo edición persistente
@@ -177,14 +178,11 @@ async function guardarDato() {
     // ⚠️ Recargar datos actualizados sin duplicar
     await cargarDatosPersonales();
     cerrarFormulario();
-
   } catch (err) {
     console.error("❌ Error guardando datos:", err);
     Swal.fire("Error", "No se pudieron guardar los datos", "error");
   }
 }
-
-
 
 // 🟢 Eliminar dato personal
 async function eliminarDato(id) {
@@ -194,15 +192,18 @@ async function eliminarDato(id) {
     icon: "warning",
     showCancelButton: true,
     confirmButtonText: "Sí, eliminar",
-    cancelButtonText: "Cancelar"
+    cancelButtonText: "Cancelar",
   });
 
   if (!confirmacion.isConfirmed) return;
 
   try {
-    const response = await fetch(`http://localhost:3000/api/datos-personales/${id}`, {
-      method: "DELETE",
-    });
+    const response = await fetch(
+      `http://localhost:3000/api/datos-personales/${id}`,
+      {
+        method: "DELETE",
+      }
+    );
 
     if (!response.ok) throw new Error("Error al eliminar");
 
@@ -249,7 +250,9 @@ async function cargarUsuariosEnSelect() {
 // 🟢 Cerrar formulario
 function cerrarFormulario() {
   $("#formularioDatos").hide();
-  $("#datoID, #nombre, #apellidos, #usuarioId, #fechaNacimiento, #genero, #idioma, #zonaHoraria").val("");
+  $(
+    "#datoID, #nombre, #apellidos, #usuarioId, #fechaNacimiento, #genero, #idioma, #zonaHoraria"
+  ).val("");
   $("#notificaciones").prop("checked", false);
 }
 

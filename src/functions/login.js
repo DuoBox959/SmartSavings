@@ -73,7 +73,7 @@ loginForm.addEventListener("submit", async (event) => {
         role: data.user.rol,
       })
     );
-    
+
     await registrarActividadHistorial(data.user._id, "Inicio de sesión");
 
     Swal.fire({
@@ -94,4 +94,3 @@ loginForm.addEventListener("submit", async (event) => {
     });
   }
 });
-

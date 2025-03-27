@@ -14,7 +14,7 @@ $(document).ready(() => {
       { title: "Email" },
       { title: "Fecha Registro" },
       { title: "Rol" },
-      { title: "Estado" }, 
+      { title: "Estado" },
       { title: "Acciones" },
     ],
   });
@@ -30,7 +30,6 @@ $(document).ready(() => {
       this.value = this.value.trimStart();
     }
   });
-
 });
 
 // 🟢 Cargar usuarios desde servidor Express
@@ -39,7 +38,7 @@ async function cargarUsuarios() {
   try {
     const [usuariosRes, historialRes] = await Promise.all([
       fetch("http://localhost:3000/api/usuarios"),
-      fetch("http://localhost:3000/api/historial") // 👈 Esta tabla SÍ existe
+      fetch("http://localhost:3000/api/historial"), // 👈 Esta tabla SÍ existe
     ]);
 
     const usuarios = await usuariosRes.json();
@@ -50,7 +49,7 @@ async function cargarUsuarios() {
 
     // 🔄 Mapea el historial por usuario_id para búsqueda rápida
     const historialMap = new Map();
-    historial.forEach(registro => {
+    historial.forEach((registro) => {
       const userId = registro.usuario_id?.toString();
       const fechaActual = new Date(registro.fecha);
       if (!historialMap.has(userId) || historialMap.get(userId) < fechaActual) {
@@ -80,7 +79,6 @@ async function cargarUsuarios() {
   }
 }
 
-
 function generarEstadoHTML(fechaUltimaConexion) {
   if (!fechaUltimaConexion) {
     return `🔴 Inactivo (sin actividad)`;
@@ -93,7 +91,9 @@ function generarEstadoHTML(fechaUltimaConexion) {
   if (diferenciaDias <= 7) {
     return `<span style="color:green; font-weight:bold;">🟢 Activo</span>`;
   } else {
-    return `<span style="color:red;">🔴 Inactivo desde ${fecha.toLocaleDateString("es-ES")}</span>`;
+    return `<span style="color:red;">🔴 Inactivo desde ${fecha.toLocaleDateString(
+      "es-ES"
+    )}</span>`;
   }
 }
 
@@ -316,12 +316,11 @@ function mostrarMensajeInicioSesion(usuarioNombre) {
       url("https://media.giphy.com/media/xT9IgG50Fb7Mi0prBC/giphy.gif")
       center center
       no-repeat
-    `
+    `,
   }).then(() => {
     window.location.href = "/src/intranet/html/intranet.html"; // Redirigir tras aceptar
   });
 }
-
 
 async function iniciarSesion() {
   const email = document.getElementById("emailUsuario").value;
@@ -343,7 +342,6 @@ async function iniciarSesion() {
 
     // ✅ Si el login es exitoso, mostramos SweetAlert2
     mostrarMensajeInicioSesion(data.nombre);
-
   } catch (error) {
     console.error("❌ Error al iniciar sesión:", error);
     Swal.fire({
@@ -354,7 +352,6 @@ async function iniciarSesion() {
     });
   }
 }
-
 
 // 🟢 Formatear fecha
 function formatearFecha(fechaISO) {
@@ -373,7 +370,6 @@ function cerrarFormulario() {
   $("#usuarioID, #nombreUsuario, #emailUsuario, #passwordUsuario").val("");
 }
 
-
 // 🟢 Exponer funciones globales
 window.editarUsuario = editarUsuario;
 window.eliminarUsuario = eliminarUsuario;
@@ -381,4 +377,4 @@ window.mostrarFormularioAgregar = mostrarFormularioAgregar;
 window.guardarCambiosDesdeFormulario = guardarCambiosDesdeFormulario;
 window.cerrarFormulario = cerrarFormulario;
 window.cargarUsuarios = cargarUsuarios;
-window,mostrarMensajeInicioSesion = mostrarMensajeInicioSesion;
+window, (mostrarMensajeInicioSesion = mostrarMensajeInicioSesion);

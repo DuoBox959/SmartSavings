@@ -1,82 +1,81 @@
 /* 🌍 Sidebar */
 .sidebar {
-    width: 250px;
-    background: #2c3e50;
-    color: white;
-    height: 100vh;
-    padding: 20px;
-    position: fixed;
-    left: 0;
-    top: 0;
-    transition: transform 0.3s ease-in-out;
-  }
-  
-  .sidebar h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 22px;
-  }
-  
-  .sidebar ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .sidebar ul li {
-    padding: 12px 15px;
-    border-radius: 5px;
-    transition: background 0.3s;
-  }
-  
-  .sidebar ul li a {
-    color: white;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    font-size: 16px;
-  }
-  
-  .sidebar ul li i {
-    margin-right: 10px;
-    font-size: 18px;
-  }
-  
-  .sidebar ul li:hover {
-    background: #34495e;
-  }
-  
-  /* 🔘 Botón para ocultar/mostrar sidebar */
-  .toggle-sidebar {
-    position: fixed;
-    top: 15px;
-    left: 260px;
-    background: #2c3e50;
-    border: 3px solid #a8d5ba;
-    box-shadow: 0 0 10px #a8d5ba, 0 0 20px #a8d5ba, 0 0 40px #a8d5ba;
-    transition: all 0.3s ease-in-out;
-    font-size: 20px;
-    padding: 10px;
-    cursor: pointer;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    transition: left 0.3s ease-in-out;
-    border-radius: 5px;
-  }
-  
-  .toggle-sidebar:hover {
-    box-shadow: 0 0 10px #a8d5ba, 0 0 30px #a8d5ba, 0 0 30px #a8d5ba;
-  }
-  /* 🟢 Modo oculto del sidebar */
-  .sidebar.hidden {
-    transform: translateX(-100%);
-  }
-  
-  .toggle-sidebar.hidden {
-    left: 10px;
-  }
-  
-  .main-content.full-width {
-    margin-left: 0;
-    width: 100%;
-  }
-  
+  width: 250px;
+  background: #2c3e50;
+  color: white;
+  height: 100vh;
+  padding: 20px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  transition: transform 0.3s ease-in-out;
+}
+
+.sidebar h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 22px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar ul li {
+  padding: 12px 15px;
+  border-radius: 5px;
+  transition: background 0.3s;
+}
+
+.sidebar ul li a {
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+}
+
+.sidebar ul li i {
+  margin-right: 10px;
+  font-size: 18px;
+}
+
+.sidebar ul li:hover {
+  background: #34495e;
+}
+
+/* 🔘 Botón para ocultar/mostrar sidebar */
+.toggle-sidebar {
+  position: fixed;
+  top: 15px;
+  left: 260px;
+  background: #2c3e50;
+  border: 3px solid #a8d5ba;
+  box-shadow: 0 0 10px #a8d5ba, 0 0 20px #a8d5ba, 0 0 40px #a8d5ba;
+  transition: all 0.3s ease-in-out;
+  font-size: 20px;
+  padding: 10px;
+  cursor: pointer;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  transition: left 0.3s ease-in-out;
+  border-radius: 5px;
+}
+
+.toggle-sidebar:hover {
+  box-shadow: 0 0 10px #a8d5ba, 0 0 30px #a8d5ba, 0 0 30px #a8d5ba;
+}
+/* 🟢 Modo oculto del sidebar */
+.sidebar.hidden {
+  transform: translateX(-100%);
+}
+
+.toggle-sidebar.hidden {
+  left: 10px;
+}
+
+.main-content.full-width {
+  margin-left: 0;
+  width: 100%;
+}

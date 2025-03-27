@@ -67,7 +67,9 @@ async function cargarTiendas(selectElement = null) {
   const tienda2Select = document.getElementById("tienda2");
 
   // Si se pasa un parámetro (el select dinámico de tienda), lo usamos
-  const selects = selectElement ? [selectElement] : [tienda1Select, tienda2Select];
+  const selects = selectElement
+    ? [selectElement]
+    : [tienda1Select, tienda2Select];
 
   try {
     const result = await db.allDocs({ include_docs: true });
@@ -86,7 +88,6 @@ async function cargarTiendas(selectElement = null) {
     console.error("Error al cargar tiendas:", err);
   }
 }
-
 
 // ➕ Añadir un selector de tienda extra
 let contadorTiendas = 3; // Inicia en "Tienda 3"
@@ -138,7 +139,6 @@ function anadirSelectorTienda() {
     document.getElementById("addStoreButton").style.display = "none";
   }
 }
-
 
 // 📊 Comparar precios entre tiendas seleccionadas
 async function compararPrecios() {

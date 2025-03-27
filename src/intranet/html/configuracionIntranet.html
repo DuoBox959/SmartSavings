@@ -8,7 +8,8 @@
 
     <!-- 🅱️ Vinculación de CSS -->
     <link rel="stylesheet" href="../css/confIntranet.css" />
-    <link rel="stylesheet" href="../css/global/sidebar.css" /> <!-- Sidebar CSS -->
+    <link rel="stylesheet" href="../css/global/sidebar.css" />
+    <!-- Sidebar CSS -->
 
     <!-- 🅲 Librerías Externas -->
     <link
@@ -17,10 +18,11 @@
     />
 
     <!-- 🅳 Vinculación de JavaScript -->
-    <script src="../js/global/auth.js"></script> <!--Comprobacion de autenticacion-->
-    <script type="module" src="../js/global/sidebar.js" defer></script> <!-- Sidebar JS -->
+    <script src="../js/global/auth.js"></script>
+    <!--Comprobacion de autenticacion-->
+    <script type="module" src="../js/global/sidebar.js" defer></script>
+    <!-- Sidebar JS -->
     <script src="../js/configuracionIntranet.js" defer></script>
-
   </head>
 
   <body>
@@ -32,22 +34,27 @@
       <h1>Configuración</h1>
 
       <!-- 🅶 Configuración de Usuario -->
-     <!-- 🅶 Configuración de Usuario -->
-<div class="config-section">
-  <h2>Perfil de Usuario</h2>
+      <!-- 🅶 Configuración de Usuario -->
+      <div class="config-section">
+        <h2>Perfil de Usuario</h2>
 
-  <label for="username">Nombre:</label>
-  <input type="text" id="username" disabled /> <!-- 🔒 Solo lectura -->
+        <label for="username">Nombre:</label>
+        <input type="text" id="username" disabled />
+        <!-- 🔒 Solo lectura -->
 
-  <label for="email">Correo Electrónico:</label>
-  <input type="email" id="email" disabled /> <!-- 🔒 Solo lectura -->
+        <label for="email">Correo Electrónico:</label>
+        <input type="email" id="email" disabled />
+        <!-- 🔒 Solo lectura -->
 
-  <label for="password">Nueva Contraseña:</label>
-  <input type="password" id="password" placeholder="Ingresa nueva contraseña" />
+        <label for="password">Nueva Contraseña:</label>
+        <input
+          type="password"
+          id="password"
+          placeholder="Ingresa nueva contraseña"
+        />
 
-  <button id="btnGuardarPerfil">Guardar Cambios</button>
-</div>
-
+        <button id="btnGuardarPerfil">Guardar Cambios</button>
+      </div>
 
       <!-- 🅷 Seguridad Agrega una capa extra de seguridad a tu cuenta. Normalmente funciona así:
 
@@ -66,9 +73,6 @@
         </label>
         <button>Actualizar Seguridad</button>
       </div>
-
     </main>
-
-
   </body>
 </html>

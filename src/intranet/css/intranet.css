@@ -76,10 +76,10 @@ body {
 /* 📊 Dashboard */
 .dashboard {
   display: flex;
-  flex-wrap: wrap; /* 🔹 Permite que las métricas bajen de línea */
+  flex-wrap: wrap;
   gap: 20px;
   margin-top: 20px;
-  align-items: flex-start; /* 🔹 Alinea los elementos arriba */
+  align-items: flex-start;
 }
 
 /* 📌 Estilos para las tarjetas del Dashboard */
@@ -91,7 +91,7 @@ body {
   flex: 1;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
-  overflow: hidden; /* Evita que se salga contenido cuando está colapsado */
+  overflow: hidden;
   transition: max-height 0.3s ease-in-out;
 }
 
@@ -137,13 +137,13 @@ body {
   transition: max-height 0.3s ease-in-out;
 }
 .collapsible {
-  max-height: 150px; /* Altura máxima antes de ocultar contenido */
+  max-height: 150px;
   overflow: hidden;
   transition: max-height 0.3s ease-in-out;
 }
 /* 🔽 Botón de "Ver más" */
 .ver-mas {
-  background-color: #007BFF;
+  background-color: #007bff;
   color: white;
   border: none;
   padding: 5px 10px;

@@ -206,7 +206,6 @@ async function guardarEdicionProducto() {
   formData.append("proveedor_id", $("#idProveedor").val()?.trim() || "");
   formData.append("supermercado_id", $("#idSupermercado").val()?.trim() || "");
   formData.append("usuario_id", $("#idUsuario").val()?.trim() || "");
-  
 
   try {
     const response = await fetch(`http://localhost:3000/api/productos/${id}`, {

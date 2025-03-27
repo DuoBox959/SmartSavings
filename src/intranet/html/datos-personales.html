@@ -10,7 +10,10 @@
     <link rel="stylesheet" href="../css/global/sidebar.css" />
 
     <!-- ✅ Librerías -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -24,7 +27,9 @@
   <body>
     <div id="sidebar-container"></div>
     <h1>Gestión de Datos Personales</h1>
-    <button onclick="mostrarFormularioAgregar()">Añadir Datos Personales</button>
+    <button onclick="mostrarFormularioAgregar()">
+      Añadir Datos Personales
+    </button>
 
     <table id="datosPersonalesTable" class="display">
       <thead>
@@ -38,54 +43,53 @@
           <th>Idioma</th>
           <th>Zona Horaria</th>
           <th>Notif. Email</th>
-          <th>Acciones</th> 
+          <th>Acciones</th>
         </tr>
       </thead>
       <tbody></tbody>
     </table>
     <!-- 🔽 Formulario oculto para crear/editar -->
-<div id="formularioDatos" style="display:none">
-  <h2 id="formTitulo">Añadir Datos Personales</h2>
-  <form onsubmit="return false;">
-    <input type="hidden" id="datoID" />
+    <div id="formularioDatos" style="display: none">
+      <h2 id="formTitulo">Añadir Datos Personales</h2>
+      <form onsubmit="return false;">
+        <input type="hidden" id="datoID" />
 
-    <label>Nombre:</label>
-    <input type="text" id="nombre" required />
+        <label>Nombre:</label>
+        <input type="text" id="nombre" required />
 
-    <label>Apellidos:</label>
-    <input type="text" id="apellidos" />
+        <label>Apellidos:</label>
+        <input type="text" id="apellidos" />
 
-    <label>Usuario:</label>
-    <select id="usuarioId" required></select>
+        <label>Usuario:</label>
+        <select id="usuarioId" required></select>
 
+        <label>Fecha de Nacimiento:</label>
+        <input type="date" id="fechaNacimiento" />
 
-    <label>Fecha de Nacimiento:</label>
-    <input type="date" id="fechaNacimiento" />
+        <label>Género:</label>
+        <select id="genero">
+          <option value="">Seleccionar</option>
+          <option value="Masculino">Masculino</option>
+          <option value="Femenino">Femenino</option>
+          <option value="Otro">Otro</option>
+        </select>
 
-    <label>Género:</label>
-    <select id="genero">
-      <option value="">Seleccionar</option>
-      <option value="Masculino">Masculino</option>
-      <option value="Femenino">Femenino</option>
-      <option value="Otro">Otro</option>
-    </select>
+        <label>Idioma:</label>
+        <input type="text" id="idioma" placeholder="Ej. Español" />
 
-    <label>Idioma:</label>
-    <input type="text" id="idioma" placeholder="Ej. Español" />
+        <label>Zona Horaria:</label>
+        <input type="text" id="zonaHoraria" placeholder="Ej. UTC-5" />
 
-    <label>Zona Horaria:</label>
-    <input type="text" id="zonaHoraria" placeholder="Ej. UTC-5" />
+        <label>
+          <input type="checkbox" id="notificaciones" /> Recibir notificaciones
+          por correo
+        </label>
 
-    <label>
-      <input type="checkbox" id="notificaciones" /> Recibir notificaciones por correo
-    </label>
-
-    <div id="botonesFormulario">
-      <button type="button">Guardar</button>
-      <button type="button" onclick="cerrarFormulario()">Cancelar</button>
+        <div id="botonesFormulario">
+          <button type="button">Guardar</button>
+          <button type="button" onclick="cerrarFormulario()">Cancelar</button>
+        </div>
+      </form>
     </div>
-  </form>
-</div>
-
   </body>
 </html>

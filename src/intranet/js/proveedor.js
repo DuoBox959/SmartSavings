@@ -18,18 +18,23 @@ $(document).ready(() => {
 
   cargarProveedores();
 
-    // 🧼 Limpiar espacios innecesarios en los inputs de proveedor
-    $("#nombreProveedor, #paisProveedor, #comunidadAutonoma").on("blur", function () {
+  // 🧼 Limpiar espacios innecesarios en los inputs de proveedor
+  $("#nombreProveedor, #paisProveedor, #comunidadAutonoma").on(
+    "blur",
+    function () {
       $(this).val($(this).val().trim());
-    });
-  
-    // 🚫 BONUS: prevenir espacios al inicio mientras escribe
-    $("#nombreProveedor, #paisProveedor, #comunidadAutonoma").on("input", function () {
+    }
+  );
+
+  // 🚫 BONUS: prevenir espacios al inicio mientras escribe
+  $("#nombreProveedor, #paisProveedor, #comunidadAutonoma").on(
+    "input",
+    function () {
       if (this.value.startsWith(" ")) {
         this.value = this.value.trimStart();
       }
-    });
-  
+    }
+  );
 });
 
 // 🟢 Cargar proveedores desde el servidor
@@ -141,10 +146,10 @@ function editarProveedor(id) {
     .off("click")
     .on("click", guardarProveedor); // Se usa la misma función de guardar
 
-    $("#formularioProveedor").show();
-    document
-      .getElementById("formularioProveedor")
-      .scrollIntoView({ behavior: "smooth" });
+  $("#formularioProveedor").show();
+  document
+    .getElementById("formularioProveedor")
+    .scrollIntoView({ behavior: "smooth" });
 }
 // 🟢 Eliminar proveedor
 async function eliminarProveedor(id) {

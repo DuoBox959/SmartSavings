@@ -1,4 +1,4 @@
-// 📋 Validaciones para los campos del formulario 
+// 📋 Validaciones para los campos del formulario
 async function asignarIDDisponible() {
   try {
     // 🔍 Obtener todos los documentos desde la base de datos
@@ -56,7 +56,6 @@ function limpiarEspacios(texto) {
   return texto.replace(/\s+/g, " ").trim();
 }
 
-
 // 🔤 Convertir a minúsculas
 function aMinusculas(texto) {
   return texto.toLowerCase();
@@ -64,7 +63,7 @@ function aMinusculas(texto) {
 
 // ❌ Validar campos vacíos
 function camposVacios(...campos) {
-  return campos.some(campo => !campo || campo.trim() === "");
+  return campos.some((campo) => !campo || campo.trim() === "");
 }
 
 // ⚠️ SweetAlert para errores
@@ -83,5 +82,5 @@ export {
   esEmailValido,
   esPasswordSegura,
   camposVacios,
-  mostrarAlertaError
+  mostrarAlertaError,
 };

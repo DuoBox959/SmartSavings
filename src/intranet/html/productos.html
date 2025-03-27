@@ -7,17 +7,25 @@
     <title>Gestión de Productos</title>
 
     <!-- 🅱️ Vinculación de Archivos CSS -->
-    <link rel="stylesheet" href="../css/global/sidebar.css" /> <!-- Sidebar CSS -->
+    <link rel="stylesheet" href="../css/global/sidebar.css" />
+    <!-- Sidebar CSS -->
     <link rel="stylesheet" href="../css/producto.css" />
 
     <!-- 🅲 Librerías y Scripts Necesarios -->
-    <script type="module" src="../js/global/sidebar.js" defer></script> <!-- Sidebar JS -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery -->
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script> <!-- DataTables -->
-    <script src="../../valid/validaciones.js"></script> <!-- Validaciones -->
-    <script type="module" src="../js/productos.js"></script> <!-- Lógica de productos -->
-    <script src="../js/global/auth.js"></script> <!--Comprobacion de autenticacion-->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert2 -->
+    <script type="module" src="../js/global/sidebar.js" defer></script>
+    <!-- Sidebar JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <!-- DataTables -->
+    <script src="../../valid/validaciones.js"></script>
+    <!-- Validaciones -->
+    <script type="module" src="../js/productos.js"></script>
+    <!-- Lógica de productos -->
+    <script src="../js/global/auth.js"></script>
+    <!--Comprobacion de autenticacion-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- SweetAlert2 -->
 
     <!-- 🅳 Librerías de Iconos -->
     <link
@@ -66,7 +74,13 @@
       <label for="imgProducto">Imagen del Producto:</label>
       <input type="file" id="imgProducto" accept="image/*" />
       <!-- ✅ Vista previa de la imagen -->
-      <img id="vistaPreviaImagen" src="" alt="Vista previa" width="100" style="display: none; margin-top: 10px;" />
+      <img
+        id="vistaPreviaImagen"
+        src=""
+        alt="Vista previa"
+        width="100"
+        style="display: none; margin-top: 10px"
+      />
 
       <!-- 🔹 Campo: Nombre del Producto -->
       <label for="nombreProducto">Nombre del Producto:</label>
@@ -100,14 +114,13 @@
       <label for="idUsuario">Usuario:</label>
       <select id="idUsuario"></select>
 
-
       <!-- 🔹 Campo: Estado del Producto -->
       <label for="Estado">Estado:</label>
       <select id="Estado">
         <option value="En Stock">En stock</option>
         <option value="Sin stock">Sin Stock</option>
       </select>
-      <br>
+      <br />
 
       <!-- 🅹 Botones del Formulario -->
       <div id="botonesFormulario">

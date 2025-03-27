@@ -11,13 +11,7 @@ export function gestionarUsuarioAutenticado() {
 
   console.log(user); // Verifica si el usuario está correctamente cargado
 
-  if (
-    registerLink &&
-    loginLink &&
-    userMenu &&
-    userName &&
-    logout
-  ) {
+  if (registerLink && loginLink && userMenu && userName && logout) {
     if (user) {
       // Ocultar enlaces de registro e inicio de sesión
       registerLink.style.display = "none";

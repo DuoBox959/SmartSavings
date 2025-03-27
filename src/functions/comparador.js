@@ -53,13 +53,14 @@ async function cargarProductos() {
       return;
     }
 
-    const nombresProductos = [...new Set(productos.map((p) => p.Nombre))].sort();
+    const nombresProductos = [
+      ...new Set(productos.map((p) => p.Nombre)),
+    ].sort();
     crearOpciones(productoSelect, nombresProductos);
   } catch (err) {
     console.error("❌ Error al cargar productos:", err);
   }
 }
-
 
 // 🏪 Cargar tiendas desde MongoDB según el producto seleccionado
 async function cargarTiendas(selectElement = null) {
@@ -68,7 +69,9 @@ async function cargarTiendas(selectElement = null) {
 
   const tienda1Select = document.getElementById("tienda1");
   const tienda2Select = document.getElementById("tienda2");
-  const selects = selectElement ? [selectElement] : [tienda1Select, tienda2Select];
+  const selects = selectElement
+    ? [selectElement]
+    : [tienda1Select, tienda2Select];
 
   try {
     const response = await fetch(`${API_URL}/comparador-precios`);
@@ -77,18 +80,20 @@ async function cargarTiendas(selectElement = null) {
     const nombresTiendas = [
       ...new Set(
         productos
-          .filter((p) => p.Nombre.trim().toLowerCase() === productoSeleccionado.trim().toLowerCase())
+          .filter(
+            (p) =>
+              p.Nombre.trim().toLowerCase() ===
+              productoSeleccionado.trim().toLowerCase()
+          )
           .map((p) => p.Supermercado)
-      )
+      ),
     ].sort();
-    
 
     selects.forEach((select) => crearOpciones(select, nombresTiendas));
   } catch (err) {
     console.error("❌ Error al cargar tiendas:", err);
   }
 }
-
 
 // ➕ Añadir un selector de tienda extra
 let contadorTiendas = 3;
@@ -137,16 +142,20 @@ async function compararPrecios() {
   const resultadoDiv = document.getElementById("resultadoComparacion");
 
   if (!productoSeleccionado) {
-    resultadoDiv.innerHTML = '<p style="color:red;">Por favor, selecciona un producto.</p>';
+    resultadoDiv.innerHTML =
+      '<p style="color:red;">Por favor, selecciona un producto.</p>';
     return;
   }
 
-  const tiendasSeleccionadas = Array.from(document.querySelectorAll('select[id^="tienda"]'))
+  const tiendasSeleccionadas = Array.from(
+    document.querySelectorAll('select[id^="tienda"]')
+  )
     .map((select) => select.value)
     .filter((value) => value);
 
   if (tiendasSeleccionadas.length < 2) {
-    resultadoDiv.innerHTML = '<p style="color:red;">Por favor, selecciona al menos dos tiendas para comparar.</p>';
+    resultadoDiv.innerHTML =
+      '<p style="color:red;">Por favor, selecciona al menos dos tiendas para comparar.</p>';
     return;
   }
 
@@ -155,19 +164,25 @@ async function compararPrecios() {
     const precios = await response.json();
 
     if (!precios.length) {
-      resultadoDiv.innerHTML = '<p style="color:red;">No hay precios en la base de datos.</p>';
+      resultadoDiv.innerHTML =
+        '<p style="color:red;">No hay precios en la base de datos.</p>';
       return;
     }
 
     const preciosFiltrados = precios
       .filter(
-        p =>
-          p.Nombre.trim().toLowerCase() === productoSeleccionado.trim().toLowerCase() &&
-          tiendasSeleccionadas.map(t => t.trim().toLowerCase()).includes(p.Supermercado.trim().toLowerCase()) &&
+        (p) =>
+          p.Nombre.trim().toLowerCase() ===
+            productoSeleccionado.trim().toLowerCase() &&
+          tiendasSeleccionadas
+            .map((t) => t.trim().toLowerCase())
+            .includes(p.Supermercado.trim().toLowerCase()) &&
           (p.precioDescuento || p.precioActual)
       )
-      .map(p => {
-        const precioFinal = parseFloat(p.precioDescuento || p.precioActual || 0);
+      .map((p) => {
+        const precioFinal = parseFloat(
+          p.precioDescuento || p.precioActual || 0
+        );
         return {
           tienda: p.Supermercado,
           precioFinal,
@@ -175,17 +190,22 @@ async function compararPrecios() {
           precioDescuento: parseFloat(p.precioDescuento || 0),
           unidadLote: p.unidadLote || "N/A",
           peso: parseFloat(p.Peso || 1),
-          unidadPeso: p.UnidadPeso || "KG"
+          unidadPeso: p.UnidadPeso || "KG",
         };
       });
 
     if (!preciosFiltrados.length) {
-      resultadoDiv.innerHTML = '<p style="color:red;">No hay coincidencias para comparar.</p>';
+      resultadoDiv.innerHTML =
+        '<p style="color:red;">No hay coincidencias para comparar.</p>';
       return;
     }
 
-    const precioMasBarato = Math.min(...preciosFiltrados.map((p) => p.precioFinal));
-    const tiendaMasBarata = preciosFiltrados.find((p) => p.precioFinal === precioMasBarato);
+    const precioMasBarato = Math.min(
+      ...preciosFiltrados.map((p) => p.precioFinal)
+    );
+    const tiendaMasBarata = preciosFiltrados.find(
+      (p) => p.precioFinal === precioMasBarato
+    );
 
     let tiendaMasEconomica = null;
     let precioPorUnidadMin = Infinity;
@@ -206,54 +226,82 @@ async function compararPrecios() {
         <tbody>
     `;
 
-    preciosFiltrados.forEach(({ tienda, precioFinal, precioActual, precioDescuento, unidadLote, peso, unidadPeso }) => {
-      let pesoEnKG;
-      const match = unidadLote.match(/([\d.,]+)\s*(KG|kg|L|l|UN|un|u)/);
-      if (match) {
-        pesoEnKG = parseFloat(match[1].replace(",", ".")) || peso;
-      } else {
-        pesoEnKG = peso;
-      }
+    preciosFiltrados.forEach(
+      ({
+        tienda,
+        precioFinal,
+        precioActual,
+        precioDescuento,
+        unidadLote,
+        peso,
+        unidadPeso,
+      }) => {
+        let pesoEnKG;
+        const match = unidadLote.match(/([\d.,]+)\s*(KG|kg|L|l|UN|un|u)/);
+        if (match) {
+          pesoEnKG = parseFloat(match[1].replace(",", ".")) || peso;
+        } else {
+          pesoEnKG = peso;
+        }
 
-      const precioPorUnidad = precioFinal / pesoEnKG;
+        const precioPorUnidad = precioFinal / pesoEnKG;
 
-      if (precioPorUnidad < precioPorUnidadMin) {
-        precioPorUnidadMin = precioPorUnidad;
-        tiendaMasEconomica = { tienda, precioPorUnidad };
-      }
+        if (precioPorUnidad < precioPorUnidadMin) {
+          precioPorUnidadMin = precioPorUnidad;
+          tiendaMasEconomica = { tienda, precioPorUnidad };
+        }
 
-      const precioVisual = precioDescuento > 0
-        ? `<span style="text-decoration: line-through; color: gray;">${precioActual.toFixed(2)} €</span> <strong style="color: #388e3c;">${precioDescuento.toFixed(2)} €</strong>`
-        : `<u>${precioActual.toFixed(2)} €</u>`;
+        const precioVisual =
+          precioDescuento > 0
+            ? `<span style="text-decoration: line-through; color: gray;">${precioActual.toFixed(
+                2
+              )} €</span> <strong style="color: #388e3c;">${precioDescuento.toFixed(
+                2
+              )} €</strong>`
+            : `<u>${precioActual.toFixed(2)} €</u>`;
 
-      resultadoHTML += `
+        resultadoHTML += `
         <tr>
           <td style="border: 1px solid #ccc; padding: 8px;"><strong>${tienda}</strong></td>
           <td style="border: 1px solid #ccc; padding: 8px;">${precioVisual}</td>
-          <td style="border: 1px solid #ccc; padding: 8px;"><u>${precioDescuento > 0 ? `${precioDescuento.toFixed(2)} €` : 'N/A'}</u></td>
+          <td style="border: 1px solid #ccc; padding: 8px;"><u>${
+            precioDescuento > 0 ? `${precioDescuento.toFixed(2)} €` : "N/A"
+          }</u></td>
           <td style="border: 1px solid #ccc; padding: 8px;"><u>${unidadLote}</u></td>
-          <td style="border: 1px solid #ccc; padding: 8px;">${peso.toFixed(2)} ${unidadPeso}</td>
-          <td style="border: 1px solid #ccc; padding: 8px;">${precioPorUnidad.toFixed(2)} €/kg</td>
+          <td style="border: 1px solid #ccc; padding: 8px;">${peso.toFixed(
+            2
+          )} ${unidadPeso}</td>
+          <td style="border: 1px solid #ccc; padding: 8px;">${precioPorUnidad.toFixed(
+            2
+          )} €/kg</td>
         </tr>
       `;
-    });
+      }
+    );
 
     resultadoHTML += `
         </tbody>
       </table>
       <p style="margin-top: 20px; font-size: 1.05em; color: #2c3e50;">
-        🎯 <strong>La opción más económica</strong> es <strong>${tiendaMasEconomica.tienda}</strong>, con un mejor rendimiento en relación €/kg (${tiendaMasEconomica.precioPorUnidad.toFixed(2)} €/kg).
+        🎯 <strong>La opción más económica</strong> es <strong>${
+          tiendaMasEconomica.tienda
+        }</strong>, con un mejor rendimiento en relación €/kg (${tiendaMasEconomica.precioPorUnidad.toFixed(
+      2
+    )} €/kg).
       </p>
       <p style="font-size: 1.05em; color: #2c3e50;">
-        💰 <strong>La tienda más barata</strong> es <strong>${tiendaMasBarata.tienda}</strong> con un precio total de <strong>${tiendaMasBarata.precioFinal.toFixed(2)} €</strong>.
+        💰 <strong>La tienda más barata</strong> es <strong>${
+          tiendaMasBarata.tienda
+        }</strong> con un precio total de <strong>${tiendaMasBarata.precioFinal.toFixed(
+      2
+    )} €</strong>.
       </p>
     `;
 
     resultadoDiv.innerHTML = resultadoHTML;
-
   } catch (err) {
     console.error("❌ Error al comparar precios:", err);
-    resultadoDiv.innerHTML = '<p style="color:red;">Ocurrió un error al comparar precios.</p>';
+    resultadoDiv.innerHTML =
+      '<p style="color:red;">Ocurrió un error al comparar precios.</p>';
   }
 }
-

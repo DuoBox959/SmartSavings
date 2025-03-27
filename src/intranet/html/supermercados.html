@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
+  <head>
     <!-- 🅰️ Configuración del Documento -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gestión de Supermercados</title>
 
     <!-- 🅱️ Vinculación de Archivos CSS -->
-    <link rel="stylesheet" href="../css/global/datTable.css">
-    <link rel="stylesheet" href="../css/global/sidebar.css" /> <!-- Sidebar CSS -->
+    <link rel="stylesheet" href="../css/global/datTable.css" />
+    <link rel="stylesheet" href="../css/global/sidebar.css" />
+    <!-- Sidebar CSS -->
 
     <!-- 🅲 Librerías Externas -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
     <!-- ✅ Librería SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- 🅳 jQuery y DataTables JS -->
@@ -19,12 +23,13 @@
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 
     <!-- 🅴 Scripts de lógica -->
-    <script src="../js/global/auth.js"></script> <!--Comprobacion de autenticacion-->
-    <script type="module" src="../js/global/sidebar.js" defer></script> <!-- Sidebar JS -->
+    <script src="../js/global/auth.js"></script>
+    <!--Comprobacion de autenticacion-->
+    <script type="module" src="../js/global/sidebar.js" defer></script>
+    <!-- Sidebar JS -->
     <script type="module" src="../js/supermercados.js"></script>
-
-</head>
-<body>
+  </head>
+  <body>
     <!-- 🅶 Cargar Sidebar de forma dinámica -->
     <div id="sidebar-container"></div>
 
@@ -68,7 +73,9 @@
         <input type="text" id="ciudadSupermercado" required />
 
         <!-- 🔹 Campo: Ubicación -->
-        <label for="ubicacionSupermercado">Ubicación (separada por comas):</label>
+        <label for="ubicacionSupermercado"
+          >Ubicación (separada por comas):</label
+        >
         <input type="text" id="ubicacionSupermercado" required />
 
         <!-- 🔘 Botones del formulario -->
@@ -78,6 +85,5 @@
         </div>
       </form>
     </div>
-
-</body>
+  </body>
 </html>

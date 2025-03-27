@@ -148,7 +148,7 @@ form select {
   box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.1),
     inset -4px -4px 8px rgba(255, 255, 255, 0.7);
   transition: box-shadow 0.3s ease, background 0.3s ease;
-  appearance: none; /* Oculta la flecha nativa del select */
+  appearance: none;
   cursor: pointer;
 }
 
@@ -186,7 +186,7 @@ form select option {
 /* 📌 Input de contraseña */
 .password-container input {
   width: 100%;
-  padding-right: 40px; /* Espacio para el icono */
+  padding-right: 40px;
 }
 
 /* 📌 Icono de "ojo" */
@@ -198,5 +198,3 @@ form select option {
   font-size: 20px;
   user-select: none;
 }
-
-

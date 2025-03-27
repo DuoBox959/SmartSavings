@@ -1,4 +1,4 @@
-import * as validaciones from '../../valid/validaciones.js';
+import * as validaciones from "../../valid/validaciones.js";
 
 // 🧩 Elementos del DOM
 const loginForm = document.querySelector("form");
@@ -28,20 +28,34 @@ togglePassword.addEventListener("click", () => {
 loginForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  const emailOrUsername = validaciones.limpiarEspacios(emailOrUsernameInput.value);
+  const emailOrUsername = validaciones.limpiarEspacios(
+    emailOrUsernameInput.value
+  );
   const password = validaciones.limpiarEspacios(passwordInput.value);
 
   // 🔒 Validaciones
   if (validaciones.camposVacios(emailOrUsername, password)) {
-    return validaciones.mostrarAlertaError("⚠️ Campos incompletos", "Por favor, completa todos los campos.");
+    return validaciones.mostrarAlertaError(
+      "⚠️ Campos incompletos",
+      "Por favor, completa todos los campos."
+    );
   }
 
-  if (emailOrUsername.includes("@") && !validaciones.esEmailValido(emailOrUsername)) {
-    return validaciones.mostrarAlertaError("📧 Email inválido", "El formato del correo electrónico no es válido.");
+  if (
+    emailOrUsername.includes("@") &&
+    !validaciones.esEmailValido(emailOrUsername)
+  ) {
+    return validaciones.mostrarAlertaError(
+      "📧 Email inválido",
+      "El formato del correo electrónico no es válido."
+    );
   }
 
   if (!validaciones.esPasswordSegura(password)) {
-    return validaciones.mostrarAlertaError("🔐 Contraseña insegura", "La contraseña debe tener al menos 6 caracteres.");
+    return validaciones.mostrarAlertaError(
+      "🔐 Contraseña insegura",
+      "La contraseña debe tener al menos 6 caracteres."
+    );
   }
 
   // 📡 Enviar al backend
@@ -54,17 +68,24 @@ loginForm.addEventListener("submit", async (event) => {
 
     const data = await response.json();
 
-    if (!response.ok) throw new Error(data.error || "Error en el inicio de sesión");
+    if (!response.ok)
+      throw new Error(data.error || "Error en el inicio de sesión");
 
     // 💾 Guardar sesión
-    sessionStorage.setItem("user", JSON.stringify({
-      _id: data.user._id,
-      name: data.user.nombre,
-      email: data.user.email,
-      rol: data.user.rol.toLowerCase(),
-    }));
+    sessionStorage.setItem(
+      "user",
+      JSON.stringify({
+        _id: data.user._id,
+        name: data.user.nombre,
+        email: data.user.email,
+        rol: data.user.rol.toLowerCase(),
+      })
+    );
 
-    console.log("✅ Usuario guardado en sessionStorage:", JSON.parse(sessionStorage.getItem("user")));
+    console.log(
+      "✅ Usuario guardado en sessionStorage:",
+      JSON.parse(sessionStorage.getItem("user"))
+    );
 
     // 🕓 Historial
     await registrarActividadHistorial(data.user._id, "Inicio de sesión");
@@ -76,12 +97,12 @@ loginForm.addEventListener("submit", async (event) => {
       text: "Inicio de sesión exitoso.",
       confirmButtonText: "Continuar",
     }).then(() => {
-      const ruta = data.user.rol.toLowerCase() === "admin"
-        ? "../html/intranet.html"
-        : "../../pages/index.html";
+      const ruta =
+        data.user.rol.toLowerCase() === "admin"
+          ? "../html/intranet.html"
+          : "../../pages/index.html";
       window.location.href = ruta;
     });
-
   } catch (error) {
     Swal.fire({
       icon: "error",

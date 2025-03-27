@@ -170,24 +170,23 @@ body {
   background-color: #237f27;
   color: white;
   border: none;
-  padding: 15px 30px; /* Aumenta el tamaño del botón */
-  font-size: 1.2em; /* Letra más grande */
+  padding: 15px 30px;
+  font-size: 1.2em;
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease;
   margin-top: 20px;
-  border-radius: 8px; /* Bordes más redondeados */
-  width: 200px; /* Ajusta el ancho para que se vea grande */
+  border-radius: 8px;
+  width: 200px;
   text-align: center;
   display: block;
-  margin: 20px auto; /* Centrar el botón */
+  margin: 20px auto;
 }
 
 /* Al pasar el cursor */
 .back-button:hover {
   background-color: #388e3c;
 }
-
 
 /* 🎨 Estilos del modal */
 .modal {
@@ -215,7 +214,7 @@ body {
   background-color: white;
   padding: 15px;
   width: 90%;
-  max-width: 600px; /* 🔥 Más ancho */
+  max-width: 600px;
   border-radius: 10px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   text-align: center;
@@ -251,7 +250,7 @@ body {
 /* 📝 Formulario dentro del modal */
 #form-editar-producto {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* Dos columnas */
+  grid-template-columns: 1fr 1fr;
   gap: 10px;
   align-items: center;
   text-align: left;
@@ -271,7 +270,7 @@ body {
 #form-editar-producto textarea {
   resize: none;
   height: 50px;
-  grid-column: span 2; /* Ocupa ambas columnas */
+  grid-column: span 2;
 }
 
 /* 📌 Botón de guardar cambios */
@@ -286,7 +285,7 @@ body {
   cursor: pointer;
   transition: background 0.3s ease;
   width: 100%;
-  grid-column: span 2; /* Ocupa todo el ancho */
+  grid-column: span 2;
 }
 
 #form-editar-producto button:hover {
@@ -294,7 +293,7 @@ body {
 }
 
 .nav-categorias {
-  background-color: #7ca08b  ;
+  background-color: #7ca08b;
   padding: 15px 0;
   display: flex;
   justify-content: center;
