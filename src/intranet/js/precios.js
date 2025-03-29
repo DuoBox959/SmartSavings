@@ -67,6 +67,7 @@ async function cargarProductos() {
 }
 
 // 🟢 Cargar precios desde servidor Express
+// 🟢 Cargar precios desde servidor Express
 async function cargarPrecios() {
   try {
     const respuesta = await fetch("http://localhost:3000/api/precios");
@@ -82,19 +83,44 @@ async function cargarPrecios() {
       const nombreProducto =
         productosCache[precio.producto_id] || "Producto Desconocido"; // 🛠️ Ahora sí debería aparecer bien
 
+      // Asegurarse de que los valores sean numéricos antes de formatearlos
+      const precioActual = typeof precio.precioActual === "number" ? precio.precioActual.toFixed(2) + " €" : "N/A";
+      const precioDescuento = typeof precio.precioDescuento === "number" ? precio.precioDescuento.toFixed(0) + " %" : "N/A";
+      const precioUnidadLote = typeof precio.precioUnidadLote === "number" ? precio.precioUnidadLote.toFixed(2) + " €" : "N/A";
+
+      // Manejo de precioHistorico: Asegurarse de que es un array de objetos con año y precio
+      const preciosHistoricos = Array.isArray(precio.precioHistorico) && precio.precioHistorico.length > 0
+        ? precio.precioHistorico
+            .map((historico) => {
+              try {
+                // Comprobar si 'historico' es una cadena válida antes de aplicar 'trim'
+                if (typeof historico === "string") {
+                  // Limpiar cualquier coma extra al final
+                  const cleanedHistorico = historico.trim().replace(/,\s*$/, "");
+
+                  // Convertir el string en objeto JSON
+                  const historicoObj = JSON.parse(cleanedHistorico);
+
+                  // Validar que el objeto tenga propiedades correctas
+                  if (historicoObj.precio && historicoObj.año) {
+                    return `${historicoObj.precio.toFixed(2)} € (${historicoObj.año})`;
+                  }
+                }
+              } catch (error) {
+                console.error("❌ Error en formato de precio histórico", error);
+              }
+              return "N/A"; // Si no es un precio válido, devolver "N/A"
+            })
+            .join(", ")
+        : "No disponible";
+
       preciosTable.row.add([
         precio._id || "N/A",
         nombreProducto, // 🔄 Mostrar nombre del producto correctamente
-        typeof precio.precioActual === "number"
-          ? precio.precioActual.toFixed(2) + " €"
-          : "N/A",
-        typeof precio.precioDescuento === "number"
-          ? precio.precioDescuento.toFixed(0) + " %"
-          : "N/A",
+        precioActual,
+        precioDescuento,
         precio.unidadLote || "N/A",
-        typeof precio.precioUnidadLote === "number"
-          ? precio.precioUnidadLote.toFixed(2) + " €"
-          : "N/A",
+        precioUnidadLote,
         `<button class="btn btn-primary" onclick="verPrecioHistorico('${precio._id}')">Ver Precio Histórico</button>`,
         accionesHTML(precio._id),
       ]);
@@ -107,13 +133,33 @@ async function cargarPrecios() {
   }
 }
 
+
+
+
 function verPrecioHistorico(id) {
   const precio = preciosCache.find((p) => p._id === id);
   if (!precio) return;
 
+  // Comprobamos si precioHistorico es un array y si tiene elementos
   const preciosHistoricos = Array.isArray(precio.precioHistorico)
     ? precio.precioHistorico
-        .map((p) => (typeof p === "number" ? p.toFixed(2) + " €" : "N/A"))
+        .map((historico) => {
+          try {
+            // Verificamos que el formato del histórico sea el esperado
+            const historicoObj = typeof historico === "string" ? JSON.parse(historico.trim()) : historico;
+
+            // Verificamos si las propiedades 'precio' y 'año' existen
+            if (historicoObj && historicoObj.precio !== undefined && historicoObj.año !== undefined) {
+              // Devolver precio formateado si es válido
+              return `${historicoObj.precio.toFixed(2)} € (${historicoObj.año})`;
+            } else {
+              return "N/A";
+            }
+          } catch (error) {
+            console.error("❌ Error en formato de precio histórico:", error);
+            return "N/A";
+          }
+        })
         .join(", ")
     : "No disponible";
 
@@ -125,6 +171,7 @@ function verPrecioHistorico(id) {
     width: "600px",
   });
 }
+
 
 // 🟢 Generar HTML para editar y eliminar
 function accionesHTML(id) {
@@ -159,17 +206,24 @@ async function guardarCambiosDesdeFormulario() {
   const precioDescuento = parseFloat($("#precioDescuento").val()) || null;
   const unidadLote = $("#unidadLote").val();
   const precioUnidadLote = parseFloat($("#precioUnidadLote").val()) || null;
-  const precioHistorico = $("#precioHistorico")
-    .val()
+
+  // Procesar precioHistorico
+  const precioHistoricoInput = $("#precioHistorico").val();
+  const precioHistorico = precioHistoricoInput
     .split(",")
-    .map((p) => parseFloat(p.trim()));
+    .map(item => item.trim()) // Limpiar espacios
+    .reduce((acc, curr, index, array) => {
+      if (index % 2 === 0) {
+        acc.push({ precio: parseFloat(curr), año: parseInt(array[index + 1]) });
+      }
+      return acc;
+    }, []);
 
   if (!producto_id || isNaN(precioActual)) {
     alert("⚠️ Producto ID y Precio Actual son obligatorios.");
     return;
   }
 
-  // 🔥 Eliminamos `id` para que MongoDB lo genere automáticamente
   const precio = {
     producto_id,
     precioActual,
