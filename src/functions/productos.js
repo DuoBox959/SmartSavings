@@ -53,115 +53,113 @@ async function cargarProductos() {
 
 async function editarProducto(id) {
   try {
-    // Obtener datos del producto
     const responseProducto = await fetch(`${API_URL}/${id}`);
     if (!responseProducto.ok) throw new Error("Producto no encontrado");
     const producto = await responseProducto.json();
 
-    // Obtener todos los precios y filtrar por producto_id
     const responsePrecios = await fetch(`http://localhost:3000/api/precios`);
     const precios = await responsePrecios.json();
     const precioData = precios.find((p) => p.producto_id === id) || {};
 
-    // Obtener todos los supermercados y filtrar por _id
-    const responseSupermercados = await fetch(
-      `http://localhost:3000/api/supermercados`
-    );
+    const responseSupermercados = await fetch(`http://localhost:3000/api/supermercados`);
     const supermercados = await responseSupermercados.json();
-    const supermercado =
-      supermercados.find((s) => s._id === producto.Supermercado_id) || {};
+    const supermercado = supermercados.find((s) => s._id === producto.Supermercado_id) || {};
 
-    // Obtener todos los proveedores y filtrar por _id
     let proveedor = {};
     try {
-      const responseProveedores = await fetch(
-        `http://localhost:3000/api/proveedor`
-      );
+      const responseProveedores = await fetch(`http://localhost:3000/api/proveedor`);
       if (responseProveedores.ok) {
         const proveedores = await responseProveedores.json();
-        proveedor =
-          proveedores.find((p) => p._id === producto.Proveedor_id) || {};
+        proveedor = proveedores.find((p) => p._id === producto.Proveedor_id) || {};
       }
     } catch (err) {
       console.error("No se pudo cargar los proveedores", err);
     }
 
-    // Asignar los valores al formulario de edición
+    // Rellenar formulario
     document.getElementById("edit-producto-id").value = producto._id;
     document.getElementById("edit-nombre").value = producto.Nombre;
-    document.getElementById("edit-marca").value = producto.Marca;
-    document.getElementById("edit-precio").value =
-      precioData.precioActual || "";
-    document.getElementById("edit-precioDescuento").value =
-      precioData.precioDescuento || "";
+    document.getElementById("edit-tipo").value = producto.Tipo || "";
+    document.getElementById("edit-subtipo").value = producto.Subtipo || "";
+    document.getElementById("edit-precio").value = precioData.precioActual || "";
+    document.getElementById("edit-precioDescuento").value = precioData.precioDescuento || "";
     document.getElementById("edit-peso").value = producto.Peso;
-    document.getElementById("edit-unidadPeso").value =
-      producto.UnidadPeso.toLowerCase();
+    document.getElementById("edit-unidadPeso").value = producto.UnidadPeso.toLowerCase();
+    document.getElementById("edit-imagen").value = producto.Imagen || "";
 
-    // Asignar nombres de proveedor y supermercado en lugar de sus IDs
-    document.getElementById("edit-proveedor").value =
-      proveedor.Nombre || "Proveedor desconocido"; // Aquí asignamos el nombre
-    document.getElementById("edit-supermercado").value =
-      supermercado.Nombre || "Supermercado desconocido"; // Aquí asignamos el nombre
+    document.getElementById("edit-supermercado").value = supermercado.Nombre || "";
+    document.getElementById("edit-ubicacion-super").value = supermercado.Ubicacion || "";
+    document.getElementById("edit-pais-super").value = supermercado.Pais || "";
+    document.getElementById("edit-proveedor").value = proveedor.Nombre || "";
+    document.getElementById("edit-pais-proveedor").value = proveedor.Pais || "";
 
-    document.getElementById("edit-ciudad").value = supermercado.Ciudad || "";
+    document.getElementById("edit-unidadLote").value = precioData.unidadLote || "";
+    document.getElementById("edit-precioPorUnidad").value = precioData.precioPorUnidad || "";
 
-    // Normalizar el valor de "Estado" al cargar (convertirlo a "En stock" o "Sin stock")
-    const estadoNormalizado =
-      producto.Estado.trim().toLowerCase() === "sin stock"
-        ? "Sin stock"
-        : "En stock";
+    const estadoNormalizado = producto.Estado.trim().toLowerCase() === "sin stock" ? "Sin stock" : "En stock";
     document.getElementById("edit-estado").value = estadoNormalizado;
+
+    // Campos ocultos
+    document.getElementById("edit-fecha-subida").value = producto.fechaSubida || "";
+    document.getElementById("edit-fecha-actualizacion").value = new Date().toISOString();
+    document.getElementById("edit-usuario").value = producto.usuario || "";
+
+    // Historial de precios
+    document.getElementById("edit-precioHistorico").value = (producto.Historico || [])
+      .map(entry => `${entry.fecha} - ${entry.precio}€`)
+      .join("\n");
 
     document.getElementById("modal-editar").style.display = "flex";
   } catch (err) {
     console.error("Error al cargar el producto para edición:", err);
-    Swal.fire(
-      "Error",
-      "Hubo un problema al cargar el producto para edición.",
-      "error"
-    );
+    Swal.fire("Error", "Hubo un problema al cargar el producto para edición.", "error");
   }
 }
+
 
 async function guardarCambiosDesdeFormulario() {
   try {
     const id = document.getElementById("edit-producto-id").value;
-
-    // Crear FormData para enviar datos en formato adecuado al backend
     const formData = new FormData();
+
     formData.append("nombre", document.getElementById("edit-nombre").value);
-    formData.append("marca", document.getElementById("edit-marca").value);
+    formData.append("tipo", document.getElementById("edit-tipo").value);
+    formData.append("subtipo", document.getElementById("edit-subtipo").value);
+    formData.append("precioActual", document.getElementById("edit-precio").value);
+    formData.append("precioDescuento", document.getElementById("edit-precioDescuento").value);
     formData.append("peso", document.getElementById("edit-peso").value);
-    formData.append(
-      "unidadPeso",
-      document.getElementById("edit-unidadPeso").value
-    );
+    formData.append("unidadPeso", document.getElementById("edit-unidadPeso").value);
+    formData.append("imagen", document.getElementById("edit-imagen").value);
     formData.append("estado", document.getElementById("edit-estado").value);
+    formData.append("ubicacionSuper", document.getElementById("edit-ubicacion-super").value);
+    formData.append("paisSuper", document.getElementById("edit-pais-super").value);
+    formData.append("proveedor", document.getElementById("edit-proveedor").value);
+    formData.append("paisProveedor", document.getElementById("edit-pais-proveedor").value);
+    formData.append("unidadLote", document.getElementById("edit-unidadLote").value);
+    formData.append("precioPorUnidad", document.getElementById("edit-precioPorUnidad").value);
+    formData.append("precioHistorico", document.getElementById("edit-precioHistorico").value);
 
-    // Solo incluir IDs válidos si existen
-    const proveedor = document.getElementById("edit-proveedor").value;
-    if (proveedor) formData.append("proveedor_id", proveedor);
+    // Campos ocultos
+    formData.append("fechaSubida", document.getElementById("edit-fecha-subida").value);
+    formData.append("fechaActualizacion", document.getElementById("edit-fecha-actualizacion").value);
+    formData.append("usuario", document.getElementById("edit-usuario").value);
 
-    const supermercado = document.getElementById("edit-supermercado").value;
-    if (supermercado) formData.append("supermercado_id", supermercado);
-
-    // Enviar datos al servidor
     const response = await fetch(`${API_URL}/${id}`, {
       method: "PUT",
-      body: formData, // ✅ Enviamos FormData en lugar de JSON
+      body: formData,
     });
 
     if (!response.ok) throw new Error("Error en la actualización");
 
     Swal.fire("Éxito", "Producto actualizado correctamente", "success");
     cerrarFormulario();
-    cargarProductos(); // Recargar la lista de productos
+    cargarProductos();
   } catch (err) {
     console.error("Error al guardar cambios:", err);
     Swal.fire("Error", "Hubo un problema al actualizar el producto.", "error");
   }
 }
+
 
 function cerrarFormulario() {
   document.getElementById("modal-editar").style.display = "none";

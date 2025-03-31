@@ -25,7 +25,7 @@ body {
   flex: 1;
 }
 
-/* 🎴 Tarjeta de producto - Estilo mejorado */
+/* 🎴 Tarjeta de producto */
 .product-card {
   background: #ffffff;
   color: #333;
@@ -183,7 +183,6 @@ body {
   margin: 20px auto;
 }
 
-/* Al pasar el cursor */
 .back-button:hover {
   background-color: #388e3c;
 }
@@ -202,26 +201,20 @@ body {
   justify-content: center;
 }
 
-.close {
-  float: right;
-  font-size: 28px;
-  cursor: pointer;
-}
-
-/* 📦 Contenedor del formulario (ajustado al tamaño de la imagen) */
-
 .modal-content {
   background-color: white;
   padding: 15px;
   width: 90%;
-  max-width: 600px;
+  max-width: 650px;
   border-radius: 10px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-  text-align: center;
   position: relative;
   animation: fadeIn 0.3s ease-in-out;
+  text-align: center;
+  max-height: 90vh;            /* El modal no ocupará más del 90% de la pantalla */
+  overflow-y: auto;            /* Activa scroll vertical si se necesita */
 }
-/* 🎬 Animación de entrada */
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -247,51 +240,101 @@ body {
   color: #d32f2f;
 }
 
-/* 📝 Formulario dentro del modal */
+/* 📝 FORMULARIO DE EDICIÓN */
 #form-editar-producto {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  align-items: center;
+  background: white;
+  color: #333;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
   text-align: left;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
 }
 
-/* 🔘 Campos de entrada */
-/* 🔘 Campos de entrada más pequeños */
+/* 🧾 Título (en el h2 del modal) */
+#modal-editar h2 {
+  font-size: 1.8em;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #1976d2;
+  grid-column: span 2;
+}
+
+/* 🔘 Campos */
 #form-editar-producto input,
 #form-editar-producto select,
 #form-editar-producto textarea {
   width: 100%;
-  padding: 6px;
-  font-size: 13px;
+  padding: 7px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  color: #333;
+  transition: all 0.3s ease;
 }
 
-/* ✏️ Tamaño de los textarea */
 #form-editar-producto textarea {
-  resize: none;
-  height: 50px;
+  resize: vertical;
+  height: 80px;
   grid-column: span 2;
 }
 
-/* 📌 Botón de guardar cambios */
+#form-editar-producto input:focus,
+#form-editar-producto select:focus,
+#form-editar-producto textarea:focus {
+  outline: none;
+  border-color: #365a7e;
+  box-shadow: 0 0 5px rgba(54, 90, 126, 0.5);
+  background-color: #fff;
+}
+
+#form-editar-producto textarea::placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+/* 📌 Botón guardar */
 #form-editar-producto button {
-  background-color: #388e3c;
+  background-color: #4caf50;
   color: white;
   border: none;
   padding: 10px;
-  font-size: 14px;
+  font-size: 1em;
   font-weight: bold;
-  border-radius: 6px;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.3s ease;
   width: 100%;
   grid-column: span 2;
 }
 
 #form-editar-producto button:hover {
-  background-color: #2e7d32;
+  background-color: #388e3c;
+  transform: scale(1.05);
 }
 
+/* 📂 Campos opcionales */
+#form-editar-producto details {
+  grid-column: span 2;
+  margin-top: 10px;
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+}
+
+#form-editar-producto summary {
+  cursor: pointer;
+  font-weight: bold;
+  color: #1976d2;
+  margin-bottom: 10px;
+}
+
+/* 🧭 Categorías navegación */
 .nav-categorias {
   background-color: #7ca08b;
   padding: 15px 0;
