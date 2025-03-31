@@ -255,6 +255,10 @@ body {
   grid-template-columns: 1fr 1fr;
   gap: 15px;
 }
+label.required::after {
+  content: " *";
+  color: red;
+}
 
 /* 🧾 Título (en el h2 del modal) */
 #modal-editar h2 {

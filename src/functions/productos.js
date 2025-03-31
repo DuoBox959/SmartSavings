@@ -115,51 +115,88 @@ async function editarProducto(id) {
     Swal.fire("Error", "Hubo un problema al cargar el producto para edición.", "error");
   }
 }
-
-
 async function guardarCambiosDesdeFormulario() {
   try {
     const id = document.getElementById("edit-producto-id").value;
+
+    // Crear FormData para enviar datos en formato adecuado al backend
     const formData = new FormData();
-
     formData.append("nombre", document.getElementById("edit-nombre").value);
-    formData.append("tipo", document.getElementById("edit-tipo").value);
-    formData.append("subtipo", document.getElementById("edit-subtipo").value);
-    formData.append("precioActual", document.getElementById("edit-precio").value);
-    formData.append("precioDescuento", document.getElementById("edit-precioDescuento").value);
+    formData.append("marca", document.getElementById("edit-marca").value);
     formData.append("peso", document.getElementById("edit-peso").value);
-    formData.append("unidadPeso", document.getElementById("edit-unidadPeso").value);
-    formData.append("imagen", document.getElementById("edit-imagen").value);
+    formData.append(
+      "unidadPeso",
+      document.getElementById("edit-unidadPeso").value
+    );
     formData.append("estado", document.getElementById("edit-estado").value);
-    formData.append("ubicacionSuper", document.getElementById("edit-ubicacion-super").value);
-    formData.append("paisSuper", document.getElementById("edit-pais-super").value);
-    formData.append("proveedor", document.getElementById("edit-proveedor").value);
-    formData.append("paisProveedor", document.getElementById("edit-pais-proveedor").value);
-    formData.append("unidadLote", document.getElementById("edit-unidadLote").value);
-    formData.append("precioPorUnidad", document.getElementById("edit-precioPorUnidad").value);
-    formData.append("precioHistorico", document.getElementById("edit-precioHistorico").value);
 
-    // Campos ocultos
-    formData.append("fechaSubida", document.getElementById("edit-fecha-subida").value);
-    formData.append("fechaActualizacion", document.getElementById("edit-fecha-actualizacion").value);
-    formData.append("usuario", document.getElementById("edit-usuario").value);
+    // Solo incluir IDs válidos si existen
+    const proveedor = document.getElementById("edit-proveedor").value;
+    if (proveedor) formData.append("proveedor_id", proveedor);
 
+    const supermercado = document.getElementById("edit-supermercado").value;
+    if (supermercado) formData.append("supermercado_id", supermercado);
+
+    // Enviar datos al servidor
     const response = await fetch(`${API_URL}/${id}`, {
       method: "PUT",
-      body: formData,
+      body: formData, // ✅ Enviamos FormData en lugar de JSON
     });
 
     if (!response.ok) throw new Error("Error en la actualización");
 
     Swal.fire("Éxito", "Producto actualizado correctamente", "success");
     cerrarFormulario();
-    cargarProductos();
+    cargarProductos(); // Recargar la lista de productos
   } catch (err) {
     console.error("Error al guardar cambios:", err);
     Swal.fire("Error", "Hubo un problema al actualizar el producto.", "error");
   }
 }
+async function guardarProductoNuevo() {
+  try {
+    const formData = new FormData();
 
+    formData.append("nombre", document.getElementById("add-nombre").value);
+    formData.append("tipo", document.getElementById("add-tipo").value);
+    formData.append("subtipo", document.getElementById("add-subtipo").value);
+    formData.append("precioActual", document.getElementById("add-precio").value);
+    formData.append("precioDescuento", document.getElementById("add-precioDescuento").value);
+    formData.append("peso", document.getElementById("add-peso").value);
+    formData.append("unidadPeso", document.getElementById("add-unidadPeso").value);
+    formData.append("imagen", document.getElementById("add-imagen").value);
+    formData.append("estado", document.getElementById("add-estado").value);
+    formData.append("ubicacionSuper", document.getElementById("add-ubicacion-super").value);
+    formData.append("paisSuper", document.getElementById("add-pais-super").value);
+    formData.append("proveedor", document.getElementById("add-proveedor").value);
+    formData.append("paisProveedor", document.getElementById("add-pais-proveedor").value);
+    formData.append("unidadLote", document.getElementById("add-unidadLote").value);
+    formData.append("precioPorUnidad", document.getElementById("add-precioPorUnidad").value);
+    formData.append("precioHistorico", document.getElementById("add-precioHistorico").value);
+
+    // Fecha automática y usuario ficticio si no tienes autenticación
+    formData.append("fechaSubida", new Date().toISOString());
+    formData.append("fechaActualizacion", new Date().toISOString());
+    formData.append("usuario", "admin");
+
+    const response = await fetch(API_URL, {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!response.ok) throw new Error("Error al guardar el producto");
+
+    Swal.fire("Éxito", "Producto agregado correctamente", "success");
+    cerrarFormularioAgregar();
+    cargarProductos();
+  } catch (err) {
+    console.error("Error al guardar nuevo producto:", err);
+    Swal.fire("Error", "Hubo un problema al agregar el producto.", "error");
+  }
+}
+function cerrarFormularioAgregar() {
+  document.getElementById("modal-agregar").style.display = "none";
+}
 
 function cerrarFormulario() {
   document.getElementById("modal-editar").style.display = "none";
@@ -188,7 +225,8 @@ async function eliminarProducto(id) {
     Swal.fire("Error", "Hubo un problema al eliminar el producto.", "error");
   }
 }
-
+window.guardarProductoNuevo = guardarProductoNuevo;
+window.cerrarFormularioAgregar = cerrarFormularioAgregar;
 window.guardarCambiosDesdeFormulario = guardarCambiosDesdeFormulario;
 window.cerrarFormulario = cerrarFormulario;
 window.editarProducto = editarProducto;
