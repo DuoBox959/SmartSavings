@@ -221,6 +221,7 @@ if (!validaciones.esPasswordSegura(password)) {
 }
 
 // 🟢 Guardar cambios en la edición de un usuario existente
+// 🟢 Guardar cambios en la edición de un usuario existente
 async function guardarEdicionUsuario() {
   const id = $("#usuarioID").val();
   if (!id) {
@@ -232,6 +233,24 @@ async function guardarEdicionUsuario() {
   const password = $("#passwordUsuario").val();
   const email = $("#emailUsuario").val();
   const rol = $("#rolUsuario").val();
+
+  // ✅ Validar que todos los campos estén llenos
+  if (validaciones.camposVacios(nombre, email, password)) {
+    validaciones.mostrarAlertaError("Campos Vacíos", "⚠️ Todos los campos son obligatorios.");
+    return;
+  }
+
+  // ✅ Validar que el email sea válido
+  if (!validaciones.esEmailValido(email)) {
+    validaciones.mostrarAlertaError("Email inválido", "⚠️ El email no tiene un formato válido.");
+    return;
+  }
+
+  // ✅ Validar que la contraseña sea segura (mínimo 6 caracteres)
+  if (!validaciones.esPasswordSegura(password)) {
+    validaciones.mostrarAlertaError("Contraseña débil", "⚠️ La contraseña debe tener al menos 6 caracteres.");
+    return;
+  }
 
   // ✅ Solo enviar los campos que se han modificado
   const usuarioActualizado = {};
@@ -259,6 +278,7 @@ async function guardarEdicionUsuario() {
     console.error("❌ Error actualizando usuario:", err);
   }
 }
+
 
 // 🟢 Editar usuario
 function editarUsuario(id) {
