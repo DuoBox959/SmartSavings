@@ -1,3 +1,5 @@
+import * as validaciones from "../../valid/validaciones.js";
+
 // 🔹 Variables globales
 let usuariosTable;
 let usuariosCache = [];
@@ -141,10 +143,23 @@ async function guardarCambiosDesdeFormulario() {
   const rol = $("#rolUsuario").val();
 
   // ✅ Validar que todos los campos estén llenos
-  if (!nombre || !email || !password) {
-    alert("⚠️ Todos los campos son obligatorios.");
-    return;
-  }
+if (validaciones.camposVacios(nombre, email, password)) {
+  validaciones.mostrarAlertaError("Campos Vacíos", "⚠️ Todos los campos son obligatorios.");
+  return;
+}
+
+// ✅ Validar que el email sea válido
+if (!validaciones.esEmailValido(email)) {
+  validaciones.mostrarAlertaError("Email inválido", "⚠️ El email no tiene un formato válido.");
+  return;
+}
+
+// ✅ Validar que la contraseña sea segura (mínimo 6 caracteres)
+if (!validaciones.esPasswordSegura(password)) {
+  validaciones.mostrarAlertaError("Contraseña débil", "⚠️ La contraseña debe tener al menos 6 caracteres.");
+  return;
+}
+
 
   const usuario = {
     nombre,
@@ -187,8 +202,8 @@ async function guardarCambiosDesdeFormulario() {
     // ✅ Si el usuario fue creado, actualizar la tabla sin recargar la página
     if (!id) {
       usuariosTable.row
-        .add([
-          data.usuario._id, // 🔹 Aquí es donde el error podría ocurrir
+        .add([ 
+          data.usuario._id, 
           data.usuario.nombre,
           "********", // 🔹 No mostrar la contraseña
           data.usuario.email,

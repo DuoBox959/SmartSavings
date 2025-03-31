@@ -76,6 +76,21 @@ function mostrarAlertaError(titulo, mensaje) {
   });
 }
 
+export function esTextoValido(texto) {
+  return texto.trim().length > 0;
+}
+
+export function esNumeroValido(numero) {
+  return !isNaN(numero) && Number(numero) > 0;
+}
+
+export function esImagenValida(archivo) {
+  if (!archivo) return false;
+  const tiposValidos = ["image/jpeg", "image/png", "image/webp"];
+  return tiposValidos.includes(archivo.type);
+}
+
+
 // ✅ Exporta todas las necesarias
 export {
   limpiarEspacios,

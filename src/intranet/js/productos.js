@@ -1,3 +1,5 @@
+import * as validaciones from "../../valid/validaciones.js";
+
 // 🔹 Variables globales
 let productosTable;
 let productosCache = [];
@@ -97,19 +99,54 @@ async function mostrarFormularioAgregar() {
 async function guardarCambiosDesdeFormulario(event) {
   event.preventDefault();
 
-  const formData = new FormData();
-  formData.append("Nombre", $("#nombreProducto").val().trim());
-  formData.append("Imagen", $("#imgProducto")[0].files[0]);
-  formData.append("Marca", $("#marcaProducto").val().trim());
-  formData.append("Peso", $("#pesoProducto").val());
-  formData.append("UnidadPeso", $("#unidadPeso").val());
-  formData.append("Estado", $("#Estado").val());
-  formData.append("Proveedor_id", $("#idProveedor").val());
-  formData.append("Supermercado_id", $("#idSupermercado").val());
-  formData.append("Usuario_id", $("#idUsuario").val());
+  // Capturar valores del formulario
+  const nombre = $("#nombreProducto").val().trim();
+  const marca = $("#marcaProducto").val().trim();
+  const peso = $("#pesoProducto").val();
+  const unidadPeso = $("#unidadPeso").val();
+  const estado = $("#Estado").val();
+  const proveedorID = $("#idProveedor").val();
+  const supermercadoID = $("#idSupermercado").val();
+  const usuarioID = $("#idUsuario").val();
+  const imagen = $("#imgProducto")[0].files[0];
 
-  // 🔍 Verificar qué datos estamos enviando
-  console.log("📤 Enviando datos:", Object.fromEntries(formData.entries()));
+  // 🛑 Validaciones
+  if (!validaciones.esTextoValido(nombre)) {
+    Swal.fire("Error", "El nombre del producto no puede estar vacío.", "error");
+    return;
+  }
+  
+  if (!validaciones.esTextoValido(marca)) {
+    Swal.fire("Error", "La marca no puede estar vacía.", "error");
+    return;
+  }
+
+  if (!validaciones.esNumeroValido(peso)) {
+    Swal.fire("Error", "El peso debe ser un número mayor que 0.", "error");
+    return;
+  }
+
+  if (!proveedorID || !supermercadoID || !usuarioID) {
+    Swal.fire("Error", "Debe seleccionar un proveedor, supermercado y usuario.", "error");
+    return;
+  }
+
+  if (imagen && !validaciones.esImagenValida(imagen)) {
+    Swal.fire("Error", "La imagen debe ser un archivo JPG, PNG o WEBP.", "error");
+    return;
+  }
+
+  // Si todo está correcto, construir FormData y enviar
+  const formData = new FormData();
+  formData.append("Nombre", nombre);
+  formData.append("Imagen", imagen);
+  formData.append("Marca", marca);
+  formData.append("Peso", peso);
+  formData.append("UnidadPeso", unidadPeso);
+  formData.append("Estado", estado);
+  formData.append("Proveedor_id", proveedorID);
+  formData.append("Supermercado_id", supermercadoID);
+  formData.append("Usuario_id", usuarioID);
 
   try {
     const response = await fetch("http://localhost:3000/api/productos", {
@@ -117,50 +154,14 @@ async function guardarCambiosDesdeFormulario(event) {
       body: formData,
     });
 
-    if (!response.ok) {
-      const errorData = await response.text(); // 🔍 Capturar respuesta del backend
-      console.error("❌ Error del servidor:", errorData);
-      throw new Error("Error al guardar producto: " + errorData);
-    }
+    if (!response.ok) throw new Error("Error al guardar producto.");
 
-    const data = await response.json();
-    if (!data.producto) throw new Error("No se recibió el producto creado");
-
-    await cargarOpcionesSelects();
-
-    const proveedorNombre = obtenerNombre(
-      data.producto.Proveedor_id,
-      proveedoresCache
-    );
-    const supermercadoNombre = obtenerNombre(
-      data.producto.Supermercado_id,
-      supermercadosCache
-    );
-    const usuarioNombre = obtenerNombre(
-      data.producto.Usuario_id,
-      usuariosCache
-    );
-
-    productosTable.row
-      .add([
-        data.producto._id,
-        `<img src="${data.producto.Imagen || ""}" alt="${
-          data.producto.Nombre
-        }" width="50" />`,
-        data.producto.Nombre,
-        data.producto.Marca,
-        `${data.producto.Peso} ${data.producto.UnidadPeso}`,
-        proveedorNombre || "N/A",
-        supermercadoNombre || "N/A",
-        usuarioNombre || "N/A",
-        data.producto.Estado,
-        accionesHTML(data.producto._id),
-      ])
-      .draw();
-
+    Swal.fire("Éxito", "Producto guardado correctamente.", "success");
+    await cargarProductos();
     cerrarFormulario();
-  } catch (err) {
-    console.error("❌ Error guardando producto:", err);
+  } catch (error) {
+    console.error("❌ Error al guardar producto:", error);
+    Swal.fire("Error", "No se pudo guardar el producto.", "error");
   }
 }
 
@@ -174,6 +175,7 @@ async function editarProducto(id) {
   $("#nombreProducto").val(producto.Nombre);
   $("#marcaProducto").val(producto.Marca);
   $("#pesoProducto").val(producto.Peso);
+  $("#unidadPeso").val(producto.UnidadPeso);
   $("#Estado").val(producto.Estado);
 
   await cargarOpcionesSelects();
@@ -187,25 +189,64 @@ async function editarProducto(id) {
     .on("click", guardarEdicionProducto);
 
   $("#formularioProducto").show();
-  document
-    .getElementById("formularioProducto")
-    .scrollIntoView({ behavior: "smooth" });
+  document.getElementById("formularioProducto").scrollIntoView({ behavior: "smooth" });
 }
 
-// 🟢 Guardar cambios en la edición
-async function guardarEdicionProducto() {
+// 🟢 Guardar cambios en la edición con validaciones
+async function guardarEdicionProducto(event) {
+  event.preventDefault();
+
   const id = $("#productoID").val();
   if (!id) return;
 
+  const nombre = $("#nombreProducto").val().trim();
+  const marca = $("#marcaProducto").val().trim();
+  const peso = $("#pesoProducto").val();
+  const unidadPeso = $("#unidadPeso").val();
+  const estado = $("#Estado").val();
+  const proveedorID = $("#idProveedor").val();
+  const supermercadoID = $("#idSupermercado").val();
+  const usuarioID = $("#idUsuario").val();
+  const imagen = $("#imgProducto")[0]?.files[0]; // Nueva imagen (opcional)
+
+  // ✅ Validaciones antes de enviar los datos
+  if (!validaciones.esTextoValido(nombre)) {
+    Swal.fire("Error", "El nombre del producto no puede estar vacío.", "error");
+    return;
+  }
+
+  if (!validaciones.esTextoValido(marca)) {
+    Swal.fire("Error", "La marca no puede estar vacía.", "error");
+    return;
+  }
+
+  if (!validaciones.esNumeroValido(peso)) {
+    Swal.fire("Error", "El peso debe ser un número mayor que 0.", "error");
+    return;
+  }
+
+  if (!proveedorID || !supermercadoID || !usuarioID) {
+    Swal.fire("Error", "Debe seleccionar un proveedor, supermercado y usuario.", "error");
+    return;
+  }
+
+  if (imagen && !validaciones.esImagenValida(imagen)) {
+    Swal.fire("Error", "La imagen debe ser un archivo JPG, PNG o WEBP.", "error");
+    return;
+  }
+
+  // 📝 Construcción de FormData para enviar datos actualizados
   const formData = new FormData();
-  formData.append("nombre", $("#nombreProducto").val()?.trim() || "");
-  formData.append("marca", $("#marcaProducto").val()?.trim() || "");
-  formData.append("peso", $("#pesoProducto").val()?.trim() || "");
-  formData.append("unidadPeso", $("#unidadPeso").val()?.trim() || "");
-  formData.append("estado", $("#Estado").val()?.trim() || "");
-  formData.append("proveedor_id", $("#idProveedor").val()?.trim() || "");
-  formData.append("supermercado_id", $("#idSupermercado").val()?.trim() || "");
-  formData.append("usuario_id", $("#idUsuario").val()?.trim() || "");
+  formData.append("nombre", nombre);
+  formData.append("marca", marca);
+  formData.append("peso", peso);
+  formData.append("unidadPeso", unidadPeso);
+  formData.append("estado", estado);
+  formData.append("proveedor_id", proveedorID);
+  formData.append("supermercado_id", supermercadoID);
+  formData.append("usuario_id", usuarioID);
+
+  if (imagen) formData.append("imagen", imagen); // Agregar imagen si se seleccionó una nueva
 
   try {
     const response = await fetch(`http://localhost:3000/api/productos/${id}`, {
@@ -215,10 +256,12 @@ async function guardarEdicionProducto() {
 
     if (!response.ok) throw new Error("Error al actualizar producto");
 
+    Swal.fire("Éxito", "Producto actualizado correctamente.", "success");
     await cargarProductos();
     cerrarFormulario();
   } catch (err) {
     console.error("❌ Error actualizando producto:", err);
+    Swal.fire("Error", "No se pudo actualizar el producto.", "error");
   }
 }
 
