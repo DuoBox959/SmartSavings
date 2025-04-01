@@ -1,3 +1,5 @@
+import * as validaciones from "../../valid/validaciones.js";
+
 // 🔹 Variables globales
 let preciosTable;
 let preciosCache = [];
@@ -67,7 +69,6 @@ async function cargarProductos() {
 }
 
 // 🟢 Cargar precios desde servidor Express
-// 🟢 Cargar precios desde servidor Express
 async function cargarPrecios() {
   try {
     const respuesta = await fetch("http://localhost:3000/api/precios");
@@ -133,9 +134,6 @@ async function cargarPrecios() {
   }
 }
 
-
-
-
 function verPrecioHistorico(id) {
   const precio = preciosCache.find((p) => p._id === id);
   if (!precio) return;
@@ -172,7 +170,6 @@ function verPrecioHistorico(id) {
   });
 }
 
-
 // 🟢 Generar HTML para editar y eliminar
 function accionesHTML(id) {
   return `
@@ -198,7 +195,7 @@ function mostrarFormularioAgregar() {
     .scrollIntoView({ behavior: "smooth" });
 }
 
-// 🟢 Guardar precio (crear o editar)
+// 🟢 Guardar precio (crear o editar) con validaciones
 async function guardarCambiosDesdeFormulario() {
   const id = $("#precioID").val();
   const producto_id = $("#productoID").val();
@@ -207,23 +204,45 @@ async function guardarCambiosDesdeFormulario() {
   const unidadLote = $("#unidadLote").val();
   const precioUnidadLote = parseFloat($("#precioUnidadLote").val()) || null;
 
-  // Procesar precioHistorico
-  const precioHistoricoInput = $("#precioHistorico").val();
-  const precioHistorico = precioHistoricoInput
-    .split(",")
-    .map(item => item.trim()) // Limpiar espacios
-    .reduce((acc, curr, index, array) => {
-      if (index % 2 === 0) {
-        acc.push({ precio: parseFloat(curr), año: parseInt(array[index + 1]) });
-      }
-      return acc;
-    }, []);
-
-  if (!producto_id || isNaN(precioActual)) {
-    alert("⚠️ Producto ID y Precio Actual son obligatorios.");
+  // Validación de campos obligatorios
+  if (validaciones.camposVacios(producto_id, $("#precioActual").val())) {
+    validaciones.mostrarAlertaError("Campos requeridos", "Producto ID y Precio Actual son obligatorios.");
     return;
   }
 
+  // Validación de que el Precio Actual sea un número válido
+  if (!validaciones.esNumeroValido(precioActual)) {
+    validaciones.mostrarAlertaError("Precio no válido", "Por favor, ingresa un precio actual válido.");
+    return;
+  }
+
+  // Procesar precioHistorico (este es opcional, pero si se ingresa, debe ser válido)
+  const precioHistoricoInput = $("#precioHistorico").val();
+  let precioHistorico = [];
+  if (precioHistoricoInput.trim() !== "") {
+    precioHistorico = precioHistoricoInput
+      .split(",")  // Separar la cadena por comas
+      .map(item => item.trim()) // Limpiar los espacios
+      .reduce((acc, curr, index, array) => {
+        if (index % 2 === 0) {
+          // Asegurarse de que el precio y el año sean válidos
+          if (!validaciones.esNumeroValido(curr) || !validaciones.esNumeroValido(array[index + 1])) {
+            validaciones.mostrarAlertaError("Precio Histórico no válido", "Asegúrate de que los precios y años del historial sean válidos.");
+            return [];
+          }
+          acc.push({ precio: parseFloat(curr), año: parseInt(array[index + 1]) });
+        }
+        return acc;
+      }, []);
+  }
+
+  // Validación de precioHistorico vacío (si se ingresó algo, debe ser válido)
+  if (precioHistorico.length === 0 && precioHistoricoInput.trim() !== "") {
+    validaciones.mostrarAlertaError("Precio Histórico", "El historial de precios no es válido.");
+    return;
+  }
+
+  // Preparar objeto de precio
   const precio = {
     producto_id,
     precioActual,
@@ -270,8 +289,12 @@ function editarPrecio(id) {
   $("#precioDescuento").val(precio.precioDescuento || "");
   $("#unidadLote").val(precio.unidadLote || "");
   $("#precioUnidadLote").val(precio.precioUnidadLote || "");
+
+  // Formatear el precioHistorico para mostrarlo en el formulario
   $("#precioHistorico").val(
-    precio.precioHistorico ? precio.precioHistorico.join(", ") : ""
+    precio.precioHistorico && Array.isArray(precio.precioHistorico)
+      ? precio.precioHistorico.map(historico => `${historico.precio},${historico.año}`).join(", ")
+      : ""
   );
 
   $("#botonesFormulario button:first")
