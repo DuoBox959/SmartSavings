@@ -1,3 +1,5 @@
+import * as validaciones from "../../valid/validaciones.js";
+
 // ✅ Variables Globales
 let opinionesTable;
 let opinionesCache = [];
@@ -186,23 +188,39 @@ function editarOpinion(id) {
 }
 
 // ✅ Guardar una opinión (crear o editar)
+// ✅ Guardar una opinión (crear o editar)
 async function guardarOpinion() {
   const id = $("#opinionID").val();
   const producto_id = $("#productoID").val().trim();
   const usuario_id = $("#usuarioID").val().trim();
   const opinionTexto = $("#textoOpinion").val().trim();
-  const calificacion = $("#calificacionOpinion").val().trim();
+  let calificacion = $("#calificacionOpinion").val().trim();  // Valor de calificación como texto
 
+  // 🛠️ Validaciones
   if (!producto_id || !usuario_id || !opinionTexto) {
-    alert("⚠️ Producto, Usuario y Opinión son obligatorios.");
+    validaciones.mostrarAlertaError("Campos obligatorios", "Producto, Usuario y Opinión son obligatorios.");
     return;
   }
 
+  // Calificación válida (1-10) y no vacía
+  if (!calificacion) {
+    validaciones.mostrarAlertaError("Calificación obligatoria", "La calificación no puede estar vacía.");
+    return;
+  }
+
+  const calificacionNumero = parseInt(calificacion, 10); // Convierte a número
+
+  if (calificacionNumero < 1 || calificacionNumero > 10) {
+    validaciones.mostrarAlertaError("Calificación inválida", "La calificación debe estar entre 1 y 10.");
+    return;
+  }
+
+  // En caso de que todo sea válido, se guarda la opinión
   const opinion = {
     Producto_id: producto_id,
     Usuario_id: usuario_id,
     Opinion: opinionTexto,
-    Calificacion: calificacion ? parseInt(calificacion, 10) : null,
+    Calificacion: calificacionNumero, // Ahora la calificación siempre tendrá un valor válido
   };
 
   try {
@@ -230,7 +248,7 @@ async function guardarOpinion() {
     cerrarFormulario();
   } catch (err) {
     console.error("❌ Error guardando opinión:", err);
-    alert(`❌ Error: ${err.message}`);
+    validaciones.mostrarAlertaError("Error al guardar", err.message);
   }
 }
 

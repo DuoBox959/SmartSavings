@@ -1,3 +1,5 @@
+import * as validaciones from "../../valid/validaciones.js";
+
 // ✅ Variables Globales
 let descripcionTable;
 let descripcionCache = [];
@@ -133,6 +135,45 @@ async function guardarDescripcion(event) {
   const id = $("#descripcionID").val();
   const producto_id = $("#productoID").val().trim(); // 🔹 Debe ser un ObjectId válido
 
+  // 🛠️ Validar si el producto está seleccionado usando la función de validación
+  if (!producto_id) {
+    validaciones.mostrarAlertaError("Producto inválido", "Debes seleccionar un producto.");
+    return;
+  }
+
+  // 🛠️ Validar que tipo, subtipo y utilidad no estén vacíos
+  const tipo = $("#tipoProducto").val().trim();
+  const subtipo = $("#subtipoProducto").val().trim();
+  const utilidad = $("#utilidadProducto").val().trim();
+  const ingredientes = $("#ingredientesProducto").val().trim();
+
+  if (!tipo) {
+    validaciones.mostrarAlertaError("Tipo inválido", "El campo 'Tipo' no puede estar vacío.");
+    return;
+  }
+
+  if (!subtipo) {
+    validaciones.mostrarAlertaError("Subtipo inválido", "El campo 'Subtipo' no puede estar vacío.");
+    return;
+  }
+
+  if (!utilidad) {
+    validaciones.mostrarAlertaError("Utilidad inválida", "El campo 'Utilidad' no puede estar vacío.");
+    return;
+  }
+
+  if (!ingredientes) {
+    validaciones.mostrarAlertaError("Ingredientes inválidos", "El campo 'Ingredientes' no puede estar vacío.");
+    return;
+  }
+
+  // 🛠️ Validar formato de los ingredientes (debe ser una lista separada por comas)
+  const ingredientesArray = ingredientes.split(",").map((i) => i.trim());
+  if (ingredientesArray.length === 0 || ingredientesArray.some(i => i === "")) {
+    validaciones.mostrarAlertaError("Formato de ingredientes inválido", "Los ingredientes deben estar separados por comas.");
+    return;
+  }
+
   // 🛠️ Si el producto seleccionado tiene un nombre en vez de un ID, buscar su ID en `productosCache`
   const productoEncontrado = productosCache.find(
     (p) => p.Nombre === producto_id
@@ -143,23 +184,17 @@ async function guardarDescripcion(event) {
 
   // 🛠️ Verificar que Producto_id es un ObjectId válido antes de enviarlo
   if (!productoIdReal.match(/^[0-9a-fA-F]{24}$/)) {
-    alert("⚠️ Error: Producto ID no es válido.");
+    validaciones.mostrarAlertaError("Producto ID inválido", "El Producto ID no es válido.");
     console.error("❌ Producto_id inválido:", productoIdReal);
     return;
   }
 
   const descripcion = {
     Producto_id: productoIdReal, // 🔹 Ahora siempre es el ID correcto
-    Tipo: $("#tipoProducto").val().trim() || null,
-    Subtipo: $("#subtipoProducto").val().trim() || null,
-    Utilidad: $("#utilidadProducto").val().trim() || null,
-    Ingredientes: $("#ingredientesProducto").val().trim()
-      ? $("#ingredientesProducto")
-          .val()
-          .trim()
-          .split(",")
-          .map((i) => i.trim())
-      : [],
+    Tipo: tipo || null,
+    Subtipo: subtipo || null,
+    Utilidad: utilidad || null,
+    Ingredientes: ingredientesArray,
   };
 
   // 🔍 Verificar los datos que se enviarán
@@ -194,7 +229,7 @@ async function guardarDescripcion(event) {
     cerrarFormulario();
   } catch (err) {
     console.error("❌ Error guardando descripción:", err);
-    alert(`❌ Error: ${err.message}`);
+    validaciones.mostrarAlertaError("Error al guardar", err.message);
   }
 }
 
