@@ -1,3 +1,5 @@
+import * as validaciones from "../../valid/validaciones.js";
+
 // 🔹 Variables globales
 let proveedorTable;
 let proveedorCache = [];
@@ -88,16 +90,24 @@ function mostrarFormularioAgregar() {
 
 // 🟢 Guardar proveedor (crear o editar)
 async function guardarProveedor() {
+  // Obtener los valores de los campos del formulario
   const id = $("#proveedorID").val();
-  const nombre = $("#nombreProveedor").val();
-  const pais = $("#paisProveedor").val();
-  const comunidadAutonoma = $("#comunidadAutonoma").val();
+  const nombre = $("#nombreProveedor").val().trim();
+  const pais = $("#paisProveedor").val().trim();
+  const comunidadAutonoma = $("#comunidadAutonoma").val().trim();
 
-  if (!nombre || !pais || !comunidadAutonoma) {
-    alert("⚠️ Todos los campos son obligatorios.");
+  // 🛑 Validar que los campos no estén vacíos
+  if (validaciones.camposVacios(nombre, pais, comunidadAutonoma)) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Campos vacíos',
+      text: 'Todos los campos son obligatorios.',
+      confirmButtonText: 'Aceptar',
+    });
     return;
   }
 
+  // Crear el objeto del proveedor
   const proveedor = {
     Nombre: nombre,
     Pais: pais,
@@ -107,12 +117,14 @@ async function guardarProveedor() {
   try {
     let response;
     if (id) {
+      // Editar proveedor
       response = await fetch(`http://localhost:3000/api/proveedor/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(proveedor),
       });
     } else {
+      // Crear nuevo proveedor
       response = await fetch("http://localhost:3000/api/proveedor", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -122,12 +134,20 @@ async function guardarProveedor() {
 
     if (!response.ok) throw new Error("Error al guardar proveedor");
 
+    // Recargar proveedores y cerrar el formulario
     await cargarProveedores();
     cerrarFormulario();
   } catch (err) {
     console.error("❌ Error guardando proveedor:", err);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Hubo un problema al guardar el proveedor. Intenta nuevamente.',
+      confirmButtonText: 'Aceptar',
+    });
   }
 }
+
 // 🟢 Editar proveedor
 function editarProveedor(id) {
   const proveedor = proveedorCache.find((p) => p._id === id);

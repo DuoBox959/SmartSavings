@@ -1,3 +1,5 @@
+import * as validaciones from "../../valid/validaciones.js";
+
 // ✅ Variables Globales
 let supermercadosTable;
 let supermercadosCache = [];
@@ -111,37 +113,60 @@ function mostrarFormularioAgregar() {
 // ✅ Guardar un supermercado (crear o editar)
 async function guardarSupermercado() {
   const id = $("#supermercadoID").val();
-  const nombre = $("#nombreSupermercado").val();
-  const pais = $("#paisSupermercado").val();
-  const ciudad = $("#ciudadSupermercado").val();
-  const ubicacion = $("#ubicacionSupermercado")
-    .val()
-    .split(",")
-    .map((u) => u.trim()); // 🔹 Convertir a array
+  let nombre = $("#nombreSupermercado").val().trim();
+  let pais = $("#paisSupermercado").val().trim();
+  let ciudad = $("#ciudadSupermercado").val().trim();
+  let ubicacion = $("#ubicacionSupermercado").val().trim();
 
-  if (!nombre || !pais || !ciudad || !ubicacion.length) {
-    alert("⚠️ Todos los campos son obligatorios.");
+  // 🛑 Validación de campos vacíos (Nombre, País y Ciudad son obligatorios)
+  if (validaciones.camposVacios(nombre, pais, ciudad)) {
+    validaciones.mostrarAlertaError("⚠️ Campos Obligatorios", "Los campos Nombre, País y Ciudad son obligatorios.");
     return;
   }
 
+  // Asignamos valores predeterminados a los campos opcionales (como la Ubicación)
+  ubicacion = ubicacion || "-"; // Si la ubicación está vacía, asignamos un valor predeterminado
+
+  // 🛑 Validación de formato del nombre del supermercado (no debe estar vacío)
+  if (!validaciones.esTextoValido(nombre)) {
+    validaciones.mostrarAlertaError("⚠️ Error", "El nombre del supermercado no es válido.");
+    return;
+  }
+
+  // 🛑 Validación de formato del país (no debe estar vacío)
+  if (!validaciones.esTextoValido(pais)) {
+    validaciones.mostrarAlertaError("⚠️ Error", "El país no es válido.");
+    return;
+  }
+
+  // 🛑 Validación de formato de ciudad (no debe estar vacío)
+  if (!validaciones.esTextoValido(ciudad)) {
+    validaciones.mostrarAlertaError("⚠️ Error", "La ciudad no es válida.");
+    return;
+  }
+
+  // Convertir la ubicación en un array si contiene valores
+  let ubicacionArray = ubicacion !== "-" ? ubicacion.split(",").map((u) => u.trim()) : [];
+
+  // Creamos el objeto supermercado con los datos ingresados
   const supermercado = {
     Nombre: nombre,
     Pais: pais,
     Ciudad: ciudad,
-    Ubicacion: ubicacion,
+    Ubicacion: ubicacionArray, // Guardamos la ubicación como un array
   };
 
   try {
     let response;
     if (id) {
-      // PUT = actualizar
+      // Si existe el id, actualizamos el supermercado (PUT)
       response = await fetch(`http://localhost:3000/api/supermercados/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(supermercado),
       });
     } else {
-      // POST = nuevo
+      // Si no existe el id, creamos un nuevo supermercado (POST)
       response = await fetch("http://localhost:3000/api/supermercados", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -149,12 +174,15 @@ async function guardarSupermercado() {
       });
     }
 
+    // Verificamos si la respuesta fue exitosa
     if (!response.ok) throw new Error("Error al guardar supermercado");
 
-    await cargarSupermercados(); // 🔹 Recargar la tabla con los nuevos datos
+    // Recargamos la tabla con los nuevos datos
+    await cargarSupermercados();
     cerrarFormulario();
   } catch (err) {
     console.error("❌ Error guardando supermercado:", err);
+    validaciones.mostrarAlertaError("❌ Error", "No se pudo guardar el supermercado.");
   }
 }
 
