@@ -57,7 +57,7 @@
         </li>
       </ul>
     </nav>
-    <button onclick="mostrarFormularioAgregar()">Agregar Producto</button>
+    <button class="btn-agregar" onclick="mostrarFormularioAgregar()">Agregar Producto</button>
 
     <!-- 📌 Contenedor principal -->
     <div class="productos-container" id="productos-container">
@@ -67,7 +67,6 @@
     <!-- 🔙 Botón para regresar atrás -->
     <button class="back-button" onclick="volverAtras()">Volver Atrás</button>
 
-    <!-- 📝 Modal para editar producto -->
     <!-- 📝 Modal para editar producto -->
 <div id="modal-editar" class="modal">
   <div class="modal-content">
@@ -114,8 +113,9 @@
       <details>
         <summary>Ver más campos para tu producto</summary>
 
-        <label>Imagen del producto (URL):</label>
-        <input type="text" id="edit-imagen" />
+        <label>Imagen del producto:</label>
+        <input type="file" id="add-imagen" name="Imagen" />
+
 
         <label>Ubicación exacta del supermercado:</label>
         <input type="text" id="edit-ubicacion-super" />
@@ -162,8 +162,7 @@
   <div class="modal-content">
     <span class="close" onclick="cerrarFormularioAgregar()">&times;</span>
     <h2>Agregar Producto</h2>
-    <form id="form-agregar-producto">
-      <!-- 🔹 OBLIGATORIOS -->
+    <form id="form-editar-producto"> <!-- Reutilizamos diseño -->
       <label>Nombre del producto: <span style="color: red">*</span></label>
       <input type="text" id="add-nombre" required />
 
@@ -193,12 +192,11 @@
         <option value="Sin stock">Sin stock</option>
       </select>
 
-      <!-- 🔽 CAMPOS OPCIONALES -->
       <details>
         <summary>Ver más campos para tu producto</summary>
+        <label>Imagen del producto:</label>
+        <input type="file" id="add-imagen" name="Imagen" />
 
-        <label>Imagen del producto (URL):</label>
-        <input type="text" id="add-imagen" />
 
         <label>Ubicación exacta del supermercado:</label>
         <input type="text" id="add-ubicacion-super" />
@@ -225,18 +223,14 @@
         <input type="number" id="add-precioPorUnidad" step="0.01" />
 
         <label>Precio Histórico (Precio, Año):</label>
-        <textarea
-          id="add-precioHistorico"
-          rows="3"
-          placeholder="Ejemplo: 10, 2023, 12, 2024"
-        ></textarea>
+        <textarea id="add-precioHistorico" rows="3" placeholder="Ejemplo: 10, 2023, 12, 2024"></textarea>
       </details>
 
-      <!-- ✅ Botón Agregar -->
       <button type="button" onclick="guardarProductoNuevo()">Agregar Producto</button>
     </form>
   </div>
 </div>
+
 
 
     <!-- 🧩 Footer dinámico (cargado desde JS) -->

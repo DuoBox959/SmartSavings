@@ -21,6 +21,8 @@ export function gestionarUsuarioAutenticado() {
       userMenu.style.display = "inline-block";
       userName.textContent = `Bienvenido, ${user.name}`;
 
+      // 🔥 Aquí está la clave 🔥
+      localStorage.setItem("usuario", JSON.stringify(user));
       // Función para cerrar sesión
       logout.addEventListener("click", () => {
         sessionStorage.removeItem("user");

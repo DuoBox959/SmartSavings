@@ -364,6 +364,95 @@ app.post("/api/productos", upload.single("Imagen"), async (req, res) => {
     res.status(500).json({ error: "Error interno del servidor" });
   }
 });
+/**
+ * ✅ Crear un nuevo producto completo con imagen (Create)
+ * Ruta: POST /api/productos-completos
+ */
+
+app.post("/api/productos-completos", upload.single("Imagen"), async (req, res) => {
+  try {
+    // ✅ Validaciones seguras para evitar BSONError
+    const proveedorId = ObjectId.isValid(req.body.proveedor) ? new ObjectId(req.body.proveedor) : null;
+    const supermercadoId = ObjectId.isValid(req.body.supermercado) ? new ObjectId(req.body.supermercado) : null;
+    const usuarioId = ObjectId.isValid(req.body.usuario) ? new ObjectId(req.body.usuario) : null;
+
+    console.log("📦 Formulario recibido:");
+    console.log("req.body:", req.body);
+    console.log("req.file:", req.file);
+
+    // 1️⃣ Insertar producto
+    const nuevoProducto = {
+      Nombre: req.body.nombre,
+      Imagen: req.file ? `/uploads/2025/${req.file.filename}` : req.body.imagen || null,
+      Marca: req.body.marca || "Sin marca",
+      Peso: req.body.peso,
+      UnidadPeso: req.body.unidadPeso,
+      Estado: req.body.estado,
+      Proveedor_id: proveedorId,
+      Supermercado_id: supermercadoId,
+      Usuario_id: usuarioId,
+      fechaSubida: req.body.fechaSubida || new Date().toISOString(),
+      fechaActualizacion: req.body.fechaActualizacion || new Date().toISOString(),
+    };
+
+    const resultadoProducto = await db.collection("Productos").insertOne(nuevoProducto);
+    const productoId = resultadoProducto.insertedId;
+
+    // 2️⃣ Insertar precio
+    const nuevoPrecio = {
+      producto_id: productoId,
+      precioActual: parseFloat(req.body.precioActual),
+      precioDescuento: req.body.precioDescuento ? parseFloat(req.body.precioDescuento) : null,
+      unidadLote: req.body.unidadLote || "N/A",
+      precioUnidadLote: req.body.precioPorUnidad ? parseFloat(req.body.precioPorUnidad) : null,
+      precioHistorico: parsearPrecioHistorico(req.body.precioHistorico),
+    };
+
+    await db.collection("Precios").insertOne(nuevoPrecio);
+
+    // 3️⃣ Insertar descripción (opcional)
+    if (req.body.tipo) {
+      const nuevaDescripcion = {
+        Producto_id: productoId,
+        Tipo: req.body.tipo,
+        Subtipo: req.body.subtipo || null,
+        Utilidad: req.body.utilidad || null,
+        Ingredientes: [], // podrías mapear esto si lo tienes
+      };
+
+      await db.collection("Descripcion").insertOne(nuevaDescripcion);
+    }
+
+    res.status(201).json({
+      message: "Producto completo creado correctamente",
+      producto_id: productoId,
+    });
+
+  } catch (err) {
+    console.error("❌ Error al crear producto completo:", err);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+});
+
+function parsearPrecioHistorico(input) {
+  if (!input) return [];
+
+  const valores = input
+    .split(",")
+    .map((v) => v.trim())
+    .filter((v) => v !== "");
+
+  const resultado = [];
+  for (let i = 0; i < valores.length; i += 2) {
+    const precio = parseFloat(valores[i]);
+    const año = valores[i + 1];
+    if (!isNaN(precio) && año) {
+      resultado.push({ precio, fecha: año });
+    }
+  }
+
+  return resultado;
+}
 
 /**
  * ✅ Obtener todos los productos (Read)

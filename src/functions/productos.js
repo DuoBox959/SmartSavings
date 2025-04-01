@@ -27,9 +27,8 @@ async function cargarProductos() {
     productos.forEach((producto) => {
       const productoHTML = `
         <div class="product-card">
-            <img src="${producto.Imagen || "default.jpg"}" alt="${
-        producto.Nombre
-      }">
+        <img src="${producto.Imagen || '../assets/img/default.webp'}" alt="${producto.Nombre}">
+
             <h3>${producto.Nombre}</h3>
             <p class="marca">${producto.Marca || "Marca desconocida"}</p>
             <p class="peso">Peso: ${producto.Peso} ${producto.UnidadPeso}</p>
@@ -157,49 +156,80 @@ async function guardarProductoNuevo() {
   try {
     const formData = new FormData();
 
-    formData.append("nombre", document.getElementById("add-nombre").value);
-    formData.append("tipo", document.getElementById("add-tipo").value);
-    formData.append("subtipo", document.getElementById("add-subtipo").value);
-    formData.append("precioActual", document.getElementById("add-precio").value);
-    formData.append("precioDescuento", document.getElementById("add-precioDescuento").value);
-    formData.append("peso", document.getElementById("add-peso").value);
-    formData.append("unidadPeso", document.getElementById("add-unidadPeso").value);
-    formData.append("imagen", document.getElementById("add-imagen").value);
-    formData.append("estado", document.getElementById("add-estado").value);
-    formData.append("ubicacionSuper", document.getElementById("add-ubicacion-super").value);
-    formData.append("paisSuper", document.getElementById("add-pais-super").value);
-    formData.append("proveedor", document.getElementById("add-proveedor").value);
-    formData.append("paisProveedor", document.getElementById("add-pais-proveedor").value);
-    formData.append("unidadLote", document.getElementById("add-unidadLote").value);
-    formData.append("precioPorUnidad", document.getElementById("add-precioPorUnidad").value);
-    formData.append("precioHistorico", document.getElementById("add-precioHistorico").value);
+    // 🏷️ Campos obligatorios u opcionales con default
+    formData.append("nombre", document.getElementById("add-nombre")?.value || "N/A");
+    formData.append("tipo", document.getElementById("add-tipo")?.value || "N/A");
+    formData.append("subtipo", document.getElementById("add-subtipo")?.value || "");
+    formData.append("utilidad", document.getElementById("add-utilidad")?.value || "");
+    formData.append("precioActual", document.getElementById("add-precio")?.value || "0");
+    formData.append("precioDescuento", document.getElementById("add-precioDescuento")?.value || "");
+    formData.append("peso", document.getElementById("add-peso")?.value || "0");
+    formData.append("unidadPeso", document.getElementById("add-unidadPeso")?.value || "N/A");
+    formData.append("estado", document.getElementById("add-estado")?.value || "En stock");
 
-    // Fecha automática y usuario ficticio si no tienes autenticación
+    // 🖼️ Imagen (solo si hay archivo seleccionado)
+    const imagenInput = document.getElementById("add-imagen");
+    if (imagenInput?.files?.length > 0) {
+      formData.append("Imagen", imagenInput.files[0]);
+    }
+
+    // 📦 Supermercado y proveedor (IDs o nombres, según backend)
+    formData.append("supermercado", document.getElementById("add-supermercado")?.value || "");
+    formData.append("proveedor", document.getElementById("add-proveedor")?.value || "");
+
+    // 🧾 Campos adicionales
+    formData.append("paisSuper", document.getElementById("add-pais-super")?.value || "");
+    formData.append("paisProveedor", document.getElementById("add-pais-proveedor")?.value || "");
+    formData.append("unidadLote", document.getElementById("add-unidadLote")?.value || "N/A");
+    formData.append("precioPorUnidad", document.getElementById("add-precioPorUnidad")?.value || "");
+    formData.append("precioHistorico", document.getElementById("add-precioHistorico")?.value || "");
+
+    // 👤 Usuario (desde localStorage)
+    const usuario = JSON.parse(localStorage.getItem("usuario"));
+    const userId = usuario?._id || usuario?.id || usuario?.Id || null;
+
+    if (!userId || typeof userId !== "string") {
+      console.warn("🧨 Usuario mal definido en localStorage:", usuario);
+      throw new Error("Usuario no identificado");
+    }
+    formData.append("usuario", userId);
+
+    
+
+    // 🕒 Fechas
     formData.append("fechaSubida", new Date().toISOString());
     formData.append("fechaActualizacion", new Date().toISOString());
-    formData.append("usuario", "admin");
 
-    const response = await fetch(API_URL, {
+    // 📡 Enviar al backend
+    const response = await fetch("http://localhost:3000/api/productos-completos", {
       method: "POST",
       body: formData,
     });
 
-    if (!response.ok) throw new Error("Error al guardar el producto");
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error("Error al guardar el producto completo. Respuesta del servidor: " + errorText);
+    }
 
-    Swal.fire("Éxito", "Producto agregado correctamente", "success");
+    Swal.fire("✅ Éxito", "Producto agregado correctamente", "success");
     cerrarFormularioAgregar();
     cargarProductos();
   } catch (err) {
-    console.error("Error al guardar nuevo producto:", err);
-    Swal.fire("Error", "Hubo un problema al agregar el producto.", "error");
+    console.error("❌ Error al guardar producto completo:", err);
+    Swal.fire("Error", "Hubo un problema al guardar el producto completo.", "error");
   }
 }
+
+
 function cerrarFormularioAgregar() {
   document.getElementById("modal-agregar").style.display = "none";
 }
 
 function cerrarFormulario() {
   document.getElementById("modal-editar").style.display = "none";
+}
+function mostrarFormularioAgregar() {
+  document.getElementById("modal-agregar").style.display = "flex";
 }
 
 async function eliminarProducto(id) {
@@ -231,3 +261,4 @@ window.guardarCambiosDesdeFormulario = guardarCambiosDesdeFormulario;
 window.cerrarFormulario = cerrarFormulario;
 window.editarProducto = editarProducto;
 window.eliminarProducto = eliminarProducto;
+window.mostrarFormularioAgregar = mostrarFormularioAgregar;

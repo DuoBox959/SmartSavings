@@ -372,3 +372,23 @@ label.required::after {
 .nav-categorias li a:hover {
   transform: scale(1.1);
 }
+
+/* ✅ Botón Agregar Producto (estilo oscuro elegante) */
+.btn-agregar {
+  background: #34495e;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1em;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 20px auto;
+  display: block;
+  transition: all 0.3s ease;
+}
+
+.btn-agregar:hover {
+  background-color: #0854ab;
+  transform: scale(1.05);
+}
