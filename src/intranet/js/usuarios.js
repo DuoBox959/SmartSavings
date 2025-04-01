@@ -142,30 +142,28 @@ async function guardarCambiosDesdeFormulario() {
   const email = $("#emailUsuario").val();
   const rol = $("#rolUsuario").val();
 
-  // ✅ Validar que todos los campos estén llenos
-if (validaciones.camposVacios(nombre, email, password)) {
-  validaciones.mostrarAlertaError("Campos Vacíos", "⚠️ Todos los campos son obligatorios.");
-  return;
-}
+  // ✅ Validaciones
+  if (validaciones.camposVacios(nombre, email, password)) {
+    validaciones.mostrarAlertaError("Campos Vacíos", "⚠️ Todos los campos son obligatorios.");
+    return;
+  }
 
-// ✅ Validar que el email sea válido
-if (!validaciones.esEmailValido(email)) {
-  validaciones.mostrarAlertaError("Email inválido", "⚠️ El email no tiene un formato válido.");
-  return;
-}
+  if (!validaciones.esEmailValido(email)) {
+    validaciones.mostrarAlertaError("Email inválido", "⚠️ El email no tiene un formato válido.");
+    return;
+  }
 
-// ✅ Validar que la contraseña sea segura (mínimo 6 caracteres)
-if (!validaciones.esPasswordSegura(password)) {
-  validaciones.mostrarAlertaError("Contraseña débil", "⚠️ La contraseña debe tener al menos 6 caracteres.");
-  return;
-}
-
+  if (!validaciones.esPasswordSegura(password)) {
+    validaciones.mostrarAlertaError("Contraseña débil", "⚠️ La contraseña debe tener al menos 6 caracteres.");
+    return;
+  }
 
   const usuario = {
     nombre,
     pass: password,
     email,
     rol,
+    fechaRegistro: new Date().toISOString(), // Fecha actual de registro
   };
 
   console.log("📤 Enviando datos al backend:", usuario); // 🔍 Ver qué se envía
@@ -193,7 +191,6 @@ if (!validaciones.esPasswordSegura(password)) {
     const data = await response.json();
     console.log("✅ Respuesta del backend:", data); // 🔍 Ver respuesta del servidor
 
-    // ❗ Posible problema: si `data.usuario` es undefined, evitar el error
     if (!data.usuario) {
       console.error("❌ Error: El backend no devolvió el usuario creado.");
       return;
@@ -202,13 +199,14 @@ if (!validaciones.esPasswordSegura(password)) {
     // ✅ Si el usuario fue creado, actualizar la tabla sin recargar la página
     if (!id) {
       usuariosTable.row
-        .add([ 
-          data.usuario._id, 
+        .add([
+          data.usuario._id,
           data.usuario.nombre,
-          "********", // 🔹 No mostrar la contraseña
+          "********", // 🔹 No mostrar la contraseña real
           data.usuario.email,
           formatearFecha(data.usuario.fechaRegistro), // ✅ Ahora la fecha viene del backend
           data.usuario.rol,
+          `<span>🔴 Inactivo (sin actividad)</span>`, // Estado por defecto
           accionesHTML(data.usuario._id),
         ])
         .draw();

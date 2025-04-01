@@ -1,3 +1,5 @@
+import * as validaciones from "../../valid/validaciones.js";
+
 // 🔹 Variables globales
 let datosPersonalesTable;
 let datosPersonalesCache = [];
@@ -129,35 +131,50 @@ async function editarDato(id) {
 async function guardarDato() {
   const id = $("#datoID").val();
   const body = {
-    nombre: $("#nombre").val().trim(),
-    apellidos: $("#apellidos").val().trim(),
+    nombre: validaciones.limpiarEspacios($("#nombre").val()),
+    apellidos: validaciones.limpiarEspacios($("#apellidos").val()),
     usuario_id: $("#usuarioId").val().trim(),
     fechaNacimiento: $("#fechaNacimiento").val(),
     genero: $("#genero").val(),
-    idioma: $("#idioma").val(),
-    zonaHoraria: $("#zonaHoraria").val(),
+    idioma: validaciones.limpiarEspacios($("#idioma").val()),
+    zonaHoraria: validaciones.limpiarEspacios($("#zonaHoraria").val()),
     recibirNotificaciones: $("#notificaciones").is(":checked"),
   };
 
-  if (!body.nombre || !body.usuario_id) {
-    alert("⚠️ El nombre y el ID de usuario son obligatorios.");
-    return;
+  // 🛑 Validaciones
+  if (validaciones.camposVacios(body.nombre, body.usuario_id, body.idioma, body.zonaHoraria)) {
+    return validaciones.mostrarAlertaError("Campos obligatorios", "Por favor, completa todos los campos requeridos.");
+  }
+
+  if (!validaciones.esTextoValido(body.nombre) || !validaciones.esTextoValido(body.apellidos)) {
+    return validaciones.mostrarAlertaError("Nombre/Apellidos inválidos", "Asegúrate de ingresar texto válido.");
+  }
+
+  if (isNaN(Date.parse(body.fechaNacimiento))) {
+    return validaciones.mostrarAlertaError("Fecha inválida", "Ingrese una fecha de nacimiento válida.");
+  }
+
+  if (!["Masculino", "Femenino", "Otro"].includes(body.genero)) {
+    return validaciones.mostrarAlertaError("Género inválido", "Seleccione un género válido.");
+  }
+
+  if (!/^[A-Za-zÁÉÍÓÚáéíóúüÜñÑ\s]+$/.test(body.idioma)) {
+    return validaciones.mostrarAlertaError("Idioma inválido", "El idioma solo puede contener letras y espacios.");
+  }
+
+  if (!/^UTC([+-]\d{1,2})$/.test(body.zonaHoraria)) {
+    return validaciones.mostrarAlertaError("Zona horaria inválida", "Formato correcto: UTC-5, UTC+1, etc.");
   }
 
   try {
     let response;
     if (id) {
-      // ✅ PUT = editar
-      response = await fetch(
-        `http://localhost:3000/api/datos-personales/${id}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
-        }
-      );
+      response = await fetch(`http://localhost:3000/api/datos-personales/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
     } else {
-      // ✅ POST = crear
       response = await fetch("http://localhost:3000/api/datos-personales", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -167,15 +184,9 @@ async function guardarDato() {
 
     if (!response.ok) throw new Error("Error al guardar");
 
-    const mensaje = id
-      ? "Datos actualizados correctamente"
-      : "Datos añadidos correctamente";
-    Swal.fire("✅ Éxito", mensaje, "success");
+    Swal.fire("✅ Éxito", id ? "Datos actualizados correctamente" : "Datos añadidos correctamente", "success");
 
-    // ✅ Limpiar ID para evitar modo edición persistente
     $("#datoID").val("");
-
-    // ⚠️ Recargar datos actualizados sin duplicar
     await cargarDatosPersonales();
     cerrarFormulario();
   } catch (err) {
