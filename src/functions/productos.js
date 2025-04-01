@@ -49,6 +49,14 @@ async function cargarProductos() {
     console.error("Error cargando productos:", err);
   }
 }
+function safeSetValue(id, value) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.value = value ?? "";
+  } else {
+    console.warn(`⚠️ Campo no encontrado: #${id}`);
+  }
+}
 
 async function editarProducto(id) {
   try {
@@ -75,40 +83,36 @@ async function editarProducto(id) {
       console.error("No se pudo cargar los proveedores", err);
     }
 
-    // Rellenar formulario
-    document.getElementById("edit-producto-id").value = producto._id;
-    document.getElementById("edit-nombre").value = producto.Nombre;
-    document.getElementById("edit-marca").value = producto.Marca || "";
+    // ✅ Usamos safeSetValue para evitar errores si falta algún input
+    safeSetValue("edit-producto-id", producto._id);
+    safeSetValue("edit-nombre", producto.Nombre);
+    safeSetValue("edit-marca", producto.Marca);
+    safeSetValue("edit-tipo", producto.Tipo);
+    safeSetValue("edit-subtipo", producto.Subtipo);
+    safeSetValue("edit-precio", precioData.precioActual);
+    safeSetValue("edit-precioDescuento", precioData.precioDescuento);
+    safeSetValue("edit-peso", producto.Peso);
+    safeSetValue("edit-unidadPeso", producto.UnidadPeso?.toLowerCase());
+    safeSetValue("edit-supermercado", supermercado.Nombre);
+    safeSetValue("edit-ubicacion-super", supermercado.Ubicacion);
+    safeSetValue("edit-pais-super", supermercado.Pais);
+    safeSetValue("edit-proveedor", proveedor.Nombre);
+    safeSetValue("edit-pais-proveedor", proveedor.Pais);
+    safeSetValue("edit-unidadLote", precioData.unidadLote);
+    safeSetValue("edit-precioPorUnidad", precioData.precioPorUnidad);
 
-    document.getElementById("edit-tipo").value = producto.Tipo || "";
-    document.getElementById("edit-subtipo").value = producto.Subtipo || "";
-    document.getElementById("edit-precio").value = precioData.precioActual || "";
-    document.getElementById("edit-precioDescuento").value = precioData.precioDescuento || "";
-    document.getElementById("edit-peso").value = producto.Peso;
-    document.getElementById("edit-unidadPeso").value = producto.UnidadPeso.toLowerCase();
-    document.getElementById("edit-imagen").value = producto.Imagen || "";
+    const estadoNormalizado = producto.Estado?.trim().toLowerCase() === "sin stock" ? "Sin stock" : "En stock";
+    safeSetValue("edit-estado", estadoNormalizado);
 
-    document.getElementById("edit-supermercado").value = supermercado.Nombre || "";
-    document.getElementById("edit-ubicacion-super").value = supermercado.Ubicacion || "";
-    document.getElementById("edit-pais-super").value = supermercado.Pais || "";
-    document.getElementById("edit-proveedor").value = proveedor.Nombre || "";
-    document.getElementById("edit-pais-proveedor").value = proveedor.Pais || "";
-
-    document.getElementById("edit-unidadLote").value = precioData.unidadLote || "";
-    document.getElementById("edit-precioPorUnidad").value = precioData.precioPorUnidad || "";
-
-    const estadoNormalizado = producto.Estado.trim().toLowerCase() === "sin stock" ? "Sin stock" : "En stock";
-    document.getElementById("edit-estado").value = estadoNormalizado;
-
-    // Campos ocultos
-    document.getElementById("edit-fecha-subida").value = producto.fechaSubida || "";
-    document.getElementById("edit-fecha-actualizacion").value = new Date().toISOString();
-    document.getElementById("edit-usuario").value = producto.usuario || "";
+    safeSetValue("edit-fecha-subida", producto.fechaSubida);
+    safeSetValue("edit-fecha-actualizacion", new Date().toISOString());
+    safeSetValue("edit-usuario", producto.usuario);
 
     // Historial de precios
-    document.getElementById("edit-precioHistorico").value = (producto.Historico || [])
+    const historial = (producto.Historico || [])
       .map(entry => `${entry.fecha} - ${entry.precio}€`)
       .join("\n");
+    safeSetValue("edit-precioHistorico", historial);
 
     document.getElementById("modal-editar").style.display = "flex";
   } catch (err) {
@@ -116,6 +120,7 @@ async function editarProducto(id) {
     Swal.fire("Error", "Hubo un problema al cargar el producto para edición.", "error");
   }
 }
+
 async function guardarCambiosDesdeFormulario() {
   try {
     const id = document.getElementById("edit-producto-id").value;
@@ -133,7 +138,7 @@ async function guardarCambiosDesdeFormulario() {
     const supermercado = document.getElementById("edit-supermercado").value;
     if (supermercado) formData.append("supermercado_id", supermercado);
 
-    const response = await fetch(`${API_URL}/${id}`, {
+    const response = await fetch(`http://localhost:3000/api/productos-completos/${id}`, {
       method: "PUT",
       body: formData,
     });

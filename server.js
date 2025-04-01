@@ -510,6 +510,63 @@ app.get("/api/productos", async (req, res) => {
     res.status(500).json({ error: "Error al obtener productos" });
   }
 });
+/**
+ * ✅ Obtener todos los productos completos (Read)
+ * Ruta: GET /api/productos-completos
+ */
+app.put("/api/productos-completos/:id", upload.single("Imagen"), async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ error: "ID de producto no válido" });
+    }
+
+    const objectId = new ObjectId(id);
+
+    const updateData = {
+      Nombre: req.body.nombre,
+      Marca: req.body.marca,
+      Peso: req.body.peso,
+      UnidadPeso: req.body.unidadPeso,
+      Estado: req.body.estado,
+      fechaActualizacion: req.body.fechaActualizacion || new Date().toISOString(),
+    };
+
+    if (req.file) {
+      updateData.Imagen = `/uploads/2025/${req.file.filename}`;
+    }
+
+    if (ObjectId.isValid(req.body.supermercado)) {
+      updateData.Supermercado_id = new ObjectId(req.body.supermercado);
+    }
+
+    if (ObjectId.isValid(req.body.proveedor)) {
+      updateData.Proveedor_id = new ObjectId(req.body.proveedor);
+    }
+
+    if (ObjectId.isValid(req.body.usuario)) {
+      updateData.Usuario_id = new ObjectId(req.body.usuario);
+    }
+
+    // 🛠️ Actualiza el producto
+    const result = await db.collection("Productos").updateOne(
+      { _id: objectId },
+      { $set: updateData }
+    );
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ error: "Producto no encontrado" });
+    }
+
+    res.json({ message: "Producto completo actualizado correctamente" });
+  } catch (err) {
+    console.error("❌ Error actualizando producto completo:", err);
+    res.status(500).json({ error: "Error interno al actualizar producto completo" });
+  }
+});
+
+
 
 /**
  * ✅ Actualizar producto existente (Update)
