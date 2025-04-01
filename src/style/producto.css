@@ -241,7 +241,9 @@ body {
 }
 
 /* 📝 FORMULARIO DE EDICIÓN */
-#form-editar-producto {
+#form-editar-producto,
+#form-agregar-producto
+{
   display: grid;
   background: white;
   color: #333;
@@ -272,7 +274,11 @@ label.required::after {
 /* 🔘 Campos */
 #form-editar-producto input,
 #form-editar-producto select,
-#form-editar-producto textarea {
+#form-editar-producto textarea,
+#form-agregar-producto input,
+#form-agregar-producto select,
+#form-agregar-producto input
+ {
   width: 100%;
   padding: 7px;
   font-size: 1em;
@@ -291,20 +297,26 @@ label.required::after {
 
 #form-editar-producto input:focus,
 #form-editar-producto select:focus,
-#form-editar-producto textarea:focus {
+#form-editar-producto textarea:focus,
+#form-agregar-producto input:focus,
+#form-agregar-producto select:focus,
+#form-agregar-producto textarea:focus
+ {
   outline: none;
   border-color: #365a7e;
   box-shadow: 0 0 5px rgba(54, 90, 126, 0.5);
   background-color: #fff;
 }
 
-#form-editar-producto textarea::placeholder {
+#form-editar-producto textarea::placeholder,
+#form-agregar-producto textarea::placeholder{
   color: #999;
   font-style: italic;
 }
 
 /* 📌 Botón guardar */
-#form-editar-producto button {
+#form-editar-producto button,
+#form-agregar-producto button{
   background-color: #4caf50;
   color: white;
   border: none;
@@ -318,20 +330,23 @@ label.required::after {
   grid-column: span 2;
 }
 
-#form-editar-producto button:hover {
+#form-editar-producto button:hover,
+#form-agregar-producto button:hover{
   background-color: #388e3c;
   transform: scale(1.05);
 }
 
 /* 📂 Campos opcionales */
-#form-editar-producto details {
+#form-editar-producto details,
+#form-agregar-producto details {
   grid-column: span 2;
   margin-top: 10px;
   border-top: 1px solid #ddd;
   padding-top: 10px;
 }
 
-#form-editar-producto summary {
+#form-editar-producto summary,
+#form-agregar-producto summary{
   cursor: pointer;
   font-weight: bold;
   color: #1976d2;
