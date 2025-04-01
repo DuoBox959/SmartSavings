@@ -78,6 +78,8 @@ async function editarProducto(id) {
     // Rellenar formulario
     document.getElementById("edit-producto-id").value = producto._id;
     document.getElementById("edit-nombre").value = producto.Nombre;
+    document.getElementById("edit-marca").value = producto.Marca || "";
+
     document.getElementById("edit-tipo").value = producto.Tipo || "";
     document.getElementById("edit-subtipo").value = producto.Subtipo || "";
     document.getElementById("edit-precio").value = precioData.precioActual || "";
@@ -118,46 +120,42 @@ async function guardarCambiosDesdeFormulario() {
   try {
     const id = document.getElementById("edit-producto-id").value;
 
-    // Crear FormData para enviar datos en formato adecuado al backend
     const formData = new FormData();
     formData.append("nombre", document.getElementById("edit-nombre").value);
-    formData.append("marca", document.getElementById("edit-marca").value);
+    formData.append("marca", document.getElementById("edit-marca").value || "Sin marca"); // 💡 AÑADIDO
     formData.append("peso", document.getElementById("edit-peso").value);
-    formData.append(
-      "unidadPeso",
-      document.getElementById("edit-unidadPeso").value
-    );
+    formData.append("unidadPeso", document.getElementById("edit-unidadPeso").value);
     formData.append("estado", document.getElementById("edit-estado").value);
 
-    // Solo incluir IDs válidos si existen
     const proveedor = document.getElementById("edit-proveedor").value;
     if (proveedor) formData.append("proveedor_id", proveedor);
 
     const supermercado = document.getElementById("edit-supermercado").value;
     if (supermercado) formData.append("supermercado_id", supermercado);
 
-    // Enviar datos al servidor
     const response = await fetch(`${API_URL}/${id}`, {
       method: "PUT",
-      body: formData, // ✅ Enviamos FormData en lugar de JSON
+      body: formData,
     });
 
     if (!response.ok) throw new Error("Error en la actualización");
 
     Swal.fire("Éxito", "Producto actualizado correctamente", "success");
     cerrarFormulario();
-    cargarProductos(); // Recargar la lista de productos
+    cargarProductos();
   } catch (err) {
     console.error("Error al guardar cambios:", err);
     Swal.fire("Error", "Hubo un problema al actualizar el producto.", "error");
   }
 }
+
 async function guardarProductoNuevo() {
   try {
     const formData = new FormData();
 
     // 🏷️ Campos obligatorios u opcionales con default
     formData.append("nombre", document.getElementById("add-nombre")?.value || "N/A");
+    formData.append("marca", document.getElementById("add-marca")?.value || "Sin marca"); // 💡 AÑADIDO
     formData.append("tipo", document.getElementById("add-tipo")?.value || "N/A");
     formData.append("subtipo", document.getElementById("add-subtipo")?.value || "");
     formData.append("utilidad", document.getElementById("add-utilidad")?.value || "");
