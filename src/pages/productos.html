@@ -95,7 +95,13 @@
       </select>
 
       <label>Supermercado: <span style="color: red">*</span></label>
-      <input type="text" id="edit-supermercado" required />
+      <select id="edit-supermercado-select" required onchange="toggleNuevoSupermercado('add')">
+        <option value="">Selecciona un supermercado</option>
+        <!-- Supermercados cargados desde JS -->
+        <option value="nuevo">Otro (escribir nuevo)</option>
+      </select>
+      <input type="text" id="edit-supermercado-nuevo" placeholder="Nuevo supermercado" style="display: none;" />
+      
 
       <label>Estado: <span style="color: red">*</span></label>
       <select id="edit-estado" required>
@@ -119,8 +125,14 @@
         <label>Marca:</label>
         <input type="text" id="edit-marca" />
         
-        <label>Ubicación exacta del supermercado:</label>
-        <input type="text" id="edit-ubicacion-super" />
+        <label>Supermercado: <span style="color: red">*</span></label>
+        <select id="edit-supermercado-select" required onchange="toggleNuevoSupermercado('edit')">
+          <option value="">Selecciona un supermercado</option>
+          <!-- Supermercados cargados desde JS -->
+          <option value="nuevo">Otro (escribir nuevo)</option>
+        </select>
+        <input type="text" id="edit-supermercado-nuevo" placeholder="Nuevo supermercado" style="display: none;" />
+        
 
         <label>País del supermercado:</label>
         <input type="text" id="edit-pais-super" />
@@ -186,7 +198,13 @@
       </select>
 
       <label>Supermercado: <span style="color: red">*</span></label>
-      <input type="text" id="add-supermercado" required />
+      <select id="add-supermercado-select" required onchange="toggleNuevoSupermercado('add')">
+        <option value="">Selecciona un supermercado</option>
+        <!-- Los supermercados se insertan desde JS -->
+        <option value="nuevo">Otro (escribir nuevo)</option>
+      </select>
+      <input type="text" id="add-supermercado-nuevo" placeholder="Nuevo supermercado" style="display: none;" />
+      
 
       <label>Estado: <span style="color: red">*</span></label>
       <select id="add-estado" required>

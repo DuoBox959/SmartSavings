@@ -4,12 +4,13 @@ import { volverAtras } from "../functions/global/funciones.js";
 
 window.volverAtras = volverAtras;
 
-const API_URL = "http://localhost:3000/api/productos"; // URL de la API
+const API_URL = "http://localhost:3000/api/productos"; 
 
 document.addEventListener("DOMContentLoaded", async () => {
   try {
     await cargarHeaderFooter();
     gestionarUsuarioAutenticado();
+    await cargarSupermercadosEnSelects();
     cargarProductos();
   } catch (error) {
     console.error("Error en la inicialización:", error);
@@ -177,8 +178,12 @@ async function guardarProductoNuevo() {
     }
 
     // 📦 Supermercado y proveedor (IDs o nombres, según backend)
-    formData.append("supermercado", document.getElementById("add-supermercado")?.value || "");
-    formData.append("proveedor", document.getElementById("add-proveedor")?.value || "");
+    let supermercadoSeleccionado = document.getElementById("add-supermercado-select").value;
+    if (supermercadoSeleccionado === "nuevo") {
+      supermercadoSeleccionado = document.getElementById("add-supermercado-nuevo").value;
+    }
+    formData.append("supermercado", supermercadoSeleccionado || "");
+        formData.append("proveedor", document.getElementById("add-proveedor")?.value || "");
 
     // 🧾 Campos adicionales
     formData.append("paisSuper", document.getElementById("add-pais-super")?.value || "");
@@ -258,6 +263,48 @@ async function eliminarProducto(id) {
     Swal.fire("Error", "Hubo un problema al eliminar el producto.", "error");
   }
 }
+async function cargarSupermercadosEnSelects() {
+  try {
+    const response = await fetch("http://localhost:3000/api/supermercados");
+    const supermercados = await response.json();
+
+    const selects = ["add-supermercado-select", "edit-supermercado-select"];
+    selects.forEach(selectId => {
+      const select = document.getElementById(selectId);
+      select.innerHTML = `<option value="">Selecciona un supermercado</option>`;
+
+      supermercados.forEach(supermercado => {
+        const option = document.createElement("option");
+        option.value = supermercado._id;
+        option.textContent = supermercado.Nombre;
+        select.appendChild(option);
+      });
+
+      const optionOtro = document.createElement("option");
+      optionOtro.value = "nuevo";
+      optionOtro.textContent = "Otro (escribir nuevo)";
+      select.appendChild(optionOtro);
+    });
+  } catch (err) {
+    console.error("Error cargando supermercados:", err);
+  }
+}
+
+function toggleNuevoSupermercado(tipo) {
+  const select = document.getElementById(`${tipo}-supermercado-select`);
+  const inputNuevo = document.getElementById(`${tipo}-supermercado-nuevo`);
+
+  if (select.value === "nuevo") {
+    inputNuevo.style.display = "block";
+    inputNuevo.required = true;
+  } else {
+    inputNuevo.style.display = "none";
+    inputNuevo.required = false;
+    inputNuevo.value = ""; 
+  }
+}
+window.toggleNuevoSupermercado = toggleNuevoSupermercado;
+window.cargarSupermercadosEnSelects = cargarSupermercadosEnSelects;
 window.guardarProductoNuevo = guardarProductoNuevo;
 window.cerrarFormularioAgregar = cerrarFormularioAgregar;
 window.guardarCambiosDesdeFormulario = guardarCambiosDesdeFormulario;
