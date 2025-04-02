@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!-- 🌐 Configuración básica -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Detalle del Producto</title>
+
+  <!-- 🎨 Estilos globales y específicos -->
+  <link rel="stylesheet" href="../style/global/header.css" />
+  <link rel="stylesheet" href="../style/producto.css" />
+  <link rel="stylesheet" href="../style/global/footer.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- 📦 Librerías JS -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Importa el JS externo -->
+  <script src="../functions/detalle-producto.js" defer></script>
+</head>
+<body>
+  <!-- ✅ Header dinámico (si lo cargas con JS) -->
+  <div id="header"></div>
+
+  <!-- 📚 Sección para mostrar los detalles del producto -->
+  <section id="detalle-producto">
+    <div class="producto-imagen">
+      <img id="producto-imagen" src="../assets/img/default.webp" alt="Imagen del Producto" />
+    </div>
+    <div class="producto-info">
+      <h1 id="producto-nombre">Nombre del producto</h1>
+      <p id="producto-marca">Marca: </p>
+      <p id="producto-precio">Precio: </p>
+      <p id="producto-descripcion">Descripción: </p>
+      <p id="producto-peso">Peso: </p>
+      <p id="producto-estado">Estado: </p>
+    </div>
+  </section>
+
+  <!-- 🔙 Botón para volver a la lista -->
+  <button onclick="volver()">Volver</button>
+
+  <!-- ✅ Footer dinámico -->
+  <div id="footer"></div>
+</body>
+</html>

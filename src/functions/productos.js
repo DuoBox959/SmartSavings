@@ -147,12 +147,159 @@ async function editarProducto(id) {
 // 💾 GUARDAR PRODUCTO NUEVO / ACTUALIZADO
 // ==============================
 async function guardarProductoNuevo() {
-  // 💡 Se mantiene sin cambios, ver siguiente archivo si necesitas la versión limpia y comentada
+  try {
+    const formData = new FormData();
+
+    formData.append("nombre", document.getElementById("add-nombre").value);
+    formData.append("marca", document.getElementById("add-marca-select").value || "Sin marca");
+    formData.append("tipo", document.getElementById("add-tipo-select").value);
+    formData.append("subtipo", document.getElementById("add-subtipo-select").value);
+    formData.append("utilidad", document.getElementById("add-utilidad")?.value || "");
+    formData.append("precioActual", document.getElementById("add-precio").value);
+    formData.append("precioDescuento", document.getElementById("add-precioDescuento")?.value || "");
+    formData.append("peso", document.getElementById("add-peso").value);
+    formData.append("unidadPeso", document.getElementById("add-unidadPeso").value);
+    formData.append("estado", document.getElementById("add-estado").value);
+
+    // Imagen opcional
+    const imagenInput = document.getElementById("add-imagen");
+    if (imagenInput?.files?.length > 0) {
+      formData.append("Imagen", imagenInput.files[0]);
+    }
+
+    // 👇 NUEVO: Supermercado
+    let supermercadoId = document.getElementById("add-supermercado-select").value;
+    if (supermercadoId === "nuevo") {
+      const nuevoNombre = document.getElementById("add-supermercado-nuevo").value;
+      const nuevoPais = document.getElementById("add-pais-super").value || "España";
+      const nuevaUbicacion = document.getElementById("add-ubicacion-super").value || "";
+      supermercadoId = await insertarNuevoSupermercado(nuevoNombre, nuevoPais, nuevaUbicacion);
+    }
+    formData.append("supermercado", supermercadoId);
+
+    // 👇 NUEVO: Proveedor
+    let proveedorId = document.getElementById("add-proveedor-select").value;
+    if (proveedorId === "nuevo") {
+      const nuevoNombre = document.getElementById("add-proveedor-nuevo").value;
+      const nuevoPais = document.getElementById("add-pais-proveedor").value || "España";
+      proveedorId = await insertarNuevoProveedor(nuevoNombre, nuevoPais);
+    }
+    formData.append("proveedor", proveedorId);
+
+    // Fechas
+    formData.append("fechaSubida", new Date().toISOString());
+    formData.append("fechaActualizacion", new Date().toISOString());
+
+    // Usuario desde sessionStorage
+    const usuario = JSON.parse(sessionStorage.getItem("user"));
+    const userId = usuario?._id || usuario?.id || null;
+
+    if (!userId || typeof userId !== "string") {
+      console.warn("🧨 Usuario mal definido en sessionStorage:", usuario);
+      throw new Error("Usuario no autenticado");
+    }
+
+    formData.append("usuario", userId);
+
+    // Enviar al backend
+    const response = await fetch("http://localhost:3000/api/productos-completos", {
+      method: "POST",
+      body: formData
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error("Error del servidor: " + errorText);
+    }
+
+    Swal.fire("✅ Éxito", "Producto agregado correctamente", "success");
+    cerrarFormularioAgregar();
+    cargarProductos();
+  } catch (error) {
+    console.error("❌ Error al guardar producto:", error);
+    Swal.fire("Error", "No se pudo guardar el producto", "error");
+  }
 }
 
+
+
 async function guardarCambiosDesdeFormulario() {
-  // 💡 Se mantiene sin cambios, ver siguiente archivo si necesitas la versión limpia y comentada
+  try {
+    const id = document.getElementById("edit-producto-id").value;
+    const formData = new FormData();
+
+    // Campos base
+    formData.append("nombre", document.getElementById("edit-nombre").value);
+    formData.append("marca", document.getElementById("edit-marca-select").value || "Sin marca");
+    formData.append("peso", document.getElementById("edit-peso").value);
+    formData.append("unidadPeso", document.getElementById("edit-unidadPeso").value);
+    formData.append("estado", document.getElementById("edit-estado").value);
+    formData.append("fechaActualizacion", new Date().toISOString());
+
+    // IDs
+    const supermercadoId = document.getElementById("edit-supermercado-select").value;
+    const proveedorId = document.getElementById("edit-proveedor-select").value;
+    const userId = JSON.parse(localStorage.getItem("usuario"))?._id;
+
+    formData.append("supermercado", supermercadoId);
+    formData.append("proveedor", proveedorId);
+    formData.append("usuario", userId);
+
+    // Imagen opcional
+    const imagenInput = document.getElementById("add-imagen");
+    if (imagenInput?.files?.length > 0) {
+      formData.append("Imagen", imagenInput.files[0]);
+    }
+
+    // 🔄 1️⃣ Actualizar producto principal
+    const productoRes = await fetch(`http://localhost:3000/api/productos-completos/${id}`, {
+      method: "PUT",
+      body: formData,
+    });
+
+    if (!productoRes.ok) throw new Error("Error al actualizar el producto");
+
+    // 💰 2️⃣ Actualizar precio
+    const precioData = {
+      producto_id: id,
+      precioActual: document.getElementById("edit-precio").value,
+      precioDescuento: document.getElementById("edit-precioDescuento").value || "",
+      unidadLote: document.getElementById("edit-unidadLote").value || "N/A",
+      precioUnidadLote: document.getElementById("edit-precioPorUnidad").value || "",
+      precioHistorico: document.getElementById("edit-precioHistorico").value || "",
+    };
+
+    await fetch("http://localhost:3000/api/precios", {
+      method: "POST", // Usa PUT si ya lo tienes creado y conoces su ID
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(precioData),
+    });
+
+    // 📝 3️⃣ Actualizar descripción
+    const descripcionData = {
+      Producto_id: id,
+      Tipo: document.getElementById("edit-tipo-select").value,
+      Subtipo: document.getElementById("edit-subtipo-select").value,
+      Utilidad: "", // Puedes completarlo si tienes este campo
+    };
+
+    await fetch("http://localhost:3000/api/descripcion", {
+      method: "POST", // Usa PUT si ya existe
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(descripcionData),
+    });
+
+    // 🎉 Éxito
+    Swal.fire("✅ Éxito", "Producto actualizado completamente", "success");
+    cerrarFormulario();
+    cargarProductos();
+
+  } catch (err) {
+    console.error("❌ Error al actualizar producto completo:", err);
+    Swal.fire("Error", "Hubo un problema al actualizar el producto.", "error");
+  }
 }
+
 
 // ==============================
 // ➕ CREACIÓN DE RELACIONES DINÁMICAS
@@ -161,13 +308,20 @@ async function insertarNuevoSupermercado(nombre, pais, ubicacion = "", ciudad = 
   const res = await fetch("http://localhost:3000/api/supermercados", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ Nombre: nombre, Pais: pais, Ciudad: ciudad, Ubicacion: ubicacion })
+    body: JSON.stringify({
+      Nombre: nombre,
+      Pais: pais,
+      Ciudad: ciudad,
+      Ubicacion: [ubicacion] // 👈 ahora sí es un array
+    })
   });
 
   if (!res.ok) throw new Error("Error al crear supermercado");
+
   const data = await res.json();
   return data.supermercado._id;
 }
+
 
 async function insertarNuevoProveedor(nombre, pais, comunidad = "N/A") {
   const res = await fetch("http://localhost:3000/api/proveedor", {
@@ -228,7 +382,19 @@ async function eliminarProducto(id) {
 
     if (!confirm.isConfirmed) return;
 
+    // 🗑️ Eliminar producto
     await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+
+    // 🗑️ Eliminar precio asociado
+    await fetch(`http://localhost:3000/api/precios/${id}`, {
+      method: "DELETE",
+    });
+
+    // Si también usas "descripcion", elimina eso aquí:
+    await fetch(`http://localhost:3000/api/descripcion/${id}`, {
+      method: "DELETE",
+    });
+
     Swal.fire("Eliminado", "Producto eliminado correctamente", "success");
     cargarProductos();
   } catch (err) {
@@ -236,6 +402,7 @@ async function eliminarProducto(id) {
     Swal.fire("Error", "Hubo un problema al eliminar el producto.", "error");
   }
 }
+
 
 // ==============================
 // 🔁 EXPOSICIÓN GLOBAL PARA HTML
