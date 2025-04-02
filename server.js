@@ -1823,3 +1823,77 @@ function getISOWeek(date) {
   const weekNo = Math.ceil(((tempDate - yearStart) / 86400000 + 1) / 7);
   return weekNo;
 }
+
+
+// =============================================
+// 📁 CRUDs para: tipos, subtipos y marcas
+// =============================================
+
+app.get("/api/tipos", async (req, res) => {
+  try {
+    const tipos = await db.collection("Descripcion").distinct("Tipo");
+    res.json(tipos.filter(Boolean));
+  } catch (err) {
+    console.error("❌ Error al obtener tipos:", err);
+    res.status(500).json({ error: "Error al obtener tipos" });
+  }
+});
+
+app.get("/api/subtipos", async (req, res) => {
+  try {
+    const subtipos = await db.collection("Descripcion").distinct("Subtipo");
+    res.json(subtipos.filter(Boolean));
+  } catch (err) {
+    console.error("❌ Error al obtener subtipos:", err);
+    res.status(500).json({ error: "Error al obtener subtipos" });
+  }
+});
+
+app.get("/api/marcas", async (req, res) => {
+  try {
+    const marcas = await db.collection("Productos").distinct("Marca");
+    res.json(marcas.filter(Boolean));
+  } catch (err) {
+    console.error("❌ Error al obtener marcas:", err);
+    res.status(500).json({ error: "Error al obtener marcas" });
+  }
+});
+/**
+ * ✅ Obtener nombres de proveedores (para los selects)
+ * Ruta: GET /api/proveedores
+ */
+app.get("/api/proveedores", async (req, res) => {
+  try {
+    const proveedores = await db.collection("Proveedor").find().toArray();
+    const nombres = proveedores.map((p) => ({
+      _id: p._id,
+      Nombre: p.Nombre,
+    }));
+    res.json(nombres);
+  } catch (err) {
+    console.error("❌ Error obteniendo nombres de proveedores:", err);
+    res.status(500).json({ error: "Error al obtener proveedores" });
+  }
+});
+
+
+// 🧹 Eliminar producto completo con precios y descripción asociada
+app.delete("/api/productos-completos/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!ObjectId.isValid(id)) return res.status(400).json({ error: "ID inválido" });
+
+    const _id = new ObjectId(id);
+
+    // 🔥 Borrar de todas las colecciones relacionadas
+    await db.collection("Productos").deleteOne({ _id });
+    await db.collection("Precios").deleteMany({ producto_id: _id });
+    await db.collection("Descripcion").deleteMany({ Producto_id: _id });
+    await db.collection("Opiniones").deleteMany({ Producto_id: _id }); // si usas opiniones
+
+    res.json({ message: "Producto y datos asociados eliminados correctamente" });
+  } catch (err) {
+    console.error("❌ Error eliminando producto completo:", err);
+    res.status(500).json({ error: "Error interno al eliminar producto" });
+  }
+});

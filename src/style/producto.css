@@ -1,11 +1,15 @@
-/* 🌟 Reset */
+/* ====================================================
+🌐 RESETEO BÁSICO
+==================================================== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* 🌐 General */
+/* ====================================================
+🎨 ESTILOS GENERALES
+==================================================== */
 body {
   font-family: "Roboto", sans-serif;
   background: linear-gradient(135deg, #dfe9f3, #f7f9fc);
@@ -15,7 +19,9 @@ body {
   min-height: 100vh;
 }
 
-/* 🛒 Contenedor de productos */
+/* ====================================================
+🛍️ CONTENEDOR DE PRODUCTOS
+==================================================== */
 .productos-container {
   display: flex;
   flex-wrap: wrap;
@@ -25,19 +31,21 @@ body {
   flex: 1;
 }
 
-/* 🎴 Tarjeta de producto */
+/* ====================================================
+🎴 TARJETA DE PRODUCTO
+==================================================== */
 .product-card {
-  background: #ffffff;
+  background: #fff;
   color: #333;
+  border: 1px solid #e0e0e0;
   border-radius: 18px;
   width: 280px;
   padding: 20px;
   text-align: center;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
   position: relative;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
   overflow: hidden;
-  border: 1px solid #e0e0e0;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .product-card:hover {
@@ -49,15 +57,15 @@ body {
 .product-card img {
   width: 100%;
   border-radius: 12px;
-  transition: transform 0.3s ease;
   margin-bottom: 10px;
+  transition: transform 0.3s ease;
 }
 
 .product-card:hover img {
   transform: scale(1.03);
 }
 
-/* 📛 Nombre del producto */
+/* 🧾 Texto de tarjeta */
 .product-card h3 {
   font-size: 22px;
   margin: 14px 0;
@@ -65,29 +73,12 @@ body {
   color: #222;
 }
 
-/* 🏷️ Marca */
 .product-card .marca {
   font-size: 16px;
   color: #666;
   margin-bottom: 4px;
 }
 
-/* 💰 Precio */
-.product-card .precio {
-  color: #d32f2f;
-  font-weight: bold;
-  font-size: 22px;
-  margin-top: 8px;
-}
-
-.product-card .precio-lote {
-  font-size: 18px;
-  color: #d84315;
-  font-weight: 600;
-  margin: 6px;
-}
-
-/* ⚖️ Peso y Ubicación */
 .product-card .peso,
 .product-card .supermercado,
 .product-card .ubicacion {
@@ -96,16 +87,17 @@ body {
   margin: 6px 0;
 }
 
-/* 📝 Descripción y Biografía */
-.product-card .biografia,
-.product-card .descripcion {
+.product-card .descripcion,
+.product-card .biografia {
   font-size: 15px;
   color: #444;
-  margin-top: 6px;
   line-height: 1.4;
+  margin-top: 6px;
 }
 
-/* ❤️ Icono de favorito */
+/* ====================================================
+❤️ FAVORITO
+==================================================== */
 .favorite-icon {
   position: absolute;
   top: 14px;
@@ -124,7 +116,9 @@ body {
   color: #ff5252;
 }
 
-/* 🔘 Botones */
+/* ====================================================
+🛠️ BOTONES DE ACCIÓN
+==================================================== */
 .acciones {
   display: flex;
   justify-content: space-between;
@@ -136,16 +130,26 @@ body {
   padding: 12px 16px;
   cursor: pointer;
   border-radius: 12px;
-  transition: 0.3s ease;
   font-weight: 600;
   font-size: 14px;
   display: flex;
   align-items: center;
   gap: 5px;
+  transition: 0.3s ease;
 }
 
 .acciones button:hover {
   opacity: 0.85;
+}
+
+.btn-editar {
+  background: #388e3c;
+  color: white;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+.btn-editar:hover {
+  background: #2e7d32;
 }
 
 .btn-eliminar {
@@ -153,41 +157,37 @@ body {
   color: white;
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
 }
+
 .btn-eliminar:hover {
   background: #e64a19;
 }
-.btn-editar {
-  background: #388e3c;
-  color: white;
-  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
-}
-.btn-editar:hover {
-  background: #388e3c;
-}
 
-/* 🔙 Botón Volver Atrás */
+/* ====================================================
+🔙 BOTÓN VOLVER ATRÁS
+==================================================== */
 .back-button {
   background-color: #237f27;
   color: white;
-  border: none;
   padding: 15px 30px;
   font-size: 1.2em;
   font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-top: 20px;
+  border: none;
   border-radius: 8px;
   width: 200px;
   text-align: center;
   display: block;
   margin: 20px auto;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .back-button:hover {
   background-color: #388e3c;
 }
 
-/* 🎨 Estilos del modal */
+/* ====================================================
+🪟 MODAL GENÉRICO
+==================================================== */
 .modal {
   display: none;
   position: fixed;
@@ -196,37 +196,29 @@ body {
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.5);
   align-items: center;
   justify-content: center;
 }
 
 .modal-content {
-  background-color: white;
-  padding: 15px;
+  background: white;
   width: 90%;
   max-width: 650px;
+  max-height: 90vh;
+  overflow-y: auto;
   border-radius: 10px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-  position: relative;
-  animation: fadeIn 0.3s ease-in-out;
+  padding: 15px;
   text-align: center;
-  max-height: 90vh;            /* El modal no ocupará más del 90% de la pantalla */
-  overflow-y: auto;            /* Activa scroll vertical si se necesita */
+  animation: fadeIn 0.3s ease-in-out;
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
 }
 
-/* ❌ Botón cerrar */
+/* ❌ Botón de cerrar modal */
 .close {
   position: absolute;
   top: 10px;
@@ -240,45 +232,45 @@ body {
   color: #d32f2f;
 }
 
-/* 📝 FORMULARIO DE EDICIÓN */
+/* ====================================================
+📝 FORMULARIOS (AGREGAR / EDITAR)
+==================================================== */
 #form-editar-producto,
-#form-agregar-producto
-{
+#form-agregar-producto {
   display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  padding: 20px;
+  margin: 20px auto;
+  width: 90%;
+  max-width: 600px;
   background: white;
   color: #333;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  width: 90%;
-  max-width: 600px;
-  margin: 20px auto;
-  padding: 20px;
   text-align: left;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
 }
+
+#form-editar-producto h2,
+#form-agregar-producto h2 {
+  font-size: 1.8em;
+  color: #1976d2;
+  text-align: center;
+  grid-column: span 2;
+}
+
 label.required::after {
   content: " *";
   color: red;
 }
 
-/* 🧾 Título (en el h2 del modal) */
-#modal-editar h2 {
-  font-size: 1.8em;
-  margin-bottom: 20px;
-  text-align: center;
-  color: #1976d2;
-  grid-column: span 2;
-}
-
-/* 🔘 Campos */
+/* 🧾 Inputs y selects */
 #form-editar-producto input,
 #form-editar-producto select,
 #form-editar-producto textarea,
 #form-agregar-producto input,
 #form-agregar-producto select,
-#form-agregar-producto input
- {
+#form-agregar-producto textarea {
   width: 100%;
   padding: 7px;
   font-size: 1em;
@@ -289,19 +281,12 @@ label.required::after {
   transition: all 0.3s ease;
 }
 
-#form-editar-producto textarea {
-  resize: vertical;
-  height: 80px;
-  grid-column: span 2;
-}
-
 #form-editar-producto input:focus,
-#form-editar-producto select:focus,
-#form-editar-producto textarea:focus,
 #form-agregar-producto input:focus,
+#form-editar-producto select:focus,
 #form-agregar-producto select:focus,
-#form-agregar-producto textarea:focus
- {
+#form-editar-producto textarea:focus,
+#form-agregar-producto textarea:focus {
   outline: none;
   border-color: #365a7e;
   box-shadow: 0 0 5px rgba(54, 90, 126, 0.5);
@@ -309,34 +294,18 @@ label.required::after {
 }
 
 #form-editar-producto textarea::placeholder,
-#form-agregar-producto textarea::placeholder{
+#form-agregar-producto textarea::placeholder {
   color: #999;
   font-style: italic;
 }
 
-/* 📌 Botón guardar */
-#form-editar-producto button,
-#form-agregar-producto button{
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  padding: 10px;
-  font-size: 1em;
-  font-weight: bold;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-  width: 100%;
+#form-editar-producto textarea {
+  resize: vertical;
+  height: 80px;
   grid-column: span 2;
 }
 
-#form-editar-producto button:hover,
-#form-agregar-producto button:hover{
-  background-color: #388e3c;
-  transform: scale(1.05);
-}
-
-/* 📂 Campos opcionales */
+/* 📂 Campos opcionales (details) */
 #form-editar-producto details,
 #form-agregar-producto details {
   grid-column: span 2;
@@ -346,14 +315,38 @@ label.required::after {
 }
 
 #form-editar-producto summary,
-#form-agregar-producto summary{
+#form-agregar-producto summary {
   cursor: pointer;
   font-weight: bold;
   color: #1976d2;
   margin-bottom: 10px;
 }
 
-/* 🧭 Categorías navegación */
+/* ✅ Botón Guardar */
+#form-editar-producto button,
+#form-agregar-producto button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px;
+  font-size: 1em;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  grid-column: span 2;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#form-editar-producto button:hover,
+#form-agregar-producto button:hover {
+  background-color: #388e3c;
+  transform: scale(1.05);
+}
+
+/* ====================================================
+🧭 NAVEGACIÓN DE CATEGORÍAS
+==================================================== */
 .nav-categorias {
   background-color: #7ca08b;
   padding: 15px 0;
@@ -363,15 +356,15 @@ label.required::after {
 
 .nav-categorias ul {
   display: flex;
-  list-style: none;
   gap: 40px;
+  list-style: none;
 }
 
 .nav-categorias li a {
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: #ffffff;
+  color: #fff;
   font-weight: bold;
   text-decoration: none;
   transition: transform 0.3s;
@@ -388,18 +381,20 @@ label.required::after {
   transform: scale(1.1);
 }
 
-/* ✅ Botón Agregar Producto (estilo oscuro elegante) */
+/* ====================================================
+➕ BOTÓN AGREGAR PRODUCTO
+==================================================== */
 .btn-agregar {
   background: #34495e;
   color: white;
-  border: none;
   padding: 10px 20px;
   font-size: 1em;
   font-weight: bold;
+  border: none;
   border-radius: 5px;
-  cursor: pointer;
   margin: 20px auto;
   display: block;
+  cursor: pointer;
   transition: all 0.3s ease;
 }
 
