@@ -41,18 +41,21 @@ async function cargarProductos() {
 
     productos.forEach((producto) => {
       const productoHTML = `
-        <div class="product-card">
+      <div class="product-card">
+        <a href="detalle-producto.html?id=${producto._id}">
           <img src="${producto.Imagen || '../assets/img/default.webp'}" alt="${producto.Nombre}">
           <h3>${producto.Nombre}</h3>
-          <p class="marca">${producto.Marca || "Marca desconocida"}</p>
-          <p class="peso">Peso: ${producto.Peso} ${producto.UnidadPeso}</p>
-          <p class="estado">Estado: ${producto.Estado}</p>
-          <div class="acciones">
-              <button class="btn-editar" onclick="editarProducto('${producto._id}')">✏️ Editar</button>
-              <button class="btn-eliminar" onclick="eliminarProducto('${producto._id}')">🗑️ Eliminar</button>
-          </div>
+        </a>
+        <p class="marca">${producto.Marca || "Marca desconocida"}</p>
+        <p class="peso">Peso: ${producto.Peso} ${producto.UnidadPeso}</p>
+        <p class="estado">Estado: ${producto.Estado}</p>
+        <div class="acciones">
+          <button class="btn-editar" onclick="editarProducto('${producto._id}')">✏️ Editar</button>
+          <button class="btn-eliminar" onclick="eliminarProducto('${producto._id}')">🗑️ Eliminar</button>
         </div>
-      `;
+      </div>
+    `;
+
       productosContainer.innerHTML += productoHTML;
     });
   } catch (err) {
