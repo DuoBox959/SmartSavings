@@ -231,7 +231,7 @@ async function guardarCambiosDesdeFormulario() {
     const id = document.getElementById("edit-producto-id").value;
     const formData = new FormData();
 
-    // Campos base
+    // 🧱 Campos base
     formData.append("nombre", document.getElementById("edit-nombre").value);
     formData.append("marca", document.getElementById("edit-marca-select").value || "Sin marca");
     formData.append("peso", document.getElementById("edit-peso").value);
@@ -239,7 +239,7 @@ async function guardarCambiosDesdeFormulario() {
     formData.append("estado", document.getElementById("edit-estado").value);
     formData.append("fechaActualizacion", new Date().toISOString());
 
-    // IDs
+    // 🔗 IDs relacionados
     const supermercadoId = document.getElementById("edit-supermercado-select").value;
     const proveedorId = document.getElementById("edit-proveedor-select").value;
     const userId = JSON.parse(localStorage.getItem("usuario"))?._id;
@@ -248,7 +248,7 @@ async function guardarCambiosDesdeFormulario() {
     formData.append("proveedor", proveedorId);
     formData.append("usuario", userId);
 
-    // Imagen opcional
+    // 🖼️ Imagen opcional
     const imagenInput = document.getElementById("add-imagen");
     if (imagenInput?.files?.length > 0) {
       formData.append("Imagen", imagenInput.files[0]);
@@ -262,28 +262,43 @@ async function guardarCambiosDesdeFormulario() {
 
     if (!productoRes.ok) throw new Error("Error al actualizar el producto");
 
-    // 💰 2️⃣ Actualizar precio
+    // 💸 2️⃣ Preparar precio histórico desde texto
+    const historialTexto = document.getElementById("edit-precioHistorico").value;
+    const historialArray = historialTexto
+      .split(',')
+      .map(e => e.trim())
+      .reduce((acc, val, idx, arr) => {
+        if (idx % 2 === 0 && arr[idx + 1]) {
+          acc.push({
+            precio: parseFloat(val),
+            año: parseInt(arr[idx + 1])
+          });
+        }
+        return acc;
+      }, []);
+
+    // 💰 3️⃣ Actualizar precio
     const precioData = {
       producto_id: id,
-      precioActual: document.getElementById("edit-precio").value,
-      precioDescuento: document.getElementById("edit-precioDescuento").value || "",
+      precioActual: parseFloat(document.getElementById("edit-precio").value),
+      precioDescuento: document.getElementById("edit-precioDescuento").value || null,
       unidadLote: document.getElementById("edit-unidadLote").value || "N/A",
-      precioUnidadLote: document.getElementById("edit-precioPorUnidad").value || "",
-      precioHistorico: document.getElementById("edit-precioHistorico").value || "",
+      precioUnidadLote: parseFloat(document.getElementById("edit-precioPorUnidad").value || "0"),
+      precioHistorico: historialArray
     };
 
     await fetch("http://localhost:3000/api/precios", {
-      method: "POST", // Usa PUT si ya lo tienes creado y conoces su ID
+      method: "POST", // Usa PUT si ya lo tienes creado
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(precioData),
     });
 
-    // 📝 3️⃣ Actualizar descripción
+    // 📝 4️⃣ Actualizar descripción con Utilidad incluida
     const descripcionData = {
       Producto_id: id,
       Tipo: document.getElementById("edit-tipo-select").value,
       Subtipo: document.getElementById("edit-subtipo-select").value,
-      Utilidad: "", // Puedes completarlo si tienes este campo
+      Utilidad: document.getElementById("edit-utilidad").value || "Sin descripción"
     };
 
     await fetch("http://localhost:3000/api/descripcion", {
@@ -295,13 +310,14 @@ async function guardarCambiosDesdeFormulario() {
     // 🎉 Éxito
     Swal.fire("✅ Éxito", "Producto actualizado completamente", "success");
     cerrarFormulario();
-    cargarProductos();
+    cargarProductos(); // Asegúrate de que esta función existe, si no, usa cargarProducto()
 
   } catch (err) {
     console.error("❌ Error al actualizar producto completo:", err);
     Swal.fire("Error", "Hubo un problema al actualizar el producto.", "error");
   }
 }
+
 
 
 // ==============================

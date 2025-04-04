@@ -549,7 +549,7 @@ app.put("/api/productos-completos/:id", upload.single("Imagen"), async (req, res
       updateData.Usuario_id = new ObjectId(req.body.usuario);
     }
 
-    // 🛠️ Actualiza el producto
+    // ✅ 1️⃣ Actualizar producto
     const result = await db.collection("Productos").updateOne(
       { _id: objectId },
       { $set: updateData }
@@ -559,12 +559,47 @@ app.put("/api/productos-completos/:id", upload.single("Imagen"), async (req, res
       return res.status(404).json({ error: "Producto no encontrado" });
     }
 
+    // ✅ 2️⃣ Actualizar o insertar precios
+    const nuevoPrecio = {
+      producto_id: objectId,
+      precioActual: parseFloat(req.body.precioActual),
+      precioDescuento: req.body.precioDescuento ? parseFloat(req.body.precioDescuento) : null,
+      unidadLote: req.body.unidadLote || "N/A",
+      precioUnidadLote: req.body.precioPorUnidad ? parseFloat(req.body.precioPorUnidad) : null,
+      precioHistorico: parsearPrecioHistorico(req.body.precioHistorico),
+    };
+
+    await db.collection("Precios").updateOne(
+      { producto_id: objectId },
+      { $set: nuevoPrecio },
+      { upsert: true }
+    );
+
+    // ✅ 3️⃣ Actualizar o insertar descripción
+    if (req.body.tipo) {
+      const descripcionActualizada = {
+        Producto_id: objectId,
+        Tipo: req.body.tipo,
+        Subtipo: req.body.subtipo || null,
+        Utilidad: req.body.utilidad || "Sin descripción",
+        Ingredientes: [],
+      };
+
+      await db.collection("Descripcion").updateOne(
+        { Producto_id: objectId },
+        { $set: descripcionActualizada },
+        { upsert: true }
+      );
+    }
+
     res.json({ message: "Producto completo actualizado correctamente" });
+
   } catch (err) {
     console.error("❌ Error actualizando producto completo:", err);
     res.status(500).json({ error: "Error interno al actualizar producto completo" });
   }
 });
+
 
 
 
