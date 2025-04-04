@@ -13,6 +13,8 @@
     <script type="module" src="../functions/register.js" defer></script>
     <!-- ✅ Librería SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!--Validaciones-->
+    <script type="module" src="../valid/validaciones.js" defer></script>
   </head>
   <body>
     <!-- 📌 Contenedor principal -->
@@ -67,8 +69,8 @@
             required
           />
           <small
-            >Solo caracteres alfanuméricos y guiones. No puede iniciar ni
-            terminar con guión.</small
+            >Solo se permiten caracteres alfanuméricos y guiones. No puede
+            comenzar ni terminar con un guión, ni contener espacios.</small
           >
 
           <!-- 🔥 Botón para registrarse -->

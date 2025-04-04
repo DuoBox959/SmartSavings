@@ -46,10 +46,12 @@ function esEmailValido(correo) {
   return regex.test(correo);
 }
 
-// 🔐 Validar longitud mínima de contraseña
-function esPasswordSegura(password, longitudMinima = 6) {
-  return password.length >= longitudMinima;
+// 🔐 Validar seguridad de contraseña
+function esPasswordSegura(password) {
+  const regex = /^(?=.*[a-z])(?=.*\d).{8,}$/;
+  return regex.test(password);
 }
+
 
 // 🔡 Eliminar espacios iniciales y finales
 function limpiarEspacios(texto) {

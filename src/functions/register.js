@@ -1,4 +1,5 @@
 import { volverAtras } from "../functions/global/funciones.js";
+import * as validaciones from "../valid/validaciones.js";
 
 // Obtener el botón de regreso
 const backButton = document.querySelector(".back-button");
@@ -22,6 +23,9 @@ togglePassword.addEventListener("click", function () {
   }
 });
 
+// Expresión regular para validar nombres de usuario
+const usernameRegex = /^(?!-)[a-zA-Z0-9-]+(?<!-)$/;
+
 // Evento de envío del formulario
 registerForm.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -31,14 +35,30 @@ registerForm.addEventListener("submit", async (event) => {
   const password = passwordInput.value.trim();
   const role = "usuario"; // Valor por defecto
 
-  // Validación de campos
-  if (!username || !email || !password) {
-    Swal.fire({
-      icon: "warning",
-      title: "⚠️ Campos incompletos",
-      text: "Por favor, completa todos los campos.",
-      confirmButtonText: "Aceptar",
-    });
+  // ✅ Validación de campos vacíos
+  if (validaciones.camposVacios(username, email, password)) {
+    validaciones.mostrarAlertaError("⚠️ Campos incompletos", "Por favor, completa todos los campos.");
+    return;
+  }
+
+  // ✅ Validación de email
+  if (!validaciones.esEmailValido(email)) {
+    validaciones.mostrarAlertaError("⚠️ Email inválido", "Por favor, ingresa un email válido.");
+    return;
+  }
+
+  // ✅ Validación de contraseña (mínimo 8 caracteres)
+  if (!validaciones.esPasswordSegura(password)) {
+    validaciones.mostrarAlertaError("⚠️ Contraseña débil", "La contraseña debe tener al menos 8 caracteres, un número y una letra minúscula.");
+    return;
+}
+
+  // ✅ Validación de nombre de usuario
+  if (!usernameRegex.test(username)) {
+    validaciones.mostrarAlertaError(
+      "⚠️ Usuario inválido",
+      "El usuario solo puede contener caracteres alfanuméricos y guiones (-), sin empezar ni terminar con guión."
+    );
     return;
   }
 

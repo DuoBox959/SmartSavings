@@ -1,4 +1,5 @@
 import { volverAtras } from "../functions/global/funciones.js";
+import { esEmailValido, esTextoValido, mostrarAlertaError } from "../valid/validaciones.js";
 
 // Seleccionamos elementos del formulario
 const loginForm = document.querySelector("form");
@@ -41,14 +42,25 @@ loginForm.addEventListener("submit", async (event) => {
   const emailOrUsername = emailOrUsernameInput.value.trim();
   const password = passwordInput.value;
 
-  if (!emailOrUsername || !password) {
-    Swal.fire({
-      icon: "warning",
-      title: "⚠️ Campos incompletos",
-      text: "Por favor, completa todos los campos.",
-      confirmButtonText: "Aceptar",
-    });
+  // 🚨 Verificar que los campos no estén vacíos
+  if (!esTextoValido(emailOrUsername) || !esTextoValido(password)) {
+    mostrarAlertaError("⚠️ Campos incompletos", "Por favor, completa todos los campos.");
     return;
+  }
+
+  // 📧 Si el usuario ingresa un email, validar formato
+  if (emailOrUsername.includes("@")) {
+    if (!esEmailValido(emailOrUsername)) {
+      mostrarAlertaError("⚠️ Email inválido", "Ingresa un correo electrónico válido.");
+      return;
+    }
+  } else {
+    // 🔡 Si es un nombre de usuario, validar que sea alfanumérico con guiones permitidos
+    const usernameRegex = /^[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$/;
+    if (!usernameRegex.test(emailOrUsername)) {
+      mostrarAlertaError("⚠️ Usuario inválido", "El nombre de usuario solo puede contener letras, números y guiones (sin empezar ni terminar con guión).");
+      return;
+    }
   }
 
   try {
@@ -86,11 +98,6 @@ loginForm.addEventListener("submit", async (event) => {
     });
   } catch (error) {
     console.error("❌ Error en login:", error);
-    Swal.fire({
-      icon: "error",
-      title: "¡Error!",
-      text: error.message,
-      confirmButtonText: "Aceptar",
-    });
+    mostrarAlertaError("❌ Error", error.message);
   }
 });

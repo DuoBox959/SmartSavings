@@ -154,7 +154,7 @@ async function guardarCambiosDesdeFormulario() {
   }
 
   if (!validaciones.esPasswordSegura(password)) {
-    validaciones.mostrarAlertaError("Contraseña débil", "⚠️ La contraseña debe tener al menos 6 caracteres.");
+    validaciones.mostrarAlertaError("⚠️ Contraseña débil", "La contraseña debe tener al menos 8 caracteres, un número y una letra minúscula.");
     return;
   }
 
