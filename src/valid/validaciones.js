@@ -92,6 +92,12 @@ export function esImagenValida(archivo) {
   return tiposValidos.includes(archivo.type);
 }
 
+export function esUsernameValido(username) {
+  const regex = /^(?!-)[a-zA-Z0-9-]+(?<!-)$/;
+  return regex.test(username) && !username.includes(" ");
+}
+
+
 
 // ✅ Exporta todas las necesarias
 export {

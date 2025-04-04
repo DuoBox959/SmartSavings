@@ -198,3 +198,13 @@ form select option {
   font-size: 20px;
   user-select: none;
 }
+
+.feedback {
+  font-size: 12px;
+  color: red;
+  margin-bottom: 10px;
+}
+
+input.input-invalido {
+  border: 2px solid red;
+}
