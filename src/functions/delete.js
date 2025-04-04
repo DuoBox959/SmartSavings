@@ -1,4 +1,5 @@
 import { volverAtras } from "../functions/global/funciones.js";
+import * as validaciones from "../valid/validaciones.js";
 
 // Asignar funciones a `window`
 window.volverAtras = volverAtras;
@@ -62,11 +63,35 @@ function configurarFormulario() {
     const password = document.getElementById("password").value;
     const confirmPassword = document.getElementById("confirm-password").value;
 
+    // Validar si los campos no están vacíos
+    if (validaciones.camposVacios(username, email, password, confirmPassword)) {
+      Swal.fire("Error", "Todos los campos deben ser completados.", "error");
+      return;
+    }
+
+    // Validar si el email es válido
+    if (!validaciones.esEmailValido(email)) {
+      Swal.fire("Error", "El email no tiene un formato válido.", "error");
+      return;
+    }
+
+    // Validar si la contraseña es segura
+    if (!validaciones.esPasswordSegura(password)) {
+      Swal.fire(
+        "Error",
+        "La contraseña debe tener al menos 8 caracteres, incluyendo una letra y un número.",
+        "error"
+      );
+      return;
+    }
+
+    // Validar que las contraseñas coincidan
     if (password !== confirmPassword) {
       Swal.fire("Error", "Las contraseñas no coinciden.", "error");
       return;
     }
 
+    // Verificar si el email coincide con el de la sesión actual
     if (!currentUser || currentUser.email !== email) {
       Swal.fire(
         "Error",

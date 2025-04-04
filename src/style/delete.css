@@ -208,6 +208,23 @@ form button:hover {
   text-decoration: underline;
 }
 
+/*Enlace para ir a actualizar*/
+.update-link {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 1rem;
+}
+
+.update-link a {
+  font-weight: bold;
+  color: #1e3c5a;
+  text-decoration: none;
+}
+
+.update-link a:hover {
+  text-decoration: underline;
+}
+
 /* 📱 Responsividad */
 @media (max-width: 768px) {
   .container {

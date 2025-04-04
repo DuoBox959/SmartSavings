@@ -12,6 +12,8 @@
     <script type="module" src="../functions/delete.js" defer></script>
     <!-- ✅ Librería SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+     <!--Validaciones-->
+     <script type="module" src="../valid/validaciones.js" defer></script>
   </head>
   <body>
     <!-- 📌 Contenedor principal -->
@@ -81,6 +83,10 @@
 
           <!-- 🔥 Botón para borrar cuenta -->
           <button type="submit">Borrar cuenta</button>
+
+          <p class="update-link">
+            ¿Deseas actualizar tu cuenta? <a href="update.html">Haz clic aquí</a>
+          </p>
 
           <!-- 🔙 Botón para regresar atrás -->
           <button type="button" class="back-button" onclick="volverAtras()">
