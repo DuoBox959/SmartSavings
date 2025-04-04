@@ -402,3 +402,18 @@ label.required::after {
   background-color: #0854ab;
   transform: scale(1.05);
 }
+.btn-cerrar {
+  background-color: #ccc;
+  color: #000;
+  padding: 0.5rem 1rem;
+  border: none;
+  margin-left: 10px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+}
+
+.btn-cerrar:hover {
+  background-color: #bbb;
+}

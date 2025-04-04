@@ -31,26 +31,40 @@
     <div class="producto-imagen">
       <img id="producto-imagen" src="../assets/img/default.webp" alt="Imagen del Producto" />
     </div>
+
     <div class="producto-info">
       <h1 id="producto-nombre">Nombre del producto</h1>
+
+      <!-- 📦 Información general -->
       <p id="producto-marca">Marca: </p>
+      <p id="producto-tipo">Tipo: </p>
+      <p id="producto-subtipo">Subtipo: </p>
+      <p id="producto-utilidad">Descripción: </p>
+      <p id="producto-ingredientes">Ingredientes: </p>
+
+      <!-- 💰 Información de precios -->
       <p id="producto-precio">Precio: </p>
       <p id="producto-precio-descuento">Precio Descuento: </p>
       <p id="producto-precio-unidad">Precio por unidad/lote: </p>
       <p id="producto-unidad-lote">Unidad/Lote: </p>
-      <p id="producto-utilidad">Descripción: </p>
+      <p id="producto-historico">Precio histórico: </p> 
+
+      <!-- ⚖️ Peso y estado -->
       <p id="producto-peso">Peso: </p>
       <p id="producto-estado">Estado: </p>
-      <p id="producto-tipo">Tipo: </p>
-      <p id="producto-subtipo">Subtipo: </p>
+
+      <!-- 🛒 Supermercado -->
       <p id="producto-supermercado">Supermercado: </p>
       <p id="producto-ubicacion">Ubicación del supermercado: </p> 
+      <p id="producto-ciudad-super">Ciudad del supermercado: </p>
       <p id="producto-pais-super">País del supermercado: </p>
+
+      <!-- 🏭 Proveedor -->
       <p id="producto-proveedor">Proveedor: </p>
       <p id="producto-pais-proveedor">País del proveedor: </p>
-      <p id="producto-historico">Precio histórico: </p> 
     </div>
   </section>
+
   <!-- ✏️ & 🗑️ Botones de acción -->
   <div class="acciones-producto">
     <button id="btn-editar-detalle" class="btn-editar">
@@ -162,6 +176,12 @@
 
         <label>Precio Histórico:</label>
         <textarea id="edit-precioHistorico" rows="3" placeholder="Ejemplo: 10, 2023, 12, 2024"></textarea>
+        
+        <label>Descripción del producto (Utilidad):</label>
+        <input type="text" id="edit-utilidad" placeholder="Ej. Bebida refrescante y energizante" />
+        
+        <label>Ingredientes (separados por coma):</label>
+        <input type="text" id="edit-ingredientes" placeholder="Ej: agua, azúcar, gas carbónico" />
       </details>
 
       <!-- ✅ Botón para guardar cambios -->

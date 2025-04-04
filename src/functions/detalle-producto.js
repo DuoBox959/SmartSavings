@@ -81,8 +81,10 @@ async function cargarProducto() {
     document.getElementById("producto-supermercado").textContent = "Supermercado: " + (supermercado?.Nombre || "");
     document.getElementById("producto-ubicacion").textContent = "Ubicación del supermercado: " + (supermercado?.Ubicacion || "");
     document.getElementById("producto-pais-super").textContent = "País del supermercado: " + (supermercado?.Pais || "");
+    document.getElementById("producto-ciudad-super").textContent = "Ciudad del supermercado: " + (supermercado?.Ciudad || "");
     document.getElementById("producto-proveedor").textContent = "Proveedor: " + (proveedor?.Nombre || "");
     document.getElementById("producto-pais-proveedor").textContent = "País del proveedor: " + (proveedor?.Pais || "");
+    document.getElementById("producto-ingredientes").textContent = "Ingredientes: " + (descripcion?.Ingredientes?.join(", ") || "N/A");
 
     const historial = precioData?.precioHistorico?.length
       ? precioData.precioHistorico.map(h => `${h.fecha}: ${h.precio}€`).join("\n")
@@ -149,13 +151,20 @@ async function editarProducto(id) {
       { campo: "proveedor", endpoint: "proveedores", usarId: true },
     ]);
 
+    // 👇🔄 Primero obtenemos supermercados y proveedores
+    const supermercados = await (await fetch("http://localhost:3000/api/supermercados")).json();
+    const proveedores = await (await fetch("http://localhost:3000/api/proveedor")).json();
+
     const producto = await (await fetch(`${API_URL}/${id}`)).json();
     const precios = await (await fetch("http://localhost:3000/api/precios")).json();
     const descripcion = await (await fetch("http://localhost:3000/api/descripcion")).json();
 
     const precioData = precios.find(p => p.producto_id === id);
     const descripcionData = descripcion.find(d => d.Producto_id === producto.Nombre);
+    const supermercado = supermercados.find(s => s._id?.toString() === producto.Supermercado_id?.toString());
+    const proveedor = proveedores.find(p => p._id?.toString() === producto.Proveedor_id?.toString());
 
+    // ✅ Rellenar formulario
     safeSetValue("edit-producto-id", producto._id);
     safeSetValue("edit-nombre", producto.Nombre);
     safeSetValue("edit-marca-select", producto.Marca);
@@ -167,6 +176,12 @@ async function editarProducto(id) {
     safeSetValue("edit-unidadLote", precioData?.unidadLote);
     safeSetValue("edit-precioPorUnidad", precioData?.precioUnidadLote);
     safeSetValue("edit-estado", producto.Estado || "En stock");
+    safeSetValue("edit-utilidad", descripcionData?.Utilidad || "Sin descripción");
+    safeSetValue("edit-ingredientes", descripcionData?.Ingredientes?.join(", ") || "");
+    safeSetValue("edit-ubicacion-super", supermercado?.Ubicacion || "");
+    safeSetValue("edit-pais-super", supermercado?.Pais || "");
+    safeSetValue("edit-ciudad-super", supermercado?.Ciudad || "");
+    safeSetValue("edit-pais-proveedor", proveedor?.Pais || "");
 
     document.getElementById("modal-editar").style.display = "flex";
   } catch (err) {
@@ -174,6 +189,7 @@ async function editarProducto(id) {
     Swal.fire("Error", "No se pudo cargar el producto para edición.", "error");
   }
 }
+
 
 // ==============================
 // 🗑️ ELIMINAR PRODUCTO
@@ -232,7 +248,11 @@ async function guardarCambiosDesdeFormulario() {
     formData.append("supermercado", document.getElementById("edit-supermercado-select").value);
     formData.append("proveedor", document.getElementById("edit-proveedor-select").value);
     formData.append("usuario", JSON.parse(localStorage.getItem("usuario"))?._id);
-
+    formData.append("ubicacionSuper", document.getElementById("edit-ubicacion-super").value);
+    formData.append("paisSuper", document.getElementById("edit-pais-super").value);
+    formData.append("ciudadSuper", document.getElementById("edit-ciudad-super").value);
+    formData.append("paisProveedor", document.getElementById("edit-pais-proveedor").value);
+    
     const imagenInput = document.getElementById("add-imagen");
     if (imagenInput?.files?.length > 0) {
       formData.append("Imagen", imagenInput.files[0]);
@@ -265,9 +285,14 @@ async function guardarCambiosDesdeFormulario() {
         Producto_id: id,
         Tipo: document.getElementById("edit-tipo-select").value,
         Subtipo: document.getElementById("edit-subtipo-select").value,
-        Utilidad: "",
+        Utilidad: document.getElementById("edit-utilidad").value || "Sin descripción",
+        Ingredientes: document.getElementById("edit-ingredientes").value
+          .split(",")
+          .map(i => i.trim())
+          .filter(i => i.length > 0)
       }),
     });
+    
 
     Swal.fire("✅ Éxito", "Producto actualizado correctamente", "success");
     cerrarFormulario();

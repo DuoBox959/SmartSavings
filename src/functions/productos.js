@@ -156,7 +156,6 @@ async function guardarProductoNuevo() {
     formData.append("marca", document.getElementById("add-marca-select").value || "Sin marca");
     formData.append("tipo", document.getElementById("add-tipo-select").value);
     formData.append("subtipo", document.getElementById("add-subtipo-select").value);
-    formData.append("utilidad", document.getElementById("add-utilidad")?.value || "Sin descripción");
     formData.append("precioActual", document.getElementById("add-precio").value);
     formData.append("precioDescuento", document.getElementById("add-precioDescuento")?.value || "");
     formData.append("unidadLote", document.getElementById("add-unidadLote")?.value || "N/A");
@@ -174,17 +173,18 @@ async function guardarProductoNuevo() {
       formData.append("Imagen", imagenInput.files[0]);
     }
 
-    // Supermercado
+    // 🏬 Supermercado
     let supermercadoId = document.getElementById("add-supermercado-select").value;
     if (supermercadoId === "nuevo") {
       const nuevoNombre = document.getElementById("add-supermercado-nuevo").value;
       const nuevoPais = document.getElementById("add-pais-super").value || "España";
       const nuevaUbicacion = document.getElementById("add-ubicacion-super").value || "";
-      supermercadoId = await insertarNuevoSupermercado(nuevoNombre, nuevoPais, nuevaUbicacion);
+      const nuevaCiudad = document.getElementById("add-ciudad-super").value || "N/A";
+      supermercadoId = await insertarNuevoSupermercado(nuevoNombre, nuevoPais, nuevaUbicacion, nuevaCiudad);
     }
     formData.append("supermercado", supermercadoId);
 
-    // Proveedor
+    // 🚚 Proveedor
     let proveedorId = document.getElementById("add-proveedor-select").value;
     if (proveedorId === "nuevo") {
       const nuevoNombre = document.getElementById("add-proveedor-nuevo").value;
@@ -193,7 +193,7 @@ async function guardarProductoNuevo() {
     }
     formData.append("proveedor", proveedorId);
 
-    // Fecha y usuario
+    // 📅 Fechas y usuario
     formData.append("fechaSubida", new Date().toISOString());
     formData.append("fechaActualizacion", new Date().toISOString());
 
@@ -202,7 +202,7 @@ async function guardarProductoNuevo() {
     if (!userId) throw new Error("Usuario no autenticado");
     formData.append("usuario", userId);
 
-    // Enviar producto completo
+    // ✅ 1️⃣ Enviar producto completo primero
     const response = await fetch("http://localhost:3000/api/productos-completos", {
       method: "POST",
       body: formData
@@ -215,17 +215,34 @@ async function guardarProductoNuevo() {
       throw new Error("Error al crear producto");
     }
 
+    // 📝 2️⃣ Descripción (utilidad + ingredientes)
+    const descripcion = {
+      Producto_id: result.producto._id,
+      Tipo: document.getElementById("add-tipo-select").value,
+      Subtipo: document.getElementById("add-subtipo-select").value,
+      Utilidad: document.getElementById("add-utilidad")?.value || "Sin descripción",
+      Ingredientes: document.getElementById("add-ingredientes")?.value
+        ?.split(",")
+        .map(i => i.trim())
+        .filter(i => i.length > 0) || []
+    };
+
+    await fetch("http://localhost:3000/api/descripcion", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(descripcion)
+    });
+
+    // 🎉 Éxito
     Swal.fire("✅ Éxito", "Producto creado correctamente", "success");
     cerrarFormularioAgregar();
     cargarProductos();
+
   } catch (err) {
     console.error("❌ Error guardando producto nuevo:", err);
     Swal.fire("Error", "No se pudo guardar el producto", "error");
   }
 }
-
-
-
 
 async function guardarCambiosDesdeFormulario() {
   try {
@@ -332,7 +349,7 @@ async function insertarNuevoSupermercado(nombre, pais, ubicacion = "", ciudad = 
       Nombre: nombre,
       Pais: pais,
       Ciudad: ciudad,
-      Ubicacion: [ubicacion] // 👈 ahora sí es un array
+      Ubicacion: [ubicacion]
     })
   });
 
