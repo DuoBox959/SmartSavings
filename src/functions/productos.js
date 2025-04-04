@@ -87,7 +87,6 @@ async function cargarOpcionesEnSelects(configs) {
 
         // Opción para insertar nuevo
         const optionOtro = document.createElement("option");
-        optionOtro.value = "nuevo";
         optionOtro.textContent = "Otro (escribir nuevo)";
         select.appendChild(optionOtro);
       });
@@ -157,20 +156,25 @@ async function guardarProductoNuevo() {
     formData.append("marca", document.getElementById("add-marca-select").value || "Sin marca");
     formData.append("tipo", document.getElementById("add-tipo-select").value);
     formData.append("subtipo", document.getElementById("add-subtipo-select").value);
-    formData.append("utilidad", document.getElementById("add-utilidad")?.value || "");
+    formData.append("utilidad", document.getElementById("add-utilidad")?.value || "Sin descripción");
     formData.append("precioActual", document.getElementById("add-precio").value);
     formData.append("precioDescuento", document.getElementById("add-precioDescuento")?.value || "");
+    formData.append("unidadLote", document.getElementById("add-unidadLote")?.value || "N/A");
+    formData.append("precioPorUnidad", document.getElementById("add-precioPorUnidad")?.value || "");
     formData.append("peso", document.getElementById("add-peso").value);
     formData.append("unidadPeso", document.getElementById("add-unidadPeso").value);
     formData.append("estado", document.getElementById("add-estado").value);
 
-    // Imagen opcional
+    // 🧠 Precio histórico en string plano
+    formData.append("precioHistorico", document.getElementById("add-precioHistorico")?.value || "");
+
+    // 🖼️ Imagen
     const imagenInput = document.getElementById("add-imagen");
     if (imagenInput?.files?.length > 0) {
       formData.append("Imagen", imagenInput.files[0]);
     }
 
-    // 👇 NUEVO: Supermercado
+    // Supermercado
     let supermercadoId = document.getElementById("add-supermercado-select").value;
     if (supermercadoId === "nuevo") {
       const nuevoNombre = document.getElementById("add-supermercado-nuevo").value;
@@ -180,7 +184,7 @@ async function guardarProductoNuevo() {
     }
     formData.append("supermercado", supermercadoId);
 
-    // 👇 NUEVO: Proveedor
+    // Proveedor
     let proveedorId = document.getElementById("add-proveedor-select").value;
     if (proveedorId === "nuevo") {
       const nuevoNombre = document.getElementById("add-proveedor-nuevo").value;
@@ -189,40 +193,37 @@ async function guardarProductoNuevo() {
     }
     formData.append("proveedor", proveedorId);
 
-    // Fechas
+    // Fecha y usuario
     formData.append("fechaSubida", new Date().toISOString());
     formData.append("fechaActualizacion", new Date().toISOString());
 
-    // Usuario desde sessionStorage
     const usuario = JSON.parse(sessionStorage.getItem("user"));
-    const userId = usuario?._id || usuario?.id || null;
-
-    if (!userId || typeof userId !== "string") {
-      console.warn("🧨 Usuario mal definido en sessionStorage:", usuario);
-      throw new Error("Usuario no autenticado");
-    }
-
+    const userId = usuario?._id || usuario?.id;
+    if (!userId) throw new Error("Usuario no autenticado");
     formData.append("usuario", userId);
 
-    // Enviar al backend
+    // Enviar producto completo
     const response = await fetch("http://localhost:3000/api/productos-completos", {
       method: "POST",
       body: formData
     });
 
+    const result = await response.json();
+
     if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error("Error del servidor: " + errorText);
+      console.warn(result);
+      throw new Error("Error al crear producto");
     }
 
-    Swal.fire("✅ Éxito", "Producto agregado correctamente", "success");
+    Swal.fire("✅ Éxito", "Producto creado correctamente", "success");
     cerrarFormularioAgregar();
     cargarProductos();
-  } catch (error) {
-    console.error("❌ Error al guardar producto:", error);
+  } catch (err) {
+    console.error("❌ Error guardando producto nuevo:", err);
     Swal.fire("Error", "No se pudo guardar el producto", "error");
   }
 }
+
 
 
 

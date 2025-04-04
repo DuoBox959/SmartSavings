@@ -453,6 +453,28 @@ function parsearPrecioHistorico(input) {
 
   return resultado;
 }
+app.get("/api/precios/producto/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ error: "ID no válido" });
+    }
+
+    const precio = await db.collection("Precios").findOne({
+      producto_id: new ObjectId(id),
+    });
+
+    if (!precio) {
+      return res.status(404).json({ error: "Precio no encontrado" });
+    }
+
+    res.json(precio);
+  } catch (err) {
+    console.error("❌ Error al obtener precio del producto:", err);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+});
 
 /**
  * ✅ Obtener todos los productos (Read)
@@ -1088,6 +1110,28 @@ app.get("/api/descripcion", async (req, res) => {
   } catch (err) {
     console.error("❌ Error obteniendo descripciones:", err);
     res.status(500).json({ error: "Error al obtener descripciones" });
+  }
+});
+app.get("/api/descripcion/producto/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ error: "ID no válido" });
+    }
+
+    const descripcion = await db.collection("Descripcion").findOne({
+      Producto_id: new ObjectId(id),
+    });
+
+    if (!descripcion) {
+      return res.status(404).json({ error: "Descripción no encontrada" });
+    }
+
+    res.json(descripcion);
+  } catch (err) {
+    console.error("❌ Error al obtener descripción del producto:", err);
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 });
 
