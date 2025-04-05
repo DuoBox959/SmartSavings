@@ -66,7 +66,6 @@ function manejarUsuario() {
 }
 
 // Guardar datos personales
-// Guardar datos personales
 document.querySelector(".btn.guardar").addEventListener("click", async () => {
   try {
     const nombre = document.getElementById("nombre").value.trim();
@@ -145,23 +144,27 @@ async function cargarDatosPersonales() {
       JSON.parse(sessionStorage.getItem("user")) ||
       JSON.parse(localStorage.getItem("user"));
 
-    if (!user || !user._id) return;
+    if (!user || !user.id) return;
 
-    const response = await fetch(`http://localhost:3000/api/datos-personales?usuario_id=${user._id}`);
+    const response = await fetch(`http://localhost:3000/api/datos-personales?usuario_id=${user.id}`);
     const datos = await response.json();
 
-    if (datos.length === 0) return;
+    const datosUsuario = datos.length > 0 ? datos[0] : null;
 
-    const datosUsuario = datos[0];
+    // 🔒 Nombre de usuario: siempre mostrado, siempre readonly
+    const usuarioInput = document.getElementById("usuario");
+    usuarioInput.value = datosUsuario?.usuario || user.name || "";
+    usuarioInput.readOnly = true;
 
-    document.getElementById("nombre").value = datosUsuario.nombre || "";
-    document.getElementById("apellidos").value = datosUsuario.apellidos || "";
-    document.getElementById("usuario").value = datosUsuario.usuario || "";
-    document.getElementById("fecha-nacimiento").value = datosUsuario.fechaNacimiento || "";
-    document.getElementById("genero").value = datosUsuario.genero || "masculino";
-    document.getElementById("idioma").value = datosUsuario.idioma || "es";
-    document.getElementById("zona-horaria").value = datosUsuario.zonaHoraria || "";
-    document.getElementById("notificaciones").checked = datosUsuario.notificaciones || false;
+    // ✅ Rellenar o dejar vacíos el resto de campos (todos editables)
+    document.getElementById("nombre").value = datosUsuario?.nombre || "";
+    document.getElementById("apellidos").value = datosUsuario?.apellidos || "";
+    document.getElementById("fecha-nacimiento").value = datosUsuario?.fechaNacimiento || "";
+    document.getElementById("genero").value = datosUsuario?.genero || "masculino";
+    document.getElementById("idioma").value = datosUsuario?.idioma || "es";
+    document.getElementById("zona-horaria").value = datosUsuario?.zonaHoraria || "";
+    document.getElementById("notificaciones").checked = datosUsuario?.notificaciones || false;
+
   } catch (error) {
     console.error("❌ Error cargando datos personales:", error);
   }
