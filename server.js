@@ -1569,6 +1569,32 @@ app.get("/api/reportes", async (req, res) => {
 // =============================================
 
 /**
+ * ✅ Obtener datos personales por usuario_id
+ * Ruta: GET /api/datos-personales?usuario_id=ID
+ */
+app.get("/api/datos-personales", async (req, res) => {
+  try {
+    const { usuario_id } = req.query;
+
+    if (usuario_id) {
+      const datos = await db
+        .collection("DatosUsuario")
+        .find({ usuario_id: new ObjectId(usuario_id) })
+        .toArray();
+      return res.json(datos);
+    }
+
+    // Si no se pasa usuario_id, devuelve todos (opcional)
+    const datos = await db.collection("DatosUsuario").find().toArray();
+    res.json(datos);
+  } catch (err) {
+    console.error("❌ Error obteniendo datos personales:", err);
+    res.status(500).json({ error: "Error en el servidor" });
+  }
+});
+
+
+/**
  * ✅ Crear un nuevo dato personal (Create)
  * Ruta: POST /api/datos-personales
  */
