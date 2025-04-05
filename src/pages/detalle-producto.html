@@ -28,19 +28,27 @@
 
   <!-- 🧾 Detalle del producto -->
   <section id="detalle-producto">
+       <!-- ✏️ & 🗑️ Botones de acción -->
+
     <div class="producto-imagen">
       <img id="producto-imagen" src="../assets/img/default.webp" alt="Imagen del Producto" />
     </div>
 
     <div class="producto-info">
+        <!-- Botones en la parte superior derecha -->
+    <div class="acciones-producto-superior">
+      <button id="btn-editar-detalle" class="btn-editar">✏️ Editar</button>
+      <button id="btn-eliminar-detalle" class="btn-eliminar">🗑️ Eliminar</button>
+    </div>
+
       <h1 id="producto-nombre">Nombre del producto</h1>
 
       <!-- 📦 Información general -->
-      <p id="producto-marca">Marca: </p>
+      <p id="producto-marca">Marca:</p>
       <p id="producto-tipo">Tipo: </p>
-      <p id="producto-subtipo">Subtipo: </p>
+      <p id="producto-subtipo"> Subtipo: </p>
       <p id="producto-utilidad">Descripción: </p>
-      <p id="producto-ingredientes">Ingredientes: </p>
+      <p id="producto-ingredientes">Ingredientes:</p>
 
       <!-- 💰 Información de precios -->
       <p id="producto-precio">Precio: </p>
@@ -62,17 +70,11 @@
       <!-- 🏭 Proveedor -->
       <p id="producto-proveedor">Proveedor: </p>
       <p id="producto-pais-proveedor">País del proveedor: </p>
+    <strong></strong>
     </div>
   </section>
 
-  <!-- ✏️ & 🗑️ Botones de acción -->
-  <div class="acciones-producto">
-    <button id="btn-editar-detalle" class="btn-editar">
-      ✏️ Editar
-    </button>
-    <button id="btn-eliminar-detalle" class="btn-eliminar">
-      🗑️ Eliminar
-    </button>
+
   </div>
 
   <!-- 🔙 Botón para volver -->
@@ -191,7 +193,7 @@
 
     </form>
   </div>
-</div>
+ 
   <!-- ✅ Footer dinámico -->
   <div id="footer"></div>
 </body>

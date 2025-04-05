@@ -6,63 +6,100 @@ body {
   padding: 0;
 }
 
+/* 🎯 Contenedor del detalle del producto */
 #detalle-producto {
-  max-width: 1000px;
-  margin: 3rem auto;
-  background: #fff;
+  max-width: 800px;
+  margin: 2rem auto; /* ⬅️ Menor margen arriba/abajo */
+  background: #ffffff;
   border-radius: 16px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
   overflow: hidden;
+  border: 1px solid #d0d0d0;
 }
 
 .producto-imagen {
   flex: 1 1 40%;
-  background: #f4f4f4;
-  padding: 2rem;
+  padding: 0;
+  max-height: 100%;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
-  border-right: 1px solid #e0e0e0;
+  background: #f4fdf8;
 }
 
 .producto-imagen img {
-  max-width: 100%;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  width: 100%;
+  height: auto;
+  object-fit: cover;
 }
 
 .producto-info {
   flex: 1 1 60%;
-  padding: 2rem 2.5rem;
+  padding: 1.5rem 1.8rem; /* ajustado */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+.producto-imagen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+
+/* 📄 Información del producto */
+
+.producto-info {
+  flex: 1 1 60%;
+  padding: 1.8rem 2rem; /* Menos padding */
 }
 
 .producto-info h1 {
-  font-size: 2.4rem;
-  margin-bottom: 1.2rem;
-  color: #222;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #111;
 }
 
+
+
+
+/* 🧾 Detalles del producto */
 .producto-info p {
-  margin: 0.4rem 0;
+  margin-bottom: 1rem;      
   font-size: 1rem;
-  line-height: 1.5;
+  line-height: 1.6;
+  color: #333;
 }
 
+/* Destacar el nombre del campo (label) */
+.producto-info p strong {
+  font-weight: 600;
+  color: #111;
+  display: inline;
+  margin-right: 0.5rem;
+}
+
+
+
+/* 🛠️ Botones de acción */
 .acciones-producto {
-  margin-top: 1rem;
+  margin: 2rem auto;
   display: flex;
   justify-content: center;
-  gap: 20px;
+  gap: 1.5rem;
 }
 
 .btn-editar,
 .btn-eliminar {
-  padding: 10px 25px;
+  padding: 12px 30px;
   border: none;
-  border-radius: 8px;
-  font-weight: bold;
+  border-radius: 10px;
+  font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -86,6 +123,7 @@ body {
   background-color: #c82333;
 }
 
+/* 🔙 Botón volver */
 .volver-btn {
   display: block;
   margin: 2rem auto;
@@ -103,21 +141,24 @@ body {
   background-color: #0056b3;
 }
 
+/* 🔒 Botón cerrar modal */
 .btn-cerrar {
-  background-color: #aaa;
+  background-color: #dc3545;
   color: white;
   padding: 0.6rem 1.2rem;
   border: none;
   border-radius: 6px;
   margin-left: 10px;
   cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease-in-out;
 }
 
 .btn-cerrar:hover {
-  background-color: #888;
+  background-color: #c82333;
 }
 
-/* Modal estilizado */
+/* 🪟 Modal */
 .modal {
   display: none;
   position: fixed;
@@ -127,7 +168,7 @@ body {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .modal-content {
@@ -135,13 +176,14 @@ body {
   margin: 5% auto;
   padding: 2rem;
   border: 1px solid #ccc;
-  border-radius: 10px;
+  border-radius: 12px;
   max-width: 600px;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .modal-content h2 {
   margin-top: 0;
+  font-size: 1.5rem;
 }
 
 .modal-content input,
@@ -172,32 +214,41 @@ body {
 .close:hover {
   color: #000;
 }
-/* Recuadro principal del detalle del producto */
-#detalle-producto {
-  max-width: 1000px;
-  margin: 3rem auto;
-  background: linear-gradient(to right, #ffffff, #f9f9f9);
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+.acciones-producto-superior {
   display: flex;
-  flex-wrap: wrap;
-  overflow: hidden;
-  border: 1px solid #d0d0d0;
-  transition: all 0.3s ease-in-out;
+  justify-content: flex-end;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
 }
 
-.btn-cerrar {
-  background-color: #dc3545; /* Rojo fuerte */
-  color: white;
-  padding: 0.6rem 1.2rem;
-  border: none;
+.acciones-producto-superior .btn-editar,
+.acciones-producto-superior .btn-eliminar {
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  font-weight: 600;
   border-radius: 6px;
-  margin-left: 10px;
+  border: none;
   cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.2s ease-in-out;
+  transition: background-color 0.3s ease;
 }
 
-.btn-cerrar:hover {
-  background-color: #c82333; /* Rojo más oscuro al pasar el mouse */
+.acciones-producto-superior .btn-editar {
+  background-color: #28a745;
+  color: #fff;
 }
+
+.acciones-producto-superior .btn-editar:hover {
+  background-color: #218838;
+}
+
+.acciones-producto-superior .btn-eliminar {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.acciones-producto-superior .btn-eliminar:hover {
+  background-color: #c82333;
+}
+
+
