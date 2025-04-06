@@ -14,16 +14,24 @@
     <!-- ✅ Librería SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <!--Validaciones-->
+    <!-- ✅ Validaciones -->
     <script type="module" src="../valid/validaciones.js" defer></script>
   </head>
   <body>
     <!-- 📌 Contenedor principal -->
     <div class="container">
-      <div class="form-container">
-        <h1>Inicia Sesión</h1>
+      <!-- 🖼️ Sección Izquierda (Mensaje) -->
+      <div class="left-section">
+        <h1>Bienvenido de nuevo</h1>
+        <p>
+          Ingresa con tu cuenta para acceder a todas las funciones de ComparaTú. Si aún no tienes cuenta, puedes registrarte fácilmente.
+        </p>
+      </div>
 
-        <!-- 📋 Formulario de inicio de sesión -->
+      <!-- 📋 Sección Derecha (Formulario de inicio de sesión) -->
+      <div class="right-section">
+        <h2>Inicia Sesión</h2>
+
         <form action="#" method="post">
           <!-- 🔹 Campo: Email o Nombre de Usuario -->
           <label for="emailOrUsername">Email o Nombre de Usuario:</label>
@@ -36,6 +44,7 @@
           />
 
           <!-- 🔹 Campo: Contraseña -->
+          <label for="password">Contraseña:</label>
           <div class="password-container">
             <input
               type="password"
@@ -44,10 +53,7 @@
               placeholder="Ingresa tu contraseña"
               required
             />
-            <span id="togglePassword">
-              👁️
-              <!-- Puedes usar un ícono de Font Awesome o SVG aquí -->
-            </span>
+            <span id="togglePassword">👁️</span>
           </div>
 
           <!-- 🔥 Botón para iniciar sesión -->
