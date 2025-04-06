@@ -95,7 +95,7 @@ document.querySelector(".btn.guardar").addEventListener("click", async () => {
       genero,
       idioma,
       zonaHoraria,
-      notificaciones,
+      recibirNotificaciones: notificaciones, // 👈 cambia el nombre aquí
     };
 
     // Comprobar si ya existen datos personales para este usuario
