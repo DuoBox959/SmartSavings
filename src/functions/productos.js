@@ -36,32 +36,33 @@ async function cargarProductos() {
     const productosContainer = document.getElementById("productos-container");
     productosContainer.innerHTML = ""; // Limpiar antes de mostrar
 
-    const response = await fetch("http://localhost:3000/api/productos-completos");
+    const response = await fetch(API_URL);
     const productos = await response.json();
 
     productos.forEach((producto) => {
       const productoHTML = `
-        <div class="product-card">
-          <a href="detalle-producto.html?id=${producto._id}">
-            <img src="${producto.Imagen || '../assets/img/default.webp'}" alt="${producto.Nombre}">
-            <h3>${producto.Nombre}</h3>
-          </a>
-          <p class="marca">${producto.Marca || "Marca desconocida"}</p>
-          <p class="peso">Peso: ${producto.Peso} ${producto.UnidadPeso}</p>
-          <p class="estado">Estado: ${producto.Estado}</p>
-          <div class="acciones">
-            <button class="btn-editar" onclick="editarProducto('${producto._id}')">✏️ Editar</button>
-            <button class="btn-eliminar" onclick="eliminarProducto('${producto._id}')">🗑️ Eliminar</button>
-          </div>
+      <div class="product-card">
+        <a href="detalle-producto.html?id=${producto._id}">
+          <img src="${producto.Imagen || '../assets/img/default.webp'}" alt="${producto.Nombre}">
+          <h3>${producto.Nombre}</h3>
+        </a>
+        <p class="marca">${producto.Marca || "Marca desconocida"}</p>
+        <p class="peso">Peso: ${producto.Peso} ${producto.UnidadPeso}</p>
+        <p class="estado">Estado: ${producto.Estado}</p>
+        <div class="acciones">
+          <button class="btn-editar" onclick="editarProducto('${producto._id}')">✏️ Editar</button>
+          <button class="btn-eliminar" onclick="eliminarProducto('${producto._id}')">🗑️ Eliminar</button>
         </div>
-      `;
+      </div>
+    `;
+
       productosContainer.innerHTML += productoHTML;
     });
-    
   } catch (err) {
     console.error("Error cargando productos:", err);
   }
 }
+
 
 async function cargarOpcionesEnSelects(configs) {
   try {
