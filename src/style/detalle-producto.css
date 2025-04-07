@@ -1,15 +1,32 @@
+/* ====================================================
+🌐 RESETEO BÁSICO
+==================================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ====================================================
+🎨 ESTILOS GENERALES
+==================================================== */
 body {
   font-family: 'Segoe UI', sans-serif;
-  background-color: #e9f0f4;
+  background: linear-gradient(135deg, #dfe9f3, #f7f9fc);
   color: #333;
   margin: 0;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-/* 🎯 Contenedor del detalle del producto */
+/* ====================================================
+🎯 Contenedor del detalle del producto
+==================================================== */
 #detalle-producto {
   max-width: 800px;
-  margin: 2rem auto; /* ⬅️ Menor margen arriba/abajo */
+  margin: 2rem auto;
   background: #ffffff;
   border-radius: 16px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
@@ -33,30 +50,13 @@ body {
   width: 100%;
   height: auto;
   object-fit: cover;
-}
-
-.producto-info {
-  flex: 1 1 60%;
-  padding: 1.5rem 1.8rem; /* ajustado */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-
-.producto-imagen img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
   border-radius: 0;
 }
 
-
 /* 📄 Información del producto */
-
 .producto-info {
   flex: 1 1 60%;
-  padding: 1.8rem 2rem; /* Menos padding */
+  padding: 1.8rem 2rem;
 }
 
 .producto-info h1 {
@@ -65,26 +65,19 @@ body {
   color: #111;
 }
 
-
-
-
-/* 🧾 Detalles del producto */
 .producto-info p {
-  margin-bottom: 1rem;      
+  margin-bottom: 1rem;
   font-size: 1rem;
   line-height: 1.6;
   color: #333;
 }
 
-/* Destacar el nombre del campo (label) */
 .producto-info p strong {
   font-weight: 600;
   color: #111;
   display: inline;
   margin-right: 0.5rem;
 }
-
-
 
 /* 🛠️ Botones de acción */
 .acciones-producto {
@@ -141,24 +134,9 @@ body {
   background-color: #0056b3;
 }
 
-/* 🔒 Botón cerrar modal */
-.btn-cerrar {
-  background-color: #dc3545;
-  color: white;
-  padding: 0.6rem 1.2rem;
-  border: none;
-  border-radius: 6px;
-  margin-left: 10px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.2s ease-in-out;
-}
-
-.btn-cerrar:hover {
-  background-color: #c82333;
-}
-
-/* 🪟 Modal */
+/* ====================================================
+🪟 MODAL
+==================================================== */
 .modal {
   display: none;
   position: fixed;
@@ -169,52 +147,153 @@ body {
   height: 100%;
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  justify-content: center;
 }
 
 .modal-content {
-  background-color: #fff;
-  margin: 5% auto;
-  padding: 2rem;
-  border: 1px solid #ccc;
-  border-radius: 12px;
-  max-width: 600px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  background: white;
+  width: 90%;
+  max-width: 650px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  animation: fadeIn 0.3s ease-in-out;
+  position: relative;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
 }
 
 .modal-content h2 {
   margin-top: 0;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
+  color: #1976d2;
 }
 
-.modal-content input,
-.modal-content select,
-.modal-content textarea {
-  width: 100%;
-  padding: 10px;
-  margin: 0.4rem 0 1rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 1rem;
-}
-
-.modal-content details summary {
-  cursor: pointer;
-  font-weight: bold;
-  margin-top: 1rem;
-}
-
+/* ❌ Botón de cerrar modal */
 .close {
-  float: right;
-  font-size: 1.5rem;
-  font-weight: bold;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 26px;
   cursor: pointer;
   color: #888;
 }
 
 .close:hover {
-  color: #000;
+  color: #d32f2f;
 }
 
+/* ====================================================
+📝 FORMULARIO DE EDICIÓN MODERNO
+==================================================== */
+#form-editar-producto {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  padding: 20px;
+  margin: 20px auto;
+  width: 90%;
+  max-width: 600px;
+  background: white;
+  color: #333;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: left;
+}
+
+#form-editar-producto input,
+#form-editar-producto select,
+#form-editar-producto textarea {
+  width: 100%;
+  padding: 7px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  color: #333;
+  transition: all 0.3s ease;
+}
+
+#form-editar-producto input:focus,
+#form-editar-producto select:focus,
+#form-editar-producto textarea:focus {
+  outline: none;
+  border-color: #365a7e;
+  box-shadow: 0 0 5px rgba(54, 90, 126, 0.5);
+  background-color: #fff;
+}
+
+#form-editar-producto textarea::placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+#form-editar-producto textarea {
+  resize: vertical;
+  height: 80px;
+  grid-column: span 2;
+}
+
+/* 📂 Campos opcionales */
+#form-editar-producto details {
+  grid-column: span 2;
+  margin-top: 10px;
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+}
+
+#form-editar-producto summary {
+  cursor: pointer;
+  font-weight: bold;
+  color: #1976d2;
+  margin-bottom: 10px;
+}
+
+/* ✅ Botones dentro del formulario */
+#form-editar-producto button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px;
+  font-size: 1em;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  grid-column: span 2;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#form-editar-producto button:hover {
+  background-color: #388e3c;
+  transform: scale(1.05);
+}
+
+#form-editar-producto .btn-cerrar {
+  background-color: #ccc;
+  color: #000;
+  padding: 0.5rem 1rem;
+  border: none;
+  margin-left: 10px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+}
+
+#form-editar-producto .btn-cerrar:hover {
+  background-color: #bbb;
+}
+
+/* ====================================================
+🔼 Botones de acción superiores
+==================================================== */
 .acciones-producto-superior {
   display: flex;
   justify-content: flex-end;
@@ -250,5 +329,3 @@ body {
 .acciones-producto-superior .btn-eliminar:hover {
   background-color: #c82333;
 }
-
-

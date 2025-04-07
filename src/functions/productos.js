@@ -36,28 +36,34 @@ async function cargarProductos() {
     const productosContainer = document.getElementById("productos-container");
     productosContainer.innerHTML = ""; // Limpiar antes de mostrar
 
-    const response = await fetch(API_URL);
+    const response = await fetch("http://localhost:3000/api/productos-completos");
     const productos = await response.json();
 
     productos.forEach((producto) => {
       const productoHTML = `
-      <div class="product-card">
-        <a href="detalle-producto.html?id=${producto._id}">
-          <img src="${producto.Imagen || '../assets/img/default.webp'}" alt="${producto.Nombre}">
-          <h3>${producto.Nombre}</h3>
-        </a>
-        <p class="marca">${producto.Marca || "Marca desconocida"}</p>
-        <p class="peso">Peso: ${producto.Peso} ${producto.UnidadPeso}</p>
-        <p class="estado">Estado: ${producto.Estado}</p>
-        <div class="acciones">
-          <button class="btn-editar" onclick="editarProducto('${producto._id}')">✏️ Editar</button>
-          <button class="btn-eliminar" onclick="eliminarProducto('${producto._id}')">🗑️ Eliminar</button>
+        <div class="product-card">
+          ${producto.Utilidad ? `<p class="utilidad"><strong>📝 Utilidad:</strong> ${producto.Utilidad}</p>` : ""}
+          ${
+            producto.Ingredientes && producto.Ingredientes.length > 0
+              ? `<p class="ingredientes"><strong>🍴 Ingredientes:</strong> ${producto.Ingredientes.join(", ")}</p>`
+              : ""
+          }
+          <a href="detalle-producto.html?id=${producto._id}">
+            <img src="${producto.Imagen || '../assets/img/default.webp'}" alt="${producto.Nombre}">
+            <h3>${producto.Nombre}</h3>
+          </a>
+          <p class="marca">${producto.Marca || "Marca desconocida"}</p>
+          <p class="peso">Peso: ${producto.Peso} ${producto.UnidadPeso}</p>
+          <p class="estado">Estado: ${producto.Estado}</p>
+          <div class="acciones">
+            <button class="btn-editar" onclick="editarProducto('${producto._id}')">✏️ Editar</button>
+            <button class="btn-eliminar" onclick="eliminarProducto('${producto._id}')">🗑️ Eliminar</button>
+          </div>
         </div>
-      </div>
-    `;
-
+      `;
       productosContainer.innerHTML += productoHTML;
     });
+    
   } catch (err) {
     console.error("Error cargando productos:", err);
   }
@@ -65,11 +71,17 @@ async function cargarProductos() {
 
 async function cargarOpcionesEnSelects(configs) {
   try {
-    for (const { campo, endpoint, usarId } of configs) {
-      const response = await fetch(`http://localhost:3000/api/${endpoint}`);
-      if (!response.ok) throw new Error(`No se pudo cargar ${campo}`);
+    const fetchPromises = configs.map(({ campo, endpoint }) =>
+      fetch(`http://localhost:3000/api/${endpoint}`).then(response => {
+        if (!response.ok) throw new Error(`No se pudo cargar ${campo}`);
+        return response.json();
+      })
+    );
 
-      const datos = await response.json();
+    const datosArray = await Promise.all(fetchPromises);
+
+    configs.forEach(({ campo, usarId }, index) => {
+      const datos = datosArray[index];
       const modos = ["add", "edit"];
 
       modos.forEach((modo) => {
@@ -90,11 +102,12 @@ async function cargarOpcionesEnSelects(configs) {
         optionOtro.textContent = "Otro (escribir nuevo)";
         select.appendChild(optionOtro);
       });
-    }
+    });
   } catch (err) {
     console.error("❌ Error cargando selects dinámicos:", err);
   }
 }
+
 
 // ==============================
 // ✏️ EDICIÓN DE PRODUCTOS
@@ -197,6 +210,22 @@ async function guardarProductoNuevo() {
     formData.append("fechaSubida", new Date().toISOString());
     formData.append("fechaActualizacion", new Date().toISOString());
 
+ // 📝 Descripción directa desde el formulario
+const utilidad = document.getElementById("add-utilidad").value.trim();
+formData.append("utilidad", utilidad || "Sin descripción");
+
+// 🥣 Ingredientes como CSV string
+const ingredientesInput = document.getElementById("add-ingredientes").value;
+const ingredientesArray = ingredientesInput
+  .split(",")
+  .map(i => i.trim())
+  .filter(i => i.length > 0);
+
+formData.append("ingredientes", ingredientesArray.join(","));
+
+    
+
+    // 👤 Usuario
     const usuario = JSON.parse(sessionStorage.getItem("user"));
     const userId = usuario?._id || usuario?.id;
     if (!userId) throw new Error("Usuario no autenticado");
@@ -210,28 +239,10 @@ async function guardarProductoNuevo() {
 
     const result = await response.json();
 
-    if (!response.ok) {
+    if (!response.ok || !result.producto_id) {
       console.warn(result);
       throw new Error("Error al crear producto");
     }
-
-    // 📝 2️⃣ Descripción (utilidad + ingredientes)
-    const descripcion = {
-      Producto_id: result.producto._id,
-      Tipo: document.getElementById("add-tipo-select").value,
-      Subtipo: document.getElementById("add-subtipo-select").value,
-      Utilidad: document.getElementById("add-utilidad")?.value || "Sin descripción",
-      Ingredientes: document.getElementById("add-ingredientes")?.value
-        ?.split(",")
-        .map(i => i.trim())
-        .filter(i => i.length > 0) || []
-    };
-
-    await fetch("http://localhost:3000/api/descripcion", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(descripcion)
-    });
 
     // 🎉 Éxito
     Swal.fire("✅ Éxito", "Producto creado correctamente", "success");
@@ -392,10 +403,14 @@ function toggleNuevoCampo(modo, campo) {
 }
 
 function cerrarFormulario() {
+  const form = document.getElementById("form-editar");
+  if (form) form.reset();
   document.getElementById("modal-editar").style.display = "none";
 }
 
 function cerrarFormularioAgregar() {
+  const form = document.getElementById("form-agregar");
+  if (form) form.reset();
   document.getElementById("modal-agregar").style.display = "none";
 }
 
@@ -419,26 +434,21 @@ async function eliminarProducto(id) {
 
     if (!confirm.isConfirmed) return;
 
-    // 🗑️ Eliminar producto
-    await fetch(`${API_URL}/${id}`, { method: "DELETE" });
-
-    // 🗑️ Eliminar precio asociado
-    await fetch(`http://localhost:3000/api/precios/${id}`, {
+    // 🧨 Elimina todo desde tu endpoint central
+    const res = await fetch(`http://localhost:3000/api/productos-completos/${id}`, {
       method: "DELETE",
     });
 
-    // Si también usas "descripcion", elimina eso aquí:
-    await fetch(`http://localhost:3000/api/descripcion/${id}`, {
-      method: "DELETE",
-    });
+    if (!res.ok) throw new Error("Error al eliminar producto completo");
 
-    Swal.fire("Eliminado", "Producto eliminado correctamente", "success");
+    Swal.fire("✅ Eliminado", "Producto eliminado correctamente", "success");
     cargarProductos();
   } catch (err) {
     console.error("❌ Error al eliminar producto:", err);
     Swal.fire("Error", "Hubo un problema al eliminar el producto.", "error");
   }
 }
+
 
 
 // ==============================

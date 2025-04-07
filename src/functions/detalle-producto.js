@@ -87,10 +87,13 @@ async function cargarProducto() {
     document.getElementById("producto-ingredientes").innerHTML = "<strong>Ingredientes:</strong> " + (descripcion?.Ingredientes?.join(", ") || "N/A");
 
     const historial = precioData?.precioHistorico?.length
-      ? precioData.precioHistorico.map(h => `${h.fecha}: ${h.precio}€`).join("\n")
-      : "No disponible";
-
-    document.getElementById("producto-historico").textContent = "Precio histórico:\n" + historial;
+    ? precioData.precioHistorico.map(h => `${h.fecha}: ${h.precio}€`).join("\n")
+    : "No disponible";
+  
+    document.getElementById("producto-historico").innerHTML =
+    "<strong>Precio histórico:</strong><br>" + historial.replace(/\n/g, "<br>");
+  
+      
   } catch (error) {
     console.error("❌ Error al cargar el producto:", error);
     Swal.fire("Error", "No se pudo cargar el producto", "error");
@@ -247,7 +250,11 @@ async function guardarCambiosDesdeFormulario() {
     formData.append("fechaActualizacion", new Date().toISOString());
     formData.append("supermercado", document.getElementById("edit-supermercado-select").value);
     formData.append("proveedor", document.getElementById("edit-proveedor-select").value);
-    formData.append("usuario", JSON.parse(localStorage.getItem("usuario"))?._id);
+    const usuario = getUsuarioAutenticado();
+    if (!usuario || !usuario.id) {
+      return Swal.fire("Error", "No se encontró el usuario. Inicia sesión nuevamente.", "error");
+    }
+    formData.append("usuario", usuario.id);
     formData.append("ubicacionSuper", document.getElementById("edit-ubicacion-super").value);
     formData.append("paisSuper", document.getElementById("edit-pais-super").value);
     formData.append("ciudadSuper", document.getElementById("edit-ciudad-super").value);
@@ -301,6 +308,9 @@ async function guardarCambiosDesdeFormulario() {
     console.error("❌ Error al actualizar producto:", err);
     Swal.fire("Error", "Hubo un problema al actualizar el producto.", "error");
   }
+}
+function getUsuarioAutenticado() {
+  return JSON.parse(sessionStorage.getItem("user")); // o localStorage
 }
 
 // ==============================

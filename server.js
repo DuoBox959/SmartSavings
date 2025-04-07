@@ -459,8 +459,10 @@ app.post("/api/productos-completos", upload.single("Imagen"), async (req, res) =
         Tipo: req.body.tipo,
         Subtipo: req.body.subtipo || null,
         Utilidad: req.body.utilidad || null,
-        Ingredientes: [], // podrías mapear esto si lo tienes
-      };
+        Ingredientes: req.body.ingredientes
+        ? req.body.ingredientes.split(",").map(i => i.trim()).filter(i => i.length > 0)
+        : [],
+            };
 
       await db.collection("Descripcion").insertOne(nuevaDescripcion);
     }
@@ -578,6 +580,51 @@ app.get("/api/productos", async (req, res) => {
  * ✅ Obtener todos los productos completos (Read)
  * Ruta: GET /api/productos-completos
  */
+app.get("/api/productos-completos", async (req, res) => {
+  try {
+    const productos = await db.collection("Productos").aggregate([
+      {
+        $lookup: {
+          from: "Descripcion",
+          localField: "_id",
+          foreignField: "Producto_id",
+          as: "Descripcion"
+        }
+      },
+      {
+        $unwind: {
+          path: "$Descripcion",
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $addFields: {
+          Utilidad: "$Descripcion.Utilidad",
+          Ingredientes: "$Descripcion.Ingredientes"
+        }
+      },
+      {
+        $project: {
+          _id: 1,
+          Nombre: 1,
+          Imagen: 1,
+          Marca: 1,
+          Peso: 1,
+          UnidadPeso: 1,
+          Estado: 1,
+          Utilidad: 1,
+          Ingredientes: 1
+        }
+      }
+    ]).toArray();
+
+    res.json(productos);
+  } catch (err) {
+    console.error("❌ Error en GET /api/productos-completos:", err);
+    res.status(500).json({ error: "Error al obtener productos completos" });
+  }
+});
+
 app.put("/api/productos-completos/:id", upload.single("Imagen"), async (req, res) => {
   try {
     const { id } = req.params;
@@ -639,14 +686,16 @@ app.put("/api/productos-completos/:id", upload.single("Imagen"), async (req, res
       { upsert: true }
     );
 
-    // ✅ 3️⃣ Actualizar o insertar descripción
+    // ✅ 3️⃣ Actualizar o insertar descripción con Utilidad e Ingredientes
     if (req.body.tipo) {
       const descripcionActualizada = {
         Producto_id: objectId,
         Tipo: req.body.tipo,
         Subtipo: req.body.subtipo || null,
         Utilidad: req.body.utilidad || "Sin descripción",
-        Ingredientes: [],
+        Ingredientes: req.body.ingredientes
+          ? req.body.ingredientes.split(",").map((i) => i.trim())
+          : [],
       };
 
       await db.collection("Descripcion").updateOne(
@@ -664,6 +713,27 @@ app.put("/api/productos-completos/:id", upload.single("Imagen"), async (req, res
   }
 });
 
+
+// 🧹 Eliminar producto completo con precios y descripción asociada
+app.delete("/api/productos-completos/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!ObjectId.isValid(id)) return res.status(400).json({ error: "ID inválido" });
+
+    const _id = new ObjectId(id);
+
+    // 🔥 Borrar de todas las colecciones relacionadas
+    await db.collection("Productos").deleteOne({ _id });
+    await db.collection("Precios").deleteMany({ producto_id: _id });
+    await db.collection("Descripcion").deleteMany({ Producto_id: _id });
+    await db.collection("Opiniones").deleteMany({ Producto_id: _id }); // si usas opiniones
+
+    res.json({ message: "Producto y datos asociados eliminados correctamente" });
+  } catch (err) {
+    console.error("❌ Error eliminando producto completo:", err);
+    res.status(500).json({ error: "Error interno al eliminar producto" });
+  }
+});
 
 
 
@@ -2024,26 +2094,6 @@ app.get("/api/proveedores", async (req, res) => {
 });
 
 
-// 🧹 Eliminar producto completo con precios y descripción asociada
-app.delete("/api/productos-completos/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    if (!ObjectId.isValid(id)) return res.status(400).json({ error: "ID inválido" });
-
-    const _id = new ObjectId(id);
-
-    // 🔥 Borrar de todas las colecciones relacionadas
-    await db.collection("Productos").deleteOne({ _id });
-    await db.collection("Precios").deleteMany({ producto_id: _id });
-    await db.collection("Descripcion").deleteMany({ Producto_id: _id });
-    await db.collection("Opiniones").deleteMany({ Producto_id: _id }); // si usas opiniones
-
-    res.json({ message: "Producto y datos asociados eliminados correctamente" });
-  } catch (err) {
-    console.error("❌ Error eliminando producto completo:", err);
-    res.status(500).json({ error: "Error interno al eliminar producto" });
-  }
-});
 
 
 app.get("/api/forzar-limpieza-historial", async (req, res) => {
