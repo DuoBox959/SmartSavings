@@ -45,7 +45,49 @@ const upload = multer({ storage: storage });
       "📌 Colecciones disponibles:",
       collections.map((c) => c.name)
     );
+    const cron = require("node-cron"); // esto arriba del archivo, con los otros requires
 
+    cron.schedule("0 3 * * *", async () => {
+      console.log("🧹 Ejecutando limpieza automática de historiales...");
+    
+      try {
+        const historialCollection = db.collection("HistorialUsuario");
+    
+        const primerosMovimientos = await historialCollection
+          .aggregate([
+            { $sort: { fecha: 1 } },
+            {
+              $group: {
+                _id: "$usuario_id",
+                primerMovimiento: { $first: "$fecha" },
+              },
+            },
+            {
+              $match: {
+                primerMovimiento: {
+                  $lte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // más de 7 días
+                },
+              },
+            },
+          ])
+          .toArray();
+    
+        const idsUsuariosAEliminar = primerosMovimientos.map((m) => m._id);
+    
+        if (idsUsuariosAEliminar.length > 0) {
+          const deleteResult = await historialCollection.deleteMany({
+            usuario_id: { $in: idsUsuariosAEliminar },
+          });
+    
+          console.log(`🗑️ ${deleteResult.deletedCount} historiales eliminados.`);
+        } else {
+          console.log("📦 No hay historiales para eliminar hoy.");
+        }
+      } catch (err) {
+        console.error("❌ Error ejecutando cron de limpieza:", err);
+      }
+    });
+    
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
       console.log(`✅ Servidor corriendo en http://localhost:${PORT}`);
@@ -2000,5 +2042,46 @@ app.delete("/api/productos-completos/:id", async (req, res) => {
   } catch (err) {
     console.error("❌ Error eliminando producto completo:", err);
     res.status(500).json({ error: "Error interno al eliminar producto" });
+  }
+});
+
+
+app.get("/api/forzar-limpieza-historial", async (req, res) => {
+  try {
+    const historialCollection = db.collection("HistorialUsuario");
+
+    const primerosMovimientos = await historialCollection
+      .aggregate([
+        { $sort: { fecha: 1 } },
+        {
+          $group: {
+            _id: "$usuario_id",
+            primerMovimiento: { $first: "$fecha" },
+          },
+        },
+        {
+          $match: {
+            primerMovimiento: {
+              $lte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+            },
+          },
+        },
+      ])
+      .toArray();
+
+    const idsUsuariosAEliminar = primerosMovimientos.map((m) => m._id);
+
+    if (idsUsuariosAEliminar.length > 0) {
+      const deleteResult = await historialCollection.deleteMany({
+        usuario_id: { $in: idsUsuariosAEliminar },
+      });
+
+      res.json({ message: `Eliminados ${deleteResult.deletedCount} historiales.` });
+    } else {
+      res.json({ message: "No hay historiales para eliminar." });
+    }
+  } catch (err) {
+    console.error("❌ Error manual:", err);
+    res.status(500).json({ error: "Error al ejecutar limpieza manual" });
   }
 });
