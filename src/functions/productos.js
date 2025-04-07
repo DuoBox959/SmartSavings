@@ -42,12 +42,6 @@ async function cargarProductos() {
     productos.forEach((producto) => {
       const productoHTML = `
         <div class="product-card">
-          ${producto.Utilidad ? `<p class="utilidad"><strong>📝 Utilidad:</strong> ${producto.Utilidad}</p>` : ""}
-          ${
-            producto.Ingredientes && producto.Ingredientes.length > 0
-              ? `<p class="ingredientes"><strong>🍴 Ingredientes:</strong> ${producto.Ingredientes.join(", ")}</p>`
-              : ""
-          }
           <a href="detalle-producto.html?id=${producto._id}">
             <img src="${producto.Imagen || '../assets/img/default.webp'}" alt="${producto.Nombre}">
             <h3>${producto.Nombre}</h3>
