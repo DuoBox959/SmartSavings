@@ -97,6 +97,22 @@ export function esUsernameValido(username) {
   return regex.test(username) && !username.includes(" ");
 }
 
+// ✅ Validar formato de fecha (yyyy-mm-dd)
+export function esFechaValida(fecha) {
+  // Verifica si la fecha está en el formato yyyy-mm-dd
+  const regex = /^\d{4}-\d{2}-\d{2}$/;
+  if (!regex.test(fecha)) return false;
+
+  // Verifica que la fecha es válida utilizando Date
+  const fechaObj = new Date(fecha);
+  const fechaValida =
+    fechaObj.getFullYear() === parseInt(fecha.substr(0, 4)) &&
+    fechaObj.getMonth() === parseInt(fecha.substr(5, 2)) - 1 &&
+    fechaObj.getDate() === parseInt(fecha.substr(8, 2));
+
+  return fechaValida;
+}
+
 
 
 // ✅ Exporta todas las necesarias

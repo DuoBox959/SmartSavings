@@ -1748,11 +1748,16 @@ app.get("/api/datos-personales", async (req, res) => {
  */
 app.put("/api/datos-personales/:id", async (req, res) => {
   try {
-    const id = new ObjectId(req.params.id);
+    const id = new ObjectId(req.params.id); // Convierte el _id recibido en la URL en un ObjectId
     const data = req.body;
 
+    // Convertir `usuario_id` a ObjectId si está presente en los datos
+    if (data.usuario_id) {
+      data.usuario_id = new ObjectId(data.usuario_id); // Convertir usuario_id a ObjectId si es una cadena
+    }
+
     const result = await db.collection("DatosUsuario").updateOne(
-      { _id: id }, // 👈 CORRECTO
+      { _id: id }, // 👈 Correctamente usamos ObjectId para _id
       { $set: data }
     );
 

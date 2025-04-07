@@ -2,6 +2,7 @@
 import { cargarHeaderFooter } from "../functions/global/funciones.js";
 import { gestionarUsuarioAutenticado } from "../functions/global/header.js";
 import { cerrarSesion } from "../functions/global/funciones.js";
+import * as validaciones from "../valid/validaciones.js";
 
 // Evento principal
 document.addEventListener("DOMContentLoaded", async () => {
@@ -66,6 +67,7 @@ function manejarUsuario() {
 }
 
 // Guardar datos personales
+// Guardar datos personales
 document.querySelector(".btn.guardar").addEventListener("click", async () => {
   try {
     const nombre = document.getElementById("nombre").value.trim();
@@ -77,17 +79,28 @@ document.querySelector(".btn.guardar").addEventListener("click", async () => {
     const zonaHoraria = document.getElementById("zona-horaria").value.trim();
     const notificaciones = document.getElementById("notificaciones").checked;
 
+    // Validaciones de los campos usando validaciones.js
+    if (validaciones.camposVacios(nombre, apellidos, zonaHoraria)) {
+      validaciones.mostrarAlertaError("Campos incompletos", "Por favor, completa todos los campos requeridos.");
+      return;
+    }
+
+    if (!validaciones.esFechaValida(fechaNacimiento)) {
+      validaciones.mostrarAlertaError("Fecha inválida", "La fecha de nacimiento no es válida.");
+      return;
+    }
+
     const user =
       JSON.parse(sessionStorage.getItem("user")) ||
       JSON.parse(localStorage.getItem("user"));
 
     if (!user || !user.id) {
-      alert("⚠️ No se pudo identificar al usuario.");
+      validaciones.mostrarAlertaError("Usuario no identificado", "⚠️ No se pudo identificar al usuario.");
       return;
     }
 
     const datos = {
-      usuario_id: user.id, // Usamos `user.id` (asegúrate que tienes el campo adecuado)
+      usuario_id: user.id,
       nombre,
       apellidos,
       usuario,
@@ -95,7 +108,7 @@ document.querySelector(".btn.guardar").addEventListener("click", async () => {
       genero,
       idioma,
       zonaHoraria,
-      recibirNotificaciones: notificaciones, // Aquí aseguramos la clave correcta
+      recibirNotificaciones: notificaciones,
     };
 
     // Comprobar si ya existen datos personales para este usuario
@@ -111,29 +124,45 @@ document.querySelector(".btn.guardar").addEventListener("click", async () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(datos),
+        body: JSON.stringify({
+          ...datos,
+          usuario_id: user.id, // Aseguramos que el usuario_id sea el correcto
+        }),
       });
     } else {
-      // Si no existen, creamos uno nuevo (como ya lo tenías antes)
+      // Si no existen, creamos uno nuevo
       response = await fetch("http://localhost:3000/api/datos-personales", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(datos),
+        body: JSON.stringify({
+          ...datos,
+          usuario_id: user.id,
+        }),
       });
     }
 
     const result = await response.json();
 
     if (response.ok) {
-      alert("✅ Configuración guardada correctamente.");
+      Swal.fire({
+        icon: "success",
+        title: "Configuración guardada",
+        text: "✅ Configuración guardada correctamente.",
+        confirmButtonText: "Aceptar",
+      });
     } else {
       throw new Error(result.error || "Error desconocido.");
     }
   } catch (error) {
     console.error("❌ Error al guardar la configuración:", error);
-    alert("❌ Hubo un problema al guardar la configuración.");
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "❌ Hubo un problema al guardar la configuración.",
+      confirmButtonText: "Aceptar",
+    });
   }
 });
 
