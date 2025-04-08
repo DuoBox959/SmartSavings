@@ -101,3 +101,25 @@ loginForm.addEventListener("submit", async (event) => {
     mostrarAlertaError("❌ Error", error.message);
   }
 });
+
+// ❌ No permitir espacios en emailOrUsername y password
+const loginInputsSinEspacios = ['emailOrUsername', 'password'];
+
+loginInputsSinEspacios.forEach(id => {
+  const input = document.getElementById(id);
+
+  if (input) {
+    // Bloquea la tecla espacio
+    input.addEventListener('keydown', (e) => {
+      if (e.key === ' ') {
+        e.preventDefault();
+      }
+    });
+
+    // Elimina espacios pegados
+    input.addEventListener('input', (e) => {
+      e.target.value = e.target.value.replace(/\s/g, '');
+    });
+  }
+});
+

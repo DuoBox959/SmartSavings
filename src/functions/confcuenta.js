@@ -198,3 +198,18 @@ async function cargarDatosPersonales() {
     console.error("❌ Error cargando datos personales:", error);
   }
 }
+
+// ✅ Campos donde solo queremos evitar espacios al principio
+const camposEvitarEspaciosInicio = ['nombre', 'apellidos', 'zona-horaria'];
+
+camposEvitarEspaciosInicio.forEach(id => {
+  const input = document.getElementById(id);
+
+  if (input) {
+    input.addEventListener('input', (e) => {
+      // Elimina espacios al principio del valor
+      e.target.value = e.target.value.replace(/^\s+/, '');
+    });
+  }
+});
+

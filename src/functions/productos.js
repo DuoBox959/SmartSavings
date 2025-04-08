@@ -12,6 +12,21 @@ const API_URL = "http://localhost:3000/api/productos";
 // 🚀 INICIALIZACIÓN AL CARGAR
 // ==============================
 document.addEventListener("DOMContentLoaded", async () => {
+   // 🔒 Verificar si el usuario está autenticado
+  const usuario = sessionStorage.getItem("user");
+  if (!usuario) {
+    Swal.fire({
+      icon: "warning",
+      title: "No has iniciado sesión",
+      text: "Por favor, inicia sesión para continuar.",
+      confirmButtonText: "Ir al inicio",
+      allowOutsideClick: false,
+    }).then(() => {
+      window.location.href = "index.html";
+    });
+    return;
+  }
+
   try {
     await cargarHeaderFooter();
     gestionarUsuarioAutenticado();

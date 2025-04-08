@@ -198,3 +198,16 @@ function configurarMostrarContrasena() {
   });
 }
 
+// ✅ Campos donde se deben eliminar espacios al inicio y final
+const camposActualizar = ['username', 'email', 'password'];
+
+camposActualizar.forEach(id => {
+  const input = document.getElementById(id);
+
+  if (input) {
+    input.addEventListener('input', (e) => {
+      // Elimina espacios al principio y al final
+      e.target.value = e.target.value.replace(/^\s+|\s+$/g, '');
+    });
+  }
+});

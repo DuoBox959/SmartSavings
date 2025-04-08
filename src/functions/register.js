@@ -102,3 +102,25 @@ registerForm.addEventListener("submit", async (event) => {
     });
   }
 });
+
+// ❌ No permitir espacios en email, password y username
+const inputsSinEspacios = ['email', 'password', 'username'];
+
+inputsSinEspacios.forEach(id => {
+  const input = document.getElementById(id);
+
+  if (input) {
+    // Evita que se presione la barra espaciadora
+    input.addEventListener('keydown', (e) => {
+      if (e.key === ' ') {
+        e.preventDefault();
+      }
+    });
+
+    // Elimina cualquier espacio pegado desde el portapapeles
+    input.addEventListener('input', (e) => {
+      e.target.value = e.target.value.replace(/\s/g, '');
+    });
+  }
+});
+

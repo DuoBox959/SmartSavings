@@ -222,3 +222,18 @@ function configurarMostrarContrasena() {
 document.addEventListener("DOMContentLoaded", () => {
   configurarMostrarContrasena();
 });
+
+// ✅ Campos donde se eliminarán espacios al inicio y final
+const camposEliminarCuenta = ['username', 'email', 'password', 'confirm-password'];
+
+camposEliminarCuenta.forEach(id => {
+  const input = document.getElementById(id);
+
+  if (input) {
+    input.addEventListener('input', (e) => {
+      // Elimina espacios al inicio y al final
+      e.target.value = e.target.value.replace(/^\s+|\s+$/g, '');
+    });
+  }
+});
+
