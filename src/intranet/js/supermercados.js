@@ -254,6 +254,27 @@ function cerrarFormulario() {
   ).val("");
 }
 
+function eliminarEspaciosAlInicio(event) {
+  const valor = event.target.value;
+  event.target.value = valor.replace(/^\s+/, '');
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  const camposTexto = [
+    'nombreSupermercado',
+    'paisSupermercado',
+    'ciudadSupermercado',
+    'ubicacionSupermercado'
+  ];
+
+  camposTexto.forEach(id => {
+    const campo = document.getElementById(id);
+    if (campo) {
+      campo.addEventListener('input', eliminarEspaciosAlInicio);
+    }
+  });
+});
+
 // ✅ Exponer funciones globales
 window.mostrarFormularioAgregar = mostrarFormularioAgregar;
 window.cerrarFormulario = cerrarFormulario;

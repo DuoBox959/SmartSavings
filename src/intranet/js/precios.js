@@ -86,7 +86,7 @@ async function cargarPrecios() {
 
       // Asegurarse de que los valores sean numéricos antes de formatearlos
       const precioActual = typeof precio.precioActual === "number" ? precio.precioActual.toFixed(2) + " €" : "N/A";
-      const precioDescuento = typeof precio.precioDescuento === "number" ? precio.precioDescuento.toFixed(0) + " %" : "N/A";
+      const precioDescuento = typeof precio.precioDescuento === "number" ? precio.precioDescuento.toFixed(0) + " €" : "N/A";
       const precioUnidadLote = typeof precio.precioUnidadLote === "number" ? precio.precioUnidadLote.toFixed(2) + " €" : "N/A";
 
       // Manejo de precioHistorico: Asegurarse de que es un array de objetos con año y precio
@@ -345,6 +345,22 @@ function cerrarFormulario() {
     "#precioID, #productoID, #precioActual, #precioDescuento, #unidadLote, #precioUnidadLote, #precioHistorico"
   ).val("");
 }
+
+function eliminarEspaciosAlInicio(event) {
+  const valor = event.target.value;
+  event.target.value = valor.replace(/^\s+/, '');
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  const camposTexto = ['unidadLote', 'precioHistorico'];
+
+  camposTexto.forEach(id => {
+    const campo = document.getElementById(id);
+    if (campo) {
+      campo.addEventListener('input', eliminarEspaciosAlInicio);
+    }
+  });
+});
 
 // 🟢 Exponer funciones globales
 window.editarPrecio = editarPrecio;

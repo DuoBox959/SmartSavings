@@ -403,6 +403,20 @@ function cerrarFormulario() {
   $("#usuarioID, #nombreUsuario, #emailUsuario, #passwordUsuario").val("");
 }
 
+// Función para eliminar los espacios antes y después del texto en los campos de entrada
+function eliminarEspacios(event) {
+  let valor = event.target.value;
+  // Elimina los espacios al principio y al final
+  event.target.value = valor.replace(/^\s+|\s+$/, '');
+}
+
+// Añadir el evento a los campos de texto
+document.addEventListener("DOMContentLoaded", function() {
+  document.getElementById('nombreUsuario').addEventListener('input', eliminarEspacios);
+  document.getElementById('passwordUsuario').addEventListener('input', eliminarEspacios);
+  document.getElementById('emailUsuario').addEventListener('input', eliminarEspacios);
+});
+
 // 🟢 Exponer funciones globales
 window.editarUsuario = editarUsuario;
 window.eliminarUsuario = eliminarUsuario;

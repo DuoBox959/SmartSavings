@@ -210,6 +210,22 @@ function cerrarFormulario() {
   );
 }
 
+function eliminarEspaciosAlInicio(event) {
+  const valor = event.target.value;
+  event.target.value = valor.replace(/^\s+/, '');
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  const camposTexto = ['nombreProveedor', 'paisProveedor', 'comunidadAutonoma'];
+
+  camposTexto.forEach(id => {
+    const campo = document.getElementById(id);
+    if (campo) {
+      campo.addEventListener('input', eliminarEspaciosAlInicio);
+    }
+  });
+});
+
 // 🟢 Exponer funciones globales para el HTML
 window.mostrarFormularioAgregar = mostrarFormularioAgregar;
 window.cerrarFormulario = cerrarFormulario;

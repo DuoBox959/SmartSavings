@@ -333,6 +333,28 @@ function cerrarFormulario() {
   ).val("");
 }
 
+// Función para eliminar los espacios antes del texto en los campos de entrada
+function eliminarEspaciosPrincipio(event) {
+  // Obtener el valor del campo
+  let valor = event.target.value;
+
+  // Eliminar los espacios solo al principio del texto
+  event.target.value = valor.replace(/^\s+/, '');
+}
+
+// Añadir el evento a los campos de texto
+document.getElementById('nombreProducto').addEventListener('input', eliminarEspaciosPrincipio);
+document.getElementById('marcaProducto').addEventListener('input', eliminarEspaciosPrincipio);
+document.getElementById('pesoProducto').addEventListener('input', eliminarEspaciosPrincipio);
+
+// También puedes agregarlo a los campos 'select' si necesitas evitar la selección de un valor vacío
+document.getElementById('unidadPeso').addEventListener('change', eliminarEspaciosPrincipio);
+document.getElementById('idProveedor').addEventListener('change', eliminarEspaciosPrincipio);
+document.getElementById('idSupermercado').addEventListener('change', eliminarEspaciosPrincipio);
+document.getElementById('idUsuario').addEventListener('change', eliminarEspaciosPrincipio);
+document.getElementById('Estado').addEventListener('change', eliminarEspaciosPrincipio);
+
+
 // 🟢 Exponer funciones globales
 window.editarProducto = editarProducto;
 window.eliminarProducto = eliminarProducto;

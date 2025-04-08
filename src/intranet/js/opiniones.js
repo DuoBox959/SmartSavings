@@ -324,6 +324,18 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+function eliminarEspaciosPrincipio(event) {
+  const valor = event.target.value;
+  event.target.value = valor.replace(/^\s+/, '');
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  const campoOpinion = document.getElementById('textoOpinion');
+  if (campoOpinion) {
+    campoOpinion.addEventListener('input', eliminarEspaciosPrincipio);
+  }
+});
+
 // ✅ Exponer funciones globales
 window.mostrarFormularioAgregar = mostrarFormularioAgregar;
 window.cerrarFormulario = cerrarFormulario;

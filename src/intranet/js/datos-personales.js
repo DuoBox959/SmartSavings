@@ -267,6 +267,21 @@ function cerrarFormulario() {
   $("#notificaciones").prop("checked", false);
 }
 
+ // Función para eliminar los espacios antes del texto en los campos de entrada
+ function eliminarEspaciosPrincipio(event) {
+  let valor = event.target.value;
+  // Eliminar los espacios solo al principio
+  event.target.value = valor.replace(/^\s+/, '');
+}
+
+// Añadir el evento a los campos de texto
+document.addEventListener("DOMContentLoaded", function() {
+  document.getElementById('nombre').addEventListener('input', eliminarEspaciosPrincipio);
+  document.getElementById('apellidos').addEventListener('input', eliminarEspaciosPrincipio);
+  document.getElementById('idioma').addEventListener('input', eliminarEspaciosPrincipio);
+  document.getElementById('zonaHoraria').addEventListener('input', eliminarEspaciosPrincipio);
+});
+
 // 🟢 Exponer funciones globales
 window.editarDato = editarDato;
 window.eliminarDato = eliminarDato;

@@ -351,6 +351,21 @@ function cerrarFormulario() {
   ).val("");
 }
 
+// Función para eliminar los espacios antes del texto en los campos de entrada
+function eliminarEspaciosPrincipio(event) {
+  let valor = event.target.value;
+  // Eliminar los espacios solo al principio
+  event.target.value = valor.replace(/^\s+/, '');
+}
+
+// Añadir el evento a los campos de texto
+document.addEventListener("DOMContentLoaded", function() {
+  document.getElementById('tipoProducto').addEventListener('input', eliminarEspaciosPrincipio);
+  document.getElementById('subtipoProducto').addEventListener('input', eliminarEspaciosPrincipio);
+  document.getElementById('utilidadProducto').addEventListener('input', eliminarEspaciosPrincipio);
+  document.getElementById('ingredientesProducto').addEventListener('input', eliminarEspaciosPrincipio);
+});
+
 // ✅ Exponer funciones globales
 window.mostrarFormularioAgregar = mostrarFormularioAgregar;
 window.cerrarFormulario = cerrarFormulario;
