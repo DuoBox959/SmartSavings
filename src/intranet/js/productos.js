@@ -49,9 +49,7 @@ async function cargarProductos() {
 
       productosTable.row.add([
         producto._id,
-        `<img src="${producto.Imagen || ""}" alt="${
-          producto.Nombre
-        }" width="50" />`,
+        `<img src="http://localhost:3000${producto.Imagen || ""}" alt="${producto.Nombre}" width="50" />`,
         producto.Nombre,
         producto.Marca,
         pesoConUnidad,
@@ -167,29 +165,52 @@ async function guardarCambiosDesdeFormulario(event) {
 
 // 🟢 Editar producto
 async function editarProducto(id) {
-  const producto = productosCache.find((p) => p._id === id);
-  if (!producto) return;
+  try {
+    // Obtener el producto completo desde el backend con sus IDs reales
+    const response = await fetch(`http://localhost:3000/api/productos/${id}`);
+    const producto = await response.json();
 
-  $("#formTitulo").text("Editar Producto");
-  $("#productoID").val(producto._id);
-  $("#nombreProducto").val(producto.Nombre);
-  $("#marcaProducto").val(producto.Marca);
-  $("#pesoProducto").val(producto.Peso);
-  $("#unidadPeso").val(producto.UnidadPeso);
-  $("#Estado").val(producto.Estado);
+    $("#formTitulo").text("Editar Producto");
 
-  await cargarOpcionesSelects();
+    // Rellenar inputs básicos
+    $("#productoID").val(producto._id);
+    $("#nombreProducto").val(producto.Nombre);
+    $("#marcaProducto").val(producto.Marca);
+    $("#pesoProducto").val(producto.Peso);
+    $("#unidadPeso").val(producto.UnidadPeso);
+    $("#Estado").val(producto.Estado);
 
-  $("#idProveedor").val(producto.Proveedor_id);
-  $("#idSupermercado").val(producto.Supermercado_id);
-  $("#idUsuario").val(producto.Usuario_id);
+    // ⚠️ Muy importante: esperar a que los selects se llenen antes de asignar el valor
+    await cargarOpcionesSelects();
 
-  $("#botonesFormulario button:first")
-    .off("click")
-    .on("click", guardarEdicionProducto);
+    $("#idProveedor").val(producto.Proveedor_id);
+    $("#idSupermercado").val(producto.Supermercado_id);
+    $("#idUsuario").val(producto.Usuario_id);
 
-  $("#formularioProducto").show();
-  document.getElementById("formularioProducto").scrollIntoView({ behavior: "smooth" });
+    // Imagen previa
+    if (producto.Imagen) {
+      const nombreArchivo = producto.Imagen.split("/").pop(); // Extraer solo el nombre
+      $("#previewImagen").html(
+        `<img src="${producto.Imagen}" alt="Imagen actual" width="100" />
+         <input type="hidden" id="imagenAnterior" value="${nombreArchivo}" />`
+      );
+    }
+     else {
+      $("#previewImagen").html("");
+    }
+
+    $("#botonesFormulario button:first")
+      .off("click")
+      .on("click", guardarEdicionProducto);
+
+    $("#formularioProducto").show();
+    document
+      .getElementById("formularioProducto")
+      .scrollIntoView({ behavior: "smooth" });
+  } catch (error) {
+    console.error("❌ Error cargando producto para editar:", error);
+    Swal.fire("Error", "No se pudo cargar el producto para editar", "error");
+  }
 }
 
 // 🟢 Guardar cambios en la edición con validaciones
@@ -246,8 +267,12 @@ async function guardarEdicionProducto(event) {
   formData.append("supermercado_id", supermercadoID);
   formData.append("usuario_id", usuarioID);
 
-  if (imagen) formData.append("imagen", imagen); // Agregar imagen si se seleccionó una nueva
-
+  if (imagen) formData.append("Imagen", imagen); // Agregar imagen si se seleccionó una nueva
+  const imagenAnterior = $("#imagenAnterior").val();
+  if (imagen && imagenAnterior) {
+    formData.append("imagenAnterior", imagenAnterior);
+  }
+  
   try {
     const response = await fetch(`http://localhost:3000/api/productos/${id}`, {
       method: "PUT",

@@ -13,6 +13,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+
 // 📌 Servir archivos estáticos desde la carpeta "uploads"
 app.use("/uploads", express.static("uploads"));
 
@@ -759,6 +760,8 @@ app.delete("/api/productos-completos/:id", async (req, res) => {
  * ✅ Actualizar producto existente (Update)
  * Ruta: PUT /api/productos/:id
  */
+
+
 app.put("/api/productos/:id", upload.single("Imagen"), async (req, res) => {
   try {
     const { id } = req.params;
@@ -771,9 +774,19 @@ app.put("/api/productos/:id", upload.single("Imagen"), async (req, res) => {
     const objectId = new ObjectId(id);
     const updateData = {};
 
-    // 📌 Si se subió una nueva imagen, actualizarla
+    // ✅ Si se subió una nueva imagen, actualizamos y eliminamos la anterior
     if (req.file) {
       updateData.Imagen = `/uploads/${req.file.filename}`;
+
+      if (req.body.imagenAnterior) {
+        const rutaAnterior = path.join(__dirname, "uploads", "2025", req.body.imagenAnterior);
+        try {
+          await fsPromises.unlink(rutaAnterior);
+          console.log("🗑️ Imagen anterior eliminada:", rutaAnterior);
+        } catch (err) {
+          console.warn("⚠️ No se pudo eliminar imagen anterior:", err.message);
+        }
+      }
     }
 
     if (req.body.nombre) updateData.Nombre = req.body.nombre;
@@ -791,9 +804,7 @@ app.put("/api/productos/:id", upload.single("Imagen"), async (req, res) => {
     console.log("🛠️ Datos a actualizar:", updateData);
 
     if (Object.keys(updateData).length === 0) {
-      return res
-        .status(200)
-        .json({ message: "No hubo cambios en el producto." });
+      return res.status(200).json({ message: "No hubo cambios en el producto." });
     }
 
     const result = await db
@@ -804,7 +815,6 @@ app.put("/api/productos/:id", upload.single("Imagen"), async (req, res) => {
       return res.status(404).json({ error: "Producto no encontrado" });
     }
 
-    console.log("✅ Producto actualizado en MongoDB:", result);
     res.json({
       message: "Producto actualizado correctamente",
       producto: updateData,
@@ -814,6 +824,7 @@ app.put("/api/productos/:id", upload.single("Imagen"), async (req, res) => {
     res.status(500).json({ error: "Error al actualizar producto" });
   }
 });
+
 
 /**
  * ✅ Obtener un producto por ID (Read)
