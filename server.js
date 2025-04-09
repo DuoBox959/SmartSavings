@@ -410,6 +410,24 @@ app.post("/api/productos", upload.single("Imagen"), async (req, res) => {
  * ✅ Crear un nuevo producto completo con imagen (Create)
  * Ruta: POST /api/productos-completos
  */
+// ✅ Función de utilidad para transformar el string a array de objetos
+function parsearPrecioHistorico(input) {
+  if (!input || typeof input !== "string") return [];
+
+  const partes = input.split(",").map(e => e.trim());
+  const resultado = [];
+
+  for (let i = 0; i < partes.length - 1; i += 2) {
+    const precio = parseFloat(partes[i]);
+    const año = parseInt(partes[i + 1]);
+
+    if (!isNaN(precio) && !isNaN(año)) {
+      resultado.push({ precio, año });
+    }
+  }
+
+  return resultado;
+}
 
 app.post("/api/productos-completos", upload.single("Imagen"), async (req, res) => {
   try {
@@ -478,25 +496,25 @@ app.post("/api/productos-completos", upload.single("Imagen"), async (req, res) =
   }
 });
 
-function parsearPrecioHistorico(input) {
-  if (!input) return [];
+// function parsearPrecioHistorico(input) {
+//   if (!input) return [];
 
-  const valores = input
-    .split(",")
-    .map((v) => v.trim())
-    .filter((v) => v !== "");
+//   const valores = input
+//     .split(",")
+//     .map((v) => v.trim())
+//     .filter((v) => v !== "");
 
-  const resultado = [];
-  for (let i = 0; i < valores.length; i += 2) {
-    const precio = parseFloat(valores[i]);
-    const año = valores[i + 1];
-    if (!isNaN(precio) && año) {
-      resultado.push({ precio, fecha: año });
-    }
-  }
+//   const resultado = [];
+//   for (let i = 0; i < valores.length; i += 2) {
+//     const precio = parseFloat(valores[i]);
+//     const año = valores[i + 1];
+//     if (!isNaN(precio) && año) {
+//       resultado.push({ precio, fecha: año });
+//     }
+//   }
 
-  return resultado;
-}
+//   return resultado;
+// }
 app.get("/api/precios/producto/:id", async (req, res) => {
   try {
     const { id } = req.params;
