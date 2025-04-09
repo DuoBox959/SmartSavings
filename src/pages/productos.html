@@ -63,14 +63,16 @@
         <label>Nombre del producto: *</label>
         <input type="text" id="edit-nombre" required />
        
-        <div class="form-group">
-          <label>Tipo del producto: *</label>
+        <!-- Tipo del producto -->
+        <label for="edit-tipo-select">Tipo del producto: *</label>
+        <div class="campo-compuesto">
           <select id="edit-tipo-select" onchange="toggleNuevoCampo('edit', 'tipo')" required>
             <option value="">Selecciona un tipo</option>
             <option value="nuevo">Otro (escribir nuevo)</option>
           </select>
           <input type="text" id="edit-tipo-nuevo" class="nuevo-campo" placeholder="Nuevo tipo" />
         </div>
+
         
 
         <label>Precio actual (€): *</label>
@@ -80,6 +82,7 @@
         <input type="number" id="edit-peso" step="0.01" required />
 
         <label>Unidad de Peso: *</label>
+        
         <select id="edit-unidadPeso" required>
           <option value="kg">Kilogramos (kg)</option>
           <option value="g">Gramos (g)</option>
@@ -87,8 +90,10 @@
           <option value="ml">Mililitros (ml)</option>
         </select>
 
-        <div class="form-group">
+   
           <label>Supermercado: *</label>
+          <div class="campo-compuesto">
+
           <select id="edit-supermercado-select" onchange="toggleNuevoCampo('edit', 'supermercado')" required>
             <option value="">Selecciona un supermercado</option>
             <option value="nuevo">Otro (escribir nuevo)</option>
@@ -120,8 +125,10 @@
           <label>Ingredientes (separados por coma):</label>
           <input type="text" id="edit-ingredientes" placeholder="Ej: agua, azúcar, gas" />
                     
-          <div class="form-group">
+
             <label>Marca:</label>
+            <div class="campo-compuesto">
+
             <select id="edit-marca-select" onchange="toggleNuevoCampo('edit', 'marca')">
               <option value="">Selecciona una marca</option>
               <option value="nuevo">Otra (escribir nueva)</option>
@@ -143,8 +150,10 @@
           <label>País del supermercado:</label>
           <input type="text" id="edit-pais-super" />
 
-          <div class="form-group">
+          
             <label>Proveedor:</label>
+            <div class="campo-compuesto">
+
             <select id="edit-proveedor-select" onchange="toggleNuevoCampo('edit', 'proveedor')">
               <option value="">Selecciona un proveedor</option>
               <option value="nuevo">Otro (escribir nuevo)</option>
@@ -157,8 +166,11 @@
           <label>País del proveedor:</label>
           <input type="text" id="edit-pais-proveedor" />
 
-          <div class="form-group">
+  
+            
             <label>Subtipo:</label>
+            <div class="campo-compuesto">
+
             <select id="edit-subtipo-select" onchange="toggleNuevoCampo('edit', 'subtipo')">
               <option value="">Selecciona un subtipo</option>
               <option value="nuevo">Otro (escribir nuevo)</option>
@@ -199,14 +211,16 @@
         <label>Nombre del producto: *</label>
         <input type="text" id="add-nombre" required />
 
-        <div class="form-group">
-          <label>Tipo del producto: *</label>
+       <!-- Tipo del producto -->
+        <label for="add-tipo-select">Tipo del producto: *</label>
+        <div class="campo-compuesto">
           <select id="add-tipo-select" onchange="toggleNuevoCampo('add', 'tipo')" required>
             <option value="">Selecciona un tipo</option>
             <option value="nuevo">Otro (escribir nuevo)</option>
           </select>
           <input type="text" id="add-tipo-nuevo" class="nuevo-campo" placeholder="Nuevo tipo" />
         </div>
+
         
         <label>Precio actual (€): *</label>
         <input type="number" id="add-precio" step="0.01" required />
@@ -222,8 +236,9 @@
           <option value="ml">Mililitros</option>
         </select>
 
-        <div class="form-group">
           <label>Supermercado: *</label>
+          <div class="campo-compuesto">
+
           <select id="add-supermercado-select" onchange="toggleNuevoCampo('add', 'supermercado')" required>
             <option value="">Selecciona un supermercado</option>
             <option value="nuevo">Otro (escribir nuevo)</option>
@@ -250,8 +265,10 @@
           <input type="text" id="add-ingredientes" name="ingredientes" placeholder="Ej: azúcar, agua, gas carbónico" />
 
 
-          <div class="form-group">
+        
             <label>Marca:</label>
+            <div class="campo-compuesto">
+
             <select id="add-marca-select" onchange="toggleNuevoCampo('add', 'marca')">
               <option value="">Selecciona una marca</option>
               <option value="nuevo">Otra (escribir nueva)</option>
@@ -273,8 +290,9 @@
           <label>País supermercado:</label>
           <input type="text" id="add-pais-super" />
 
-          <div class="form-group">
             <label>Proveedor:</label>
+            <div class="campo-compuesto">
+
             <select id="add-proveedor-select" onchange="toggleNuevoCampo('add', 'proveedor')">
               <option value="">Selecciona un proveedor</option>
               <option value="nuevo">Otro (escribir nuevo)</option>
@@ -287,8 +305,9 @@
           <label>País proveedor:</label>
           <input type="text" id="add-pais-proveedor" />
 
-          <div class="form-group">
             <label>Subtipo:</label>
+            <div class="campo-compuesto">
+
             <select id="add-subtipo-select" onchange="toggleNuevoCampo('add', 'subtipo')">
               <option value="">Selecciona un subtipo</option>
               <option value="nuevo">Otro (escribir nuevo)</option>
