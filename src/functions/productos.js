@@ -109,6 +109,7 @@ async function cargarOpcionesEnSelects(configs) {
 
         // Opción para insertar nuevo
         const optionOtro = document.createElement("option");
+        optionOtro.value = "nuevo"; 
         optionOtro.textContent = "Otro (escribir nuevo)";
         select.appendChild(optionOtro);
       });
@@ -409,9 +410,10 @@ function toggleNuevoCampo(modo, campo) {
   const input = document.getElementById(`${modo}-${campo}-nuevo`);
   if (!select || !input) return;
 
-  input.style.display = (select.value === "nuevo") ? "block" : "none";
-  input.required = select.value === "nuevo";
-  if (!input.required) input.value = "";
+  const esNuevo = select.value === "nuevo";
+  input.style.display = esNuevo ? "block" : "none";
+  input.required = esNuevo;
+  if (!esNuevo) input.value = "";
 }
 
 function cerrarFormulario() {

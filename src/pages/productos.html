@@ -62,13 +62,16 @@
         <!-- ✅ Campos obligatorios -->
         <label>Nombre del producto: *</label>
         <input type="text" id="edit-nombre" required />
-
-        <label>Tipo del producto: *</label>
-        <select id="edit-tipo-select" onchange="toggleNuevoCampo('edit', 'tipo')" required>
-          <option value="">Selecciona un tipo</option>
-          <option value="nuevo">Otro (escribir nuevo)</option>
-        </select>
-        <input type="text" id="edit-tipo-nuevo" placeholder="Nuevo tipo" style="display: none;" />
+       
+        <div class="form-group">
+          <label>Tipo del producto: *</label>
+          <select id="edit-tipo-select" onchange="toggleNuevoCampo('edit', 'tipo')" required>
+            <option value="">Selecciona un tipo</option>
+            <option value="nuevo">Otro (escribir nuevo)</option>
+          </select>
+          <input type="text" id="edit-tipo-nuevo" class="nuevo-campo" placeholder="Nuevo tipo" />
+        </div>
+        
 
         <label>Precio actual (€): *</label>
         <input type="number" id="edit-precio" step="0.01" required />
@@ -84,11 +87,15 @@
           <option value="ml">Mililitros (ml)</option>
         </select>
 
-        <label>Supermercado: *</label>
-        <select id="edit-supermercado-select" required onchange="toggleNuevoCampo('edit', 'supermercado')">
-          <option value="">Selecciona un supermercado</option>
-          <option value="nuevo">Otro (escribir nuevo)</option>
-        </select>
+        <div class="form-group">
+          <label>Supermercado: *</label>
+          <select id="edit-supermercado-select" onchange="toggleNuevoCampo('edit', 'supermercado')" required>
+            <option value="">Selecciona un supermercado</option>
+            <option value="nuevo">Otro (escribir nuevo)</option>
+          </select>
+          <input type="text" id="edit-supermercado-nuevo" class="nuevo-campo" placeholder="Nuevo supermercado" />
+        </div>
+        
         <input type="text" id="edit-supermercado-nuevo" placeholder="Nuevo supermercado" style="display: none;" />
 
         <label>Estado: *</label>
@@ -113,11 +120,15 @@
           <label>Ingredientes (separados por coma):</label>
           <input type="text" id="edit-ingredientes" placeholder="Ej: agua, azúcar, gas" />
                     
-          <label>Marca:</label>
-          <select id="edit-marca-select" onchange="toggleNuevoCampo('edit', 'marca')">
-            <option value="">Selecciona una marca</option>
-            <option value="nuevo">Otra (escribir nueva)</option>
-          </select>
+          <div class="form-group">
+            <label>Marca:</label>
+            <select id="edit-marca-select" onchange="toggleNuevoCampo('edit', 'marca')">
+              <option value="">Selecciona una marca</option>
+              <option value="nuevo">Otra (escribir nueva)</option>
+            </select>
+            <input type="text" id="edit-marca-nuevo" class="nuevo-campo" placeholder="Nueva marca" />
+          </div>
+          
           <input type="text" id="edit-marca-nuevo" style="display: none;" />
 
           <label>Descripción del producto (Utilidad):</label>
@@ -132,21 +143,29 @@
           <label>País del supermercado:</label>
           <input type="text" id="edit-pais-super" />
 
-          <label>Proveedor:</label>
-          <select id="edit-proveedor-select" onchange="toggleNuevoCampo('edit', 'proveedor')">
-            <option value="">Selecciona un proveedor</option>
-            <option value="nuevo">Otro (escribir nuevo)</option>
-          </select>
+          <div class="form-group">
+            <label>Proveedor:</label>
+            <select id="edit-proveedor-select" onchange="toggleNuevoCampo('edit', 'proveedor')">
+              <option value="">Selecciona un proveedor</option>
+              <option value="nuevo">Otro (escribir nuevo)</option>
+            </select>
+            <input type="text" id="edit-proveedor-nuevo" class="nuevo-campo" placeholder="Nuevo proveedor" />
+          </div>
+          
           <input type="text" id="edit-proveedor-nuevo" style="display: none;" />
 
           <label>País del proveedor:</label>
           <input type="text" id="edit-pais-proveedor" />
 
-          <label>Subtipo:</label>
-          <select id="edit-subtipo-select" onchange="toggleNuevoCampo('edit', 'subtipo')">
-            <option value="">Selecciona un subtipo</option>
-            <option value="nuevo">Otro (escribir nuevo)</option>
-          </select>
+          <div class="form-group">
+            <label>Subtipo:</label>
+            <select id="edit-subtipo-select" onchange="toggleNuevoCampo('edit', 'subtipo')">
+              <option value="">Selecciona un subtipo</option>
+              <option value="nuevo">Otro (escribir nuevo)</option>
+            </select>
+            <input type="text" id="edit-subtipo-nuevo" class="nuevo-campo" placeholder="Nuevo subtipo" />
+          </div>
+          
           <input type="text" id="edit-subtipo-nuevo" style="display: none;" />
 
           <label>Precio descuento (€):</label>
@@ -164,6 +183,8 @@
 
         <!-- ✅ Botón para guardar cambios -->
         <button type="button" onclick="guardarCambiosDesdeFormulario()">Guardar Cambios</button>
+        <button type="button" class="btn-cerrar" onclick="cerrarFormulario() ">Cancelar</button>
+
       </form>
     </div>
   </div>
@@ -178,13 +199,15 @@
         <label>Nombre del producto: *</label>
         <input type="text" id="add-nombre" required />
 
-        <label>Tipo del producto: *</label>
-        <select id="add-tipo-select" onchange="toggleNuevoCampo('add', 'tipo')" required>
-          <option value="">Selecciona un tipo</option>
-          <option value="nuevo">Otro (escribir nuevo)</option>
-        </select>
-        <input type="text" id="add-tipo-nuevo" style="display: none;" />
-
+        <div class="form-group">
+          <label>Tipo del producto: *</label>
+          <select id="add-tipo-select" onchange="toggleNuevoCampo('add', 'tipo')" required>
+            <option value="">Selecciona un tipo</option>
+            <option value="nuevo">Otro (escribir nuevo)</option>
+          </select>
+          <input type="text" id="add-tipo-nuevo" class="nuevo-campo" placeholder="Nuevo tipo" />
+        </div>
+        
         <label>Precio actual (€): *</label>
         <input type="number" id="add-precio" step="0.01" required />
 
@@ -199,11 +222,15 @@
           <option value="ml">Mililitros</option>
         </select>
 
-        <label>Supermercado: *</label>
-        <select id="add-supermercado-select" onchange="toggleNuevoCampo('add', 'supermercado')" required>
-          <option value="">Selecciona un supermercado</option>
-          <option value="nuevo">Otro (escribir nuevo)</option>
-        </select>
+        <div class="form-group">
+          <label>Supermercado: *</label>
+          <select id="add-supermercado-select" onchange="toggleNuevoCampo('add', 'supermercado')" required>
+            <option value="">Selecciona un supermercado</option>
+            <option value="nuevo">Otro (escribir nuevo)</option>
+          </select>
+          <input type="text" id="add-supermercado-nuevo" class="nuevo-campo" placeholder="Nuevo supermercado" />
+        </div>
+        
         <input type="text" id="add-supermercado-nuevo" style="display: none;" />
 
         <label>Estado: *</label>
@@ -223,11 +250,15 @@
           <input type="text" id="add-ingredientes" name="ingredientes" placeholder="Ej: azúcar, agua, gas carbónico" />
 
 
-          <label>Marca:</label>
-          <select id="add-marca-select" onchange="toggleNuevoCampo('add', 'marca')">
-            <option value="">Selecciona una marca</option>
-            <option value="nuevo">Otra (escribir nueva)</option>
-          </select>
+          <div class="form-group">
+            <label>Marca:</label>
+            <select id="add-marca-select" onchange="toggleNuevoCampo('add', 'marca')">
+              <option value="">Selecciona una marca</option>
+              <option value="nuevo">Otra (escribir nueva)</option>
+            </select>
+            <input type="text" id="add-marca-nuevo" class="nuevo-campo" placeholder="Nueva marca" />
+          </div>
+          
           <input type="text" id="add-marca-nuevo" style="display: none;" />
 
           <label>Descripción del producto (Utilidad):</label>
@@ -242,23 +273,29 @@
           <label>País supermercado:</label>
           <input type="text" id="add-pais-super" />
 
-          <label>Proveedor:</label>
-          <select id="add-proveedor-select" onchange="toggleNuevoCampo('add', 'proveedor')">
-            <option value="">Selecciona un proveedor</option>
-            <option value="nuevo">Otro (escribir nuevo)</option>
-          </select>
+          <div class="form-group">
+            <label>Proveedor:</label>
+            <select id="add-proveedor-select" onchange="toggleNuevoCampo('add', 'proveedor')">
+              <option value="">Selecciona un proveedor</option>
+              <option value="nuevo">Otro (escribir nuevo)</option>
+            </select>
+            <input type="text" id="add-proveedor-nuevo" class="nuevo-campo" placeholder="Nuevo proveedor" />
+          </div>
+          
           <input type="text" id="add-proveedor-nuevo" style="display: none;" />
 
           <label>País proveedor:</label>
           <input type="text" id="add-pais-proveedor" />
 
-          <label>Subtipo:</label>
-          <select id="add-subtipo-select" onchange="toggleNuevoCampo('add', 'subtipo')">
-            <option value="">Selecciona un subtipo</option>
-            <option value="nuevo">Otro (escribir nuevo)</option>
-          </select>
-          <input type="text" id="add-subtipo-nuevo" style="display: none;" />
-
+          <div class="form-group">
+            <label>Subtipo:</label>
+            <select id="add-subtipo-select" onchange="toggleNuevoCampo('add', 'subtipo')">
+              <option value="">Selecciona un subtipo</option>
+              <option value="nuevo">Otro (escribir nuevo)</option>
+            </select>
+            <input type="text" id="add-subtipo-nuevo" class="nuevo-campo" placeholder="Nuevo subtipo" />
+          </div>
+          
           <label>Precio descuento (€):</label>
           <input type="number" id="add-precioDescuento" step="0.01" />
 

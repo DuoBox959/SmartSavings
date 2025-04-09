@@ -417,3 +417,24 @@ label.required::after {
 .btn-cerrar:hover {
   background-color: #bbb;
 }
+
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  grid-column: span 2;
+  margin-bottom: 1rem;
+}
+.form-group select,
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+.nuevo-campo {
+  display: none;
+  margin-top: 6px;
+}
