@@ -133,6 +133,7 @@ async function editarProducto(id) {
     const precioData = precios.find(p => p.producto_id === id) || {};
     const supermercado = supermercados.find(s => s._id === producto.Supermercado_id) || {};
     const proveedor = proveedores.find(p => p._id === producto.Proveedor_id) || {};
+    console.log("📦 Producto cargado:", producto);
 
     // 2. Cargar en formulario
     safeSetValue("edit-producto-id", producto._id);
@@ -155,10 +156,10 @@ async function editarProducto(id) {
     safeSetValue("edit-fecha-actualizacion", new Date().toISOString());
     safeSetValue("edit-usuario", producto.usuario);
 
-    // Historial
-    const historial = (producto.Historico || [])
-      .map(entry => `${entry.fecha} - ${entry.precio}€`)
-      .join("\n");
+    // 🧠 Historial visual en textarea
+    const historial = (precioData.precioHistorico || [])
+    .map(entry => `${entry.año || entry.fecha || "?"} - ${entry.precio}€`)
+    .join("\n");
     safeSetValue("edit-precioHistorico", historial);
 
     document.getElementById("modal-editar").style.display = "flex";
@@ -166,6 +167,7 @@ async function editarProducto(id) {
     console.error("❌ Error al cargar producto para editar:", err);
     Swal.fire("Error", "Hubo un problema al cargar el producto para edición.", "error");
   }
+
 }
 
 // ==============================
