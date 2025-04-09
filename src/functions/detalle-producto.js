@@ -87,8 +87,9 @@ async function cargarProducto() {
     document.getElementById("producto-ingredientes").innerHTML = "<strong>Ingredientes:</strong> " + (descripcion?.Ingredientes?.join(", ") || "N/A");
 
     const historial = precioData?.precioHistorico?.length
-    ? precioData.precioHistorico.map(h => `${h.fecha}: ${h.precio}€`).join("\n")
+    ? precioData.precioHistorico.map(h => `${h.año || h.fecha || "¿Año?"}: ${h.precio}€`).join("\n")
     : "No disponible";
+
   
     document.getElementById("producto-historico").innerHTML =
     "<strong>Precio histórico:</strong><br>" + historial.replace(/\n/g, "<br>");
