@@ -44,12 +44,18 @@ async function cargarProductos() {
     productosCache = productos;
     productosTable.clear();
 
+  
+
     productos.forEach((producto) => {
       const pesoConUnidad = `${producto.Peso} ${producto.UnidadPeso}`;
 
+      const imagenURL = producto.Imagen
+      ? `http://localhost:3000${producto.Imagen}?t=${Date.now()}`
+      : "";
+      
       productosTable.row.add([
         producto._id,
-        `<img src="http://localhost:3000${producto.Imagen || ""}" alt="${producto.Nombre}" width="50" />`,
+        `<img src="${imagenURL}" alt="${producto.Nombre}" width="50" />`,
         producto.Nombre,
         producto.Marca,
         pesoConUnidad,
@@ -191,14 +197,16 @@ async function editarProducto(id) {
     if (producto.Imagen) {
       const nombreArchivo = producto.Imagen.split("/").pop(); // Extraer solo el nombre
       $("#previewImagen").html(
-        `<img src="${producto.Imagen}" alt="Imagen actual" width="100" />
+        `<img src="http://localhost:3000${producto.Imagen}" alt="Imagen actual" width="100" />
          <input type="hidden" id="imagenAnterior" value="${nombreArchivo}" />`
       );
     }
      else {
       $("#previewImagen").html("");
     }
-
+    $("#imgProducto").val(""); // Limpia el campo de input file
+    $("#vistaPreviaImagen").hide(); // Oculta vista previa anterior si la usas
+    
     $("#botonesFormulario button:first")
       .off("click")
       .on("click", guardarEdicionProducto);

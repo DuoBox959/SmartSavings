@@ -1,5 +1,5 @@
 // =============================================
-// 🅰️ CONFIGURACIÓN INICIAL
+// 🔌 DEPENDENCIAS Y CONFIGURACIÓN INICIAL
 // =============================================
 
 const { conectarDB, ObjectId } = require("./conexion1");
@@ -8,6 +8,7 @@ const multer = require("multer");
 const path = require("path");
 const express = require("express");
 const cors = require("cors");
+const fs = require("fs").promises; 
 
 const app = express();
 app.use(cors());
@@ -15,8 +16,8 @@ app.use(express.json());
 
 
 // 📌 Servir archivos estáticos desde la carpeta "uploads"
-app.use("/uploads", express.static("uploads"));
-
+// ⚠️ Esta línea es CLAVE
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 let db;
 
 // 📌 Configuración de almacenamiento para imágenes con Multer
@@ -776,12 +777,12 @@ app.put("/api/productos/:id", upload.single("Imagen"), async (req, res) => {
 
     // ✅ Si se subió una nueva imagen, actualizamos y eliminamos la anterior
     if (req.file) {
-      updateData.Imagen = `/uploads/${req.file.filename}`;
+      updateData.Imagen = `/uploads/2025/${req.file.filename}`;
 
       if (req.body.imagenAnterior) {
         const rutaAnterior = path.join(__dirname, "uploads", "2025", req.body.imagenAnterior);
         try {
-          await fsPromises.unlink(rutaAnterior);
+          await fs.unlink(rutaAnterior);
           console.log("🗑️ Imagen anterior eliminada:", rutaAnterior);
         } catch (err) {
           console.warn("⚠️ No se pudo eliminar imagen anterior:", err.message);
