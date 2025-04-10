@@ -36,7 +36,7 @@ body {
 ==================================================== */
 .product-card {
   background: #fff;
-  color: #222;
+  color: #333;
   border: 1px solid #e0e0e0;
   border-radius: 18px;
   width: 280px;
@@ -46,39 +46,19 @@ body {
   position: relative;
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  min-height: 56px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 540px; /* clave para alinear todas */
-  font-size: 22px;
-  margin: 14px 0 6px;
-  font-weight: 700;
-
 }
 
 .product-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
 }
-.product-card a {
-  text-decoration: none;
-  color: inherit;
-}
-
-.product-card a:hover {
-  color: #1976d2; /* O el color que desees */
-}
 
 /* 🖼️ Imagen del producto */
 .product-card img {
-  height: 250px;
-  object-fit: contain;
-  margin-bottom: 10px;
+  width: 100%;
   border-radius: 12px;
+  margin-bottom: 10px;
   transition: transform 0.3s ease;
-
 }
 
 .product-card:hover img {
@@ -91,9 +71,29 @@ body {
   margin: 14px 0;
   font-weight: 700;
   color: #222;
-  white-space: normal;
 }
 
+.product-card .marca {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.product-card .peso,
+.product-card .supermercado,
+.product-card .ubicacion {
+  font-size: 16px;
+  color: #555;
+  margin: 6px 0;
+}
+
+.product-card .descripcion,
+.product-card .biografia {
+  font-size: 15px;
+  color: #444;
+  line-height: 1.4;
+  margin-top: 6px;
+}
 
 /* ====================================================
 ❤️ FAVORITO
@@ -120,11 +120,9 @@ body {
 🛠️ BOTONES DE ACCIÓN
 ==================================================== */
 .acciones {
-  margin-top: auto;
   display: flex;
   justify-content: space-between;
-  gap: 10px;
-  padding-top: 15px;
+  margin-top: 20px;
 }
 
 .acciones button {
@@ -145,13 +143,13 @@ body {
 }
 
 .btn-editar {
-  background: #365a7e;
+  background: #388e3c;
   color: white;
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
 }
 
 .btn-editar:hover {
-  background: #0854ab;
+  background: #2e7d32;
 }
 
 .btn-eliminar {
@@ -161,7 +159,7 @@ body {
 }
 
 .btn-eliminar:hover {
-  background: #f33b3b;
+  background: #e64a19;
 }
 
 /* ====================================================
@@ -387,7 +385,7 @@ label.required::after {
 ➕ BOTÓN AGREGAR PRODUCTO
 ==================================================== */
 .btn-agregar {
-  background: #365a7e;
+  background: #34495e;
   color: white;
   padding: 10px 20px;
   font-size: 1em;
@@ -434,19 +432,3 @@ label.required::after {
   display: none;
   margin-top: 6px;
 }
-
-.info-producto {
-  text-align: left;
-  font-size: 15px;
-  color: #444;
-  line-height: 1.5;
-  border-top: 1px solid #ddd;
-  margin-top: 10px;
-  padding-top: 10px;
-  min-height: 170px; /* puedes ajustar según el promedio de líneas */
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-

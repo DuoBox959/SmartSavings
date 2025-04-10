@@ -61,9 +61,15 @@ async function cargarProductos() {
           <img src="${producto.Imagen || '../assets/img/default.webp'}" alt="${producto.Nombre}">
           <h3>${producto.Nombre}</h3>
         </a>
-        <p class="marca">${producto.Marca || "Marca desconocida"}</p>
-        <p class="peso">Peso: ${producto.Peso} ${producto.UnidadPeso}</p>
+          <div class="info-producto">
+        <p class="marca">Marca: ${producto.Marca || "Marca desconocida"}</p>
         <p class="estado">Estado: ${producto.Estado}</p>
+        <p class="peso">Peso: ${producto.Peso} ${producto.UnidadPeso}</p>
+        <p class="precio">Precio: ${producto.precioActual ? producto.precioActual + " €" : "N/D"}</p>
+        <p class="supermercado"> Supermercado: ${producto.Supermercado_id || "Desconocido"}</p>
+        </div>
+
+
         <div class="acciones">
           <button class="btn-editar" onclick="editarProducto('${producto._id}')">✏️ Editar</button>
           <button class="btn-eliminar" onclick="eliminarProducto('${producto._id}')">🗑️ Eliminar</button>

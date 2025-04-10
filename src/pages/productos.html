@@ -42,16 +42,20 @@
       </li>
     </ul>
   </nav>
+  <section class="acciones-superiores">
+  <strong></strong>
 
   <!-- ➕ Botón para mostrar formulario de nuevo producto -->
   <button class="btn-agregar" onclick="mostrarFormularioAgregar()">Agregar Producto</button>
-
+</section>
   <!-- 📦 Contenedor de tarjetas de productos -->
-  <div class="productos-container" id="productos-container"></div>
+  <section class="productos-container" id="productos-container" aria-label="Lista de productos disponibles"></section>
+
 
   <!-- 🔙 Botón para volver atrás -->
-  <button class="back-button" onclick="volverAtras()">Volver Atrás</button>
-
+  <div class="volver-atras">
+    <button class="back-button" onclick="volverAtras()">Volver Atrás</button>
+  </div>
   <!-- ✏️ MODAL: Editar Producto -->
   <div id="modal-editar" class="modal">
     <div class="modal-content">
