@@ -14,12 +14,14 @@ body {
   flex-direction: column;
   min-height: 100vh;
 }
+
 main {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: calc(100vh - 200px);
 }
+
 .container {
   flex: 1;
   display: flex;
@@ -41,6 +43,7 @@ main {
   gap: 40px;
   padding: 50px;
 }
+
 .tarjeta {
   background: none !important;
   box-shadow: none !important;

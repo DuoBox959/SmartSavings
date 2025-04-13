@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contacto - ComparaTú</title>
+
+    <!-- ✅ Estilos CSS -->
+    <link rel="stylesheet" href="../style/contacto.css" />
+
+    <!-- ✅ Lógica del contacto -->
+    <script type="module" src="../functions/contacto.js" defer></script>
+
+    <!-- ✅ Librería SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- ✅ Validaciones -->
+    <script type="module" src="../valid/validaciones.js" defer></script>
+  </head>
+  <body>
+    <!-- 📌 Contenedor principal -->
+    <div class="container">
+      <!-- 🖼️ Sección Izquierda (Mensaje) -->
+      <div class="left-section">
+        <h1>¿Necesitas ayuda?</h1>
+        <p>
+          Estamos aquí para resolver tus dudas o inquietudes. Completa el formulario y nos pondremos en contacto contigo lo antes posible.
+        </p>
+      </div>
+
+      <!-- 📋 Sección Derecha (Formulario de contacto) -->
+      <div class="right-section">
+        <h2>Contáctanos</h2>
+
+        <form action="#" method="post">
+          <!-- 🔹 Campo: Nombre -->
+          <label for="nombre">Nombre:</label>
+          <input
+            type="text"
+            id="nombre"
+            name="nombre"
+            placeholder="Tu nombre completo"
+            required
+          />
+
+          <!-- 🔹 Campo: Email -->
+          <label for="email">Correo Electrónico:</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Tu correo electrónico"
+            required
+          />
+
+          <!-- 🔹 Campo: Asunto -->
+          <label for="asunto">Asunto:</label>
+          <input
+            type="text"
+            id="asunto"
+            name="asunto"
+            placeholder="Motivo del mensaje"
+            required
+          />
+
+          <!-- 🔹 Campo: Mensaje -->
+          <label for="mensaje">Mensaje:</label>
+          <textarea
+            id="mensaje"
+            name="mensaje"
+            rows="5"
+            placeholder="Escribe tu mensaje aquí..."
+            required
+          ></textarea>
+
+          <!-- ✅ Botón para enviar -->
+          <button type="submit">Enviar Mensaje</button>
+
+          <!-- 🔙 Botón para regresar atrás -->
+          <button type="button" class="back-button" onclick="volverAtras()">
+            Volver Atrás
+          </button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

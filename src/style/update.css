@@ -29,33 +29,6 @@
     padding: 40px;
   }
   
-  /* 📌 Contenedor del texto con fondo oscuro */
-  .left-section-text {
-    background: rgba(0, 0, 0, 0.6);
-    padding: 20px 25px;
-    border-radius: 10px;
-    text-align: center;
-    max-width: 80%;
-  }
-  
-  /* 📌 Mejorar visibilidad del texto */
-  .left-section h1 {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #ffffff;
-    margin-bottom: 10px;
-  }
-  
-  .left-section p {
-    font-size: 1rem;
-    color: #f1f1f1;
-  }
-  
-  .left-section img {
-    width: 250px;
-    max-width: 80%;
-  }
-  
   /* 📋 Sección Derecha (Formulario) */
   .right-section {
     width: 50%;
@@ -99,14 +72,6 @@
     font-size: 14px;
     margin-bottom: 5px;
     background: #ffffff;
-  }
-  
-  /* 📌 Texto pequeño debajo de los inputs */
-  form small {
-    font-size: 12px;
-    color: #666;
-    display: block;
-    margin-bottom: 10px;
   }
   
   /* 🎨 Estilo del botón principal */
@@ -184,28 +149,6 @@
     color: gray;
     font-size: 20px;
     user-select: none;
-  }
-  
-  /* 📜 Estilo para el texto legal */
-  .terms {
-    font-size: 12px;
-    color: #555;
-    text-align: center;
-    margin-top: 20px;
-    line-height: 1.5;
-    max-width: 400px;
-  }
-  
-  /* 🔗 Estilo para los enlaces dentro de términos y condiciones */
-  .terms a {
-    font-size: 12px;
-    color: #0366d6;
-    text-decoration: none;
-    font-weight: bold;
-  }
-  
-  .terms a:hover {
-    text-decoration: underline;
   }
 
 
