@@ -184,19 +184,47 @@ async function guardarProductoNuevo() {
   try {
     const formData = new FormData();
 
+    // 🏷️ Nombre del producto
     formData.append("nombre", document.getElementById("add-nombre").value);
-    formData.append("marca", document.getElementById("add-marca-select").value || "Sin marca");
-    formData.append("tipo", document.getElementById("add-tipo-select").value);
-    formData.append("subtipo", document.getElementById("add-subtipo-select").value);
+
+    // 🧠 Marca
+    let marca = document.getElementById("add-marca-select").value;
+    if (marca === "nuevo") {
+      const nuevaMarca = document.getElementById("add-marca-nuevo").value.trim();
+      marca = await insertarNuevaMarca(nuevaMarca);
+    }
+    formData.append("marca", marca || "Sin marca");
+
+    // 🔠 Tipo
+    let tipo = document.getElementById("add-tipo-select").value;
+    if (tipo === "nuevo") {
+      const nuevoTipo = document.getElementById("add-tipo-nuevo").value.trim();
+      tipo = await insertarNuevoTipo(nuevoTipo);
+    }
+    formData.append("tipo", tipo || "Sin tipo");
+
+    // 🔢 Subtipo
+    let subtipo = document.getElementById("add-subtipo-select").value;
+    if (subtipo === "nuevo") {
+      const nuevoSubtipo = document.getElementById("add-subtipo-nuevo").value.trim();
+      subtipo = await insertarNuevoSubtipo(nuevoSubtipo);
+    }
+    formData.append("subtipo", subtipo || "Sin subtipo");
+
+    // 💰 Precios
     formData.append("precioActual", document.getElementById("add-precio").value);
     formData.append("precioDescuento", document.getElementById("add-precioDescuento")?.value || "");
     formData.append("unidadLote", document.getElementById("add-unidadLote")?.value || "N/A");
     formData.append("precioPorUnidad", document.getElementById("add-precioPorUnidad")?.value || "");
+
+    // ⚖️ Peso
     formData.append("peso", document.getElementById("add-peso").value);
     formData.append("unidadPeso", document.getElementById("add-unidadPeso").value);
+
+    // 🏷️ Estado
     formData.append("estado", document.getElementById("add-estado").value);
 
-    // 🧠 Precio histórico en string plano
+    // 🧠 Precio histórico
     formData.append("precioHistorico", document.getElementById("add-precioHistorico")?.value || "");
 
     // 🖼️ Imagen
@@ -229,28 +257,30 @@ async function guardarProductoNuevo() {
     formData.append("fechaSubida", new Date().toISOString());
     formData.append("fechaActualizacion", new Date().toISOString());
 
- // 📝 Descripción directa desde el formulario
-const utilidad = document.getElementById("add-utilidad").value.trim();
-formData.append("utilidad", utilidad || "Sin descripción");
+    // 📝 Utilidad
+    const utilidad = document.getElementById("add-utilidad").value.trim();
+    formData.append("utilidad", utilidad || "Sin descripción");
 
-// 🥣 Ingredientes como CSV string
-const ingredientesInput = document.getElementById("add-ingredientes").value;
-const ingredientesArray = ingredientesInput
-  .split(",")
-  .map(i => i.trim())
-  .filter(i => i.length > 0);
-
-formData.append("ingredientes", ingredientesArray.join(","));
-
-    
+    // 🥣 Ingredientes
+    const ingredientesInput = document.getElementById("add-ingredientes").value;
+    const ingredientesArray = ingredientesInput
+      .split(",")
+      .map(i => i.trim())
+      .filter(i => i.length > 0);
+    formData.append("ingredientes", ingredientesArray.join(","));
 
     // 👤 Usuario
     const usuario = JSON.parse(sessionStorage.getItem("user"));
     const userId = usuario?._id || usuario?.id;
     if (!userId) throw new Error("Usuario no autenticado");
     formData.append("usuario", userId);
-
-    // ✅ 1️⃣ Enviar producto completo primero
+    
+    console.log("📦 FormData enviado al backend:");
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
+    
+    // 🚀 Enviar al backend
     const response = await fetch("http://localhost:3000/api/productos-completos", {
       method: "POST",
       body: formData
@@ -273,6 +303,7 @@ formData.append("ingredientes", ingredientesArray.join(","));
     Swal.fire("Error", "No se pudo guardar el producto", "error");
   }
 }
+
 
 async function guardarCambiosDesdeFormulario() {
   try {
@@ -297,7 +328,7 @@ async function guardarCambiosDesdeFormulario() {
     formData.append("usuario", userId);
 
     // 🖼️ Imagen opcional
-    const imagenInput = document.getElementById("add-imagen");
+    const imagenInput = document.getElementById("edit-imagen");
     if (imagenInput?.files?.length > 0) {
       formData.append("Imagen", imagenInput.files[0]);
     }

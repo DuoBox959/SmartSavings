@@ -433,16 +433,17 @@ function parsearPrecioHistorico(input) {
 
 app.post("/api/productos-completos", upload.single("Imagen"), async (req, res) => {
   try {
-    // ✅ Validaciones seguras para evitar BSONError
+    // ✅ Validaciones de ID
     const proveedorId = ObjectId.isValid(req.body.proveedor) ? new ObjectId(req.body.proveedor) : null;
     const supermercadoId = ObjectId.isValid(req.body.supermercado) ? new ObjectId(req.body.supermercado) : null;
     const usuarioId = ObjectId.isValid(req.body.usuario) ? new ObjectId(req.body.usuario) : null;
 
-    console.log("📦 Formulario recibido:");
+    // 🎯 LOG DE DEPURACIÓN
+    console.log("📥 [REQ] Campos recibidos desde el cliente:");
     console.log("req.body:", req.body);
-    console.log("req.file:", req.file);
+    console.log("📷 req.file (imagen):", req.file);
 
-    // 1️⃣ Insertar producto
+    // 1️⃣ Inserción del producto
     const nuevoProducto = {
       Nombre: req.body.nombre,
       Imagen: req.file ? `/uploads/2025/${req.file.filename}` : req.body.imagen || null,
@@ -457,10 +458,13 @@ app.post("/api/productos-completos", upload.single("Imagen"), async (req, res) =
       fechaActualizacion: req.body.fechaActualizacion || new Date().toISOString(),
     };
 
+    // 🎯 LOG NUEVO PRODUCTO
+    console.log("🆕 [PRODUCTO] Datos construidos:", nuevoProducto);
+
     const resultadoProducto = await db.collection("Productos").insertOne(nuevoProducto);
     const productoId = resultadoProducto.insertedId;
 
-    // 2️⃣ Insertar precio
+    // 2️⃣ Inserción del precio
     const nuevoPrecio = {
       producto_id: productoId,
       precioActual: parseFloat(req.body.precioActual),
@@ -470,9 +474,10 @@ app.post("/api/productos-completos", upload.single("Imagen"), async (req, res) =
       precioHistorico: parsearPrecioHistorico(req.body.precioHistorico),
     };
 
+    console.log("💸 [PRECIO] Datos construidos:", nuevoPrecio);
     await db.collection("Precios").insertOne(nuevoPrecio);
 
-    // 3️⃣ Insertar descripción (opcional)
+    // 3️⃣ Inserción de descripción
     if (req.body.tipo) {
       const nuevaDescripcion = {
         Producto_id: productoId,
@@ -480,11 +485,15 @@ app.post("/api/productos-completos", upload.single("Imagen"), async (req, res) =
         Subtipo: req.body.subtipo || null,
         Utilidad: req.body.utilidad || null,
         Ingredientes: req.body.ingredientes
-        ? req.body.ingredientes.split(",").map(i => i.trim()).filter(i => i.length > 0)
-        : [],
-            };
+          ? req.body.ingredientes.split(",").map(i => i.trim()).filter(i => i.length > 0)
+          : [],
+      };
 
+      // 🎯 LOG DESCRIPCIÓN
+      console.log("📝 [DESCRIPCIÓN] Datos construidos:", nuevaDescripcion);
       await db.collection("Descripcion").insertOne(nuevaDescripcion);
+    } else {
+      console.warn("⚠️ Tipo no enviado. No se creó descripción.");
     }
 
     res.status(201).json({
@@ -498,25 +507,8 @@ app.post("/api/productos-completos", upload.single("Imagen"), async (req, res) =
   }
 });
 
-// function parsearPrecioHistorico(input) {
-//   if (!input) return [];
 
-//   const valores = input
-//     .split(",")
-//     .map((v) => v.trim())
-//     .filter((v) => v !== "");
 
-//   const resultado = [];
-//   for (let i = 0; i < valores.length; i += 2) {
-//     const precio = parseFloat(valores[i]);
-//     const año = valores[i + 1];
-//     if (!isNaN(precio) && año) {
-//       resultado.push({ precio, fecha: año });
-//     }
-//   }
-
-//   return resultado;
-// }
 app.get("/api/precios/producto/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -2077,39 +2069,7 @@ function getISOWeek(date) {
 }
 
 
-// =============================================
-// 📁 CRUDs para: tipos, subtipos y marcas
-// =============================================
 
-app.get("/api/tipos", async (req, res) => {
-  try {
-    const tipos = await db.collection("Descripcion").distinct("Tipo");
-    res.json(tipos.filter(Boolean));
-  } catch (err) {
-    console.error("❌ Error al obtener tipos:", err);
-    res.status(500).json({ error: "Error al obtener tipos" });
-  }
-});
-
-app.get("/api/subtipos", async (req, res) => {
-  try {
-    const subtipos = await db.collection("Descripcion").distinct("Subtipo");
-    res.json(subtipos.filter(Boolean));
-  } catch (err) {
-    console.error("❌ Error al obtener subtipos:", err);
-    res.status(500).json({ error: "Error al obtener subtipos" });
-  }
-});
-
-app.get("/api/marcas", async (req, res) => {
-  try {
-    const marcas = await db.collection("Productos").distinct("Marca");
-    res.json(marcas.filter(Boolean));
-  } catch (err) {
-    console.error("❌ Error al obtener marcas:", err);
-    res.status(500).json({ error: "Error al obtener marcas" });
-  }
-});
 /**
  * ✅ Obtener nombres de proveedores (para los selects)
  * Ruta: GET /api/proveedores
