@@ -58,7 +58,7 @@ async function cargarProductos() {
       const productoHTML = `
       <div class="product-card">
         <a href="detalle-producto.html?id=${producto._id}">
-          <img src="${producto.Imagen || '../assets/img/default.webp'}" alt="${producto.Nombre}">
+        <img src="${producto.Imagen ? `http://localhost:3000${producto.Imagen}` : '../assets/img/default.webp'}" alt="${producto.Nombre}">
           <h3>${producto.Nombre}</h3>
         </a>
           <div class="info-producto">
@@ -232,7 +232,9 @@ async function guardarProductoNuevo() {
     if (imagenInput?.files?.length > 0) {
       formData.append("Imagen", imagenInput.files[0]);
     }
-
+    console.log("🖼️ ¿Input encontrado?", imagenInput);
+    console.log("🖼️ Archivos seleccionados:", imagenInput?.files);
+    
     // 🏬 Supermercado
     let supermercadoId = document.getElementById("add-supermercado-select").value;
     if (supermercadoId === "nuevo") {
