@@ -436,6 +436,18 @@ async function insertarNuevoProveedor(nombre, pais, comunidad = "N/A") {
 // ==============================
 // 🧠 UTILIDADES Y FORMULARIO
 // ==============================
+async function insertarNuevaMarca(nombre) {
+  return nombre;
+}
+
+async function insertarNuevoTipo(tipo) {
+  return tipo;
+}
+
+async function insertarNuevoSubtipo(subtipo) {
+  return subtipo;
+}
+
 function safeSetValue(id, value) {
   const el = document.getElementById(id);
   if (el) el.value = value ?? "";

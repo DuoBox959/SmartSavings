@@ -507,6 +507,35 @@ app.post("/api/productos-completos", upload.single("Imagen"), async (req, res) =
   }
 });
 
+app.get("/api/tipos", async (req, res) => {
+  try {
+    const tipos = await db.collection("Descripcion").distinct("Tipo");
+    res.json(tipos.filter(t => t)); // Filtra null/undefined
+  } catch (err) {
+    console.error("❌ Error al obtener tipos:", err);
+    res.status(500).json({ error: "Error al obtener tipos" });
+  }
+});
+
+app.get("/api/subtipos", async (req, res) => {
+  try {
+    const subtipos = await db.collection("Descripcion").distinct("Subtipo");
+    res.json(subtipos.filter(s => s));
+  } catch (err) {
+    console.error("❌ Error al obtener subtipos:", err);
+    res.status(500).json({ error: "Error al obtener subtipos" });
+  }
+});
+
+app.get("/api/marcas", async (req, res) => {
+  try {
+    const marcas = await db.collection("Productos").distinct("Marca");
+    res.json(marcas.filter(m => m));
+  } catch (err) {
+    console.error("❌ Error al obtener marcas:", err);
+    res.status(500).json({ error: "Error al obtener marcas" });
+  }
+});
 
 
 app.get("/api/precios/producto/:id", async (req, res) => {
