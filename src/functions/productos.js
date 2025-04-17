@@ -49,33 +49,39 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function cargarProductos() {
   try {
     const productosContainer = document.getElementById("productos-container");
-    productosContainer.innerHTML = ""; // Limpiar antes de mostrar
+    productosContainer.innerHTML = "";
 
-    const response = await fetch(API_URL);
-    const productos = await response.json();
+    const [productosRes, preciosRes] = await Promise.all([
+      fetch(API_URL),
+      fetch("http://localhost:3000/api/precios")
+    ]);
+
+    const productos = await productosRes.json();
+    const precios = await preciosRes.json();
 
     productos.forEach((producto) => {
+      const precio = precios.find(p => p.producto_id === producto._id);
+      const precioActual = precio?.precioActual || "N/D";
+
       const productoHTML = `
-      <div class="product-card">
-        <a href="detalle-producto.html?id=${producto._id}">
-        <img src="${producto.Imagen ? `http://localhost:3000${producto.Imagen}` : '../assets/img/default.webp'}" alt="${producto.Nombre}">
-          <h3>${producto.Nombre}</h3>
-        </a>
+        <div class="product-card">
+          <a href="detalle-producto.html?id=${producto._id}">
+            <img src="${producto.Imagen ? `http://localhost:3000${producto.Imagen}` : '../assets/img/default.webp'}" alt="${producto.Nombre}">
+            <h3>${producto.Nombre}</h3>
+          </a>
           <div class="info-producto">
-        <p class="marca">Marca: ${producto.Marca || "Marca desconocida"}</p>
-        <p class="estado">Estado: ${producto.Estado}</p>
-        <p class="peso">Peso: ${producto.Peso} ${producto.UnidadPeso}</p>
-        <p class="precio">Precio: ${producto.precioActual ? producto.precioActual + " €" : "N/D"}</p>
-        <p class="supermercado"> Supermercado: ${producto.Supermercado_id || "Desconocido"}</p>
+            <p class="marca">Marca: ${producto.Marca || "Marca desconocida"}</p>
+            <p class="estado">Estado: ${producto.Estado}</p>
+            <p class="peso">Peso: ${producto.Peso} ${producto.UnidadPeso}</p>
+            <p class="precio">Precio: ${precioActual} €</p>
+            <p class="supermercado">Supermercado: ${producto.Supermercado_id || "Desconocido"}</p>
+          </div>
+          <div class="acciones">
+            <button class="btn-editar" onclick="editarProducto('${producto._id}')">✏️ Editar</button>
+            <button class="btn-eliminar" onclick="eliminarProducto('${producto._id}')">🗑️ Eliminar</button>
+          </div>
         </div>
-
-
-        <div class="acciones">
-          <button class="btn-editar" onclick="editarProducto('${producto._id}')">✏️ Editar</button>
-          <button class="btn-eliminar" onclick="eliminarProducto('${producto._id}')">🗑️ Eliminar</button>
-        </div>
-      </div>
-    `;
+      `;
 
       productosContainer.innerHTML += productoHTML;
     });
@@ -83,6 +89,7 @@ async function cargarProductos() {
     console.error("Error cargando productos:", err);
   }
 }
+
 
 
 async function cargarOpcionesEnSelects(configs) {
