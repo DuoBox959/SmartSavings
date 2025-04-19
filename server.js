@@ -683,7 +683,12 @@ app.put("/api/productos-completos/:id", upload.single("Imagen"), async (req, res
       UnidadPeso: req.body.unidadPeso,
       Estado: req.body.estado,
       fechaActualizacion: req.body.fechaActualizacion || new Date().toISOString(),
+      Ubicacion: req.body.ubicacion || "",      
+      Ciudad: req.body.ciudad || "N/A",           
+      PaisSupermercado: req.body.paisSupermercado || "España", 
+      Utilidad: req.body.utilidad || "Sin descripción", 
     };
+    
 
     if (req.file) {
       updateData.Imagen = `/uploads/2025/${req.file.filename}`;

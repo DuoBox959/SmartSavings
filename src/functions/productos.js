@@ -327,15 +327,33 @@ async function guardarCambiosDesdeFormulario() {
     formData.append("unidadPeso", document.getElementById("edit-unidadPeso").value);
     formData.append("estado", document.getElementById("edit-estado").value);
     formData.append("fechaActualizacion", new Date().toISOString());
+    // ➕ NUEVOS CAMPOS (edición)
+    formData.append("precioDescuento", document.getElementById("edit-precioDescuento")?.value || "");
+    formData.append("unidadLote", document.getElementById("edit-unidadLote")?.value || "");
+    formData.append("precioPorUnidad", document.getElementById("edit-precioPorUnidad")?.value || "");
+    formData.append("utilidad", document.getElementById("edit-utilidad")?.value || "Sin descripción");
+    formData.append("ubicacion", document.getElementById("edit-ubicacion-super")?.value || "");
+    formData.append("ciudad", document.getElementById("edit-ciudad-super")?.value || "");
+    formData.append("paisSupermercado", document.getElementById("edit-pais-super")?.value || "España");
 
     // 🔗 IDs relacionados
     const supermercadoId = document.getElementById("edit-supermercado-select").value;
     const proveedorId = document.getElementById("edit-proveedor-select").value;
-    const userId = JSON.parse(localStorage.getItem("usuario"))?._id;
-
+    const usuario = JSON.parse(sessionStorage.getItem("user"));
+    const userId = usuario?._id || usuario?.id;
+    
     formData.append("supermercado", supermercadoId);
     formData.append("proveedor", proveedorId);
     formData.append("usuario", userId);
+   
+    // 🖼️ Ingredientes
+
+    const ingredientesInput = document.getElementById("edit-ingredientes").value;
+    const ingredientesArray = ingredientesInput
+    .split(",")
+    .map(i => i.trim())
+    .filter(i => i.length > 0);
+    formData.append("ingredientes", ingredientesArray.join(","));
 
     // 🖼️ Imagen opcional
     const imagenInput = document.getElementById("edit-imagen");
