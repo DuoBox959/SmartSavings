@@ -101,17 +101,21 @@ async function cargarProducto() {
   }
 }
 
-// ==============================
-// 📌 CARGAR OPCIONES EN SELECTS
-// ==============================
+
 async function cargarOpcionesEnSelects(configs) {
   try {
-    for (const { campo, endpoint, usarId } of configs) {
-      const response = await fetch(`http://localhost:3000/api/${endpoint}`);
-      if (!response.ok) throw new Error(`No se pudo cargar ${campo}`);
+    const fetchPromises = configs.map(({ campo, endpoint }) =>
+      fetch(`http://localhost:3000/api/${endpoint}`).then(response => {
+        if (!response.ok) throw new Error(`No se pudo cargar ${campo}`);
+        return response.json();
+      })
+    );
 
-      const datos = await response.json();
-      const modos = ["edit"];
+    const datosArray = await Promise.all(fetchPromises);
+
+    configs.forEach(({ campo, usarId }, index) => {
+      const datos = datosArray[index];
+      const modos = ["add", "edit"];
 
       modos.forEach((modo) => {
         const select = document.getElementById(`${modo}-${campo}-select`);
@@ -126,88 +130,298 @@ async function cargarOpcionesEnSelects(configs) {
           select.appendChild(option);
         });
 
+        // Opción para insertar nuevo
         const optionOtro = document.createElement("option");
-        optionOtro.value = "nuevo";
+        optionOtro.value = "nuevo"; 
         optionOtro.textContent = "Otro (escribir nuevo)";
         select.appendChild(optionOtro);
       });
-    }
+    });
   } catch (err) {
     console.error("❌ Error cargando selects dinámicos:", err);
   }
 }
 
-// ==============================
-// ✏️ EDITAR PRODUCTO
-// ==============================
-document.getElementById("btn-editar-detalle").addEventListener("click", async () => {
-  const id = new URLSearchParams(window.location.search).get("id");
-  if (id) await editarProducto(id);
-});
 
+// ==============================
+// ✏️ EDICIÓN DE PRODUCTOS
+// ==============================
 async function editarProducto(id) {
   try {
-    await cargarOpcionesEnSelects([
-      { campo: "supermercado", endpoint: "supermercados", usarId: true },
-      { campo: "tipo", endpoint: "tipos", usarId: false },
-      { campo: "subtipo", endpoint: "subtipos", usarId: false },
-      { campo: "marca", endpoint: "marcas", usarId: false },
-      { campo: "proveedor", endpoint: "proveedores", usarId: true },
-    ]);
-
-    // 👇🔄 Primero obtenemos supermercados y proveedores
-    const supermercados = await (await fetch("http://localhost:3000/api/supermercados")).json();
-    const proveedores = await (await fetch("http://localhost:3000/api/proveedor")).json();
-
     const producto = await (await fetch(`${API_URL}/${id}`)).json();
-    const precios = await (await fetch("http://localhost:3000/api/precios")).json();
-    const descripcion = await (await fetch("http://localhost:3000/api/descripcion")).json();
+    const precios = await (await fetch(`http://localhost:3000/api/precios`)).json();
+    const descripcion = await (await fetch(`http://localhost:3000/api/descripcion/producto/${id}`)).json(); // 🆕
+    const supermercados = await (await fetch(`http://localhost:3000/api/supermercados`)).json();
+    const proveedores = await (await fetch(`http://localhost:3000/api/proveedor`)).json();
 
-    const precioData = precios.find(p => p.producto_id === id);
-    const descripcionData = descripcion.find(d => d.Producto_id === producto.Nombre);
-    const supermercado = supermercados.find(s => s._id?.toString() === producto.Supermercado_id?.toString());
-    const proveedor = proveedores.find(p => p._id?.toString() === producto.Proveedor_id?.toString());
+    const precioData = precios.find(p => p.producto_id === id) || {};
+    const supermercado = supermercados.find(s => s._id === producto.Supermercado_id) || {};
+    const proveedor = proveedores.find(p => p._id === producto.Proveedor_id) || {};
 
-    // ✅ Rellenar formulario
+    console.log("📦 Producto cargado:", producto);
+    console.log("📊 Descripción cargada:", descripcion); // 🧠
+
+    // 📄 Llenar campos base
     safeSetValue("edit-producto-id", producto._id);
     safeSetValue("edit-nombre", producto.Nombre);
     safeSetValue("edit-marca-select", producto.Marca);
-    safeSetValue("edit-tipo-select", descripcionData?.Tipo);
-    safeSetValue("edit-subtipo-select", descripcionData?.Subtipo);
     safeSetValue("edit-peso", producto.Peso);
-    safeSetValue("edit-precio", precioData?.precioActual);
-    safeSetValue("edit-precioDescuento", precioData?.precioDescuento);
-    safeSetValue("edit-unidadLote", precioData?.unidadLote);
-    safeSetValue("edit-precioPorUnidad", precioData?.precioUnidadLote);
+    safeSetValue("edit-unidadPeso", producto.UnidadPeso);
     safeSetValue("edit-estado", producto.Estado || "En stock");
-    safeSetValue("edit-utilidad", descripcionData?.Utilidad || "Sin descripción");
-    safeSetValue("edit-ingredientes", descripcionData?.Ingredientes?.join(", ") || "");
-    safeSetValue("edit-ubicacion-super", supermercado?.Ubicacion || "");
-    safeSetValue("edit-pais-super", supermercado?.Pais || "");
-    safeSetValue("edit-ciudad-super", supermercado?.Ciudad || "");
-    safeSetValue("edit-pais-proveedor", proveedor?.Pais || "");
+    safeSetValue("edit-supermercado-select", supermercado._id);
+    safeSetValue("edit-ubicacion-super", supermercado.Ubicacion);
+    safeSetValue("edit-pais-super", supermercado.Pais);
+    safeSetValue("edit-ciudad-super", supermercado.Ciudad || "");
+    safeSetValue("edit-proveedor-select", proveedor._id);
+    safeSetValue("edit-pais-proveedor", proveedor.Pais);
+    safeSetValue("edit-fecha-subida", producto.fechaSubida);
+    safeSetValue("edit-fecha-actualizacion", new Date().toISOString());
+    safeSetValue("edit-usuario", producto.usuario);
 
+    // 🧠 Cargar descripción (tipo, subtipo, utilidad, ingredientes)
+    safeSetValue("edit-tipo-select", descripcion.Tipo || "Sin tipo");
+    safeSetValue("edit-subtipo-select", descripcion.Subtipo || "Sin subtipo");
+    safeSetValue("edit-utilidad", descripcion.Utilidad || "Sin descripción");
+    safeSetValue("edit-ingredientes", (descripcion.Ingredientes || []).join(", "));
+
+    // 💰 Precios
+    safeSetValue("edit-precio", precioData.precioActual);
+    safeSetValue("edit-precioDescuento", precioData.precioDescuento);
+    safeSetValue("edit-unidadLote", precioData.unidadLote);
+    safeSetValue("edit-precioPorUnidad", precioData.precioUnidadLote);
+
+    const historial = (precioData.precioHistorico || [])
+      .map(entry => `${entry.precio}, ${entry.año}`)
+      .join("\n");
+    safeSetValue("edit-precioHistorico", historial);
+
+    // Mostrar el formulario
     document.getElementById("modal-editar").style.display = "flex";
+
   } catch (err) {
     console.error("❌ Error al cargar producto para editar:", err);
-    Swal.fire("Error", "No se pudo cargar el producto para edición.", "error");
+    Swal.fire("Error", "Hubo un problema al cargar el producto para edición.", "error");
   }
 }
 
 
 // ==============================
-// 🗑️ ELIMINAR PRODUCTO
+// 💾 GUARDAR PRODUCTO  ACTUALIZADO
 // ==============================
-document.getElementById("btn-eliminar-detalle").addEventListener("click", async () => {
-  const id = new URLSearchParams(window.location.search).get("id");
-  if (id) await eliminarProducto(id);
-});
 
+async function guardarCambiosDesdeFormulario() {
+  try {
+    const id = document.getElementById("edit-producto-id").value;
+    const formData = new FormData();
+
+    // 🧱 Campos base
+    formData.append("nombre", document.getElementById("edit-nombre").value);
+    formData.append("marca", document.getElementById("edit-marca-select").value || "Sin marca");
+    formData.append("peso", document.getElementById("edit-peso").value);
+    formData.append("unidadPeso", document.getElementById("edit-unidadPeso").value);
+    formData.append("estado", document.getElementById("edit-estado").value);
+    formData.append("fechaActualizacion", new Date().toISOString());
+    // ✅ Campos que faltaban
+    formData.append("tipo", document.getElementById("edit-tipo-select").value);
+    formData.append("subtipo", document.getElementById("edit-subtipo-select").value || "");
+    formData.append("precioActual", document.getElementById("edit-precio").value || "0");
+   
+    // ➕ NUEVOS CAMPOS (edición)
+    formData.append("precioDescuento", document.getElementById("edit-precioDescuento")?.value || "");
+    formData.append("unidadLote", document.getElementById("edit-unidadLote")?.value || "");
+    formData.append("precioPorUnidad", document.getElementById("edit-precioPorUnidad")?.value || "");
+    formData.append("utilidad", document.getElementById("edit-utilidad")?.value || "Sin descripción");
+    formData.append("ubicacion", document.getElementById("edit-ubicacion-super")?.value || "");
+    formData.append("ciudad", document.getElementById("edit-ciudad-super")?.value || "");
+    formData.append("paisSupermercado", document.getElementById("edit-pais-super")?.value || "España");
+    formData.append("paisProveedor", document.getElementById("edit-pais-proveedor")?.value || "España");
+
+    // 🔗 IDs relacionados
+    const supermercadoId = document.getElementById("edit-supermercado-select").value;
+    const proveedorId = document.getElementById("edit-proveedor-select").value;
+    const usuario = JSON.parse(sessionStorage.getItem("user"));
+    const userId = usuario?._id || usuario?.id;
+    
+    formData.append("supermercado", supermercadoId);
+    formData.append("proveedor", proveedorId);
+    formData.append("usuario", userId);
+   
+    // 🖼️ Ingredientes
+
+    const ingredientesInput = document.getElementById("edit-ingredientes").value;
+    const ingredientesArray = ingredientesInput
+    .split(",")
+    .map(i => i.trim())
+    .filter(i => i.length > 0);
+    formData.append("ingredientes", ingredientesArray.join(","));
+
+    // 🖼️ Imagen opcional
+    const imagenInput = document.getElementById("edit-imagen");
+    if (imagenInput?.files?.length > 0) {
+      formData.append("Imagen", imagenInput.files[0]);
+    }
+    // Debug antes de enviar:
+    console.log("📤 Datos enviados desde formulario de edición:");
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+
+    // 🔄 1️⃣ Actualizar producto principal
+    const productoRes = await fetch(`http://localhost:3000/api/productos-completos/${id}`, {
+      method: "PUT",
+      body: formData,
+    });
+
+    if (!productoRes.ok) throw new Error("Error al actualizar el producto");
+
+    // 💸 2️⃣ Preparar precio histórico desde texto
+    const historialTexto = document.getElementById("edit-precioHistorico").value;
+    const historialArray = historialTexto
+      .split(',')
+      .map(e => e.trim())
+      .reduce((acc, val, idx, arr) => {
+        if (idx % 2 === 0 && arr[idx + 1]) {
+          acc.push({
+            precio: parseFloat(val),
+            año: parseInt(arr[idx + 1])
+          });
+        }
+        return acc;
+      }, []);
+
+    // 💰 3️⃣ Actualizar precio
+    const precioData = {
+      producto_id: id,
+      precioActual: parseFloat(document.getElementById("edit-precio").value),
+      precioDescuento: document.getElementById("edit-precioDescuento").value || null,
+      unidadLote: document.getElementById("edit-unidadLote").value || "N/A",
+      precioUnidadLote: parseFloat(document.getElementById("edit-precioPorUnidad").value || "0"),
+      precioHistorico: historialArray
+    };
+
+    await fetch("http://localhost:3000/api/precios", {
+      method: "POST", // Usa PUT si ya lo tienes creado
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(precioData),
+    });
+
+    // 📝 4️⃣ Actualizar descripción con Utilidad incluida
+    const descripcionData = {
+      Producto_id: id,
+      Tipo: document.getElementById("edit-tipo-select").value,
+      Subtipo: document.getElementById("edit-subtipo-select").value,
+      Utilidad: document.getElementById("edit-utilidad").value || "Sin descripción"
+    };
+
+    await fetch("http://localhost:3000/api/descripcion", {
+      method: "POST", // Usa PUT si ya existe
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(descripcionData),
+    });
+
+    // 🎉 Éxito
+    Swal.fire("✅ Éxito", "Producto actualizado completamente", "success");
+    cerrarFormulario();
+    cargarProductos(); // Asegúrate de que esta función existe, si no, usa cargarProducto()
+
+  } catch (err) {
+    console.error("❌ Error al actualizar producto completo:", err);
+    Swal.fire("Error", "Hubo un problema al actualizar el producto.", "error");
+  }
+}
+
+
+
+// ==============================
+// ➕ CREACIÓN DE RELACIONES DINÁMICAS
+// ==============================
+async function insertarNuevoSupermercado(nombre, pais, ubicacion = "", ciudad = "N/A") {
+  const res = await fetch("http://localhost:3000/api/supermercados", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      Nombre: nombre,
+      Pais: pais,
+      Ciudad: ciudad,
+      Ubicacion: [ubicacion]
+    })
+  });
+
+  if (!res.ok) throw new Error("Error al crear supermercado");
+
+  const data = await res.json();
+  return data.supermercado._id;
+}
+
+
+async function insertarNuevoProveedor(nombre, pais, comunidad = "N/A") {
+  const res = await fetch("http://localhost:3000/api/proveedor", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ Nombre: nombre, Pais: pais, "C.Autonoma": comunidad })
+  });
+
+  if (!res.ok) throw new Error("Error al crear proveedor");
+  const data = await res.json();
+  return data.proveedor._id;
+}
+
+// ==============================
+// 🧠 UTILIDADES Y FORMULARIO
+// ==============================
+async function insertarNuevaMarca(nombre) {
+  return nombre;
+}
+
+async function insertarNuevoTipo(tipo) {
+  return tipo;
+}
+
+async function insertarNuevoSubtipo(subtipo) {
+  return subtipo;
+}
+
+function safeSetValue(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.value = value ?? "";
+  else console.warn(`⚠️ Campo no encontrado: #${id}`);
+}
+
+function toggleNuevoCampo(modo, campo) {
+  const select = document.getElementById(`${modo}-${campo}-select`);
+  const input = document.getElementById(`${modo}-${campo}-nuevo`);
+  if (!select || !input) return;
+
+  const esNuevo = select.value === "nuevo";
+  input.style.display = esNuevo ? "block" : "none";
+  input.required = esNuevo;
+  if (!esNuevo) input.value = "";
+}
+
+function cerrarFormulario() {
+  const form = document.getElementById("form-editar");
+  if (form) form.reset();
+  document.getElementById("modal-editar").style.display = "none";
+}
+
+function cerrarFormularioAgregar() {
+  const form = document.getElementById("form-agregar");
+  if (form) form.reset();
+  document.getElementById("modal-agregar").style.display = "none";
+}
+
+function mostrarFormularioAgregar() {
+  document.getElementById("modal-agregar").style.display = "flex";
+}
+
+// ==============================
+// 🗑️ ELIMINACIÓN DE PRODUCTO
+// ==============================
 async function eliminarProducto(id) {
   try {
     const confirm = await Swal.fire({
       title: "¿Estás seguro?",
-      text: "Esta acción eliminará el producto y sus datos asociados.",
+      text: "Esta acción no se puede deshacer.",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Sí, eliminar",
@@ -216,145 +430,31 @@ async function eliminarProducto(id) {
 
     if (!confirm.isConfirmed) return;
 
-    await fetch(`http://localhost:3000/api/productos-completos/${id}`, { method: "DELETE" });
+    // 🧨 Elimina todo desde tu endpoint central
+    const res = await fetch(`http://localhost:3000/api/productos-completos/${id}`, {
+      method: "DELETE",
+    });
 
-    Swal.fire("✅ Eliminado", "El producto fue eliminado correctamente", "success")
-  .then(() => {
-    // Si hay historial previo, volver
-    if (window.history.length > 1) {
-      window.history.back();
-    } else {
-      // Si no, por defecto redirige a producto.html
-      window.location.href = "producto.html";
-    }
-  });
+    if (!res.ok) throw new Error("Error al eliminar producto completo");
 
+    Swal.fire("✅ Eliminado", "Producto eliminado correctamente", "success");
+    cargarProductos();
   } catch (err) {
     console.error("❌ Error al eliminar producto:", err);
-    Swal.fire("Error", "Hubo un problema al eliminar el producto", "error");
+    Swal.fire("Error", "Hubo un problema al eliminar el producto.", "error");
   }
 }
 
-// ==============================
-// 💾 GUARDAR CAMBIOS EN MODAL
-// ==============================
-async function guardarCambiosDesdeFormulario() {
-  try {
-    const id = document.getElementById("edit-producto-id").value;
-    const formData = new FormData();
 
-    formData.append("nombre", document.getElementById("edit-nombre").value);
-    formData.append("marca", document.getElementById("edit-marca-select").value || "Sin marca");
-    formData.append("peso", document.getElementById("edit-peso").value);
-    formData.append("unidadPeso", document.getElementById("edit-unidadPeso").value);
-    formData.append("estado", document.getElementById("edit-estado").value);
-    formData.append("fechaActualizacion", new Date().toISOString());
-    formData.append("supermercado", document.getElementById("edit-supermercado-select").value);
-    formData.append("proveedor", document.getElementById("edit-proveedor-select").value);
-    const usuario = getUsuarioAutenticado();
-    if (!usuario || !usuario.id) {
-      return Swal.fire("Error", "No se encontró el usuario. Inicia sesión nuevamente.", "error");
-    }
-    formData.append("usuario", usuario.id);
-    formData.append("ubicacionSuper", document.getElementById("edit-ubicacion-super").value);
-    formData.append("paisSuper", document.getElementById("edit-pais-super").value);
-    formData.append("ciudadSuper", document.getElementById("edit-ciudad-super").value);
-    formData.append("paisProveedor", document.getElementById("edit-pais-proveedor").value);
-    
-    const imagenInput = document.getElementById("add-imagen");
-    if (imagenInput?.files?.length > 0) {
-      formData.append("Imagen", imagenInput.files[0]);
-    }
-
-    const resProducto = await fetch(`http://localhost:3000/api/productos-completos/${id}`, {
-      method: "PUT",
-      body: formData,
-    });
-
-    if (!resProducto.ok) throw new Error("Error al actualizar el producto");
-
-    await fetch("http://localhost:3000/api/precios", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        producto_id: id,
-        precioActual: document.getElementById("edit-precio").value,
-        precioDescuento: document.getElementById("edit-precioDescuento").value || "",
-        unidadLote: document.getElementById("edit-unidadLote").value || "N/A",
-        precioUnidadLote: document.getElementById("edit-precioPorUnidad").value || "",
-        precioHistorico: document.getElementById("edit-precioHistorico").value || "",
-      }),
-    });
-
-    await fetch("http://localhost:3000/api/descripcion", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        Producto_id: id,
-        Tipo: document.getElementById("edit-tipo-select").value,
-        Subtipo: document.getElementById("edit-subtipo-select").value,
-        Utilidad: document.getElementById("edit-utilidad").value || "Sin descripción",
-        Ingredientes: document.getElementById("edit-ingredientes").value
-          .split(",")
-          .map(i => i.trim())
-          .filter(i => i.length > 0)
-      }),
-    });
-    
-
-    Swal.fire("✅ Éxito", "Producto actualizado correctamente", "success");
-    cerrarFormulario();
-    cargarProducto();
-  } catch (err) {
-    console.error("❌ Error al actualizar producto:", err);
-    Swal.fire("Error", "Hubo un problema al actualizar el producto.", "error");
-  }
-}
-function getUsuarioAutenticado() {
-  return JSON.parse(sessionStorage.getItem("user")); // o localStorage
-}
 
 // ==============================
-// 🔧 UTILIDADES
+// 🔁 EXPOSICIÓN GLOBAL PARA HTML
 // ==============================
-function safeSetValue(id, value) {
-  const el = document.getElementById(id);
-  if (el) el.value = value ?? "";
-}
-
-function toggleNuevoCampo(modo, campo) {
-  const select = document.getElementById(`${modo}-${campo}-select`);
-  const input = document.getElementById(`${modo}-${campo}-nuevo`);
-  if (!select || !input) return;
-
-  input.style.display = (select.value === "nuevo") ? "block" : "none";
-  input.required = select.value === "nuevo";
-  if (!input.required) input.value = "";
-}
-
-function mostrarFormularioAgregar() {
-  document.getElementById("modal-agregar").style.display = "flex";
-}
-
-function cerrarFormularioAgregar() {
-  document.getElementById("modal-agregar").style.display = "none";
-}
-
-function cerrarFormulario() {
-  document.getElementById("modal-editar").style.display = "none";
-}
-function volver() {
-  window.history.back();
-}
-
-// ==============================
-// 🌍 GLOBAL EXPOSURE
-// ==============================
-window.volver = volver;
 window.toggleNuevoCampo = toggleNuevoCampo;
+window.cargarOpcionesEnSelects = cargarOpcionesEnSelects;
 window.guardarCambiosDesdeFormulario = guardarCambiosDesdeFormulario;
-window.cerrarFormulario = cerrarFormulario;
-window.eliminarProducto = eliminarProducto;
-window.editarProducto = editarProducto;
-window.mostrarFormularioAgregar = mostrarFormularioAgregar;
 window.cerrarFormularioAgregar = cerrarFormularioAgregar;
+window.cerrarFormulario = cerrarFormulario;
+window.editarProducto = editarProducto;
+window.eliminarProducto = eliminarProducto;
+window.mostrarFormularioAgregar = mostrarFormularioAgregar;

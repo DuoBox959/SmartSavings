@@ -669,6 +669,9 @@ app.get("/api/productos-completos", async (req, res) => {
 app.put("/api/productos-completos/:id", upload.single("Imagen"), async (req, res) => {
   try {
     const { id } = req.params;
+    console.log("📦 [PUT /api/productos-completos/:id] Datos recibidos:");
+    console.log("req.body:", req.body);
+    console.log("req.file:", req.file);
 
     if (!ObjectId.isValid(id)) {
       return res.status(400).json({ error: "ID de producto no válido" });
@@ -683,12 +686,11 @@ app.put("/api/productos-completos/:id", upload.single("Imagen"), async (req, res
       UnidadPeso: req.body.unidadPeso,
       Estado: req.body.estado,
       fechaActualizacion: req.body.fechaActualizacion || new Date().toISOString(),
-      Ubicacion: req.body.ubicacion || "",      
-      Ciudad: req.body.ciudad || "N/A",           
-      PaisSupermercado: req.body.paisSupermercado || "España", 
       Utilidad: req.body.utilidad || "Sin descripción", 
+      Tipo: req.body.tipo || "Sin tipo",
+      Subtipo: req.body.subtipo || "Sin subtipo",
+      PaisProveedor: req.body.paisProveedor || "España",
     };
-    
 
     if (req.file) {
       updateData.Imagen = `/uploads/2025/${req.file.filename}`;
@@ -716,7 +718,7 @@ app.put("/api/productos-completos/:id", upload.single("Imagen"), async (req, res
       return res.status(404).json({ error: "Producto no encontrado" });
     }
 
-    // ✅ 2️⃣ Actualizar o insertar precios
+    // ✅ 2️⃣ Actualizar precios
     const nuevoPrecio = {
       producto_id: objectId,
       precioActual: parseFloat(req.body.precioActual),
@@ -732,7 +734,7 @@ app.put("/api/productos-completos/:id", upload.single("Imagen"), async (req, res
       { upsert: true }
     );
 
-    // ✅ 3️⃣ Actualizar o insertar descripción con Utilidad e Ingredientes
+    // ✅ 3️⃣ Actualizar descripción
     if (req.body.tipo) {
       const descripcionActualizada = {
         Producto_id: objectId,
@@ -751,6 +753,28 @@ app.put("/api/productos-completos/:id", upload.single("Imagen"), async (req, res
       );
     }
 
+    // ✅ 4️⃣ Actualizar país del proveedor
+    if (req.body.paisProveedor && ObjectId.isValid(req.body.proveedor)) {
+      await db.collection("Proveedor").updateOne(
+        { _id: new ObjectId(req.body.proveedor) },
+        { $set: { Pais: req.body.paisProveedor } }
+      );
+    }
+
+    // ✅ 5️⃣ Actualizar país y ciudad del supermercado
+    if ((req.body.paisSupermercado || req.body.ciudad) && ObjectId.isValid(req.body.supermercado)) {
+      await db.collection("Supermercados").updateOne(
+        { _id: new ObjectId(req.body.supermercado) },
+        {
+          $set: {
+            Pais: req.body.paisSupermercado || "España",
+            Ciudad: req.body.ciudad || "N/A",
+            Ubicacion: [req.body.ubicacion || ""]
+          }
+        }
+      );
+    }
+
     res.json({ message: "Producto completo actualizado correctamente" });
 
   } catch (err) {
@@ -758,6 +782,7 @@ app.put("/api/productos-completos/:id", upload.single("Imagen"), async (req, res
     res.status(500).json({ error: "Error interno al actualizar producto completo" });
   }
 });
+
 
 
 // 🧹 Eliminar producto completo con precios y descripción asociada

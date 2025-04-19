@@ -138,51 +138,62 @@ async function cargarOpcionesEnSelects(configs) {
 // ==============================
 async function editarProducto(id) {
   try {
-    // 1. Obtener producto y datos relacionados
     const producto = await (await fetch(`${API_URL}/${id}`)).json();
     const precios = await (await fetch(`http://localhost:3000/api/precios`)).json();
+    const descripcion = await (await fetch(`http://localhost:3000/api/descripcion/producto/${id}`)).json(); // 🆕
     const supermercados = await (await fetch(`http://localhost:3000/api/supermercados`)).json();
     const proveedores = await (await fetch(`http://localhost:3000/api/proveedor`)).json();
 
     const precioData = precios.find(p => p.producto_id === id) || {};
     const supermercado = supermercados.find(s => s._id === producto.Supermercado_id) || {};
     const proveedor = proveedores.find(p => p._id === producto.Proveedor_id) || {};
-    console.log("📦 Producto cargado:", producto);
 
-    // 2. Cargar en formulario
+    console.log("📦 Producto cargado:", producto);
+    console.log("📊 Descripción cargada:", descripcion); // 🧠
+
+    // 📄 Llenar campos base
     safeSetValue("edit-producto-id", producto._id);
     safeSetValue("edit-nombre", producto.Nombre);
     safeSetValue("edit-marca-select", producto.Marca);
-    safeSetValue("edit-tipo-select", producto.Tipo);
-    safeSetValue("edit-subtipo-select", producto.Subtipo);
     safeSetValue("edit-peso", producto.Peso);
-    safeSetValue("edit-precio", precioData.precioActual);
-    safeSetValue("edit-precioDescuento", precioData.precioDescuento);
-    safeSetValue("edit-unidadLote", precioData.unidadLote);
-    safeSetValue("edit-precioPorUnidad", precioData.precioPorUnidad);
+    safeSetValue("edit-unidadPeso", producto.UnidadPeso);
     safeSetValue("edit-estado", producto.Estado || "En stock");
     safeSetValue("edit-supermercado-select", supermercado._id);
     safeSetValue("edit-ubicacion-super", supermercado.Ubicacion);
     safeSetValue("edit-pais-super", supermercado.Pais);
+    safeSetValue("edit-ciudad-super", supermercado.Ciudad || "");
     safeSetValue("edit-proveedor-select", proveedor._id);
     safeSetValue("edit-pais-proveedor", proveedor.Pais);
     safeSetValue("edit-fecha-subida", producto.fechaSubida);
     safeSetValue("edit-fecha-actualizacion", new Date().toISOString());
     safeSetValue("edit-usuario", producto.usuario);
 
-    // 🧠 Historial visual en textarea
+    // 🧠 Cargar descripción (tipo, subtipo, utilidad, ingredientes)
+    safeSetValue("edit-tipo-select", descripcion.Tipo || "Sin tipo");
+    safeSetValue("edit-subtipo-select", descripcion.Subtipo || "Sin subtipo");
+    safeSetValue("edit-utilidad", descripcion.Utilidad || "Sin descripción");
+    safeSetValue("edit-ingredientes", (descripcion.Ingredientes || []).join(", "));
+
+    // 💰 Precios
+    safeSetValue("edit-precio", precioData.precioActual);
+    safeSetValue("edit-precioDescuento", precioData.precioDescuento);
+    safeSetValue("edit-unidadLote", precioData.unidadLote);
+    safeSetValue("edit-precioPorUnidad", precioData.precioUnidadLote);
+
     const historial = (precioData.precioHistorico || [])
-    .map(entry => `${entry.año || entry.fecha || "?"} - ${entry.precio}€`)
-    .join("\n");
+      .map(entry => `${entry.precio}, ${entry.año}`)
+      .join("\n");
     safeSetValue("edit-precioHistorico", historial);
 
+    // Mostrar el formulario
     document.getElementById("modal-editar").style.display = "flex";
+
   } catch (err) {
     console.error("❌ Error al cargar producto para editar:", err);
     Swal.fire("Error", "Hubo un problema al cargar el producto para edición.", "error");
   }
-
 }
+
 
 // ==============================
 // 💾 GUARDAR PRODUCTO NUEVO / ACTUALIZADO
@@ -327,6 +338,11 @@ async function guardarCambiosDesdeFormulario() {
     formData.append("unidadPeso", document.getElementById("edit-unidadPeso").value);
     formData.append("estado", document.getElementById("edit-estado").value);
     formData.append("fechaActualizacion", new Date().toISOString());
+    // ✅ Campos que faltaban
+    formData.append("tipo", document.getElementById("edit-tipo-select").value);
+    formData.append("subtipo", document.getElementById("edit-subtipo-select").value || "");
+    formData.append("precioActual", document.getElementById("edit-precio").value || "0");
+   
     // ➕ NUEVOS CAMPOS (edición)
     formData.append("precioDescuento", document.getElementById("edit-precioDescuento")?.value || "");
     formData.append("unidadLote", document.getElementById("edit-unidadLote")?.value || "");
@@ -335,6 +351,7 @@ async function guardarCambiosDesdeFormulario() {
     formData.append("ubicacion", document.getElementById("edit-ubicacion-super")?.value || "");
     formData.append("ciudad", document.getElementById("edit-ciudad-super")?.value || "");
     formData.append("paisSupermercado", document.getElementById("edit-pais-super")?.value || "España");
+    formData.append("paisProveedor", document.getElementById("edit-pais-proveedor")?.value || "España");
 
     // 🔗 IDs relacionados
     const supermercadoId = document.getElementById("edit-supermercado-select").value;
@@ -359,6 +376,11 @@ async function guardarCambiosDesdeFormulario() {
     const imagenInput = document.getElementById("edit-imagen");
     if (imagenInput?.files?.length > 0) {
       formData.append("Imagen", imagenInput.files[0]);
+    }
+    // Debug antes de enviar:
+    console.log("📤 Datos enviados desde formulario de edición:");
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
     }
 
     // 🔄 1️⃣ Actualizar producto principal
