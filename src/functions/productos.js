@@ -198,10 +198,11 @@ async function guardarProductoNuevo() {
     let marca = document.getElementById("add-marca-select").value;
     if (marca === "nuevo") {
       const nuevaMarca = document.getElementById("add-marca-nuevo").value.trim();
+      if (!nuevaMarca) throw new Error("Debes escribir una nueva marca");
       marca = await insertarNuevaMarca(nuevaMarca);
     }
     formData.append("marca", marca || "Sin marca");
-
+    
     // 🔠 Tipo
     let tipo = document.getElementById("add-tipo-select").value;
     if (tipo === "nuevo") {
