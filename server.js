@@ -1084,6 +1084,66 @@ app.put("/api/precios/:id", async (req, res) => {
   }
 });
 
+
+app.put("/api/precios/por-producto/:productoId", async (req, res) => {
+  console.log("📥 Recibido precio actualizado:", req.body);
+
+  try {
+    const { productoId } = req.params;
+    if (!ObjectId.isValid(productoId)) {
+      return res.status(400).json({ error: "ID de producto no válido" });
+    }
+
+    const productoObjectId = new ObjectId(productoId);
+    let updateData = req.body;
+
+    // ✅ Parsear números (aunque vengan como strings)
+    updateData.precioActual = parseFloat(updateData.precioActual) || 0;
+    updateData.precioDescuento = updateData.precioDescuento ? parseFloat(updateData.precioDescuento) : null;
+    updateData.precioUnidadLote = updateData.precioUnidadLote ? parseFloat(updateData.precioUnidadLote) : null;
+    updateData.unidadLote = updateData.unidadLote || "N/A";
+
+    // ✅ Asegurar que precioHistorico está bien formado
+    if (typeof updateData.precioHistorico === "string") {
+      const partes = updateData.precioHistorico.split(/,|\n/).map(p => p.trim());
+      const historico = [];
+      for (let i = 0; i < partes.length - 1; i += 2) {
+        const precio = parseFloat(partes[i]);
+        const año = parseInt(partes[i + 1]);
+        if (!isNaN(precio) && !isNaN(año)) {
+          historico.push({ precio, año });
+        }
+      }
+      updateData.precioHistorico = historico;
+    }
+
+    // ✅ Si ya viene como array, validarlo igual
+    if (Array.isArray(updateData.precioHistorico)) {
+      updateData.precioHistorico = updateData.precioHistorico.map(entry => ({
+        precio: parseFloat(entry.precio),
+        año: parseInt(entry.año)
+      })).filter(e => !isNaN(e.precio) && !isNaN(e.año));
+    }
+
+    // 🔄 Actualiza (sin upsert para evitar sobrescribir)
+    const result = await db.collection("Precios").updateOne(
+      { producto_id: productoObjectId },
+      { $set: updateData }
+    );
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ error: "No se encontró precio para ese producto" });
+    }
+
+    res.json({ message: "✅ Precio actualizado correctamente (por producto_id)" });
+
+  } catch (err) {
+    console.error("❌ Error en PUT /precios/por-producto:", err);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+});
+
+
 /**
  * ✅ Eliminar precios (Delete)
  * Ruta: DELETE /api/precios/:id

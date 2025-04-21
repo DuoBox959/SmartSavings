@@ -60,7 +60,7 @@
     <div class="producto-info">
         <!-- Botones en la parte superior derecha -->
     <div class="acciones-producto-superior">
-      <button id="btn-editar-detalle" class="btn-editar">✏️ Editar</button>
+      <button id="btn-editar-detalle" class="btn-editar" onclick="editarProductoFromHTML()">✏️ Editar</button>
       <button id="btn-eliminar-detalle" class="btn-eliminar">🗑️ Eliminar</button>
     </div>
 
@@ -101,8 +101,8 @@
   </div>
 
   <!-- 🔙 Botón para volver -->
-  <button class="volver-btn" onclick="volver()">Volver</button>
-<!-- ✏️ MODAL: Editar Producto -->
+  <button class="volver-btn" onclick="volverAtras()">Volver</button>
+  <!-- ✏️ MODAL: Editar Producto -->
 <div id="modal-editar" class="modal">
   <div class="modal-content">
     <span class="close" onclick="cerrarFormulario()">&times;</span>

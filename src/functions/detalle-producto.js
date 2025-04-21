@@ -4,7 +4,6 @@
 import { cargarHeaderFooter, volverAtras } from "../functions/global/funciones.js";
 import { gestionarUsuarioAutenticado } from "../functions/global/header.js";
 
-window.volverAtras = volverAtras;
 
 const API_URL = "http://localhost:3000/api/productos";
 
@@ -25,6 +24,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     ]);
 
     await cargarProducto();
+        document.getElementById("btn-editar-detalle").addEventListener("click", () => {
+          const productId = new URLSearchParams(window.location.search).get("id");
+          if (productId) editarProducto(productId);
+          else Swal.fire("Error", "ID de producto no encontrado", "error");
+        });
   } catch (err) {
     console.error("❌ Error al iniciar la página:", err);
   }
@@ -150,7 +154,7 @@ async function editarProducto(id) {
   try {
     const producto = await (await fetch(`${API_URL}/${id}`)).json();
     const precios = await (await fetch(`http://localhost:3000/api/precios`)).json();
-    const descripcion = await (await fetch(`http://localhost:3000/api/descripcion/producto/${id}`)).json(); // 🆕
+    const descripcion = await (await fetch(`http://localhost:3000/api/descripcion/producto/${id}`)).json();
     const supermercados = await (await fetch(`http://localhost:3000/api/supermercados`)).json();
     const proveedores = await (await fetch(`http://localhost:3000/api/proveedor`)).json();
 
@@ -159,7 +163,7 @@ async function editarProducto(id) {
     const proveedor = proveedores.find(p => p._id === producto.Proveedor_id) || {};
 
     console.log("📦 Producto cargado:", producto);
-    console.log("📊 Descripción cargada:", descripcion); // 🧠
+    console.log("📊 Descripción cargada:", descripcion);
 
     // 📄 Llenar campos base
     safeSetValue("edit-producto-id", producto._id);
@@ -178,7 +182,7 @@ async function editarProducto(id) {
     safeSetValue("edit-fecha-actualizacion", new Date().toISOString());
     safeSetValue("edit-usuario", producto.usuario);
 
-    // 🧠 Cargar descripción (tipo, subtipo, utilidad, ingredientes)
+    // 🧠 Cargar descripción
     safeSetValue("edit-tipo-select", descripcion.Tipo || "Sin tipo");
     safeSetValue("edit-subtipo-select", descripcion.Subtipo || "Sin subtipo");
     safeSetValue("edit-utilidad", descripcion.Utilidad || "Sin descripción");
@@ -203,6 +207,7 @@ async function editarProducto(id) {
     Swal.fire("Error", "Hubo un problema al cargar el producto para edición.", "error");
   }
 }
+
 
 
 // ==============================
@@ -276,19 +281,34 @@ async function guardarCambiosDesdeFormulario() {
 
     // 💸 2️⃣ Preparar precio histórico desde texto
     const historialTexto = document.getElementById("edit-precioHistorico").value;
-    const historialArray = historialTexto
-      .split(',')
-      .map(e => e.trim())
-      .reduce((acc, val, idx, arr) => {
-        if (idx % 2 === 0 && arr[idx + 1]) {
-          acc.push({
-            precio: parseFloat(val),
-            año: parseInt(arr[idx + 1])
+
+    let historialArray = [];
+    
+    if (historialTexto.includes('\n')) {
+      // 📄 Modo por líneas
+      historialArray = historialTexto
+        .split('\n')
+        .map(linea => linea.split(',').map(e => e.trim()))
+        .filter(arr => arr.length === 2)
+        .map(([precio, año]) => ({
+          precio: parseFloat(precio),
+          año: parseInt(año)
+        }));
+    } else {
+      // 📄 Modo todo en una línea
+      const arr = historialTexto.split(',').map(e => e.trim());
+      for (let i = 0; i < arr.length; i += 2) {
+        if (arr[i + 1]) {
+          historialArray.push({
+            precio: parseFloat(arr[i]),
+            año: parseInt(arr[i + 1])
           });
         }
-        return acc;
-      }, []);
-
+      }
+    }
+    
+   
+    
     // 💰 3️⃣ Actualizar precio
     const precioData = {
       producto_id: id,
@@ -298,12 +318,14 @@ async function guardarCambiosDesdeFormulario() {
       precioUnidadLote: parseFloat(document.getElementById("edit-precioPorUnidad").value || "0"),
       precioHistorico: historialArray
     };
-
-    await fetch("http://localhost:3000/api/precios", {
-      method: "POST", // Usa PUT si ya lo tienes creado
+    console.log("📊 Historial generado:", historialArray);
+    console.log("📊 Payload completo precioData:", precioData);
+    await fetch(`http://localhost:3000/api/precios/por-producto/${id}`, {
+      method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(precioData),
     });
+    
 
     // 📝 4️⃣ Actualizar descripción con Utilidad incluida
     const descripcionData = {
@@ -322,14 +344,13 @@ async function guardarCambiosDesdeFormulario() {
     // 🎉 Éxito
     Swal.fire("✅ Éxito", "Producto actualizado completamente", "success");
     cerrarFormulario();
-    cargarProductos(); // Asegúrate de que esta función existe, si no, usa cargarProducto()
+    await cargarProducto(); // Asegúrate de que esta función existe, si no, usa cargarProducto()
 
   } catch (err) {
     console.error("❌ Error al actualizar producto completo:", err);
     Swal.fire("Error", "Hubo un problema al actualizar el producto.", "error");
   }
 }
-
 
 
 // ==============================
@@ -399,7 +420,7 @@ function toggleNuevoCampo(modo, campo) {
 }
 
 function cerrarFormulario() {
-  const form = document.getElementById("form-editar");
+  const form = document.getElementById("form-editar-producto");
   if (form) form.reset();
   document.getElementById("modal-editar").style.display = "none";
 }
@@ -413,6 +434,11 @@ function cerrarFormularioAgregar() {
 function mostrarFormularioAgregar() {
   document.getElementById("modal-agregar").style.display = "flex";
 }
+window.editarProductoFromHTML = function () {
+  const productId = new URLSearchParams(window.location.search).get("id");
+  if (productId) editarProducto(productId);
+  else Swal.fire("Error", "ID de producto no encontrado", "error");
+};
 
 // ==============================
 // 🗑️ ELIMINACIÓN DE PRODUCTO
@@ -438,7 +464,7 @@ async function eliminarProducto(id) {
     if (!res.ok) throw new Error("Error al eliminar producto completo");
 
     Swal.fire("✅ Eliminado", "Producto eliminado correctamente", "success");
-    cargarProductos();
+    await cargarProducto(); // Volver a cargar los datos del producto actualizado
   } catch (err) {
     console.error("❌ Error al eliminar producto:", err);
     Swal.fire("Error", "Hubo un problema al eliminar el producto.", "error");
@@ -458,3 +484,4 @@ window.cerrarFormulario = cerrarFormulario;
 window.editarProducto = editarProducto;
 window.eliminarProducto = eliminarProducto;
 window.mostrarFormularioAgregar = mostrarFormularioAgregar;
+window.volverAtras = volverAtras;

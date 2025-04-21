@@ -393,19 +393,34 @@ async function guardarCambiosDesdeFormulario() {
 
     // 💸 2️⃣ Preparar precio histórico desde texto
     const historialTexto = document.getElementById("edit-precioHistorico").value;
-    const historialArray = historialTexto
-      .split(',')
-      .map(e => e.trim())
-      .reduce((acc, val, idx, arr) => {
-        if (idx % 2 === 0 && arr[idx + 1]) {
-          acc.push({
-            precio: parseFloat(val),
-            año: parseInt(arr[idx + 1])
+
+    let historialArray = [];
+    
+    if (historialTexto.includes('\n')) {
+      // 📄 Modo por líneas
+      historialArray = historialTexto
+        .split('\n')
+        .map(linea => linea.split(',').map(e => e.trim()))
+        .filter(arr => arr.length === 2)
+        .map(([precio, año]) => ({
+          precio: parseFloat(precio),
+          año: parseInt(año)
+        }));
+    } else {
+      // 📄 Modo todo en una línea
+      const arr = historialTexto.split(',').map(e => e.trim());
+      for (let i = 0; i < arr.length; i += 2) {
+        if (arr[i + 1]) {
+          historialArray.push({
+            precio: parseFloat(arr[i]),
+            año: parseInt(arr[i + 1])
           });
         }
-        return acc;
-      }, []);
-
+      }
+    }
+    
+   
+    
     // 💰 3️⃣ Actualizar precio
     const precioData = {
       producto_id: id,
@@ -415,12 +430,14 @@ async function guardarCambiosDesdeFormulario() {
       precioUnidadLote: parseFloat(document.getElementById("edit-precioPorUnidad").value || "0"),
       precioHistorico: historialArray
     };
-
-    await fetch("http://localhost:3000/api/precios", {
-      method: "POST", // Usa PUT si ya lo tienes creado
+    console.log("📊 Historial generado:", historialArray);
+    console.log("📊 Payload completo precioData:", precioData);
+    await fetch(`http://localhost:3000/api/precios/por-producto/${id}`, {
+      method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(precioData),
     });
+    
 
     // 📝 4️⃣ Actualizar descripción con Utilidad incluida
     const descripcionData = {
