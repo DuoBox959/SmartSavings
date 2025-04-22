@@ -10,28 +10,51 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname)),
 });
 const upload = multer({ storage });
+// =============================================
+// USUARIOS                                  📌
+// =============================================
 
-// 🎯 Aquí van todas las rutas POST (te doy ejemplos)
-router.post("/api/login", async (req, res) => { /*...*/ });
+// =============================================
+// FORZAR LIMPIEZA HISTORIAL                                 📌
+// =============================================
 
-router.post("/api/usuarios", async (req, res) => { /*...*/ });
+// =============================================
+// PRODUCTOS                                  📌
+// =============================================
 
-router.post("/api/productos", upload.single("Imagen"), async (req, res) => { /*...*/ });
+// =============================================
+// PRECIOS                                    📌
+// =============================================
 
-router.post("/api/productos-completos", upload.single("Imagen"), async (req, res) => { /*...*/ });
+// =============================================
+// SUPERMERCADOS                              📌
+// =============================================
 
-router.post("/api/precios", async (req, res) => { /*...*/ });
+// =============================================
+// PROOVEDOR                                  📌
+// =============================================
 
-router.post("/api/supermercados", async (req, res) => { /*...*/ });
+// =============================================
+// DATOS DEL USUARIO                          📌
+// =============================================
 
-router.post("/api/proveedor", async (req, res) => { /*...*/ });
+// =============================================
+// DESCRIPCION                                📌
+// =============================================
 
-router.post("/api/descripcion", async (req, res) => { /*...*/ });
+// =============================================
+// OPINIONES                                  📌
+// =============================================
 
-router.post("/api/opiniones", async (req, res) => { /*...*/ });
+// =============================================
+// HISTORIAL DEL USUARIO                      📌
+// =============================================
 
-router.post("/api/historial", async (req, res) => { /*...*/ });
+// =============================================
+// METRICAS                                   📊
+// =============================================
 
-router.post("/api/datos-personales", async (req, res) => { /*...*/ });
-
+// =============================================
+// REPORTES                                  ⚠️
+// =============================================
 module.exports = router;

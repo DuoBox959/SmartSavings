@@ -2,22 +2,91 @@
 const express = require("express");
 const router = express.Router();
 const { ObjectId } = require("../conexion1");
+// =============================================
+// USUARIOS                                  📌
+// =============================================
 
-// Ejemplos:
-router.delete("/api/productos/:id", async (req, res) => { /*...*/ });
 
-router.delete("/api/precios/:id", async (req, res) => { /*...*/ });
+// =============================================
+// FORZAR LIMPIEZA HISTORIAL                                 📌
+// =============================================
+  app.get("/api/forzar-limpieza-historial", async (req, res) => {
+    try {
+      const historialCollection = db.collection("HistorialUsuario");
+  
+      const primerosMovimientos = await historialCollection
+        .aggregate([
+          { $sort: { fecha: 1 } },
+          {
+            $group: {
+              _id: "$usuario_id",
+              primerMovimiento: { $first: "$fecha" },
+            },
+          },
+          {
+            $match: {
+              primerMovimiento: {
+                $lte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+              },
+            },
+          },
+        ])
+        .toArray();
+  
+      const idsUsuariosAEliminar = primerosMovimientos.map((m) => m._id);
+  
+      if (idsUsuariosAEliminar.length > 0) {
+        const deleteResult = await historialCollection.deleteMany({
+          usuario_id: { $in: idsUsuariosAEliminar },
+        });
+  
+        res.json({ message: `Eliminados ${deleteResult.deletedCount} historiales.` });
+      } else {
+        res.json({ message: "No hay historiales para eliminar." });
+      }
+    } catch (err) {
+      console.error("❌ Error manual:", err);
+      res.status(500).json({ error: "Error al ejecutar limpieza manual" });
+    }
+  });
+// =============================================
+// PRODUCTOS                                  📌
+// =============================================
 
-router.delete("/api/supermercados/:id", async (req, res) => { /*...*/ });
+// =============================================
+// PRECIOS                                    📌
+// =============================================
 
-router.delete("/api/proveedor/:id", async (req, res) => { /*...*/ });
+// =============================================
+// SUPERMERCADOS                              📌
+// =============================================
 
-router.delete("/api/descripcion/:id", async (req, res) => { /*...*/ });
+// =============================================
+// PROOVEDOR                                  📌
+// =============================================
 
-router.delete("/api/opiniones/:id", async (req, res) => { /*...*/ });
+// =============================================
+// DATOS DEL USUARIO                          📌
+// =============================================
 
-router.delete("/api/historial/:id", async (req, res) => { /*...*/ });
+// =============================================
+// DESCRIPCION                                📌
+// =============================================
 
-router.delete("/api/usuarios/:id", async (req, res) => { /*...*/ });
+// =============================================
+// OPINIONES                                  📌
+// =============================================
+
+// =============================================
+// HISTORIAL DEL USUARIO                      📌
+// =============================================
+
+// =============================================
+// METRICAS                                   📊
+// =============================================
+
+// =============================================
+// REPORTES                                  ⚠️
+// =============================================
 
 module.exports = router;
