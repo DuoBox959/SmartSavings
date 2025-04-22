@@ -9,6 +9,7 @@ const { conectarDB} = require("./conexion1");
 require("dotenv").config();
 const cron = require("node-cron");
 const fs = require("fs").promises; 
+let db;
 
 // Middleware
 app.use(cors());
