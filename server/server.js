@@ -15,27 +15,21 @@ app.use(cors());
 app.use(express.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// Rutas
-const rutasPOST = require("./POST/enviar");
-const rutasGET = require("./GET/obtener");
-const rutasDELETE = require("./DELETE/eliminar");
-const rutasPUT = require("./PUT/editar"); // 🆕 Añadir esta línea
-
-// Usar routers
-app.use(rutasPOST);
-app.use(rutasGET);
-app.use(rutasDELETE);
-app.use(rutasPUT); // 🆕 Y esta línea
+app.use((req, res, next) => {
+  req.db = db;
+  next();
+});
 
 
-// Conexión a DB
-let db;
+// ✅ Importa todas las rutas desde `routes/index.js`
+const rutas = require("./ROUTES");
+app.use(rutas);
 
+// Conexión y servidor
 (async () => {
   try {
     db = await conectarDB();
     console.log("✅ Conectado correctamente a MongoDB Atlas");
-    console.log("📌 Base de datos seleccionada:", db.databaseName);
 
     const collections = await db.listCollections().toArray();
     console.log("📌 Colecciones disponibles:", collections.map(c => c.name));
