@@ -1,5 +1,6 @@
+// server/PUT/actualizar.js
+const { parsearPrecioHistorico } = require("../UTILS/utils");
 
-// server/POST/enviar.js
 const express = require("express");
 const router = express.Router();
 const { ObjectId } = require("../conexion1"); // importa tu conexión
@@ -63,6 +64,52 @@ router.put("/api/usuarios/:id", async (req, res) => {
   }
 });
 
+/**
+ * ✅ Modificar un usuario existente (Update)
+ * Ruta: PUT /api/usuarios/:id
+ */
+router.put("/api/usuarios/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // ⚠️ Verificar si el ID es válido antes de convertirlo a ObjectId
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ error: "ID no válido" });
+    }
+
+    const objectId = new ObjectId(id);
+
+    const updateData = {};
+    if (req.body.nombre) updateData.nombre = req.body.nombre;
+    if (req.body.pass) updateData.pass = req.body.pass;
+    if (req.body.email) updateData.email = req.body.email;
+    if (req.body.rol) updateData.rol = req.body.rol;
+
+    if (Object.keys(updateData).length === 0) {
+      return res.status(400).json({ error: "No se enviaron cambios" });
+    }
+
+    console.log("📤 Actualizando usuario en MongoDB:", updateData);
+
+    const result = await db
+      .collection("Usuarios")
+      .updateOne({ _id: objectId }, { $set: updateData });
+
+    if (result.modifiedCount === 0) {
+      return res
+        .status(404)
+        .json({ error: "Usuario no encontrado o sin cambios" });
+    }
+
+    res.json({
+      message: "Usuario actualizado correctamente",
+      usuario: updateData,
+    });
+  } catch (err) {
+    console.error("❌ Error actualizando usuario:", err);
+    res.status(500).json({ error: "Error al actualizar usuario" });
+  }
+});
 // =============================================
 // PRODUCTOS                                  📌
 // =============================================
@@ -282,8 +329,10 @@ router.put("/api/precios/:id", async (req, res) => {
   }
 });
 
-//
-
+/**
+ * ✅ Actualizar precios por producto_id (Update)
+ * Ruta: PUT /api/precios/por-producto/:productoId
+ */
 router.put("/api/precios/por-producto/:productoId", async (req, res) => {
   console.log("📥 Recibido precio actualizado:", req.body);
 
@@ -341,6 +390,7 @@ router.put("/api/precios/por-producto/:productoId", async (req, res) => {
     res.status(500).json({ error: "Error interno del servidor" });
   }
 });
+
 
 // =============================================
 // SUPERMERCADOS                              📌

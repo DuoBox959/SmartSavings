@@ -6,7 +6,7 @@ const { ObjectId } = require("../conexion1");
 // =============================================
 // FORZAR LIMPIEZA HISTORIAL                                 📌
 // =============================================
-app.get("/api/forzar-limpieza-historial", async (req, res) => {
+router.get("/api/forzar-limpieza-historial", async (req, res) => {
   try {
     const historialCollection = db.collection("HistorialUsuario");
 
@@ -109,7 +109,7 @@ router.delete("/api/productos/:id", async (req, res) => {
   }
 });
 
-// 🧹 Eliminar producto completo con precios y descripción asociada
+// ELIMINAR PRODUCTO COMPLETO  🧩
 router.delete("/api/productos-completos/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -344,6 +344,5 @@ router.delete("/api/historial/:id", async (req, res) => {
     res.status(500).json({ error: "Error en el servidor" });
   }
 });
-
 
 module.exports = router;

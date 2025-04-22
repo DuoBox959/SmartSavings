@@ -181,11 +181,8 @@ router.post("/api/productos", upload.single("Imagen"), async (req, res) => {
   }
 });
 
-//productos completos
-/**
- * ✅ Añadir todos los productos completos (Read)
- * Ruta: POST /api/productos-completos
- */
+// CREAR UN NUEVO PRODUCTO COMPLETO 🧩
+
 router.post("/api/productos-completos", upload.single("Imagen"), async (req, res) => {
   try {
     // ✅ Validaciones de ID
