@@ -8,6 +8,7 @@ const path = require("path");
 const { conectarDB} = require("./conexion1");
 require("dotenv").config();
 const cron = require("node-cron");
+const fs = require("fs").promises; 
 
 // Middleware
 app.use(cors());
@@ -18,10 +19,14 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 const rutasPOST = require("./POST/enviar");
 const rutasGET = require("./GET/obtener");
 const rutasDELETE = require("./DELETE/eliminar");
+const rutasPUT = require("./PUT/editar"); // 🆕 Añadir esta línea
 
+// Usar routers
 app.use(rutasPOST);
 app.use(rutasGET);
 app.use(rutasDELETE);
+app.use(rutasPUT); // 🆕 Y esta línea
+
 
 // Conexión a DB
 let db;
