@@ -1,4 +1,6 @@
 // server/POST/enviar.js
+const { parsearPrecioHistorico } = require("../UTILS/utils");
+
 const express = require("express");
 const router = express.Router();
 const { ObjectId } = require("../conexion1"); // importa tu conexión
@@ -20,6 +22,8 @@ const upload = multer({ storage });
  * Ruta: POST /api/login
  */
 router.post("/api/login", async (req, res) => {
+  const db = req.db;
+
   try {
     const { emailOrUsername, password } = req.body;
 
@@ -71,6 +75,8 @@ router.post("/api/login", async (req, res) => {
  * Ruta: POST /api/usuarios
  */
 router.post("/api/usuarios", async (req, res) => {
+  const db = req.db;
+
   try {
     console.log("📥 Recibiendo solicitud para crear usuario...");
     console.log("📌 Datos recibidos:", req.body);
@@ -124,6 +130,8 @@ router.post("/api/usuarios", async (req, res) => {
  * Ruta: POST /api/productos
  */
 router.post("/api/productos", upload.single("Imagen"), async (req, res) => {
+  const db = req.db;
+
   try {
     if (!req.file) {
       return res.status(400).json({ error: "No se ha subido ninguna imagen" });
@@ -184,6 +192,8 @@ router.post("/api/productos", upload.single("Imagen"), async (req, res) => {
 // CREAR UN NUEVO PRODUCTO COMPLETO 🧩
 
 router.post("/api/productos-completos", upload.single("Imagen"), async (req, res) => {
+  const db = req.db;
+
   try {
     // ✅ Validaciones de ID
     const proveedorId = ObjectId.isValid(req.body.proveedor) ? new ObjectId(req.body.proveedor) : null;
@@ -268,6 +278,8 @@ router.post("/api/productos-completos", upload.single("Imagen"), async (req, res
  * Ruta: POST /api/precios
  */
 router.post("/api/precios", async (req, res) => {
+  const db = req.db;
+
   try {
     let {
       producto_id,
@@ -321,6 +333,8 @@ router.post("/api/precios", async (req, res) => {
  * Ruta: POST /api/supermercados
  */
 router.post("/api/supermercados", async (req, res) => {
+  const db = req.db;
+
   try {
     const { Nombre, Pais, Ciudad, Ubicacion } = req.body;
 
@@ -355,6 +369,8 @@ router.post("/api/supermercados", async (req, res) => {
  * Ruta: POST /api/proovedor
  */
 router.post("/api/proveedor", async (req, res) => {
+  const db = req.db;
+
   try {
     const { Nombre, Pais, "C.Autonoma": ComunidadAutonoma } = req.body;
 
@@ -390,6 +406,8 @@ router.post("/api/proveedor", async (req, res) => {
  * Ruta: POST /api/datos-personales
  */
 router.post("/api/datos-personales", async (req, res) => {
+  const db = req.db;
+
   try {
     const data = req.body;
     data.usuario_id = new ObjectId(data.usuario_id);
@@ -416,6 +434,8 @@ router.post("/api/datos-personales", async (req, res) => {
  * Ruta: POST /api/descripcion
  */
 router.post("/api/descripcion", async (req, res) => {
+  const db = req.db;
+
   try {
     const { Producto_id, Tipo, Subtipo, Utilidad, Ingredientes } = req.body;
 
@@ -472,6 +492,8 @@ router.post("/api/descripcion", async (req, res) => {
  * Ruta: POST /api/opiniones
  */
 router.post("/api/opiniones", async (req, res) => {
+  const db = req.db;
+
   try {
     const { Producto_id, Usuario_id, Opinion, Calificacion } = req.body;
 
@@ -512,6 +534,8 @@ router.post("/api/opiniones", async (req, res) => {
  * Ruta: POST /api/historial
  */
 router.post("/api/historial", async (req, res) => {
+  const db = req.db;
+
   try {
     const { usuario_id, accion } = req.body;
 

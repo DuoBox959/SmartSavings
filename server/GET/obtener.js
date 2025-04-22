@@ -12,6 +12,8 @@ const { ObjectId } = require("../conexion1");
  * Ruta: GET /api/usuarios
  */
 router.get("/api/usuarios", async (req, res) => {
+    const db = req.db;
+
     try {
         const usuarios = await db.collection("Usuarios").find().toArray();
         res.json(usuarios);
@@ -26,6 +28,8 @@ router.get("/api/usuarios", async (req, res) => {
  * Ruta: GET /api/usuarios/:id
  */
 router.get("/api/usuarios/:id", async (req, res) => {
+    const db = req.db;
+
     try {
         const { id } = req.params;
 
@@ -57,6 +61,8 @@ router.get("/api/usuarios/:id", async (req, res) => {
  * Ruta: GET /api/productos
  */
 router.get("/api/productos", async (req, res) => {
+    const db = req.db;
+
     try {
         const productos = await db
             .collection("Productos")
@@ -114,6 +120,8 @@ router.get("/api/productos", async (req, res) => {
  * Ruta: GET /api/productos/:id
  */
 router.get("/api/productos/:id", async (req, res) => {
+    const db = req.db;
+
     try {
         const { id } = req.params;
 
@@ -138,6 +146,8 @@ router.get("/api/productos/:id", async (req, res) => {
 
 // OBTENER MARCAS 🧩
 router.get("/api/marcas", async (req, res) => {
+    const db = req.db;
+
     try {
         const marcas = await db.collection("Productos").distinct("Marca");
         res.json(marcas.filter(m => m));
@@ -149,6 +159,8 @@ router.get("/api/marcas", async (req, res) => {
 
 //OBTENER PRODUCTO COMPLETO 🧩
 router.get("/api/productos-completos", async (req, res) => {
+    const db = req.db;
+
     try {
         const productos = await db.collection("Productos").aggregate([
             {
@@ -202,6 +214,8 @@ router.get("/api/productos-completos", async (req, res) => {
  * Ruta: GET /api/precios
  */
 router.get("/api/precios", async (req, res) => {
+    const db = req.db;
+
     try {
         if (!db) {
             return res
@@ -219,6 +233,8 @@ router.get("/api/precios", async (req, res) => {
 
 //OBTENER EL PRECIO DEL PRODUCTO 🧩
 router.get("/api/precios/producto/:id", async (req, res) => {
+    const db = req.db;
+
     try {
         const { id } = req.params;
 
@@ -243,6 +259,8 @@ router.get("/api/precios/producto/:id", async (req, res) => {
 
 //OBTENER EL COMPARADOR DE PRECIOS 🧩
 router.get("/api/comparador-precios", async (req, res) => {
+    const db = req.db;
+
     try {
         const precios = await db
             .collection("Precios")
@@ -302,6 +320,8 @@ router.get("/api/comparador-precios", async (req, res) => {
  * Ruta: GET /api/supermercados
  */
 router.get("/api/supermercados", async (req, res) => {
+    const db = req.db;
+
     try {
         const supermercados = await db.collection("Supermercados").find().toArray(); // 👈 Usa el nombre correcto de la colección
         console.log("📌 Supermercados encontrados:", supermercados); // 👀 Verificar en la consola del servidor
@@ -321,6 +341,8 @@ router.get("/api/supermercados", async (req, res) => {
  * Ruta: GET /api/proovedor
  */
 router.get("/api/proveedor", async (req, res) => {
+    const db = req.db;
+
     try {
         const proveedor = await db.collection("Proveedor").find().toArray();
         res.json(proveedor);
@@ -335,6 +357,8 @@ router.get("/api/proveedor", async (req, res) => {
  * Ruta: GET /api/proveedores
  */
 router.get("/api/proveedores", async (req, res) => {
+    const db = req.db;
+
     try {
         const proveedores = await db.collection("Proveedor").find().toArray();
         const nombres = proveedores.map((p) => ({
@@ -357,6 +381,8 @@ router.get("/api/proveedores", async (req, res) => {
  * Ruta: GET /api/datos-personales?usuario_id=ID
  */
 router.get("/api/datos-personales", async (req, res) => {
+    const db = req.db;
+
     try {
         const { usuario_id } = req.query;
 
@@ -379,6 +405,8 @@ router.get("/api/datos-personales", async (req, res) => {
 
 // Obtener usuario por email para eliminarlo desde el lado cliente 🧩
 router.get("/api/usuarios/email/:email", async (req, res) => {
+    const db = req.db;
+
     try {
         const { email } = req.params;
 
@@ -404,6 +432,8 @@ router.get("/api/usuarios/email/:email", async (req, res) => {
  * Ruta: GET /api/descripcion
  */
 router.get("/api/descripcion", async (req, res) => {
+    const db = req.db;
+
     try {
         const descripciones = await db
             .collection("Descripcion")
@@ -438,6 +468,8 @@ router.get("/api/descripcion", async (req, res) => {
 
 // OBTENER DESCRIPCION DE LOS PRODUCTOS POR ID 🧩
 router.get("/api/descripcion/producto/:id", async (req, res) => {
+    const db = req.db;
+
     try {
         const { id } = req.params;
 
@@ -462,6 +494,8 @@ router.get("/api/descripcion/producto/:id", async (req, res) => {
 
 // OBTENER TIPOS 🧩
 router.get("/api/tipos", async (req, res) => {
+    const db = req.db;
+
     try {
         const tipos = await db.collection("Descripcion").distinct("Tipo");
         res.json(tipos.filter(t => t)); // Filtra null/undefined
@@ -473,6 +507,8 @@ router.get("/api/tipos", async (req, res) => {
 
 // OBTENER SUBTIPOS 🧩
 router.get("/api/subtipos", async (req, res) => {
+    const db = req.db;
+
     try {
         const subtipos = await db.collection("Descripcion").distinct("Subtipo");
         res.json(subtipos.filter(s => s));
@@ -491,6 +527,8 @@ router.get("/api/subtipos", async (req, res) => {
  * Ruta: GET /api/opiniones
  */
 router.get("/api/opiniones", async (req, res) => {
+    const db = req.db;
+
     try {
         const opiniones = await db.collection("Opiniones").find().toArray();
         res.json(opiniones);
@@ -509,6 +547,8 @@ router.get("/api/opiniones", async (req, res) => {
  * Ruta: GET /api/historial
  */
 router.get("/api/historial", async (req, res) => {
+    const db = req.db;
+
     try {
         const historial = await db
             .collection("HistorialUsuario")
@@ -529,6 +569,8 @@ router.get("/api/historial", async (req, res) => {
  */
 
 router.get("/api/historial/:usuarioId", async (req, res) => {
+    const db = req.db;
+
     try {
         const usuarioId = new ObjectId(req.params.usuarioId);
 
@@ -566,6 +608,8 @@ router.get("/api/historial/:usuarioId", async (req, res) => {
 
 // OBTENER USUARIOS ACTIVOS EN LOS ULTIMOS 7 DIAS 🧩
 router.get("/api/historial-reciente", async (req, res) => {
+    const db = req.db;
+
     try {
         const hace7dias = new Date();
         hace7dias.setDate(hace7dias.getDate() - 7);
@@ -609,6 +653,8 @@ router.get("/api/historial-reciente", async (req, res) => {
 
 // OBTENER USUARIOS ACTIVOS SEMANALMENTE 🧩
 router.get("/api/usuarios/activos-semanales", async (req, res) => {
+    const db = req.db;
+
     try {
         const ahora = new Date();
         const hace28dias = new Date();
@@ -685,6 +731,8 @@ function getISOWeek(date) {
  * Ruta: GET /api/metricas
  */
 router.get("/api/metricas", async (req, res) => {
+    const db = req.db;
+
     try {
         // 🔹 Obtener métricas desde la BD
         const totalUsuarios = await db.collection("Usuarios").countDocuments();
@@ -721,6 +769,8 @@ router.get("/api/metricas", async (req, res) => {
  * Ruta: GET /api/reportes
  */
 router.get("/api/reportes", async (req, res) => {
+    const db = req.db;
+
     try {
         const totalUsuarios = await db.collection("Usuarios").countDocuments();
 

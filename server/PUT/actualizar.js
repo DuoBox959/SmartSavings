@@ -22,53 +22,8 @@ const upload = multer({ storage });
  * Ruta: PUT /api/usuarios/:id
  */
 router.put("/api/usuarios/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
+  const db = req.db;
 
-    // ⚠️ Verificar si el ID es válido antes de convertirlo a ObjectId
-    if (!ObjectId.isValid(id)) {
-      return res.status(400).json({ error: "ID no válido" });
-    }
-
-    const objectId = new ObjectId(id);
-
-    const updateData = {};
-    if (req.body.nombre) updateData.nombre = req.body.nombre;
-    if (req.body.pass) updateData.pass = req.body.pass;
-    if (req.body.email) updateData.email = req.body.email;
-    if (req.body.rol) updateData.rol = req.body.rol;
-
-    if (Object.keys(updateData).length === 0) {
-      return res.status(400).json({ error: "No se enviaron cambios" });
-    }
-
-    console.log("📤 Actualizando usuario en MongoDB:", updateData);
-
-    const result = await db
-      .collection("Usuarios")
-      .updateOne({ _id: objectId }, { $set: updateData });
-
-    if (result.modifiedCount === 0) {
-      return res
-        .status(404)
-        .json({ error: "Usuario no encontrado o sin cambios" });
-    }
-
-    res.json({
-      message: "Usuario actualizado correctamente",
-      usuario: updateData,
-    });
-  } catch (err) {
-    console.error("❌ Error actualizando usuario:", err);
-    res.status(500).json({ error: "Error al actualizar usuario" });
-  }
-});
-
-/**
- * ✅ Modificar un usuario existente (Update)
- * Ruta: PUT /api/usuarios/:id
- */
-router.put("/api/usuarios/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -119,6 +74,8 @@ router.put("/api/usuarios/:id", async (req, res) => {
  */
 
 router.put("/api/productos/:id", upload.single("Imagen"), async (req, res) => {
+  const db = req.db;
+
   try {
     const { id } = req.params;
     console.log("📥 Datos recibidos para actualizar:", req.body);
@@ -136,6 +93,8 @@ router.put("/api/productos/:id", upload.single("Imagen"), async (req, res) => {
 
       if (req.body.imagenAnterior) {
         const rutaAnterior = path.join(__dirname, "uploads", "2025", req.body.imagenAnterior);
+        const db = req.db;
+
         try {
           await fs.unlink(rutaAnterior);
           console.log("🗑️ Imagen anterior eliminada:", rutaAnterior);
@@ -181,10 +140,12 @@ router.put("/api/productos/:id", upload.single("Imagen"), async (req, res) => {
   }
 });
 /**
- * ✅ Editar todos los productos completos (Read) 
- * Ruta: PUT /api/productos-completos
+ * ✅ Editar todos los productos completos (Update)
+ * Ruta: PUT /api/productos-completos/:id
  */
 router.put("/api/productos-completos/:id", upload.single("Imagen"), async (req, res) => {
+  const db = req.db;
+
   try {
     const { id } = req.params;
     console.log("📦 [PUT /api/productos-completos/:id] Datos recibidos:");
@@ -310,6 +271,8 @@ router.put("/api/productos-completos/:id", upload.single("Imagen"), async (req, 
  * Ruta: PUT /api/precios/:id
  */
 router.put("/api/precios/:id", async (req, res) => {
+  const db = req.db;
+
   try {
     const id = new ObjectId(req.params.id);
     const updateData = req.body;
@@ -335,6 +298,8 @@ router.put("/api/precios/:id", async (req, res) => {
  */
 router.put("/api/precios/por-producto/:productoId", async (req, res) => {
   console.log("📥 Recibido precio actualizado:", req.body);
+
+  const db = req.db;
 
   try {
     const { productoId } = req.params;
@@ -401,6 +366,8 @@ router.put("/api/precios/por-producto/:productoId", async (req, res) => {
  * Ruta: PUT /api/supermercados/:id
  */
 router.put("/api/supermercados/:id", async (req, res) => {
+  const db = req.db;
+
   try {
     const id = new ObjectId(req.params.id);
     const updateData = req.body;
@@ -429,6 +396,8 @@ router.put("/api/supermercados/:id", async (req, res) => {
  * Ruta: PUT /api/proovedor/:id
  */
 router.put("/api/proveedor/:id", async (req, res) => {
+  const db = req.db;
+
   try {
     const { id } = req.params;
 
@@ -473,6 +442,8 @@ router.put("/api/proveedor/:id", async (req, res) => {
  * Ruta: PUT /api/datos-personales/:id
  */
 router.put("/api/datos-personales/:id", async (req, res) => {
+  const db = req.db;
+
   try {
     const id = new ObjectId(req.params.id); // Convierte el _id recibido en la URL en un ObjectId
     const data = req.body;
@@ -509,6 +480,8 @@ router.put("/api/datos-personales/:id", async (req, res) => {
  * Ruta: PUT /api/descripcion/:id
  */
 router.put("/api/descripcion/:id", async (req, res) => {
+  const db = req.db;
+
   try {
     const { id } = req.params;
 
@@ -572,6 +545,8 @@ router.put("/api/descripcion/:id", async (req, res) => {
  * Ruta: PUT /api/opiniones/:id
  */
 router.put("/api/opiniones/:id", async (req, res) => {
+  const db = req.db;
+
   try {
     const id = new ObjectId(req.params.id);
     const updateData = req.body;
@@ -600,6 +575,8 @@ router.put("/api/opiniones/:id", async (req, res) => {
  * Ruta: PUT /api/historial/:id
  */
 router.put("/api/historial/:id", async (req, res) => {
+  const db = req.db;
+
   try {
     const id = new ObjectId(req.params.id);
     const data = req.body;

@@ -7,6 +7,8 @@ const { ObjectId } = require("../conexion1");
 // FORZAR LIMPIEZA HISTORIAL                                 📌
 // =============================================
 router.get("/api/forzar-limpieza-historial", async (req, res) => {
+  const db = req.db;
+
   try {
     const historialCollection = db.collection("HistorialUsuario");
 
@@ -54,6 +56,8 @@ router.get("/api/forzar-limpieza-historial", async (req, res) => {
  * Ruta: DELETE /api/usuarios/:id
  */
 router.delete("/api/usuarios/:id", async (req, res) => {
+  const db = req.db;
+
   try {
     const { id } = req.params;
 
@@ -85,6 +89,8 @@ router.delete("/api/usuarios/:id", async (req, res) => {
  * Ruta: DELETE /api/productos/:id
  */
 router.delete("/api/productos/:id", async (req, res) => {
+  const db = req.db;
+
   try {
     const { id } = req.params;
 
@@ -111,6 +117,8 @@ router.delete("/api/productos/:id", async (req, res) => {
 
 // ELIMINAR PRODUCTO COMPLETO  🧩
 router.delete("/api/productos-completos/:id", async (req, res) => {
+  const db = req.db;
+
   try {
     const { id } = req.params;
     if (!ObjectId.isValid(id)) return res.status(400).json({ error: "ID inválido" });
@@ -139,6 +147,8 @@ router.delete("/api/productos-completos/:id", async (req, res) => {
  * Ruta: DELETE /api/precios/:id
  */
 router.delete("/api/precios/:id", async (req, res) => {
+  const db = req.db;
+
   try {
     const { id } = req.params;
 
@@ -170,6 +180,8 @@ router.delete("/api/precios/:id", async (req, res) => {
  * Ruta: DELETE /api/supermercados/:id
  */
 router.delete("/api/supermercados/:id", async (req, res) => {
+  const db = req.db;
+
   try {
     const { id } = req.params;
 
@@ -203,6 +215,8 @@ router.delete("/api/supermercados/:id", async (req, res) => {
  * Ruta: DELETE /api/proovedor/:id
  */
 router.delete("/api/proveedor/:id", async (req, res) => {
+  const db = req.db;
+
   try {
     const { id } = req.params;
 
@@ -236,6 +250,8 @@ router.delete("/api/proveedor/:id", async (req, res) => {
  * Ruta: DELETE /api/datos-personales/:id
  */
 router.delete("/api/datos-personales/:id", async (req, res) => {
+  const db = req.db;
+
   try {
     const datoId = new ObjectId(req.params.id);
     const result = await db
@@ -262,6 +278,8 @@ router.delete("/api/datos-personales/:id", async (req, res) => {
  * Ruta: DELETE /api/descripcion/:id
  */
 router.delete("/api/descripcion/:id", async (req, res) => {
+  const db = req.db;
+
   try {
     const { id } = req.params;
 
@@ -291,10 +309,12 @@ router.delete("/api/descripcion/:id", async (req, res) => {
 // =============================================
 
 /**
- * ✅ Eliminar Descripcion (Delete)
- * Ruta: DELETE /api/descripcion/:id
+ * ✅ Eliminar opinión (Delete)
+ * Ruta: DELETE /api/opiniones/:id
  */
 router.delete("/api/opiniones/:id", async (req, res) => {
+  const db = req.db;
+
   try {
     const { id } = req.params;
 
@@ -327,6 +347,8 @@ router.delete("/api/opiniones/:id", async (req, res) => {
  * Ruta: DELETE /api/historial/:id
  */
 router.delete("/api/historial/:id", async (req, res) => {
+  const db = req.db;
+
   try {
     const id = new ObjectId(req.params.id);
 
