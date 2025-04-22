@@ -101,9 +101,9 @@ const upload = multer({ storage: storage });
 })();
 
 // ✅ Ruta simple de prueba
-app.get("/", (req, res) => {
-  res.send("🚀 Servidor funcionando con MongoDB Atlas");
-});
+// app.get("/", (req, res) => {
+//   res.send("🚀 Servidor funcionando con MongoDB Atlas");
+// });
 
 // =============================================
 // 🅱️ RUTAS DE AUTENTICACIÓN (LOGIN)
@@ -408,104 +408,7 @@ app.post("/api/productos", upload.single("Imagen"), async (req, res) => {
     res.status(500).json({ error: "Error interno del servidor" });
   }
 });
-/**
- * ✅ Crear un nuevo producto completo con imagen (Create)
- * Ruta: POST /api/productos-completos
- */
-// ✅ Función de utilidad para transformar el string a array de objetos
-function parsearPrecioHistorico(input) {
-  if (!input || typeof input !== "string") return [];
 
-  const partes = input.split(",").map(e => e.trim());
-  const resultado = [];
-
-  for (let i = 0; i < partes.length - 1; i += 2) {
-    const precio = parseFloat(partes[i]);
-    const año = parseInt(partes[i + 1]);
-
-    if (!isNaN(precio) && !isNaN(año)) {
-      resultado.push({ precio, año });
-    }
-  }
-
-  return resultado;
-}
-
-app.post("/api/productos-completos", upload.single("Imagen"), async (req, res) => {
-  try {
-    // ✅ Validaciones de ID
-    const proveedorId = ObjectId.isValid(req.body.proveedor) ? new ObjectId(req.body.proveedor) : null;
-    const supermercadoId = ObjectId.isValid(req.body.supermercado) ? new ObjectId(req.body.supermercado) : null;
-    const usuarioId = ObjectId.isValid(req.body.usuario) ? new ObjectId(req.body.usuario) : null;
-
-    // 🎯 LOG DE DEPURACIÓN
-    console.log("📥 [REQ] Campos recibidos desde el cliente:");
-    console.log("req.body:", req.body);
-    console.log("📷 req.file (imagen):", req.file);
-
-    // 1️⃣ Inserción del producto
-    const nuevoProducto = {
-      Nombre: req.body.nombre,
-      Imagen: req.file ? `/uploads/2025/${req.file.filename}` : req.body.imagen || null,
-      Marca: req.body.marca || "Sin marca",
-      Peso: req.body.peso,
-      UnidadPeso: req.body.unidadPeso,
-      Estado: req.body.estado,
-      Proveedor_id: proveedorId,
-      Supermercado_id: supermercadoId,
-      Usuario_id: usuarioId,
-      fechaSubida: req.body.fechaSubida || new Date().toISOString(),
-      fechaActualizacion: req.body.fechaActualizacion || new Date().toISOString(),
-    };
-
-    // 🎯 LOG NUEVO PRODUCTO
-    console.log("🆕 [PRODUCTO] Datos construidos:", nuevoProducto);
-
-    const resultadoProducto = await db.collection("Productos").insertOne(nuevoProducto);
-    const productoId = resultadoProducto.insertedId;
-
-    // 2️⃣ Inserción del precio
-    const nuevoPrecio = {
-      producto_id: productoId,
-      precioActual: parseFloat(req.body.precioActual),
-      precioDescuento: req.body.precioDescuento ? parseFloat(req.body.precioDescuento) : null,
-      unidadLote: req.body.unidadLote || "N/A",
-      precioUnidadLote: req.body.precioPorUnidad ? parseFloat(req.body.precioPorUnidad) : null,
-      precioHistorico: parsearPrecioHistorico(req.body.precioHistorico),
-    };
-
-    console.log("💸 [PRECIO] Datos construidos:", nuevoPrecio);
-    await db.collection("Precios").insertOne(nuevoPrecio);
-
-    // 3️⃣ Inserción de descripción
-    if (req.body.tipo) {
-      const nuevaDescripcion = {
-        Producto_id: productoId,
-        Tipo: req.body.tipo,
-        Subtipo: req.body.subtipo || null,
-        Utilidad: req.body.utilidad || null,
-        Ingredientes: req.body.ingredientes
-          ? req.body.ingredientes.split(",").map(i => i.trim()).filter(i => i.length > 0)
-          : [],
-      };
-
-      // 🎯 LOG DESCRIPCIÓN
-      console.log("📝 [DESCRIPCIÓN] Datos construidos:", nuevaDescripcion);
-      await db.collection("Descripcion").insertOne(nuevaDescripcion);
-    } else {
-      console.warn("⚠️ Tipo no enviado. No se creó descripción.");
-    }
-
-    res.status(201).json({
-      message: "Producto completo creado correctamente",
-      producto_id: productoId,
-    });
-
-  } catch (err) {
-    console.error("❌ Error al crear producto completo:", err);
-    res.status(500).json({ error: "Error interno del servidor" });
-  }
-});
 
 app.get("/api/tipos", async (req, res) => {
   try {
@@ -617,6 +520,106 @@ app.get("/api/productos", async (req, res) => {
     res.status(500).json({ error: "Error al obtener productos" });
   }
 });
+
+
+// ✅ Función de utilidad para transformar el string a array de objetos
+function parsearPrecioHistorico(input) {
+  if (!input || typeof input !== "string") return [];
+
+  const partes = input.split(",").map(e => e.trim());
+  const resultado = [];
+
+  for (let i = 0; i < partes.length - 1; i += 2) {
+    const precio = parseFloat(partes[i]);
+    const año = parseInt(partes[i + 1]);
+
+    if (!isNaN(precio) && !isNaN(año)) {
+      resultado.push({ precio, año });
+    }
+  }
+
+  return resultado;
+}
+/**
+ * ✅ Añadir todos los productos completos (Read)
+ * Ruta: POST /api/productos-completos
+ */
+app.post("/api/productos-completos", upload.single("Imagen"), async (req, res) => {
+  try {
+    // ✅ Validaciones de ID
+    const proveedorId = ObjectId.isValid(req.body.proveedor) ? new ObjectId(req.body.proveedor) : null;
+    const supermercadoId = ObjectId.isValid(req.body.supermercado) ? new ObjectId(req.body.supermercado) : null;
+    const usuarioId = ObjectId.isValid(req.body.usuario) ? new ObjectId(req.body.usuario) : null;
+
+    // 🎯 LOG DE DEPURACIÓN
+    console.log("📥 [REQ] Campos recibidos desde el cliente:");
+    console.log("req.body:", req.body);
+    console.log("📷 req.file (imagen):", req.file);
+
+    // 1️⃣ Inserción del producto
+    const nuevoProducto = {
+      Nombre: req.body.nombre,
+      Imagen: req.file ? `/uploads/2025/${req.file.filename}` : req.body.imagen || null,
+      Marca: req.body.marca || "Sin marca",
+      Peso: req.body.peso,
+      UnidadPeso: req.body.unidadPeso,
+      Estado: req.body.estado,
+      Proveedor_id: proveedorId,
+      Supermercado_id: supermercadoId,
+      Usuario_id: usuarioId,
+      fechaSubida: req.body.fechaSubida || new Date().toISOString(),
+      fechaActualizacion: req.body.fechaActualizacion || new Date().toISOString(),
+    };
+
+    // 🎯 LOG NUEVO PRODUCTO
+    console.log("🆕 [PRODUCTO] Datos construidos:", nuevoProducto);
+
+    const resultadoProducto = await db.collection("Productos").insertOne(nuevoProducto);
+    const productoId = resultadoProducto.insertedId;
+
+    // 2️⃣ Inserción del precio
+    const nuevoPrecio = {
+      producto_id: productoId,
+      precioActual: parseFloat(req.body.precioActual),
+      precioDescuento: req.body.precioDescuento ? parseFloat(req.body.precioDescuento) : null,
+      unidadLote: req.body.unidadLote || "N/A",
+      precioUnidadLote: req.body.precioPorUnidad ? parseFloat(req.body.precioPorUnidad) : null,
+      precioHistorico: parsearPrecioHistorico(req.body.precioHistorico),
+    };
+
+    console.log("💸 [PRECIO] Datos construidos:", nuevoPrecio);
+    await db.collection("Precios").insertOne(nuevoPrecio);
+
+    // 3️⃣ Inserción de descripción
+    if (req.body.tipo) {
+      const nuevaDescripcion = {
+        Producto_id: productoId,
+        Tipo: req.body.tipo,
+        Subtipo: req.body.subtipo || null,
+        Utilidad: req.body.utilidad || null,
+        Ingredientes: req.body.ingredientes
+          ? req.body.ingredientes.split(",").map(i => i.trim()).filter(i => i.length > 0)
+          : [],
+      };
+
+      // 🎯 LOG DESCRIPCIÓN
+      console.log("📝 [DESCRIPCIÓN] Datos construidos:", nuevaDescripcion);
+      await db.collection("Descripcion").insertOne(nuevaDescripcion);
+    } else {
+      console.warn("⚠️ Tipo no enviado. No se creó descripción.");
+    }
+
+    res.status(201).json({
+      message: "Producto completo creado correctamente",
+      producto_id: productoId,
+    });
+
+  } catch (err) {
+    console.error("❌ Error al crear producto completo:", err);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+});
+
 /**
  * ✅ Obtener todos los productos completos (Read)
  * Ruta: GET /api/productos-completos
@@ -666,6 +669,10 @@ app.get("/api/productos-completos", async (req, res) => {
   }
 });
 
+/**
+ * ✅ Editar todos los productos completos (Read)
+ * Ruta: PUT /api/productos-completos
+ */
 app.put("/api/productos-completos/:id", upload.single("Imagen"), async (req, res) => {
   try {
     const { id } = req.params;
@@ -783,8 +790,6 @@ app.put("/api/productos-completos/:id", upload.single("Imagen"), async (req, res
   }
 });
 
-
-
 // 🧹 Eliminar producto completo con precios y descripción asociada
 app.delete("/api/productos-completos/:id", async (req, res) => {
   try {
@@ -806,13 +811,10 @@ app.delete("/api/productos-completos/:id", async (req, res) => {
   }
 });
 
-
-
 /**
  * ✅ Actualizar producto existente (Update)
  * Ruta: PUT /api/productos/:id
  */
-
 
 app.put("/api/productos/:id", upload.single("Imagen"), async (req, res) => {
   try {
@@ -1365,6 +1367,7 @@ app.get("/api/descripcion", async (req, res) => {
     res.status(500).json({ error: "Error al obtener descripciones" });
   }
 });
+
 app.get("/api/descripcion/producto/:id", async (req, res) => {
   try {
     const { id } = req.params;

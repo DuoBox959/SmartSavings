@@ -24,11 +24,42 @@ document.addEventListener("DOMContentLoaded", async () => {
     ]);
 
     await cargarProducto();
-        document.getElementById("btn-editar-detalle").addEventListener("click", () => {
-          const productId = new URLSearchParams(window.location.search).get("id");
-          if (productId) editarProducto(productId);
-          else Swal.fire("Error", "ID de producto no encontrado", "error");
+    document.getElementById("btn-eliminar-detalle").addEventListener("click", async () => {
+      const productId = new URLSearchParams(window.location.search).get("id");
+      if (!productId) {
+        Swal.fire("Error", "ID de producto no encontrado", "error");
+        return;
+      }
+    
+      const confirm = await Swal.fire({
+        title: "¿Estás seguro?",
+        text: "Esta acción no se puede deshacer.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar",
+      });
+    
+      if (!confirm.isConfirmed) return;
+    
+      try {
+        const res = await fetch(`http://localhost:3000/api/productos-completos/${productId}`, {
+          method: "DELETE",
         });
+    
+        if (!res.ok) throw new Error("Error al eliminar producto");
+    
+        await Swal.fire("✅ Eliminado", "Producto eliminado correctamente", "success");
+    
+        // 🔁 Redirigir al listado
+        window.location.href = "../pages/productos.html";
+      } catch (err) {
+        console.error("❌ Error al eliminar:", err);
+        Swal.fire("Error", "Hubo un problema al eliminar el producto.", "error");
+      }
+    });
+    
+        
   } catch (err) {
     console.error("❌ Error al iniciar la página:", err);
   }

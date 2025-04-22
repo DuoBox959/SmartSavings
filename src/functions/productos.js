@@ -264,6 +264,10 @@ async function guardarProductoNuevo() {
       supermercadoId = await insertarNuevoSupermercado(nuevoNombre, nuevoPais, nuevaUbicacion, nuevaCiudad);
     }
     formData.append("supermercado", supermercadoId);
+    
+    formData.append("ubicacion", document.getElementById("add-ubicacion-super").value || "");
+    formData.append("ciudad", document.getElementById("add-ciudad-super").value || "");
+    formData.append("paisSupermercado", document.getElementById("add-pais-super").value || "España");
 
     // 🚚 Proveedor
     let proveedorId = document.getElementById("add-proveedor-select").value;
