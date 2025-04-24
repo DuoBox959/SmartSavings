@@ -1,47 +1,78 @@
-/* 🏷️ Encabezado */
+/* ====================================================
+🏷️ ESTILOS PARA EL ENCABEZADO
+==================================================== */
+
+/* 🎯 Estilos generales del <header> */
 header {
+  background: linear-gradient(to right, #6db78c, #3a5a40);
+  /* Fondo con degradado verde */
   display: flex;
+  /* Flexbox para alinear elementos horizontalmente */
   align-items: center;
+  /* Alineación vertical centrada */
   justify-content: space-between;
-  padding: 20px;
-  background: #a8d5ba;
-  color: #2c3e34;
+  /* Distribuye el logo, eslogan y acciones */
+  padding: 25px 40px;
+  /* Espaciado interior */
+  flex-wrap: wrap;
+  /* Permite que los elementos bajen en pantallas pequeñas */
+  color: #ffffff;
+  /* Color de texto blanco */
 }
 
-/* Estilo del logo (sección izquierda) */
-header .logo h1 {
-  font-size: 1.8em;
-  font-weight: 700;
-  margin: 0;
-  color: #2c3e34;
+/* 🧷 Estilo del logo (izquierda) */
+.logo a {
+  font-size: 2em;
+  /* Tamaño grande del texto del logo */
+  font-weight: bold;
+  text-decoration: none;
+  /* Quita subrayado */
+  color: #fff;
+  transition: color 0.3s ease;
 }
 
-/* Estilo del eslogan (sección central) */
+.logo a:hover {
+  color: #2c3e34;
+  /* Color más oscuro al hacer hover */
+}
+
+/* 🧾 Estilo del eslogan (centro) */
 header .eslogan {
   text-align: center;
   flex-grow: 1;
+  /* Toma el espacio restante para centrar el contenido */
 }
 
 header .eslogan .subtitulo {
-  font-size: 1.2em;
+  font-size: 1.4em;
   margin: 0;
   font-weight: 400;
-  color: #345e4d;
+  color: #ffffff;
 }
 
-/* Estilo de los enlaces (sección derecha) */
+/* 🧭 Subtítulo adicional centrado */
+.subtitulo {
+  flex: 1 1 100%;
+  text-align: center;
+  font-size: 1.1em;
+  margin: 10px 0 0 0;
+  color: #e5e5e5;
+}
+
+/* 🛠️ Contenedor de acciones (derecha) */
 header .acciones {
   display: flex;
   gap: 15px;
+  /* Separación entre botones o enlaces */
 }
 
 header .acciones .enlace {
   font-size: 1em;
-  color: #2c3e34;
+  color: #ffffff;
   text-decoration: none;
   font-weight: 500;
   padding: 5px 10px;
-  border: 1px solid #2c3e34;
+  border: 1px solid #ffffff;
   border-radius: 5px;
   transition: background 0.3s;
 }
@@ -51,7 +82,14 @@ header .acciones .enlace:hover {
   color: #a8d5ba;
 }
 
-/* Estilo para el enlace ComparaTú */
+/* 🔗 Repetido para otros contextos donde se use .acciones */
+.acciones {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* 🧷 Enlace destacado para "ComparaTú" */
 .comparaTu {
   text-decoration: none;
   color: inherit;
@@ -59,17 +97,18 @@ header .acciones .enlace:hover {
   transition: color 0.3s ease;
 }
 
-/* Cambiar color del texto al pasar el ratón */
 .comparaTu:hover {
   color: #365a7e;
+  /* Azul al pasar el mouse */
 }
 
-/* 🔽 Menú desplegable */
+/* 🔽 Menú desplegable de usuario */
 .user-dropdown {
   position: relative;
   display: inline-block;
 }
 
+/* 🧍 Nombre de usuario en el menú */
 #userName {
   font-weight: bold;
   padding: 5px 10px;
@@ -83,7 +122,7 @@ header .acciones .enlace:hover {
   color: #a8d5ba;
 }
 
-/* Contenedor del menú desplegable */
+/* 🔍 Contenedor del menú desplegable */
 .dropdown-content {
   display: block;
   position: absolute;
@@ -101,6 +140,7 @@ header .acciones .enlace:hover {
   margin-top: 25px;
 }
 
+/* 📄 Elementos dentro del desplegable */
 .dropdown-content a {
   display: block;
   padding: 10px;
@@ -113,7 +153,7 @@ header .acciones .enlace:hover {
   background-color: #a8d5ba;
 }
 
-/* Cuando el menú está visible, hacemos la animación */
+/* 📦 Visibilidad del menú al mostrarlo */
 .show {
   opacity: 1;
   transform: translateY(0);
@@ -121,11 +161,13 @@ header .acciones .enlace:hover {
   visibility: visible;
 }
 
+/* 🧍‍♂️ Contenedor del usuario logueado */
 .user-menu {
   position: relative;
   display: inline-block;
 }
 
+/* 🔘 Botón que activa el menú */
 .user-menu-button {
   background-color: #a8d5ba;
   border: 1px solid #cccccc;
@@ -139,6 +181,7 @@ header .acciones .enlace:hover {
   background-color: #f0f0f0;
 }
 
+/* 📑 Menú desplegable completo */
 .dropdown-menu {
   display: none;
   position: absolute;
@@ -163,6 +206,7 @@ header .acciones .enlace:hover {
   background-color: #a8d5ba;
 }
 
+/* 📌 Mostrar menú al pasar el mouse */
 .user-menu:hover .dropdown-menu {
   display: block;
 }

@@ -5,7 +5,9 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  /* 🔧 Reset básico para eliminar márgenes/paddings por defecto */
 }
+
 
 /* ====================================================
 🎨 ESTILOS GENERALES
@@ -13,10 +15,12 @@
 body {
   font-family: "Roboto", sans-serif;
   background: linear-gradient(135deg, #dfe9f3, #f7f9fc);
+  /* 🎨 Fondo en degradado para dar profundidad */
   color: #333;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  /* 💡 Esto asegura que el contenido crezca mínimo al alto de la pantalla */
 }
 
 /* ====================================================
@@ -29,6 +33,7 @@ body {
   gap: 25px;
   padding: 30px;
   flex: 1;
+  /* 📦 Contenedor flexible para alinear las tarjetas de producto */
 }
 
 /* ====================================================
@@ -46,29 +51,21 @@ body {
   position: relative;
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  min-height: 56px;
+  min-height: 540px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 540px; /* clave para alinear todas */
   font-size: 22px;
   margin: 14px 0 6px;
   font-weight: 700;
-
+  /* 🧱 Tarjeta blanca elegante con sombra y bordes redondeados */
 }
 
 .product-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
-}
-.product-card a {
-  text-decoration: none;
-  color: inherit;
-}
-
-.product-card a:hover {
-  color: #1976d2; /* O el color que desees */
+  /* 🌀 Efecto visual al hacer hover */
 }
 
 /* 🖼️ Imagen del producto */
@@ -78,7 +75,7 @@ body {
   margin-bottom: 10px;
   border-radius: 12px;
   transition: transform 0.3s ease;
-
+  /* 📸 Imagen centrada y adaptada */
 }
 
 .product-card:hover img {
@@ -94,6 +91,15 @@ body {
   white-space: normal;
 }
 
+.product-card a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.product-card a:hover {
+  color: #1976d2;
+  /* 🔵 Color al hacer hover en enlaces internos */
+}
 
 /* ====================================================
 ❤️ FAVORITO
@@ -117,7 +123,7 @@ body {
 }
 
 /* ====================================================
-🛠️ BOTONES DE ACCIÓN
+🛠️ BOTONES DE ACCIÓN (editar / eliminar)
 ==================================================== */
 .acciones {
   margin-top: auto;
@@ -145,9 +151,11 @@ body {
 }
 
 .btn-editar {
-  background: #365a7e;
+  background-color: #365a7e;
   color: white;
-  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
 }
 
 .btn-editar:hover {
@@ -155,32 +163,35 @@ body {
 }
 
 .btn-eliminar {
-  background: #d32f2f;
+  background-color: #c0392b;
   color: white;
-  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
 }
 
 .btn-eliminar:hover {
-  background: #f33b3b;
+  background-color: #e74c3c;
 }
 
 /* ====================================================
 🔙 BOTÓN VOLVER ATRÁS
 ==================================================== */
 .back-button {
-  background-color: #237f27;
+  background-color: #3a5a40;
   color: white;
+  border: none;
   padding: 15px 30px;
   font-size: 1.2em;
   font-weight: bold;
-  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
   border-radius: 8px;
   width: 200px;
   text-align: center;
   display: block;
   margin: 20px auto;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
 .back-button:hover {
@@ -188,7 +199,7 @@ body {
 }
 
 /* ====================================================
-🪟 MODAL GENÉRICO
+🪟 MODAL GENÉRICO PARA EDITAR / AGREGAR
 ==================================================== */
 .modal {
   display: none;
@@ -216,8 +227,15 @@ body {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.9); }
-  to   { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* ❌ Botón de cerrar modal */
@@ -347,19 +365,25 @@ label.required::after {
 }
 
 /* ====================================================
-🧭 NAVEGACIÓN DE CATEGORÍAS
+🧭 NAVEGACIÓN DE CATEGORÍAS  (Alimentación / Droguería / Mascotas)
 ==================================================== */
 .nav-categorias {
   background-color: #7ca08b;
-  padding: 15px 0;
+  padding: 15px 30px;
   display: flex;
-  justify-content: center;
+  justify-content: center; /* ✅ Centra todo */
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 40px;
 }
 
 .nav-categorias ul {
   display: flex;
+  align-items: center;
   gap: 40px;
   list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .nav-categorias li a {
@@ -381,8 +405,41 @@ label.required::after {
 
 .nav-categorias li a:hover {
   transform: scale(1.1);
+  color: #dff0ea;
 }
 
+.nav-categorias li a.btn-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 10px;
+  background: white;
+  border-radius: 12px;
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
+  transition: transform 0.3s, background-color 0.2s;
+  font-size: 14px;
+}
+
+.nav-categorias li a.btn-menu:hover {
+  transform: scale(1.05);
+  background-color: #e8f5e9;
+}
+
+.nav-categorias li a.btn-menu i {
+  font-size: 22px;
+  color: #365a7e;
+}
+
+.nav-categorias li a img {
+  width: 32px;
+  height: 32px;
+  margin-bottom: 5px;
+  filter: brightness(0) invert(1);
+}
 /* ====================================================
 ➕ BOTÓN AGREGAR PRODUCTO
 ==================================================== */
@@ -404,6 +461,7 @@ label.required::after {
   background-color: #0854ab;
   transform: scale(1.05);
 }
+
 .btn-cerrar {
   background-color: #ccc;
   color: #000;
@@ -421,14 +479,15 @@ label.required::after {
 }
 
 
+/* ====================================================
+📄 CAMPOS DINÁMICOS Y INFO ADICIONAL
+==================================================== */
 .form-group {
   display: flex;
   flex-direction: column;
   grid-column: span 2;
   margin-bottom: 1rem;
 }
-
-
 
 .nuevo-campo {
   display: none;
@@ -443,10 +502,69 @@ label.required::after {
   border-top: 1px solid #ddd;
   margin-top: 10px;
   padding-top: 10px;
-  min-height: 170px; /* puedes ajustar según el promedio de líneas */
+  min-height: 170px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
 }
 
+/* ====================================================
+🔍 ESTILOS DEL BUSCADOR DE PRODUCTOS
+==================================================== */
+.busqueda-productos {
+  display: flex;
+  justify-content: center;
+  padding: 30px 20px 10px;
+}
 
+.busqueda-wrapper {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(4px);
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 5px 14px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  transition: 0.3s;
+}
+
+.busqueda-wrapper input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 15px;
+  width: 220px;
+}
+
+.busqueda-wrapper input::placeholder {
+  color: #888;
+  font-style: italic;
+}
+
+.btn-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  color: #365a7e;
+  border-radius: 12px;
+  padding: 10px;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 14px;
+  transition: transform 0.3s, background-color 0.2s;
+  border: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.btn-menu-vertical:hover {
+  background-color: #e8f5e9;
+  transform: scale(1.05);
+}
+
+.btn-menu i {
+  font-size: 22px;
+  margin-bottom: 4px;
+}

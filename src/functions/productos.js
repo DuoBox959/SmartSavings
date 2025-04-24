@@ -3,6 +3,7 @@
 // ==============================
 import { cargarHeaderFooter, volverAtras } from "../functions/global/funciones.js";
 import { gestionarUsuarioAutenticado } from "../functions/global/header.js";
+import { cargarNav } from "../functions/global/nav.js";
 
 window.volverAtras = volverAtras;
 
@@ -12,7 +13,7 @@ const API_URL = "http://localhost:3000/api/productos";
 // 🚀 INICIALIZACIÓN AL CARGAR
 // ==============================
 document.addEventListener("DOMContentLoaded", async () => {
-   // 🔒 Verificar si el usuario está autenticado
+  // 🔒 Verificar si el usuario está autenticado
   const usuario = sessionStorage.getItem("user");
   if (!usuario) {
     Swal.fire({
@@ -70,11 +71,21 @@ async function cargarProductos() {
             <h3>${producto.Nombre}</h3>
           </a>
           <div class="info-producto">
-            <p class="marca">Marca: ${producto.Marca || "Marca desconocida"}</p>
-            <p class="estado">Estado: ${producto.Estado}</p>
-            <p class="peso">Peso: ${producto.Peso} ${producto.UnidadPeso}</p>
-            <p class="precio">Precio: ${precioActual} €</p>
-            <p class="supermercado">Supermercado: ${producto.Supermercado_id || "Desconocido"}</p>
+          <p class="supermercado">
+            Supermercado: ${producto.Supermercado_id || "Desconocido"}
+          </p>
+          <p class="precio">
+            Precio: ${precioActual || "N/D"} €
+          </p>
+          <p class="peso">
+            Peso: ${producto.Peso || "?"} ${producto.UnidadPeso || ""}
+          </p>
+          <p class="marca">
+            Marca: ${producto.Marca?.trim() || "Marca desconocida"}
+          </p>
+          <p class="estado">
+            Estado: ${producto.Estado?.trim() || "No especificado"}
+          </p>
           </div>
           <div class="acciones">
             <button class="btn-editar" onclick="editarProducto('${producto._id}')">✏️ Editar</button>
@@ -122,7 +133,7 @@ async function cargarOpcionesEnSelects(configs) {
 
         // Opción para insertar nuevo
         const optionOtro = document.createElement("option");
-        optionOtro.value = "nuevo"; 
+        optionOtro.value = "nuevo";
         optionOtro.textContent = "Otro (escribir nuevo)";
         select.appendChild(optionOtro);
       });
@@ -213,7 +224,7 @@ async function guardarProductoNuevo() {
       marca = await insertarNuevaMarca(nuevaMarca);
     }
     formData.append("marca", marca || "Sin marca");
-    
+
     // 🔠 Tipo
     let tipo = document.getElementById("add-tipo-select").value;
     if (tipo === "nuevo") {
@@ -253,7 +264,7 @@ async function guardarProductoNuevo() {
     }
     console.log("🖼️ ¿Input encontrado?", imagenInput);
     console.log("🖼️ Archivos seleccionados:", imagenInput?.files);
-    
+
     // 🏬 Supermercado
     let supermercadoId = document.getElementById("add-supermercado-select").value;
     if (supermercadoId === "nuevo") {
@@ -264,7 +275,7 @@ async function guardarProductoNuevo() {
       supermercadoId = await insertarNuevoSupermercado(nuevoNombre, nuevoPais, nuevaUbicacion, nuevaCiudad);
     }
     formData.append("supermercado", supermercadoId);
-    
+
     formData.append("ubicacion", document.getElementById("add-ubicacion-super").value || "");
     formData.append("ciudad", document.getElementById("add-ciudad-super").value || "");
     formData.append("paisSupermercado", document.getElementById("add-pais-super").value || "España");
@@ -299,12 +310,12 @@ async function guardarProductoNuevo() {
     const userId = usuario?._id || usuario?.id;
     if (!userId) throw new Error("Usuario no autenticado");
     formData.append("usuario", userId);
-    
+
     console.log("📦 FormData enviado al backend:");
     for (let [key, value] of formData.entries()) {
       console.log(`${key}:`, value);
     }
-    
+
     // 🚀 Enviar al backend
     const response = await fetch("http://localhost:3000/api/productos-completos", {
       method: "POST",
@@ -346,7 +357,7 @@ async function guardarCambiosDesdeFormulario() {
     formData.append("tipo", document.getElementById("edit-tipo-select").value);
     formData.append("subtipo", document.getElementById("edit-subtipo-select").value || "");
     formData.append("precioActual", document.getElementById("edit-precio").value || "0");
-   
+
     // ➕ NUEVOS CAMPOS (edición)
     formData.append("precioDescuento", document.getElementById("edit-precioDescuento")?.value || "");
     formData.append("unidadLote", document.getElementById("edit-unidadLote")?.value || "");
@@ -362,18 +373,18 @@ async function guardarCambiosDesdeFormulario() {
     const proveedorId = document.getElementById("edit-proveedor-select").value;
     const usuario = JSON.parse(sessionStorage.getItem("user"));
     const userId = usuario?._id || usuario?.id;
-    
+
     formData.append("supermercado", supermercadoId);
     formData.append("proveedor", proveedorId);
     formData.append("usuario", userId);
-   
+
     // 🖼️ Ingredientes
 
     const ingredientesInput = document.getElementById("edit-ingredientes").value;
     const ingredientesArray = ingredientesInput
-    .split(",")
-    .map(i => i.trim())
-    .filter(i => i.length > 0);
+      .split(",")
+      .map(i => i.trim())
+      .filter(i => i.length > 0);
     formData.append("ingredientes", ingredientesArray.join(","));
 
     // 🖼️ Imagen opcional
@@ -399,7 +410,7 @@ async function guardarCambiosDesdeFormulario() {
     const historialTexto = document.getElementById("edit-precioHistorico").value;
 
     let historialArray = [];
-    
+
     if (historialTexto.includes('\n')) {
       // 📄 Modo por líneas
       historialArray = historialTexto
@@ -422,9 +433,9 @@ async function guardarCambiosDesdeFormulario() {
         }
       }
     }
-    
-   
-    
+
+
+
     // 💰 3️⃣ Actualizar precio
     const precioData = {
       producto_id: id,
@@ -441,7 +452,7 @@ async function guardarCambiosDesdeFormulario() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(precioData),
     });
-    
+
 
     // 📝 4️⃣ Actualizar descripción con Utilidad incluida
     const descripcionData = {
@@ -551,6 +562,8 @@ function cerrarFormularioAgregar() {
 function mostrarFormularioAgregar() {
   document.getElementById("modal-agregar").style.display = "flex";
 }
+
+
 
 // ==============================
 // 🗑️ ELIMINACIÓN DE PRODUCTO

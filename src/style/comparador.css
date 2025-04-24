@@ -1,164 +1,221 @@
-/* 🌟 Reset */
+/* ====================================================
+🌟 RESET GENERAL
+==================================================== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  /* 🔧 Elimina márgenes y paddings por defecto. */
 }
 
-/* 🌐 Estilo General */
-body {
-  font-family: "Arial", sans-serif;
+/* ====================================================
+🚫 RESETEO COMPLEMENTARIO HTML Y BODY
+==================================================== */
+html, body {
   margin: 0;
   padding: 0;
+  width: 100%;
+  /* 🔄 Se asegura que el body y html usen todo el ancho del viewport. */
+}
+
+/* ====================================================
+🌐 ESTILO GENERAL DEL BODY
+==================================================== */
+body {
+  font-family: "Arial", sans-serif;
   background: #cecfcfe8;
   color: #333;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+  /* 🌈 Fondo neutro claro, centrado vertical y horizontal. */
 }
 
-.container {
+/* ====================================================
+🧩 CONTENEDORES PRINCIPALES
+==================================================== */
+.container,
+.main-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  min-height: 100vh; /* Para ocupar toda la altura de la pantalla */
+  padding: 30px 20px;
   width: 100%;
+  /* 📦 Contenedores centrales con padding y alineación. */
 }
 
-/* 🎨 Estilo del Título */
+/* ====================================================
+🎨 TÍTULO PRINCIPAL
+==================================================== */
 h1 {
   font-size: 2.5em;
-  margin-bottom: 20px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+  margin-bottom: 30px;
+  color: #2c3e50;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  /* 🎯 Título grande con sombra suave para resaltar. */
 }
 
-/* 🖋 Contenedor del formulario */
+/* ====================================================
+🖋 FORMULARIO COMPARADOR
+==================================================== */
 #comparadorForm {
   background-color: #ffffff;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 400px;
-  max-width: 90%;
-  gap: 15px;
+  width: 100%;
+  max-width: 500px;
+  gap: 20px;
+  /* 📋 Tarjeta limpia para el formulario */
 }
 
-/* 📌 Estilos de etiquetas */
+/* ====================================================
+🏷️ ETIQUETAS
+==================================================== */
 #comparadorForm label {
-  width: 100%;
-  text-align: left;
   font-weight: bold;
-  color: #333;
+  color: #2c3e50;
 }
 
-/* 📌 Estilos de los selects */
-#comparadorForm select {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 1em;
-  background-color: #f9f9f9;
-}
+/* ====================================================
+🧾 SELECTS DE TIENDAS
+==================================================== */
+#comparadorForm select,
 .select-tiendas {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 1em;
-  background-color: #f9f9f9;
-}
-
-/* 🔲 Contenedor para el botón de añadir tienda */
-#addStoreButton {
-  width: 100%;
-  height: 40px;
-  font-size: 1.2em;
-  font-weight: bold;
-}
-
-/* 📌 Botón de Comparar */
-#comparadorForm button {
-  background-color: #365a7e;
-  color: white;
-  border: none;
-  padding: 10px;
-  font-size: 1em;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  width: 100%;
-}
-
-#comparadorForm button:hover {
-  background-color: #0854ab;
-  transform: scale(1.05);
-}
-
-/* 📋 Estilos del Contenedor de Resultados */
-#resultadoComparacion {
-  margin-top: 20px;
-  font-size: 1.2em;
-  text-align: left;
-  width: 100%;
-  max-width: 600px; /* Ajuste para mejor visualización */
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #ffffff;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* 📌 Contenedor para tiendas adicionales */
-#extraStores {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-/* 📌 Estilos uniformes para los selects adicionales */
-#extraStores select {
   width: 100%;
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 1em;
   background-color: #f9f9f9;
-  transition: border-color 0.3s ease;
+  transition: border 0.3s;
 }
 
-#extraStores select:focus {
-  border-color: #365a7e;
+.select-tiendas:focus {
+  border-color: #6db78c;
   outline: none;
 }
 
-/* 📌 Estilos para las etiquetas */
-#extraStores label {
+/* ====================================================
+➕ BOTÓN PARA AÑADIR TIENDAS
+==================================================== */
+#addStoreButton {
+  background-color: #3a5a40;
+  color: white;
+  font-size: 1.1em;
+  font-weight: bold;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#addStoreButton:hover {
+  background-color: #4c7a4c;
+}
+
+/* ====================================================
+📊 BOTÓN DE COMPARAR (excluye el de añadir)
+==================================================== */
+#comparadorForm button:not(#addStoreButton) {
+  background-color: #365a7e;
+  color: white;
+  border: none;
+  padding: 12px;
+  font-size: 1em;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+#comparadorForm button:not(#addStoreButton):hover {
+  background-color: #0854ab;
+  transform: scale(1.03);
+}
+
+/* ====================================================
+📌 CONTENEDOR DE TIENDAS ADICIONALES
+==================================================== */
+#extraStores {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
   width: 100%;
-  display: block;
+}
+
+#extraStores label {
   font-weight: bold;
   color: #333;
-  margin-bottom: 5px;
 }
 
-/* 📌 Mejor espaciado entre tiendas añadidas */
 .extra-store {
   width: 100%;
-  padding: 10px;
-  background: #f5f5f5;
-  border-radius: 6px;
-  border: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 0;
+  /* 📦 Cada tienda extra es una fila completa con espacio entre campos */
 }
 
-/* 🔙 Botón Volver Atrás */
+/* ====================================================
+📋 RESULTADO DE COMPARACIÓN
+==================================================== */
+#resultadoComparacion {
+  margin-top: 30px;
+  width: 100%;
+  max-width: 800px;
+  padding: 25px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  font-size: 1em;
+  /* 🧾 Caja blanca donde aparece la comparación */
+}
+
+/* ====================================================
+📊 TABLA DE RESULTADOS
+==================================================== */
+#resultadoComparacion table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+#resultadoComparacion th,
+#resultadoComparacion td {
+  border: 1px solid #ccc;
+  padding: 12px;
+  text-align: center;
+}
+
+#resultadoComparacion th {
+  background-color: #6db78c;
+  color: #fff;
+  font-weight: bold;
+}
+
+#resultadoComparacion tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* ====================================================
+🛑 MENSAJE DE ERROR (cuando no hay datos)
+==================================================== */
+#resultadoComparacion p {
+  color: #c0392b;
+  font-weight: bold;
+}
+
+/* ====================================================
+🔙 BOTÓN VOLVER ATRÁS
+==================================================== */
 .back-button {
-  background-color: #237f27;
+  background-color: #3a5a40;
   color: white;
   border: none;
   padding: 15px 30px;
@@ -174,28 +231,29 @@ h1 {
   margin: 20px auto;
 }
 
-/* Al pasar el cursor */
 .back-button:hover {
   background-color: #388e3c;
 }
 
-/* 📱 Diseño Responsivo */
+/* ====================================================
+📱 DISEÑO RESPONSIVE
+==================================================== */
 @media (max-width: 768px) {
-  #comparadorForm {
-    width: 95%;
-    padding: 20px;
-  }
-
   h1 {
     font-size: 2em;
   }
 
-  button {
-    font-size: 0.9em;
-    padding: 10px;
-  }
-
+  #comparadorForm,
   #resultadoComparacion {
     width: 95%;
+  }
+
+  .back-button {
+    width: 100%;
+  }
+
+  button {
+    font-size: 0.95em;
+    padding: 10px;
   }
 }
