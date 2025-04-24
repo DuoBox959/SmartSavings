@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     manejarCookies();
     manejarUsuario();
     restringirAccesoProductos();
-    await cargarChatbot(); // Cargar chatbot desde funciones globales
+    // await cargarChatbot(); 
   } catch (error) {
     console.error("Hubo un error durante la inicialización:", error);
   }
