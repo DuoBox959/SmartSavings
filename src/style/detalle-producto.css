@@ -75,20 +75,24 @@
 }
 
 .volver-btn {
-  display: block;
-  margin: 2rem auto;
-  padding: 12px 30px;
-  background-color: #007bff;
-  color: #fff;
+  background-color: #3a5a40;
+  color: white;
   border: none;
-  border-radius: 8px;
-  font-size: 1rem;
+  padding: 15px 30px;
+  font-size: 1.2em;
+  font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+  border-radius: 8px;
+  width: 200px;
+  text-align: center;
+  display: block;
+  margin: 20px auto;
 }
 
-.volver-btn:hover {
-  background-color: #0056b3;
+.back-button:hover {
+  background-color: #388e3c;
 }
 
 .btn-cerrar {

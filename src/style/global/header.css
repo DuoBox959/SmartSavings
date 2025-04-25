@@ -62,9 +62,10 @@ header .eslogan .subtitulo {
 /* 🛠️ Contenedor de acciones (derecha) */
 header .acciones {
   display: flex;
+  align-items: center;     /* 🔥 esto es lo que lo centra */
   gap: 15px;
-  /* Separación entre botones o enlaces */
 }
+
 
 header .acciones .enlace {
   font-size: 1em;
@@ -111,16 +112,26 @@ header .acciones .enlace:hover {
 /* 🧍 Nombre de usuario en el menú */
 #userName {
   font-weight: bold;
-  padding: 5px 10px;
-  border: 1px solid #2c3e34;
-  border-radius: 5px;
-  transition: background 0.3s;
+  padding: 8px 16px;
+  border: 1px solid #ffffff;
+  border-radius: 25px;
+  background-color: #365a7e;
+  color: #fff;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;               /* 👈 asegura altura coherente */
+  line-height: 1;
+  transition: background 0.3s ease;
 }
 
+
 #userName:hover {
-  background: #2c3e34;
+  background-color: #27425c;
   color: #a8d5ba;
 }
+
 
 /* 🔍 Contenedor del menú desplegable */
 .dropdown-content {

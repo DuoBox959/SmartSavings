@@ -57,5 +57,10 @@ export async function cargarChatbot() {
 
 // 🔙 Regresar a la página anterior
 export function volverAtras() {
-  window.location.href = "index.html";
+  if (document.referrer) {
+    window.history.back();
+  } else {
+    window.location.href = "productos.html"; // o donde quieras redirigir por defecto
+  }
 }
+

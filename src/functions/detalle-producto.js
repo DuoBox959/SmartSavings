@@ -3,6 +3,7 @@
 // ==============================
 import { cargarHeaderFooter, volverAtras } from "../functions/global/funciones.js";
 import { gestionarUsuarioAutenticado } from "../functions/global/header.js";
+import { cargarNav } from "../functions/global/nav.js"; // ajusta la ruta si cambia
 
 
 const API_URL = "http://localhost:3000/api/productos";
@@ -14,6 +15,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   try {
     await cargarHeaderFooter(); // ✅ Cargar header/footer
     gestionarUsuarioAutenticado(); // ✅ Si estás autenticando usuarios
+    await cargarNav([], []);
+      // aplicarFiltroBusqueda(productos);
 
     await cargarOpcionesEnSelects([
       { campo: "supermercado", endpoint: "supermercados", usarId: true },
