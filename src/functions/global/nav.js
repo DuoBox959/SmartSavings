@@ -1,31 +1,44 @@
+// =======================================
+// 🧭 MAPEO DE CATEGORÍAS A TIPOS
+// =======================================
+// Este objeto relaciona las categorías visibles del menú con los tipos de productos en la base de datos.
+// Es utilizado por el sistema de navegación para filtrar los productos por tipo.
 const mapaCategorias = {
   alimentacion: ["comida", "bebida", "lácteos", "panadería", "snacks"],
   drogueria: ["higiene", "limpieza", "salud", "cuidado personal"],
   mascotas: ["mascota", "comida para mascotas", "juguetes mascotas"]
 };
 
-// ✅ Recibe los parámetros necesarios
+// =======================================
+// 🚀 FUNCIÓN PRINCIPAL PARA CARGAR EL NAV
+// =======================================
 export async function cargarNav(productos, precios) {
   try {
+    // ✅ Carga el HTML del nav de forma asíncrona
     const res = await fetch("/src/pages/global/nav.html");
     const html = await res.text();
 
+    // 📍 Inserta el nav justo después del header
     const header = document.getElementById("header");
-
     const navWrapper = document.createElement("div");
     navWrapper.innerHTML = html;
     header.insertAdjacentElement("afterend", navWrapper.firstElementChild);
 
-    // 💡 Espera a que el DOM inserte el nuevo HTML antes de buscar elementos dentro de él
+    // 🕒 Asegura que el DOM haya actualizado antes de buscar elementos
     await new Promise(requestAnimationFrame);
 
+    // 🔗 Inicializa enlaces y buscador
     inicializarNavegacion(productos, precios);
-    aplicarFiltroBusqueda(productos); // ✅ Llamar justo después que esté montado
+    aplicarFiltroBusqueda(productos);
   } catch (error) {
     console.error("❌ Error al cargar el nav dinámico:", error);
   }
 }
 
+// =======================================
+// 📂 FUNCIÓN PARA ENLACES DE NAVEGACIÓN
+// =======================================
+// Asocia los enlaces del menú con su categoría y filtra los productos al hacer clic
 export function inicializarNavegacion(productos, precios) {
   const enlaces = document.querySelectorAll(".nav-categorias a[data-categoria]");
 
@@ -34,9 +47,11 @@ export function inicializarNavegacion(productos, precios) {
     return;
   }
 
+  // 🎯 Al hacer clic en un enlace de categoría, se filtran los productos correspondientes
   enlaces.forEach(link => {
     link.addEventListener("click", e => {
       e.preventDefault();
+
       const categoria = link.getAttribute("data-categoria");
       const tiposPermitidos = mapaCategorias[categoria];
       if (!tiposPermitidos) return;
@@ -50,6 +65,10 @@ export function inicializarNavegacion(productos, precios) {
   });
 }
 
+// =======================================
+// 🔍 FUNCIÓN DE BÚSQUEDA EN TIEMPO REAL
+// =======================================
+// Permite buscar productos por nombre, marca, ingredientes, peso, etc.
 export function aplicarFiltroBusqueda(productosOriginales) {
   const input = document.getElementById("busqueda-input");
 
@@ -79,9 +98,13 @@ export function aplicarFiltroBusqueda(productosOriginales) {
   });
 }
 
+// =======================================
+// 🧱 FUNCIÓN PARA MOSTRAR PRODUCTOS EN PANTALLA
+// =======================================
+// Crea el HTML necesario para mostrar cada producto en la interfaz
 export function renderizarProductos(productos, precios = []) {
   const productosContainer = document.getElementById("productos-container");
-  productosContainer.innerHTML = "";
+  productosContainer.innerHTML = ""; // 🧹 Limpia contenido anterior
 
   productos.forEach(producto => {
     const precio = precios.find(p => p.producto_id === producto._id);
@@ -106,6 +129,7 @@ export function renderizarProductos(productos, precios = []) {
         </div>
       </div>
     `;
+
     productosContainer.innerHTML += productoHTML;
   });
 }

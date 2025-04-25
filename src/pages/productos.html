@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <!-- 🌐 Configuración básica -->
   <meta charset="UTF-8" />
@@ -24,16 +25,13 @@
 <body>
   <!-- ✅ Header dinámico cargado por JS -->
   <div id="header"></div>
-  
+
   <section class="acciones-superiores">
-  <strong></strong>
+    <strong></strong>
 
-  <!-- ➕ Botón para mostrar formulario de nuevo producto -->
-  <button class="btn-agregar" onclick="mostrarFormularioAgregar()">Agregar Producto</button>
-</section>
-
-  <!-- 🔍 Buscador de productos -->
-
+    <!-- ➕ Botón para mostrar formulario de nuevo producto -->
+    <button class="btn-agregar" onclick="mostrarFormularioAgregar()">Agregar Producto</button>
+  </section>
 
   <!-- 📦 Contenedor de tarjetas de productos -->
   <section class="productos-container" id="productos-container" aria-label="Lista de productos disponibles"></section>
@@ -53,7 +51,7 @@
         <!-- ✅ Campos obligatorios -->
         <label>Nombre del producto: *</label>
         <input type="text" id="edit-nombre" required />
-       
+
         <!-- Tipo del producto -->
         <label for="edit-tipo-select">Tipo del producto: *</label>
         <div class="campo-compuesto">
@@ -71,7 +69,7 @@
         <input type="number" id="edit-peso" step="0.01" required />
 
         <label>Unidad de Peso: *</label>
-        
+
         <select id="edit-unidadPeso" required>
           <option value="kg">Kilogramos (kg)</option>
           <option value="g">Gramos (g)</option>
@@ -79,8 +77,8 @@
           <option value="ml">Mililitros (ml)</option>
         </select>
 
-          <label>Supermercado: *</label>
-          <div class="campo-compuesto">
+        <label>Supermercado: *</label>
+        <div class="campo-compuesto">
 
           <select id="edit-supermercado-select" onchange="toggleNuevoCampo('edit', 'supermercado')" required>
             <option value="">Selecciona un supermercado</option>
@@ -88,7 +86,7 @@
           </select>
           <input type="text" id="edit-supermercado-nuevo" class="nuevo-campo" placeholder="Nuevo supermercado" />
         </div>
-        
+
         <label>Estado: *</label>
         <select id="edit-estado" required>
           <option value="En stock">En stock</option>
@@ -107,13 +105,13 @@
 
           <label>Imagen del producto:</label>
           <input type="file" id="edit-imagen" name="Imagen" accept="image/*">
-          
+
           <label>Ingredientes (separados por coma):</label>
           <input type="text" id="edit-ingredientes" placeholder="Ej: agua, azúcar, gas" />
-                    
 
-            <label>Marca:</label>
-            <div class="campo-compuesto">
+
+          <label>Marca:</label>
+          <div class="campo-compuesto">
 
             <select id="edit-marca-select" onchange="toggleNuevoCampo('edit', 'marca')">
               <option value="">Selecciona una marca</option>
@@ -121,7 +119,7 @@
             </select>
             <input type="text" id="edit-marca-nuevo" class="nuevo-campo" placeholder="Nueva marca" />
           </div>
-          
+
           <label>Descripción del producto (Utilidad):</label>
           <input type="text" id="edit-utilidad" placeholder="Ej. Bebida refrescante y energizante" />
 
@@ -134,9 +132,9 @@
           <label>País del supermercado:</label>
           <input type="text" id="edit-pais-super" />
 
-          
-            <label>Proveedor:</label>
-            <div class="campo-compuesto">
+
+          <label>Proveedor:</label>
+          <div class="campo-compuesto">
 
             <select id="edit-proveedor-select" onchange="toggleNuevoCampo('edit', 'proveedor')">
               <option value="">Selecciona un proveedor</option>
@@ -144,14 +142,14 @@
             </select>
             <input type="text" id="edit-proveedor-nuevo" class="nuevo-campo" placeholder="Nuevo proveedor" />
           </div>
-          
+
           <label>País del proveedor:</label>
           <input type="text" id="edit-pais-proveedor" />
 
-  
-            
-            <label>Subtipo:</label>
-            <div class="campo-compuesto">
+
+
+          <label>Subtipo:</label>
+          <div class="campo-compuesto">
 
             <select id="edit-subtipo-select" onchange="toggleNuevoCampo('edit', 'subtipo')">
               <option value="">Selecciona un subtipo</option>
@@ -159,7 +157,7 @@
             </select>
             <input type="text" id="edit-subtipo-nuevo" class="nuevo-campo" placeholder="Nuevo subtipo" />
           </div>
-          
+
           <label>Precio descuento (€):</label>
           <input type="number" id="edit-precioDescuento" step="0.01" />
 
@@ -191,7 +189,7 @@
         <label>Nombre del producto: *</label>
         <input type="text" id="add-nombre" required />
 
-       <!-- Tipo del producto -->
+        <!-- Tipo del producto -->
         <label for="add-tipo-select">Tipo del producto: *</label>
         <div class="campo-compuesto">
           <select id="add-tipo-select" onchange="toggleNuevoCampo('add', 'tipo')" required>
@@ -200,7 +198,7 @@
           </select>
           <input type="text" id="add-tipo-nuevo" class="nuevo-campo" placeholder="Nuevo tipo" />
         </div>
-        
+
         <label>Precio actual (€): *</label>
         <input type="number" id="add-precio" step="0.01" required />
 
@@ -215,8 +213,8 @@
           <option value="ml">Mililitros</option>
         </select>
 
-          <label>Supermercado: *</label>
-          <div class="campo-compuesto">
+        <label>Supermercado: *</label>
+        <div class="campo-compuesto">
 
           <select id="add-supermercado-select" onchange="toggleNuevoCampo('add', 'supermercado')" required>
             <option value="">Selecciona un supermercado</option>
@@ -224,7 +222,7 @@
           </select>
           <input type="text" id="add-supermercado-nuevo" class="nuevo-campo" placeholder="Nuevo supermercado" />
         </div>
-        
+
         <input type="text" id="add-supermercado-nuevo" style="display: none;" />
 
         <label>Estado: *</label>
@@ -239,12 +237,12 @@
 
           <label>Imagen:</label>
           <input type="file" id="add-imagen" name="Imagen" accept="image/*">
-          
+
           <label>Ingredientes (separados por coma):</label>
           <input type="text" id="add-ingredientes" name="ingredientes" placeholder="Ej: azúcar, agua, gas carbónico" />
-        
-            <label>Marca:</label>
-            <div class="campo-compuesto">
+
+          <label>Marca:</label>
+          <div class="campo-compuesto">
 
             <select id="add-marca-select" onchange="toggleNuevoCampo('add', 'marca')">
               <option value="">Selecciona una marca</option>
@@ -252,10 +250,10 @@
             </select>
             <input type="text" id="add-marca-nuevo" class="nuevo-campo" placeholder="Nueva marca" />
           </div>
-          
+
           <label>Descripción del producto (Utilidad):</label>
-          <input type="text" id="add-utilidad"name="utilidad" placeholder="Ej. Bebida refrescante y energizante" />
-          
+          <input type="text" id="add-utilidad" name="utilidad" placeholder="Ej. Bebida refrescante y energizante" />
+
           <label>Ubicación supermercado:</label>
           <input type="text" id="add-ubicacion-super" />
 
@@ -265,8 +263,8 @@
           <label>País supermercado:</label>
           <input type="text" id="add-pais-super" />
 
-            <label>Proveedor:</label>
-            <div class="campo-compuesto">
+          <label>Proveedor:</label>
+          <div class="campo-compuesto">
 
             <select id="add-proveedor-select" onchange="toggleNuevoCampo('add', 'proveedor')">
               <option value="">Selecciona un proveedor</option>
@@ -274,14 +272,14 @@
             </select>
             <input type="text" id="add-proveedor-nuevo" class="nuevo-campo" placeholder="Nuevo proveedor" />
           </div>
-          
+
           <input type="text" id="add-proveedor-nuevo" style="display: none;" />
 
           <label>País proveedor:</label>
           <input type="text" id="add-pais-proveedor" />
 
-            <label>Subtipo:</label>
-            <div class="campo-compuesto">
+          <label>Subtipo:</label>
+          <div class="campo-compuesto">
 
             <select id="add-subtipo-select" onchange="toggleNuevoCampo('add', 'subtipo')">
               <option value="">Selecciona un subtipo</option>
@@ -289,7 +287,7 @@
             </select>
             <input type="text" id="add-subtipo-nuevo" class="nuevo-campo" placeholder="Nuevo subtipo" />
           </div>
-          
+
           <label>Precio descuento (€):</label>
           <input type="number" id="add-precioDescuento" step="0.01" />
 
@@ -314,4 +312,5 @@
   <!-- ✅ Footer dinámico -->
   <div id="footer"></div>
 </body>
+
 </html>

@@ -1,108 +1,135 @@
-/* ====================================================
+/* ==================================================== 
 🌐 NAV - ESTILOS DE NAVEGACIÓN Y BUSCADOR
 ==================================================== */
 
-/* 🚀 Contenedor de navegación */
+/* 🚀 Contenedor principal del nav */
 .nav-categorias {
-    background-color: #7ca08b;
-    padding: 15px 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 40px;
-  }
-  
-  /* 🔗 Lista de categorías */
-  .nav-categorias ul {
-    display: flex;
-    align-items: center;
-    gap: 40px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .nav-categorias li a {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: #fff;
-    font-weight: bold;
-    text-decoration: none;
-    transition: transform 0.3s;
-  }
-  
-  .nav-categorias li a:hover {
-    transform: scale(1.1);
-    color: #dff0ea;
-  }
-  
-  .nav-categorias li a img {
-    width: 32px;
-    height: 32px;
-    margin-bottom: 5px;
-    filter: brightness(0) invert(1);
-  }
-  
-  /* 📋 Botón "Menú" vertical tipo ítem */
-  .nav-categorias li a.btn-menu {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    padding: 10px;
-    background: white;
-    border-radius: 12px;
-    color: black;
-    font-weight: bold;
-    text-decoration: none;
-    transition: transform 0.3s, background-color 0.2s;
-    font-size: 14px;
-  }
-  
-  .nav-categorias li a.btn-menu:hover {
-    transform: scale(1.05);
-    background-color: #e8f5e9;
-  }
-  
-  .nav-categorias li a.btn-menu i {
-    font-size: 22px;
-    color: #365a7e;
-  }
-  
-  /* ====================================================
-  🔍 BUSCADOR DE PRODUCTOS
-  ==================================================== */
-  .busqueda-productos {
-    display: flex;
-    justify-content: center;
-    padding: 30px 20px 10px;
-  }
-  
-  .busqueda-wrapper {
-    display: flex;
-    align-items: center;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(4px);
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    padding: 5px 14px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.08);
-    transition: 0.3s;
-  }
-  
-  .busqueda-wrapper input {
-    border: none;
-    background: transparent;
-    outline: none;
-    font-size: 15px;
-    width: 220px;
-  }
-  
-  .busqueda-wrapper input::placeholder {
-    color: #888;
-    font-style: italic;
-  }
-  
+  background-color: #7ca08b;
+  /* Color de fondo suave */
+  padding: 15px 30px;
+  /* Espaciado interno */
+  display: flex;
+  /* Flex para alinear elementos */
+  justify-content: center;
+  /* Centrado horizontal */
+  align-items: center;
+  /* Centrado vertical */
+  flex-wrap: wrap;
+  /* Permite que se ajusten en varias líneas */
+  gap: 40px;
+  /* Espacio entre los elementos hijos */
+}
+
+/* 🔗 Lista horizontal de categorías */
+.nav-categorias ul {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  list-style: none;
+  /* Elimina los bullets */
+  margin: 0;
+  padding: 0;
+}
+
+/* 🔗 Estilo base de los enlaces */
+.nav-categorias li a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #fff;
+  /* Blanco */
+  font-weight: bold;
+  text-decoration: none;
+  /* Sin subrayado */
+  transition: transform 0.3s;
+}
+
+/* 🔄 Efecto hover para escalar el enlace y aclarar */
+.nav-categorias li a:hover {
+  transform: scale(1.1);
+  /* Agranda un poco */
+  color: #dff0ea;
+  /* Verde claro */
+}
+
+/* 🖼️ Imagen dentro del nav (si la hay) */
+.nav-categorias li a img {
+  width: 32px;
+  height: 32px;
+  margin-bottom: 5px;
+  filter: brightness(0) invert(1);
+  /* Blanco aunque sea PNG con fondo negro */
+}
+
+/* 📋 Estilos especiales para el botón de menú hamburguesa */
+.nav-categorias li a.btn-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 10px;
+  background: white;
+  border-radius: 12px;
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
+  transition: transform 0.3s, background-color 0.2s;
+  font-size: 14px;
+}
+
+/* 🎨 Hover para el botón menú */
+.nav-categorias li a.btn-menu:hover {
+  transform: scale(1.05);
+  background-color: #e8f5e9;
+  /* Verde muy clarito */
+}
+
+/* 🧩 Icono dentro del botón menú */
+.nav-categorias li a.btn-menu i {
+  font-size: 22px;
+  color: #365a7e;
+  /* Azul oscuro */
+}
+
+/* ====================================================
+🔍 BUSCADOR DE PRODUCTOS
+==================================================== */
+
+/* 🔍 Contenedor del buscador */
+.busqueda-productos {
+  display: flex;
+  justify-content: center;
+  padding: 30px 20px 10px;
+}
+
+/* 🧃 Caja visual del input de búsqueda */
+.busqueda-wrapper {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.85);
+  /* Fondo semi-transparente */
+  backdrop-filter: blur(4px);
+  /* Desenfoque suave */
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 5px 14px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  /* Sombra ligera */
+  transition: 0.3s;
+}
+
+/* 🖊️ Input sin bordes ni fondo */
+.busqueda-wrapper input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 15px;
+  width: 220px;
+}
+
+/* ✍️ Placeholder del input (estilo suave) */
+.busqueda-wrapper input::placeholder {
+  color: #888;
+  font-style: italic;
+}

@@ -1,17 +1,53 @@
-<!-- pages/global/nav.html -->
+<!-- ===================================================
+📁 NAVIGATION BAR (nav.html)
+Este archivo representa el menú de navegación superior,
+que incluye categorías de productos y un campo de búsqueda.
+=================================================== -->
 
 <nav class="nav-categorias">
+  
+  <!-- 🧭 Lista principal de categorías -->
   <ul>
+    <!-- 📦 Botón para mostrar todos los productos -->
     <li>
       <a href="#" id="ver-todos" class="btn-menu">
-        <i class="fas fa-bars"></i>
+        <i class="fas fa-bars"></i> <!-- Icono hamburguesa (FontAwesome) -->
       </a>
     </li>
-    <li><a href="#" data-categoria="alimentacion"><i class="fas fa-utensils"></i><span>Alimentación</span></a></li>
-    <li><a href="#" data-categoria="drogueria"><i class="fas fa-briefcase-medical"></i><span>Droguería y salud</span></a></li>
-    <li><a href="#" data-categoria="mascotas"><i class="fas fa-dog"></i><span>Mascotas</span></a></li>
+
+    <!-- 🍽️ Categoría: Alimentación -->
+    <li>
+      <a href="#" data-categoria="alimentacion">
+        <i class="fas fa-utensils"></i> <!-- Icono cubiertos -->
+        <span>Alimentación</span>
+      </a>
+    </li>
+
+    <!-- 🧼 Categoría: Droguería y salud -->
+    <li>
+      <a href="#" data-categoria="drogueria">
+        <i class="fas fa-briefcase-medical"></i> <!-- Icono salud -->
+        <span>Droguería y salud</span>
+      </a>
+    </li>
+
+    <!-- 🐶 Categoría: Mascotas -->
+    <li>
+      <a href="#" data-categoria="mascotas">
+        <i class="fas fa-dog"></i> <!-- Icono perrito -->
+        <span>Mascotas</span>
+      </a>
+    </li>
   </ul>
+
+  <!-- 🔍 Barra de búsqueda -->
   <div class="busqueda-wrapper">
-    <input type="text" id="busqueda-input" placeholder="🔍 Buscar producto..." />
+    <input 
+      type="text" 
+      id="busqueda-input" 
+      placeholder="🔍 Buscar producto..." 
+    />
+    <!-- Este input permite al usuario buscar productos por nombre, marca, ingredientes, etc. -->
   </div>
+
 </nav>
