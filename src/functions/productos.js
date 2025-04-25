@@ -3,7 +3,7 @@
 // ==============================
 import { cargarHeaderFooter, volverAtras } from "../functions/global/funciones.js";
 import { gestionarUsuarioAutenticado } from "../functions/global/header.js";
-import { cargarNav } from "../functions/global/nav.js";
+import { cargarNav, aplicarFiltroBusqueda, renderizarProductos } from "../functions/global/nav.js";
 
 window.volverAtras = volverAtras;
 
@@ -30,7 +30,21 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   try {
     await cargarHeaderFooter();
-    gestionarUsuarioAutenticado();
+    
+      // ✅ Agrega esta parte antes de usar `productosRes`
+      const [productosRes, preciosRes] = await Promise.all([
+        fetch("http://localhost:3000/api/productos"),
+        fetch("http://localhost:3000/api/precios")
+      ]);
+  
+      const productos = await productosRes.json();
+      const precios = await preciosRes.json();
+  
+      await cargarNav(productos, precios);
+      renderizarProductos(productos, precios);
+      aplicarFiltroBusqueda(productos);
+      gestionarUsuarioAutenticado();
+  
     await cargarOpcionesEnSelects([
       { campo: "supermercado", endpoint: "supermercados", usarId: true },
       { campo: "tipo", endpoint: "tipos", usarId: false },
@@ -38,7 +52,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       { campo: "marca", endpoint: "marcas", usarId: false },
       { campo: "proveedor", endpoint: "proveedores", usarId: true },
     ]);
-    cargarProductos();
+    // cargarProductos();
   } catch (error) {
     console.error("Error en la inicialización:", error);
   }
@@ -47,59 +61,58 @@ document.addEventListener("DOMContentLoaded", async () => {
 // ==============================
 // 📥 FUNCIONES DE CARGA Y LISTADO
 // ==============================
-async function cargarProductos() {
-  try {
-    const productosContainer = document.getElementById("productos-container");
-    productosContainer.innerHTML = "";
+// async function cargarProductos() {
+//   try {
+//     const productosContainer = document.getElementById("productos-container");
+//     productosContainer.innerHTML = "";
 
-    const [productosRes, preciosRes] = await Promise.all([
-      fetch(API_URL),
-      fetch("http://localhost:3000/api/precios")
-    ]);
+//     const [productosRes, preciosRes] = await Promise.all([
+//       fetch("http://localhost:3000/api/productos"),
+//       fetch("http://localhost:3000/api/precios")
+//     ]);
+//     const productos = await productosRes.json();
+//     const precios = await preciosRes.json();
 
-    const productos = await productosRes.json();
-    const precios = await preciosRes.json();
+//     productos.forEach((producto) => {
+//       const precio = precios.find(p => p.producto_id === producto._id);
+//       const precioActual = precio?.precioActual || "N/D";
 
-    productos.forEach((producto) => {
-      const precio = precios.find(p => p.producto_id === producto._id);
-      const precioActual = precio?.precioActual || "N/D";
+//       const productoHTML = `
+//         <div class="product-card">
+//           <a href="detalle-producto.html?id=${producto._id}">
+//             <img src="${producto.Imagen ? `http://localhost:3000${producto.Imagen}` : '../assets/img/default.webp'}" alt="${producto.Nombre}">
+//             <h3>${producto.Nombre}</h3>
+//           </a>
+//           <div class="info-producto">
+//           <p class="supermercado">
+//             Supermercado: ${producto.Supermercado_id || "Desconocido"}
+//           </p>
+//           <p class="precio">
+//             Precio: ${precioActual || "N/D"} €
+//           </p>
+//           <p class="peso">
+//             Peso: ${producto.Peso || "?"} ${producto.UnidadPeso || ""}
+//           </p>
+//           <p class="marca">
+//             Marca: ${producto.Marca?.trim() || "Marca desconocida"}
+//           </p>
+//           <p class="estado">
+//             Estado: ${producto.Estado?.trim() || "No especificado"}
+//           </p>
+//           </div>
+//           <div class="acciones">
+//             <button class="btn-editar" onclick="editarProducto('${producto._id}')">✏️ Editar</button>
+//             <button class="btn-eliminar" onclick="eliminarProducto('${producto._id}')">🗑️ Eliminar</button>
+//           </div>
+//         </div>
+//       `;
 
-      const productoHTML = `
-        <div class="product-card">
-          <a href="detalle-producto.html?id=${producto._id}">
-            <img src="${producto.Imagen ? `http://localhost:3000${producto.Imagen}` : '../assets/img/default.webp'}" alt="${producto.Nombre}">
-            <h3>${producto.Nombre}</h3>
-          </a>
-          <div class="info-producto">
-          <p class="supermercado">
-            Supermercado: ${producto.Supermercado_id || "Desconocido"}
-          </p>
-          <p class="precio">
-            Precio: ${precioActual || "N/D"} €
-          </p>
-          <p class="peso">
-            Peso: ${producto.Peso || "?"} ${producto.UnidadPeso || ""}
-          </p>
-          <p class="marca">
-            Marca: ${producto.Marca?.trim() || "Marca desconocida"}
-          </p>
-          <p class="estado">
-            Estado: ${producto.Estado?.trim() || "No especificado"}
-          </p>
-          </div>
-          <div class="acciones">
-            <button class="btn-editar" onclick="editarProducto('${producto._id}')">✏️ Editar</button>
-            <button class="btn-eliminar" onclick="eliminarProducto('${producto._id}')">🗑️ Eliminar</button>
-          </div>
-        </div>
-      `;
-
-      productosContainer.innerHTML += productoHTML;
-    });
-  } catch (err) {
-    console.error("Error cargando productos:", err);
-  }
-}
+//       productosContainer.innerHTML += productoHTML;
+//     });
+//   } catch (err) {
+//     console.error("Error cargando productos:", err);
+//   }
+// }
 
 
 
