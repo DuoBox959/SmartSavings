@@ -129,7 +129,7 @@ main {
   bottom: 0;
   left: 0;
   width: 100%;
-  background: linear-gradient(to right, #697d91, #3333);
+  background: linear-gradient(to right, #6db78c, #3a5a40);
   color: #ffffff;
   padding: 20px 30px;
   font-size: 1rem;
@@ -137,36 +137,34 @@ main {
   justify-content: center;
   align-items: center;
   z-index: 1001;
-  box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.5);
-  border-top: 2px solid #a8d5ba;
+  box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.3);
 }
 
-/* Contenedor del contenido */
+/* Contenedor interno */
 .cookies-content {
   max-width: 1200px;
   width: 100%;
   text-align: center;
 }
 
-/* Texto */
 .cookies-banner p {
   margin-bottom: 10px;
   font-weight: 400;
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
-/* Enlace dentro del mensaje */
+/* Enlace de política */
 .cookies-link {
-  color: #a8d5ba;
+  color: #e0f7ea;
   font-weight: bold;
   text-decoration: underline;
 }
 
 .cookies-link:hover {
-  color: #81c784;
+  color: #d0f0c0;
 }
 
-/* Botones de Aceptar y Rechazar */
+/* Botones */
 .cookies-buttons {
   margin-top: 15px;
   display: flex;
@@ -175,7 +173,7 @@ main {
 }
 
 .cookies-btn {
-  background-color: #6db78c;
+  background-color: #365a7e;
   color: #ffffff;
   border: none;
   padding: 12px 25px;
@@ -186,11 +184,10 @@ main {
 }
 
 .cookies-btn:hover {
-  background-color: #549f74;
+  background-color: #27425c;
   transform: scale(1.05);
 }
 
-/* Botón de Rechazar */
 .cookies-rechazar {
   background-color: #e63946;
 }
@@ -210,5 +207,5 @@ main {
   height: 100%;
   background: rgba(20, 20, 20, 0.7);
   z-index: 1000;
-  display: none;
+  display: none;
 }

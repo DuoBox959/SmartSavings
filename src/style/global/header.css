@@ -22,7 +22,7 @@ header {
 
 /* 🧷 Estilo del logo (izquierda) */
 .logo a {
-  font-size: 2em;
+  font-size: 1.5em;
   /* Tamaño grande del texto del logo */
   font-weight: bold;
   text-decoration: none;

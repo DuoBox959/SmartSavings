@@ -200,22 +200,25 @@
   flex-direction: column;
   gap: 8px;
 }
+
 .filtro-item {
   display: flex;
   align-items: center;
-  font-size: 15px;
-  padding: 5px 0;
+  gap: 10px;
 }
+
 .filtro-item label {
   flex-grow: 1;
   text-align: left;
 }
 
+/* 🧹 Span con ancho fijo */
 .filtro-item span {
-  flex-grow: 1;        /* 🔥 Hace que el texto ocupe el máximo espacio a la izquierda */
-  text-align: left;    /* 🔥 Alinea bien el texto */
-  white-space: nowrap; /* 🔥 Evita que corte palabras si es largo */
+  width: 120px; 
+  text-align: left;
+  white-space: nowrap;
 }
+
 .filtro-item input:checked {
   accent-color: #4CAF50; /* verde bonito */
 }
