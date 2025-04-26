@@ -1,9 +1,10 @@
 // ==============================
 // 📦 IMPORTACIONES
 // ==============================
-import { cargarHeaderFooter, volverAtras } from "../functions/global/funciones.js";
+import { cargarHeaderFooter, volverAtras, cargarNav, renderizarProductos } from "../functions/global/funciones.js";
 import { gestionarUsuarioAutenticado } from "../functions/global/header.js";
-import { cargarNav, aplicarFiltroBusqueda, renderizarProductos } from "../functions/global/nav.js";
+import { aplicarFiltroBusqueda } from "../functions/global/nav.js";
+
 
 window.volverAtras = volverAtras;
 
@@ -42,7 +43,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   
       await cargarNav(productos, precios);
       renderizarProductos(productos, precios);
-      aplicarFiltroBusqueda(productos);
+      aplicarFiltroBusqueda();
       gestionarUsuarioAutenticado();
   
     await cargarOpcionesEnSelects([

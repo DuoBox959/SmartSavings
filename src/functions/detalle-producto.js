@@ -1,9 +1,8 @@
 // ==============================
 // 📦 IMPORTACIONES
 // ==============================
-import { cargarHeaderFooter, volverAtras } from "../functions/global/funciones.js";
+import { cargarHeaderFooter, volverAtras, cargarNav } from "../functions/global/funciones.js";
 import { gestionarUsuarioAutenticado } from "../functions/global/header.js";
-import { cargarNav } from "../functions/global/nav.js"; // ajusta la ruta si cambia
 
 
 const API_URL = "http://localhost:3000/api/productos";
