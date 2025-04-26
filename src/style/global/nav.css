@@ -108,15 +108,12 @@
   display: flex;
   align-items: center;
   background: rgba(255, 255, 255, 0.85);
-  /* Fondo semi-transparente */
-  backdrop-filter: blur(4px);
-  /* Desenfoque suave */
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 5px 14px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
-  /* Sombra ligera */
-  transition: 0.3s;
+  gap: 10px;
+  position: relative; /* 👈🔥 Esto es clave */
 }
 
 /* 🖊️ Input sin bordes ni fondo */
@@ -132,4 +129,128 @@
 .busqueda-wrapper input::placeholder {
   color: #888;
   font-style: italic;
+}
+/* 🔥 Nuevo contenedor para input y tag */
+.busqueda-input-container {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  gap: 10px;
+}
+
+
+#busqueda-input {
+  flex-grow: 1;
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 5px;
+}
+
+.campo-filtro-dropdown {
+  position: relative;
+}
+
+#campo-filtro-toggle {
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: white;
+  cursor: pointer;
+  position: relative; /* 👈 Importante */
+}
+
+.product-card {
+  position: relative; /* 🔵 Añadir posición relativa si no lo tienes */
+  z-index: 1; /* 🔵 Asegura que las tarjetas estén por debajo del filtro */
+}
+
+#campo-filtro-menu {
+  position: absolute;
+  top: 110%; /* Justo debajo */
+  right: 0;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 15px 15px 10px 15px;
+  width: 220px;
+  max-height: 250px;
+  overflow-y: auto;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  z-index: 10000; /* 🔥 más alto que todo */
+  transition: all 0.25s ease;
+}
+
+.hidden {
+  display: none;
+  opacity: 0;
+}
+.cerrar-filtro {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 22px;
+  color: #555;
+}
+
+
+.filtros-opciones {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.filtro-item {
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  padding: 5px 0;
+}
+.filtro-item label {
+  flex-grow: 1;
+  text-align: left;
+}
+
+.filtro-item span {
+  flex-grow: 1;        /* 🔥 Hace que el texto ocupe el máximo espacio a la izquierda */
+  text-align: left;    /* 🔥 Alinea bien el texto */
+  white-space: nowrap; /* 🔥 Evita que corte palabras si es largo */
+}
+.filtro-item input:checked {
+  accent-color: #4CAF50; /* verde bonito */
+}
+.filtro-item input[type="checkbox"] {
+  transform: scale(1.2);
+  accent-color: #4CAF50;
+}
+
+#busqueda-tags {
+  display: flex;
+  align-items: center;
+  margin-left: 15px;
+  gap: 10px;
+}
+
+.busqueda-tag {
+  background: #f0f0f0;
+  border-radius: 999px;
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #333;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.cerrar-tag {
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  color: #999;
+  transition: color 0.2s ease;
+}
+
+.cerrar-tag:hover {
+  color: red;
 }

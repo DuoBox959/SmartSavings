@@ -8,33 +8,26 @@ que incluye categorías de productos y un campo de búsqueda.
   
   <!-- 🧭 Lista principal de categorías -->
   <ul>
-    <!-- 📦 Botón para mostrar todos los productos -->
     <li>
       <a href="#" id="ver-todos" class="btn-menu">
-        <i class="fas fa-bars"></i> <!-- Icono hamburguesa (FontAwesome) -->
+        <i class="fas fa-bars"></i>
       </a>
     </li>
-
-    <!-- 🍽️ Categoría: Alimentación -->
     <li>
       <a href="#" data-categoria="alimentacion">
-        <i class="fas fa-utensils"></i> <!-- Icono cubiertos -->
+        <i class="fas fa-utensils"></i>
         <span>Alimentación</span>
       </a>
     </li>
-
-    <!-- 🧼 Categoría: Droguería y salud -->
     <li>
       <a href="#" data-categoria="drogueria">
-        <i class="fas fa-briefcase-medical"></i> <!-- Icono salud -->
+        <i class="fas fa-briefcase-medical"></i>
         <span>Droguería y salud</span>
       </a>
     </li>
-
-    <!-- 🐶 Categoría: Mascotas -->
     <li>
       <a href="#" data-categoria="mascotas">
-        <i class="fas fa-dog"></i> <!-- Icono perrito -->
+        <i class="fas fa-dog"></i>
         <span>Mascotas</span>
       </a>
     </li>
@@ -42,12 +35,34 @@ que incluye categorías de productos y un campo de búsqueda.
 
   <!-- 🔍 Barra de búsqueda -->
   <div class="busqueda-wrapper">
-    <input 
-      type="text" 
-      id="busqueda-input" 
-      placeholder="🔍 Buscar producto..." 
-    />
-    <!-- Este input permite al usuario buscar productos por nombre, marca, ingredientes, etc. -->
+
+    <!-- 🔥 Agrupador de input + tags -->
+    <div class="busqueda-input-container">
+      <input 
+        type="text" 
+        id="busqueda-input" 
+        placeholder="🔍 Buscar producto..." 
+      />
+      <div id="busqueda-tags" class="busqueda-tags"></div>
+    </div>
+
+    <button id="campo-filtro-toggle">Filtros 🔽</button>
+
+    <!-- ✅ Menú de filtros oculto al inicio -->
+    <div id="campo-filtro-menu" class="hidden">
+      <div class="cerrar-filtro" id="cerrar-filtro">✖️</div>
+      <div class="filtros-opciones">
+        <div class="filtro-item"><span>Nombre</span><input type="checkbox" value="Nombre" checked></div>
+        <div class="filtro-item"><span>Marca</span><input type="checkbox" value="Marca" checked></div>
+        <div class="filtro-item"><span>Supermercado</span><input type="checkbox" value="Supermercado_id"></div>
+        <div class="filtro-item"><span>Ciudad</span><input type="checkbox" value="Ciudad"></div>
+        <div class="filtro-item"><span>Ingredientes</span><input type="checkbox" value="Ingredientes"></div>
+        <div class="filtro-item"><span>Precio</span><input type="checkbox" value="Precio"></div>
+        <div class="filtro-item"><span>Peso</span><input type="checkbox" value="Peso"></div>
+        <div class="filtro-item"><span>Estado</span><input type="checkbox" value="Estado"></div>
+      </div>
+    </div>
+
   </div>
 
 </nav>

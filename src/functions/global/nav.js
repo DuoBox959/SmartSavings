@@ -46,47 +46,120 @@ export function inicializarNavegacion(productos, precios) {
   aplicarFiltroBusqueda(); // ⚡ También inicia el buscador aquí
 }
 
-// =======================================
+// ===================================================
 // 🔍 FUNCIÓN DE BÚSQUEDA EN TIEMPO REAL
-// =======================================
-// Permite buscar productos por nombre, marca, ingredientes, peso, etc.
-export function aplicarFiltroBusqueda() {  // 👈 SIN parámetros aquí
-  const input = document.getElementById("busqueda-input");
+// ===================================================
+let filtrosInicializados = false;
 
-  if (!input) {
-    console.warn("⚠️ Campo de búsqueda no encontrado (busqueda-input)");
+export function aplicarFiltroBusqueda() {
+  if (filtrosInicializados) return;
+  filtrosInicializados = true;
+
+  const input = document.getElementById("busqueda-input");
+  const filtroToggle = document.getElementById("campo-filtro-toggle");
+  const filtroMenu = document.getElementById("campo-filtro-menu");
+  const cerrarFiltroBtn = document.getElementById("cerrar-filtro");
+  const tagsContainer = document.getElementById("busqueda-tags");
+
+  if (!input || !filtroToggle || !filtroMenu || !tagsContainer) {
+    console.warn("⚠️ Elementos no encontrados");
     return;
   }
 
-  console.log("🧠 aplicarFiltroBusqueda inicializado correctamente ✅");
+  filtroToggle.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation(); // 🔥 Aquí está la clave
+    filtroMenu.classList.toggle("hidden");
+  });
+  
 
-  input.addEventListener("input", () => {
-    const valor = input.value.toLowerCase();
-    console.log("⌨️ Usuario escribió en búsqueda:", valor);
+  if (cerrarFiltroBtn) {
+    cerrarFiltroBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      filtroMenu.classList.add("hidden");
+    });
+  }
 
-    const productosFiltrados = productosGlobal.filter(producto => { // 👈 USAR productosGlobal AQUÍ
-      const ingredientes = producto.Ingredientes?.join(", ") || "";
-      const cumpleFiltro = 
-        producto.Nombre?.toLowerCase().includes(valor) ||
-        producto.Marca?.toLowerCase().includes(valor) ||
-        producto.Precio?.toString().includes(valor) ||
-        producto.Peso?.toString().includes(valor) ||
-        producto.Estado?.toLowerCase().includes(valor) ||
-        producto.Supermercado_id?.toLowerCase().includes(valor) ||
-        producto.Ciudad?.toLowerCase().includes(valor) ||
-        ingredientes.toLowerCase().includes(valor);
+  document.addEventListener('click', (e) => {
+    const esClickDentro = filtroMenu.contains(e.target) || filtroToggle.contains(e.target);
+    if (!esClickDentro) filtroMenu.classList.add("hidden");
+  });
 
-      console.log(`🔎 ¿Producto '${producto.Nombre}' coincide con '${valor}'?`, cumpleFiltro);
-      return cumpleFiltro;
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const texto = input.value.trim();
+      if (texto !== "") {
+        crearTagBusqueda(texto);
+        buscarConTexto(texto);
+        input.value = ""; // Limpiar el campo de texto
+      }
+    }
+  });
+
+  function crearTagBusqueda(texto) {
+    tagsContainer.innerHTML = ""; // Limpia anteriores tags
+    const tag = document.createElement("div");
+    tag.className = "busqueda-tag";
+    tag.innerHTML = `
+      <span>${texto}</span>
+      <span class="cerrar-tag">✖️</span>
+    `;
+    tag.querySelector(".cerrar-tag").addEventListener("click", () => {
+      tag.remove();
+      input.value = "";
+      renderizarProductos(productosGlobal, preciosGlobal); // Mostrar todos
     });
 
-    console.log(`🧹 Productos filtrados (${productosFiltrados.length} encontrados):`, productosFiltrados);
+    tagsContainer.appendChild(tag);
+  }
 
-    renderizarProductos(productosFiltrados, preciosGlobal); // 👈 Y usar preciosGlobal
-  });
+  function buscarConTexto(texto) {
+    const valor = texto.toLowerCase();
+    const camposSeleccionados = Array.from(filtroMenu.querySelectorAll("input:checked")).map(input => input.value);
+
+    const productosFiltrados = productosGlobal.filter(producto => {
+      const ingredientes = producto.Ingredientes?.join(", ") || "";
+
+      if (camposSeleccionados.length === 0) {
+        return (
+          producto.Nombre?.toLowerCase().includes(valor) ||
+          producto.Marca?.toLowerCase().includes(valor) ||
+          producto.Precio?.toString().includes(valor) ||
+          producto.Peso?.toString().includes(valor) ||
+          producto.Estado?.toLowerCase().includes(valor) ||
+          producto.Supermercado_id?.toLowerCase().includes(valor) ||
+          producto.Ciudad?.toLowerCase().includes(valor) ||
+          ingredientes.toLowerCase().includes(valor)
+        );
+      }
+
+      return camposSeleccionados.some(campo => {
+        if (campo === "Ingredientes") {
+          return ingredientes.toLowerCase().includes(valor);
+        } else {
+          const datoProducto = producto[campo];
+          if (datoProducto == null) return false;
+          return datoProducto.toString().toLowerCase().includes(valor);
+        }
+      });
+    });
+
+    renderizarProductos(productosFiltrados, preciosGlobal);
+  }
+
+  input.addEventListener("input", buscarYFiltrar);
+  filtroMenu.addEventListener("change", buscarYFiltrar);
+
+  function buscarYFiltrar() {
+    const valor = input.value.toLowerCase();
+    if (!valor) {
+      renderizarProductos(productosGlobal, preciosGlobal);
+      return;
+    }
+    buscarConTexto(valor);
+  }
 }
-
-
 
 // 🌍 Exponemos funciones al window
 window.inicializarNavegacion = inicializarNavegacion;
