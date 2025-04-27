@@ -62,58 +62,23 @@ document.addEventListener("DOMContentLoaded", async () => {
 // ==============================
 // 📥 FUNCIONES DE CARGA Y LISTADO
 // ==============================
-// async function cargarProductos() {
-//   try {
-//     const productosContainer = document.getElementById("productos-container");
-//     productosContainer.innerHTML = "";
+async function cargarProductos() {
+  try {
+    const [productosRes, preciosRes] = await Promise.all([
+      fetch("http://localhost:3000/api/productos"),
+      fetch("http://localhost:3000/api/precios")
+    ]);
+    const productos = await productosRes.json();
+    const precios = await preciosRes.json();
 
-//     const [productosRes, preciosRes] = await Promise.all([
-//       fetch("http://localhost:3000/api/productos"),
-//       fetch("http://localhost:3000/api/precios")
-//     ]);
-//     const productos = await productosRes.json();
-//     const precios = await preciosRes.json();
+    renderizarProductos(productos, precios); // <<<< USAS TU FUNCIÓN COMÚN
+  } catch (err) {
+    console.error("Error cargando productos:", err);
+  }
+}
 
-//     productos.forEach((producto) => {
-//       const precio = precios.find(p => p.producto_id === producto._id);
-//       const precioActual = precio?.precioActual || "N/D";
-
-//       const productoHTML = `
-//         <div class="product-card">
-//           <a href="detalle-producto.html?id=${producto._id}">
-//             <img src="${producto.Imagen ? `http://localhost:3000${producto.Imagen}` : '../assets/img/default.webp'}" alt="${producto.Nombre}">
-//             <h3>${producto.Nombre}</h3>
-//           </a>
-//           <div class="info-producto">
-//           <p class="supermercado">
-//             Supermercado: ${producto.Supermercado_id || "Desconocido"}
-//           </p>
-//           <p class="precio">
-//             Precio: ${precioActual || "N/D"} €
-//           </p>
-//           <p class="peso">
-//             Peso: ${producto.Peso || "?"} ${producto.UnidadPeso || ""}
-//           </p>
-//           <p class="marca">
-//             Marca: ${producto.Marca?.trim() || "Marca desconocida"}
-//           </p>
-//           <p class="estado">
-//             Estado: ${producto.Estado?.trim() || "No especificado"}
-//           </p>
-//           </div>
-//           <div class="acciones">
-//             <button class="btn-editar" onclick="editarProducto('${producto._id}')">✏️ Editar</button>
-//             <button class="btn-eliminar" onclick="eliminarProducto('${producto._id}')">🗑️ Eliminar</button>
-//           </div>
-//         </div>
-//       `;
-
-//       productosContainer.innerHTML += productoHTML;
-//     });
-//   } catch (err) {
-//     console.error("Error cargando productos:", err);
-//   }
-// }
+// Para que se pueda llamar globalmente:
+window.cargarProductos = cargarProductos;
 
 
 
@@ -230,6 +195,8 @@ async function guardarProductoNuevo() {
     // 🏷️ Nombre del producto
     formData.append("nombre", document.getElementById("add-nombre").value);
 
+
+    
     // 🧠 Marca
     let marca = document.getElementById("add-marca-select").value;
     if (marca === "nuevo") {
@@ -269,8 +236,17 @@ async function guardarProductoNuevo() {
     formData.append("estado", document.getElementById("add-estado").value);
 
     // 🧠 Precio histórico
-    formData.append("precioHistorico", document.getElementById("add-precioHistorico")?.value || "");
-
+    const precioHistoricoTexto = document.getElementById("add-precioHistorico")?.value || "";
+    const precioHistoricoArray = precioHistoricoTexto
+      .split('\n')
+      .map(linea => {
+        const [precio, año] = linea.split(',').map(e => e.trim());
+        return { precio: parseFloat(precio), año: parseInt(año) };
+      })
+      .filter(e => !isNaN(e.precio) && !isNaN(e.año));
+    
+    formData.append("precioHistorico", JSON.stringify(precioHistoricoArray));
+    
     // 🖼️ Imagen
     const imagenInput = document.getElementById("add-imagen");
     if (imagenInput?.files?.length > 0) {

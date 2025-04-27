@@ -1,8 +1,9 @@
 // server/POST/enviar.js
+const { conectarDB, ObjectId } = require("../../conexion1");
+
 const express = require("express");
 const router = express.Router();
 
-const { conectarDB } = require("../../conexion1");
 const multer = require("multer");
 const path = require("path");
 const { parsearPrecioHistorico } = require("../UTILS/utils"); // (según tu estructura)
@@ -234,7 +235,7 @@ router.post("/productos-completos", upload.single("Imagen"), async (req, res) =>
       precioDescuento: req.body.precioDescuento ? parseFloat(req.body.precioDescuento) : null,
       unidadLote: req.body.unidadLote || "N/A",
       precioUnidadLote: req.body.precioPorUnidad ? parseFloat(req.body.precioPorUnidad) : null,
-      precioHistorico: parsearPrecioHistorico(req.body.precioHistorico),
+      precioHistorico: req.body.precioHistorico ? parsearPrecioHistorico(JSON.parse(req.body.precioHistorico)) : [],
     };
 
     console.log("💸 [PRECIO] Datos construidos:", nuevoPrecio);
