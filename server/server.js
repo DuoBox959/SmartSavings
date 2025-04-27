@@ -21,10 +21,14 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send("Algo salió mal en el servidor!");
+});
 
 // ✅ Importa todas las rutas desde `routes/index.js`
 const rutas = require("./ROUTES");
-app.use(rutas);
+app.use("/api", rutas);
 
 // Conexión y servidor
 (async () => {

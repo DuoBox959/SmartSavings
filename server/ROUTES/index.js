@@ -1,4 +1,3 @@
-// routes/index.js
 const express = require("express");
 const router = express.Router();
 
@@ -8,4 +7,6 @@ router.use(require("../PUT/actualizar"));
 router.use(require("../DELETE/eliminar"));
 router.use(require("../STATIC/estatico"));
 
+
 module.exports = router;
+

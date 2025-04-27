@@ -1,11 +1,12 @@
 // server/POST/enviar.js
-const { parsearPrecioHistorico } = require("../UTILS/utils");
-
 const express = require("express");
 const router = express.Router();
-const { ObjectId } = require("../../conexion1.js");
+
+const { conectarDB } = require("../../conexion1");
 const multer = require("multer");
 const path = require("path");
+const { parsearPrecioHistorico } = require("../UTILS/utils"); // (según tu estructura)
+
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, "uploads/2025/"),
@@ -19,9 +20,9 @@ const upload = multer({ storage });
 
 /**
  * ✅ Iniciar sesión (Login)
- * Ruta: POST /api/login
+ * Ruta: POST /login
  */
-router.post("/api/login", async (req, res) => {
+router.post("/login", async (req, res) => {
   const db = req.db;
 
   try {
@@ -72,9 +73,9 @@ router.post("/api/login", async (req, res) => {
 
 /**
  * ✅ Crear un nuevo usuario (Create)
- * Ruta: POST /api/usuarios
+ * Ruta: POST /usuarios
  */
-router.post("/api/usuarios", async (req, res) => {
+router.post("/usuarios", async (req, res) => {
   const db = req.db;
 
   try {
@@ -127,9 +128,9 @@ router.post("/api/usuarios", async (req, res) => {
 
 /**
  * ✅ Crear un nuevo producto con imagen (Create)
- * Ruta: POST /api/productos
+ * Ruta: POST /productos
  */
-router.post("/api/productos", upload.single("Imagen"), async (req, res) => {
+router.post("/productos", upload.single("Imagen"), async (req, res) => {
   const db = req.db;
 
   try {
@@ -191,7 +192,7 @@ router.post("/api/productos", upload.single("Imagen"), async (req, res) => {
 
 // CREAR UN NUEVO PRODUCTO COMPLETO 🧩
 
-router.post("/api/productos-completos", upload.single("Imagen"), async (req, res) => {
+router.post("/productos-completos", upload.single("Imagen"), async (req, res) => {
   const db = req.db;
 
   try {
@@ -275,9 +276,9 @@ router.post("/api/productos-completos", upload.single("Imagen"), async (req, res
 
 /**
  * ✅ Crear un nuevo precios (Create)
- * Ruta: POST /api/precios
+ * Ruta: POST /precios
  */
-router.post("/api/precios", async (req, res) => {
+router.post("/precios", async (req, res) => {
   const db = req.db;
 
   try {
@@ -330,9 +331,9 @@ router.post("/api/precios", async (req, res) => {
 
 /**
  * ✅ Crear un nuevo supermercados (Create)
- * Ruta: POST /api/supermercados
+ * Ruta: POST /supermercados
  */
-router.post("/api/supermercados", async (req, res) => {
+router.post("/supermercados", async (req, res) => {
   const db = req.db;
 
   try {
@@ -366,9 +367,9 @@ router.post("/api/supermercados", async (req, res) => {
 
 /**
  * ✅ Crear un nuevo proovedor (Create)
- * Ruta: POST /api/proovedor
+ * Ruta: POST /proovedor
  */
-router.post("/api/proveedor", async (req, res) => {
+router.post("/proveedor", async (req, res) => {
   const db = req.db;
 
   try {
@@ -403,9 +404,9 @@ router.post("/api/proveedor", async (req, res) => {
 
 /**
  * ✅ Crear un nuevo dato personal (Create)
- * Ruta: POST /api/datos-personales
+ * Ruta: POST /datos-personales
  */
-router.post("/api/datos-personales", async (req, res) => {
+router.post("/datos-personales", async (req, res) => {
   const db = req.db;
 
   try {
@@ -431,9 +432,9 @@ router.post("/api/datos-personales", async (req, res) => {
 
 /**
  * ✅ Crear una nueva descripción (Create)
- * Ruta: POST /api/descripcion
+ * Ruta: POST /descripcion
  */
-router.post("/api/descripcion", async (req, res) => {
+router.post("/descripcion", async (req, res) => {
   const db = req.db;
 
   try {
@@ -489,9 +490,9 @@ router.post("/api/descripcion", async (req, res) => {
 
 /**
  * ✅ Crear una nueva opinión (Create)
- * Ruta: POST /api/opiniones
+ * Ruta: POST /opiniones
  */
-router.post("/api/opiniones", async (req, res) => {
+router.post("/opiniones", async (req, res) => {
   const db = req.db;
 
   try {
@@ -531,9 +532,9 @@ router.post("/api/opiniones", async (req, res) => {
 
 /**
  * ✅ Crear nuevo registro de actividad (Create)
- * Ruta: POST /api/historial
+ * Ruta: POST /historial
  */
-router.post("/api/historial", async (req, res) => {
+router.post("/historial", async (req, res) => {
   const db = req.db;
 
   try {

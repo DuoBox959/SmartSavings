@@ -19,9 +19,9 @@ const upload = multer({ storage });
 
 /**
  * ✅ Modificar un usuario existente (Update)
- * Ruta: PUT /api/usuarios/:id
+ * Ruta: PUT /usuarios/:id
  */
-router.put("/api/usuarios/:id", async (req, res) => {
+router.put("/usuarios/:id", async (req, res) => {
   const db = req.db;
 
   try {
@@ -70,10 +70,10 @@ router.put("/api/usuarios/:id", async (req, res) => {
 // =============================================
 /**
  * ✅ Actualizar producto existente (Update)
- * Ruta: PUT /api/productos/:id
+ * Ruta: PUT /productos/:id
  */
 
-router.put("/api/productos/:id", upload.single("Imagen"), async (req, res) => {
+router.put("/productos/:id", upload.single("Imagen"), async (req, res) => {
   const db = req.db;
 
   try {
@@ -93,7 +93,6 @@ router.put("/api/productos/:id", upload.single("Imagen"), async (req, res) => {
 
       if (req.body.imagenAnterior) {
         const rutaAnterior = path.join(__dirname, "uploads", "2025", req.body.imagenAnterior);
-        const db = req.db;
 
         try {
           await fs.unlink(rutaAnterior);
@@ -141,14 +140,14 @@ router.put("/api/productos/:id", upload.single("Imagen"), async (req, res) => {
 });
 /**
  * ✅ Editar todos los productos completos (Update)
- * Ruta: PUT /api/productos-completos/:id
+ * Ruta: PUT /productos-completos/:id
  */
-router.put("/api/productos-completos/:id", upload.single("Imagen"), async (req, res) => {
+router.put("/productos-completos/:id", upload.single("Imagen"), async (req, res) => {
   const db = req.db;
 
   try {
     const { id } = req.params;
-    console.log("📦 [PUT /api/productos-completos/:id] Datos recibidos:");
+    console.log("📦 [PUT /productos-completos/:id] Datos recibidos:");
     console.log("req.body:", req.body);
     console.log("req.file:", req.file);
 
@@ -268,9 +267,9 @@ router.put("/api/productos-completos/:id", upload.single("Imagen"), async (req, 
 
 /**
  * ✅ Actualizar precios existente (Update)
- * Ruta: PUT /api/precios/:id
+ * Ruta: PUT /precios/:id
  */
-router.put("/api/precios/:id", async (req, res) => {
+router.put("/precios/:id", async (req, res) => {
   const db = req.db;
 
   try {
@@ -294,9 +293,9 @@ router.put("/api/precios/:id", async (req, res) => {
 
 /**
  * ✅ Actualizar precios por producto_id (Update)
- * Ruta: PUT /api/precios/por-producto/:productoId
+ * Ruta: PUT /precios/por-producto/:productoId
  */
-router.put("/api/precios/por-producto/:productoId", async (req, res) => {
+router.put("/precios/por-producto/:productoId", async (req, res) => {
   console.log("📥 Recibido precio actualizado:", req.body);
 
   const db = req.db;
@@ -363,9 +362,9 @@ router.put("/api/precios/por-producto/:productoId", async (req, res) => {
 
 /**
  * ✅ Actualizar supermercados existente (Update)
- * Ruta: PUT /api/supermercados/:id
+ * Ruta: PUT /supermercados/:id
  */
-router.put("/api/supermercados/:id", async (req, res) => {
+router.put("/supermercados/:id", async (req, res) => {
   const db = req.db;
 
   try {
@@ -393,9 +392,9 @@ router.put("/api/supermercados/:id", async (req, res) => {
 
 /**
  * ✅ Actualizar proovedor existente (Update)
- * Ruta: PUT /api/proovedor/:id
+ * Ruta: PUT /proovedor/:id
  */
-router.put("/api/proveedor/:id", async (req, res) => {
+router.put("/proveedor/:id", async (req, res) => {
   const db = req.db;
 
   try {
@@ -439,9 +438,9 @@ router.put("/api/proveedor/:id", async (req, res) => {
 
 /**
  * ✅ Actualizar dato personal existente (Update)
- * Ruta: PUT /api/datos-personales/:id
+ * Ruta: PUT /datos-personales/:id
  */
-router.put("/api/datos-personales/:id", async (req, res) => {
+router.put("/datos-personales/:id", async (req, res) => {
   const db = req.db;
 
   try {
@@ -477,9 +476,9 @@ router.put("/api/datos-personales/:id", async (req, res) => {
 
 /**
  * ✅ Actualizar descripcion existente (Update)
- * Ruta: PUT /api/descripcion/:id
+ * Ruta: PUT /descripcion/:id
  */
-router.put("/api/descripcion/:id", async (req, res) => {
+router.put("/descripcion/:id", async (req, res) => {
   const db = req.db;
 
   try {
@@ -542,9 +541,9 @@ router.put("/api/descripcion/:id", async (req, res) => {
 
 /**
  * ✅ Actualizar opinión existente (Update)
- * Ruta: PUT /api/opiniones/:id
+ * Ruta: PUT /opiniones/:id
  */
-router.put("/api/opiniones/:id", async (req, res) => {
+router.put("/opiniones/:id", async (req, res) => {
   const db = req.db;
 
   try {
@@ -572,9 +571,9 @@ router.put("/api/opiniones/:id", async (req, res) => {
 
 /**
  * ✅ Actualizar una entrada del historial (Update)
- * Ruta: PUT /api/historial/:id
+ * Ruta: PUT /historial/:id
  */
-router.put("/api/historial/:id", async (req, res) => {
+router.put("/historial/:id", async (req, res) => {
   const db = req.db;
 
   try {
@@ -596,3 +595,4 @@ router.put("/api/historial/:id", async (req, res) => {
   }
 });
 
+module.exports = router;

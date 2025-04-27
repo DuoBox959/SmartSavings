@@ -1,7 +1,7 @@
 // server/GET/obtener.js
 const express = require("express");
-const router = express.Router();
-const { ObjectId } = require("../../conexion1.js");
+const { ObjectId } = require("mongodb"); // ✅ Solo desde mongodb, no desde tu server
+const router = express.Router(); // ✅ Ahora sí podemos usar express.Router()
 
 // =============================================
 // USUARIOS                                  📌
@@ -9,9 +9,9 @@ const { ObjectId } = require("../../conexion1.js");
 
 /**
  * ✅ Obtener todos los usuarios (Read)
- * Ruta: GET /api/usuarios
+ * Ruta: GET /usuarios
  */
-router.get("/api/usuarios", async (req, res) => {
+router.get("/usuarios", async (req, res) => {
     const db = req.db;
 
     try {
@@ -25,9 +25,9 @@ router.get("/api/usuarios", async (req, res) => {
 
 /**
  * ✅ Obtener un usuario por ID (Read)
- * Ruta: GET /api/usuarios/:id
+ * Ruta: GET /usuarios/:id
  */
-router.get("/api/usuarios/:id", async (req, res) => {
+router.get("/usuarios/:id", async (req, res) => {
     const db = req.db;
 
     try {
@@ -58,9 +58,9 @@ router.get("/api/usuarios/:id", async (req, res) => {
 
 /**
  * ✅ Obtener todos los productos (Read)
- * Ruta: GET /api/productos
+ * Ruta: GET /productos
  */
-router.get("/api/productos", async (req, res) => {
+router.get("/productos", async (req, res) => {
     const db = req.db;
 
     try {
@@ -117,9 +117,9 @@ router.get("/api/productos", async (req, res) => {
 
 /**
  * ✅ Obtener un producto por ID (Read)
- * Ruta: GET /api/productos/:id
+ * Ruta: GET /productos/:id
  */
-router.get("/api/productos/:id", async (req, res) => {
+router.get("/productos/:id", async (req, res) => {
     const db = req.db;
 
     try {
@@ -145,7 +145,7 @@ router.get("/api/productos/:id", async (req, res) => {
 });
 
 // OBTENER MARCAS 🧩
-router.get("/api/marcas", async (req, res) => {
+router.get("/marcas", async (req, res) => {
     const db = req.db;
 
     try {
@@ -158,7 +158,7 @@ router.get("/api/marcas", async (req, res) => {
 });
 
 //OBTENER PRODUCTO COMPLETO 🧩
-router.get("/api/productos-completos", async (req, res) => {
+router.get("/productos-completos", async (req, res) => {
     const db = req.db;
 
     try {
@@ -200,7 +200,7 @@ router.get("/api/productos-completos", async (req, res) => {
 
         res.json(productos);
     } catch (err) {
-        console.error("❌ Error en GET /api/productos-completos:", err);
+        console.error("❌ Error en GET /productos-completos:", err);
         res.status(500).json({ error: "Error al obtener productos completos" });
     }
 });
@@ -211,9 +211,9 @@ router.get("/api/productos-completos", async (req, res) => {
 
 /**
  * ✅ Obtener todos los precios (Read)
- * Ruta: GET /api/precios
+ * Ruta: GET /precios
  */
-router.get("/api/precios", async (req, res) => {
+router.get("/precios", async (req, res) => {
     const db = req.db;
 
     try {
@@ -232,7 +232,7 @@ router.get("/api/precios", async (req, res) => {
 });
 
 //OBTENER EL PRECIO DEL PRODUCTO 🧩
-router.get("/api/precios/producto/:id", async (req, res) => {
+router.get("/precios/producto/:id", async (req, res) => {
     const db = req.db;
 
     try {
@@ -258,7 +258,7 @@ router.get("/api/precios/producto/:id", async (req, res) => {
 });
 
 //OBTENER EL COMPARADOR DE PRECIOS 🧩
-router.get("/api/comparador-precios", async (req, res) => {
+router.get("/comparador-precios", async (req, res) => {
     const db = req.db;
 
     try {
@@ -304,7 +304,7 @@ router.get("/api/comparador-precios", async (req, res) => {
 
         res.json(precios);
     } catch (err) {
-        console.error("❌ Error en /api/comparador-precios:", err);
+        console.error("❌ Error en /comparador-precios:", err);
         res
             .status(500)
             .json({ error: "Error al obtener precios para comparación" });
@@ -317,9 +317,9 @@ router.get("/api/comparador-precios", async (req, res) => {
 
 /**
  * ✅ Obtener todos los supermercados (Read)
- * Ruta: GET /api/supermercados
+ * Ruta: GET /supermercados
  */
-router.get("/api/supermercados", async (req, res) => {
+router.get("/supermercados", async (req, res) => {
     const db = req.db;
 
     try {
@@ -338,9 +338,9 @@ router.get("/api/supermercados", async (req, res) => {
 
 /**
  * ✅ Obtener todos los proovedores (Read)
- * Ruta: GET /api/proovedor
+ * Ruta: GET /proovedor
  */
-router.get("/api/proveedor", async (req, res) => {
+router.get("/proveedor", async (req, res) => {
     const db = req.db;
 
     try {
@@ -354,9 +354,9 @@ router.get("/api/proveedor", async (req, res) => {
 
 /**
  * ✅ Obtener nombres de proveedores (para los selects)
- * Ruta: GET /api/proveedores
+ * Ruta: GET /proveedores
  */
-router.get("/api/proveedores", async (req, res) => {
+router.get("/proveedores", async (req, res) => {
     const db = req.db;
 
     try {
@@ -378,9 +378,9 @@ router.get("/api/proveedores", async (req, res) => {
 
 /**
  * ✅ Obtener datos personales por usuario_id
- * Ruta: GET /api/datos-personales?usuario_id=ID
+ * Ruta: GET /datos-personales?usuario_id=ID
  */
-router.get("/api/datos-personales", async (req, res) => {
+router.get("/datos-personales", async (req, res) => {
     const db = req.db;
 
     try {
@@ -404,7 +404,7 @@ router.get("/api/datos-personales", async (req, res) => {
 });
 
 // Obtener usuario por email para eliminarlo desde el lado cliente 🧩
-router.get("/api/usuarios/email/:email", async (req, res) => {
+router.get("/usuarios/email/:email", async (req, res) => {
     const db = req.db;
 
     try {
@@ -429,9 +429,9 @@ router.get("/api/usuarios/email/:email", async (req, res) => {
 
 /**
  * ✅ Obtener todas las descripciones (Read)
- * Ruta: GET /api/descripcion
+ * Ruta: GET /descripcion
  */
-router.get("/api/descripcion", async (req, res) => {
+router.get("/descripcion", async (req, res) => {
     const db = req.db;
 
     try {
@@ -467,7 +467,7 @@ router.get("/api/descripcion", async (req, res) => {
 });
 
 // OBTENER DESCRIPCION DE LOS PRODUCTOS POR ID 🧩
-router.get("/api/descripcion/producto/:id", async (req, res) => {
+router.get("/descripcion/producto/:id", async (req, res) => {
     const db = req.db;
 
     try {
@@ -493,7 +493,7 @@ router.get("/api/descripcion/producto/:id", async (req, res) => {
 });
 
 // OBTENER TIPOS 🧩
-router.get("/api/tipos", async (req, res) => {
+router.get("/tipos", async (req, res) => {
     const db = req.db;
 
     try {
@@ -506,7 +506,7 @@ router.get("/api/tipos", async (req, res) => {
 });
 
 // OBTENER SUBTIPOS 🧩
-router.get("/api/subtipos", async (req, res) => {
+router.get("/subtipos", async (req, res) => {
     const db = req.db;
 
     try {
@@ -524,9 +524,9 @@ router.get("/api/subtipos", async (req, res) => {
 
 /**
  * ✅ Obtener todas las opiniones (Read)
- * Ruta: GET /api/opiniones
+ * Ruta: GET /opiniones
  */
-router.get("/api/opiniones", async (req, res) => {
+router.get("/opiniones", async (req, res) => {
     const db = req.db;
 
     try {
@@ -544,9 +544,9 @@ router.get("/api/opiniones", async (req, res) => {
 
 /**
  * ✅ Obtener toda la actividad (Read)
- * Ruta: GET /api/historial
+ * Ruta: GET /historial
  */
-router.get("/api/historial", async (req, res) => {
+router.get("/historial", async (req, res) => {
     const db = req.db;
 
     try {
@@ -565,10 +565,10 @@ router.get("/api/historial", async (req, res) => {
 
 /**
  * ✅ Obtener el historial de un usuario (Read)
- * Ruta: GET /api/historial/:usuarioId
+ * Ruta: GET /historial/:usuarioId
  */
 
-router.get("/api/historial/:usuarioId", async (req, res) => {
+router.get("/historial/:usuarioId", async (req, res) => {
     const db = req.db;
 
     try {
@@ -607,7 +607,7 @@ router.get("/api/historial/:usuarioId", async (req, res) => {
 });
 
 // OBTENER USUARIOS ACTIVOS EN LOS ULTIMOS 7 DIAS 🧩
-router.get("/api/historial-reciente", async (req, res) => {
+router.get("/historial-reciente", async (req, res) => {
     const db = req.db;
 
     try {
@@ -652,7 +652,7 @@ router.get("/api/historial-reciente", async (req, res) => {
 });
 
 // OBTENER USUARIOS ACTIVOS SEMANALMENTE 🧩
-router.get("/api/usuarios/activos-semanales", async (req, res) => {
+router.get("/usuarios/activos-semanales", async (req, res) => {
     const db = req.db;
 
     try {
@@ -728,9 +728,9 @@ function getISOWeek(date) {
 
 /**
  * ✅ Obtener métricas del sistema para obtener datos de uso del sistema
- * Ruta: GET /api/metricas
+ * Ruta: GET /metricas
  */
-router.get("/api/metricas", async (req, res) => {
+router.get("/metricas", async (req, res) => {
     const db = req.db;
 
     try {
@@ -766,9 +766,9 @@ router.get("/api/metricas", async (req, res) => {
 
 /**
  *✅ Obtener reportes
- * Ruta: GET /api/reportes
+ * Ruta: GET /reportes
  */
-router.get("/api/reportes", async (req, res) => {
+router.get("/reportes", async (req, res) => {
     const db = req.db;
 
     try {
