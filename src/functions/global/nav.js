@@ -115,28 +115,27 @@ export function aplicarFiltroBusqueda() {
   }
 
   function buscarConTexto(texto) {
-    const valor = texto.toLowerCase();
+    const valor = texto.replace(",", ".").toLowerCase(); // Ahora soporta coma o punto
     const camposSeleccionados = Array.from(filtroMenu.querySelectorAll("input:checked")).map(input => input.value);
-
+  
     const productosFiltrados = productosGlobal.filter(producto => {
-      const ingredientes = producto.Ingredientes?.join(", ") || "";
-
+      const precioEncontrado = preciosGlobal.find(p => p.producto_id === producto._id);
+      const precioActual = precioEncontrado?.precioActual;
+  
       if (camposSeleccionados.length === 0) {
         return (
           producto.Nombre?.toLowerCase().includes(valor) ||
           producto.Marca?.toLowerCase().includes(valor) ||
-          producto.Precio?.toString().includes(valor) ||
-          producto.Peso?.toString().includes(valor) ||
+          (precioActual != null && precioActual.toString().includes(valor)) ||
+          producto.Peso?.toLowerCase().includes(valor) ||
           producto.Estado?.toLowerCase().includes(valor) ||
-          producto.Supermercado_id?.toLowerCase().includes(valor) ||
-          producto.Ciudad?.toLowerCase().includes(valor) ||
-          ingredientes.toLowerCase().includes(valor)
+          producto.Supermercado_id?.toLowerCase().includes(valor)
         );
       }
-
+  
       return camposSeleccionados.some(campo => {
-        if (campo === "Ingredientes") {
-          return ingredientes.toLowerCase().includes(valor);
+        if (campo === "Precio") {
+          return (precioActual != null && precioActual.toString().includes(valor));
         } else {
           const datoProducto = producto[campo];
           if (datoProducto == null) return false;
@@ -144,9 +143,10 @@ export function aplicarFiltroBusqueda() {
         }
       });
     });
-
+  
     renderizarProductos(productosFiltrados, preciosGlobal);
   }
+  
 
   input.addEventListener("input", buscarYFiltrar);
   filtroMenu.addEventListener("change", buscarYFiltrar);
