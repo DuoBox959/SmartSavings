@@ -12,9 +12,7 @@ $(document).ready(() => {
     columns: [
       { title: "ID" },
       { title: "Nombre" },
-      { title: "País" },
-      { title: "Ciudad" },
-      { title: "Ubicación" }, // 🔹 Se mostrará como una cadena
+      { title: "Ubicaciones" }, // 🔹 Se mostrará como una cadena
       { title: "Acciones" },
     ],
   });
@@ -23,7 +21,7 @@ $(document).ready(() => {
 
   // 🧼 Limpiar espacios extra en inputs de supermercado
   $(
-    "#nombreSupermercado, #paisSupermercado, #ciudadSupermercado, #ubicacionSupermercado"
+    "#nombreSupermercado, #ubicacionSupermercado"
   )
     .on("blur", function () {
       $(this).val($(this).val().trim());
@@ -41,17 +39,15 @@ async function cargarSupermercados() {
     const respuesta = await fetch("http://localhost:3000/api/supermercados");
     const supermercados = await respuesta.json();
 
-    supermercadosCache = supermercados; // Guardamos en caché
+    supermercadosCache = supermercados;
 
-    supermercadosTable.clear(); // Limpiamos la tabla antes de actualizar
+    supermercadosTable.clear();
     supermercados.forEach((supermercado) => {
       supermercadosTable.row.add([
-        supermercado._id,
+        supermercado._id?.$oid || supermercado._id || "Sin ID",
         supermercado.Nombre || "Sin Nombre",
-        supermercado.Pais || "Desconocido",
-        supermercado.Ciudad || "Desconocida",
-        `<button class="btn btn-primary" onclick="verUbicacion('${supermercado._id}')">📍 Ver Ubicación</button>`, // 🔹 Nuevo botón
-        accionesHTML(supermercado._id),
+        `<button class="btn btn-primary" onclick="verUbicaciones('${supermercado._id?.$oid || supermercado._id}')">📍 Ver Ubicaciones</button>`,
+        accionesHTML(supermercado._id?.$oid || supermercado._id),
       ]);
     });
 
@@ -59,30 +55,6 @@ async function cargarSupermercados() {
   } catch (error) {
     console.error("❌ Error al cargar supermercados:", error);
   }
-}
-function verUbicacion(id) {
-  const supermercado = supermercadosCache.find((s) => s._id === id);
-  if (!supermercado) return;
-
-  const ubicacion = Array.isArray(supermercado.Ubicacion)
-    ? supermercado.Ubicacion.join(", ")
-    : "Ubicación no disponible";
-
-  Swal.fire({
-    title: "📍 Ubicación del Supermercado",
-    text: ubicacion,
-    icon: "info",
-    confirmButtonText: "Aceptar",
-    width: "600px",
-  });
-}
-
-// ✅ Función para convertir `Ubicacion` de array a string
-function formatoUbicacion(ubicacion) {
-  if (Array.isArray(ubicacion)) {
-    return ubicacion.join(", "); // 🔹 Convierte el array en una cadena separada por comas
-  }
-  return ubicacion || "No disponible";
 }
 
 // ✅ Función para generar botones de acciones
@@ -96,9 +68,7 @@ function accionesHTML(id) {
 // ✅ Mostrar formulario para agregar un supermercado
 function mostrarFormularioAgregar() {
   $("#formTitulo").text("Añadir Supermercado");
-  $(
-    "#supermercadoID, #nombreSupermercado, #paisSupermercado, #ciudadSupermercado, #ubicacionSupermercado"
-  ).val("");
+  $( "#supermercadoID, #nombreSupermercado, #ubicacionSupermercado" ).val("");
 
   $("#botonesFormulario button:first")
     .off("click")
@@ -111,62 +81,59 @@ function mostrarFormularioAgregar() {
 }
 
 // ✅ Guardar un supermercado (crear o editar)
+// ✅ Guardar un supermercado (crear o editar)
 async function guardarSupermercado() {
   const id = $("#supermercadoID").val();
   let nombre = $("#nombreSupermercado").val().trim();
-  let pais = $("#paisSupermercado").val().trim();
-  let ciudad = $("#ciudadSupermercado").val().trim();
-  let ubicacion = $("#ubicacionSupermercado").val().trim();
 
-  // 🛑 Validación de campos vacíos (Nombre, País y Ciudad son obligatorios)
-  if (validaciones.camposVacios(nombre, pais, ciudad)) {
-    validaciones.mostrarAlertaError("⚠️ Campos Obligatorios", "Los campos Nombre, País y Ciudad son obligatorios.");
+  // Obtener todas las ubicaciones ingresadas por el usuario
+  const ubicaciones = [];
+  const paises = document.querySelectorAll('.paisSupermercado');
+  const ciudades = document.querySelectorAll('.ciudadSupermercado');
+  const direcciones = document.querySelectorAll('.ubicacionSupermercado');
+  
+  // Recorrer todas las ubicaciones y agregarlas al array
+  for (let i = 0; i < paises.length; i++) {
+    let pais = paises[i].value.trim();
+    let ciudad = ciudades[i].value.trim();
+    let ubicacion = direcciones[i].value.trim();
+    
+    if (!pais || !ciudad || !ubicacion) {
+      validaciones.mostrarAlertaError("⚠️ Campos Obligatorios", "Todos los campos de ubicación deben ser completados.");
+      return;
+    }
+
+    ubicaciones.push({
+      Pais: pais,
+      Ciudad: ciudad,
+      Ubicacion: ubicacion,
+    });
+  }
+
+  if (validaciones.camposVacios(nombre)) {
+    validaciones.mostrarAlertaError("⚠️ Campos Obligatorios", "El nombre del supermercado es obligatorio.");
     return;
   }
 
-  // Asignamos valores predeterminados a los campos opcionales (como la Ubicación)
-  ubicacion = ubicacion || "-"; // Si la ubicación está vacía, asignamos un valor predeterminado
-
-  // 🛑 Validación de formato del nombre del supermercado (no debe estar vacío)
   if (!validaciones.esTextoValido(nombre)) {
-    validaciones.mostrarAlertaError("⚠️ Error", "El nombre del supermercado no es válido.");
+    validaciones.mostrarAlertaError("⚠️ Error", "Verifica el campo de nombre del supermercado.");
     return;
   }
 
-  // 🛑 Validación de formato del país (no debe estar vacío)
-  if (!validaciones.esTextoValido(pais)) {
-    validaciones.mostrarAlertaError("⚠️ Error", "El país no es válido.");
-    return;
-  }
-
-  // 🛑 Validación de formato de ciudad (no debe estar vacío)
-  if (!validaciones.esTextoValido(ciudad)) {
-    validaciones.mostrarAlertaError("⚠️ Error", "La ciudad no es válida.");
-    return;
-  }
-
-  // Convertir la ubicación en un array si contiene valores
-  let ubicacionArray = ubicacion !== "-" ? ubicacion.split(",").map((u) => u.trim()) : [];
-
-  // Creamos el objeto supermercado con los datos ingresados
   const supermercado = {
     Nombre: nombre,
-    Pais: pais,
-    Ciudad: ciudad,
-    Ubicacion: ubicacionArray, // Guardamos la ubicación como un array
+    Ubicaciones: ubicaciones, // Agregar las ubicaciones al supermercado
   };
 
   try {
     let response;
     if (id) {
-      // Si existe el id, actualizamos el supermercado (PUT)
       response = await fetch(`http://localhost:3000/api/supermercados/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(supermercado),
       });
     } else {
-      // Si no existe el id, creamos un nuevo supermercado (POST)
       response = await fetch("http://localhost:3000/api/supermercados", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -174,12 +141,19 @@ async function guardarSupermercado() {
       });
     }
 
-    // Verificamos si la respuesta fue exitosa
     if (!response.ok) throw new Error("Error al guardar supermercado");
 
-    // Recargamos la tabla con los nuevos datos
     await cargarSupermercados();
     cerrarFormulario();
+
+    // ✅ Mostrar Swal cuando se haya agregado o editado correctamente
+    await Swal.fire({
+      title: id ? "Supermercado Editado" : "Supermercado Agregado",
+      text: `El supermercado ${nombre} ha sido ${id ? "editado" : "agregado"} exitosamente.`,
+      icon: "success",
+      confirmButtonText: "Aceptar",
+    });
+
   } catch (err) {
     console.error("❌ Error guardando supermercado:", err);
     validaciones.mostrarAlertaError("❌ Error", "No se pudo guardar el supermercado.");
@@ -188,15 +162,13 @@ async function guardarSupermercado() {
 
 // ✅ Editar un supermercado
 function editarSupermercado(id) {
-  const supermercado = supermercadosCache.find((s) => s._id === id);
+  const supermercado = supermercadosCache.find((s) => s._id?.$oid === id || s._id === id);
   if (!supermercado) return;
 
   $("#formTitulo").text("Editar Supermercado");
-  $("#supermercadoID").val(supermercado._id);
+  $("#supermercadoID").val(supermercado._id?.$oid || supermercado._id);
   $("#nombreSupermercado").val(supermercado.Nombre || "");
-  $("#paisSupermercado").val(supermercado.Pais || "");
-  $("#ciudadSupermercado").val(supermercado.Ciudad || "");
-  $("#ubicacionSupermercado").val((supermercado.Ubicacion || []).join(", ")); // 🔹 Convertir array a string
+  $("#ubicacionSupermercado").val(supermercado.Ubicaciones?.[0]?.Ubicacion || "");
 
   $("#botonesFormulario button:first")
     .off("click")
@@ -249,21 +221,12 @@ async function eliminarSupermercado(id) {
 // ✅ Cerrar formulario
 function cerrarFormulario() {
   $("#formularioSupermercado").hide();
-  $(
-    "#supermercadoID, #nombreSupermercado, #paisSupermercado, #ciudadSupermercado, #ubicacionSupermercado"
-  ).val("");
-}
-
-function eliminarEspaciosAlInicio(event) {
-  const valor = event.target.value;
-  event.target.value = valor.replace(/^\s+/, '');
+  $( "#supermercadoID, #nombreSupermercado, #ubicacionSupermercado" ).val("");
 }
 
 document.addEventListener('DOMContentLoaded', function () {
   const camposTexto = [
     'nombreSupermercado',
-    'paisSupermercado',
-    'ciudadSupermercado',
     'ubicacionSupermercado'
   ];
 
@@ -275,10 +238,67 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
+function eliminarEspaciosAlInicio(event) {
+  const valor = event.target.value;
+  event.target.value = valor.replace(/^\s+/, '');
+}
+
+function verUbicaciones(id) {
+  const supermercado = supermercadosCache.find((s) => s._id?.$oid === id || s._id === id);
+  if (!supermercado) return;
+
+  const ubicaciones = supermercado.Ubicaciones?.map(u => 
+    `${u.Pais}, ${u.Ciudad}: ${u.Ubicacion}`
+  ).join("\n") || "No hay ubicaciones disponibles";
+
+  Swal.fire({
+    title: "📍 Ubicaciones del Supermercado",
+    text: ubicaciones,
+    icon: "info",
+    confirmButtonText: "Aceptar",
+    width: "600px",
+  });
+}
+
+// Función para agregar un campo de ubicación dinámicamente
+function agregarUbicacion() {
+  // Crear un nuevo contenedor para una ubicación
+  const contenedorUbicacion = document.createElement('div');
+  contenedorUbicacion.classList.add('ubicacion-container');
+  
+  // Crear los campos de entrada para País, Ciudad y Ubicación
+  contenedorUbicacion.innerHTML = `
+    <label for="paisSupermercado">País:</label>
+    <input type="text" class="paisSupermercado" placeholder="País" required />
+
+    <label for="ciudadSupermercado">Ciudad:</label>
+    <input type="text" class="ciudadSupermercado" placeholder="Ciudad" required />
+
+    <label for="ubicacionSupermercado">Ubicación:</label>
+    <input type="text" class="ubicacionSupermercado" placeholder="Dirección" required />
+
+<button type="button" onclick="eliminarUbicacion(this)" style="display: block; margin: 0 auto;">❌ Eliminar</button>
+ 
+  `;
+  
+  // Añadir el nuevo contenedor al contenedor de ubicaciones
+  document.getElementById("ubicacionesContainer").appendChild(contenedorUbicacion);
+}
+
+// Función para eliminar una ubicación
+function eliminarUbicacion(button) {
+  const contenedorUbicacion = button.parentElement;
+  contenedorUbicacion.remove();
+}
+
+
 // ✅ Exponer funciones globales
 window.mostrarFormularioAgregar = mostrarFormularioAgregar;
 window.cerrarFormulario = cerrarFormulario;
 window.editarSupermercado = editarSupermercado;
 window.eliminarSupermercado = eliminarSupermercado;
 window.cargarSupermercados = cargarSupermercados;
-window.verUbicacion = verUbicacion;
+window.verUbicaciones = verUbicaciones;
+window.agregarUbicacion = agregarUbicacion;
+window.eliminarUbicacion = eliminarUbicacion;
+

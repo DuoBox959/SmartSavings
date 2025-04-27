@@ -331,22 +331,31 @@ router.post("/precios", async (req, res) => {
 // =============================================
 
 /**
- * ✅ Crear un nuevo supermercados (Create)
+ * ✅ Crear un nuevo supermercado (Create)
  * Ruta: POST /supermercados
  */
 router.post("/supermercados", async (req, res) => {
   const db = req.db;
 
   try {
-    const { Nombre, Pais, Ciudad, Ubicacion } = req.body;
+    const { Nombre, Ubicaciones } = req.body;  // Aseguramos que recibimos 'Ubicaciones' como un array
 
-    if (!Nombre || !Pais || !Ciudad || !Ubicacion) {
+    if (!Nombre || !Ubicaciones || !Array.isArray(Ubicaciones) || Ubicaciones.length === 0) {
       return res
         .status(400)
-        .json({ error: "Todos los campos son obligatorios" });
+        .json({ error: "El nombre y al menos una ubicación son obligatorios" });
     }
 
-    const nuevoSupermercado = { Nombre, Pais, Ciudad, Ubicacion };
+    // Validar cada ubicación
+    for (const ubicacion of Ubicaciones) {
+      if (!ubicacion.Pais || !ubicacion.Ciudad || !ubicacion.Ubicacion) {
+        return res.status(400).json({
+          error: "Cada ubicación debe tener Pais, Ciudad y Ubicación.",
+        });
+      }
+    }
+
+    const nuevoSupermercado = { Nombre, Ubicaciones };
 
     const resultado = await db
       .collection("Supermercados")

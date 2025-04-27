@@ -45,9 +45,7 @@
         <tr>
           <th>ID</th>
           <th>Nombre</th>
-          <th>País</th>
-          <th>Ciudad</th>
-          <th>Ubicación</th>
+          <th>Ubicaciones</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -66,19 +64,11 @@
         <label for="nombreSupermercado">Nombre:</label>
         <input type="text" id="nombreSupermercado" required />
 
-        <!-- 🔹 Campo: País -->
-        <label for="paisSupermercado">País:</label>
-        <input type="text" id="paisSupermercado" required />
+        <!-- 🔹 Campos: Ubicaciones dinámicas -->
+        <div id="ubicacionesContainer"></div>
 
-        <!-- 🔹 Campo: Ciudad -->
-        <label for="ciudadSupermercado">Ciudad:</label>
-        <input type="text" id="ciudadSupermercado" required />
-
-        <!-- 🔹 Campo: Ubicación -->
-        <label for="ubicacionSupermercado"
-          >Ubicación (separada por comas):</label
-        >
-        <input type="text" id="ubicacionSupermercado" required />
+        <!-- 🔘 Botón para añadir más ubicaciones -->
+        <button type="button" onclick="agregarUbicacion()" style="display: block; margin: 10px auto;">➕ Añadir Ubicación</button>
 
         <!-- 🔘 Botones del formulario -->
         <div id="botonesFormulario">
@@ -89,3 +79,4 @@
     </div>
   </body>
 </html>
+
