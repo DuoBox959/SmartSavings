@@ -1,7 +1,7 @@
 // server/GET/obtener.js
 const express = require("express");
 const router = express.Router();
-const { ObjectId } = require("../conexion1");
+const { ObjectId } = require("../../conexion1.js");
 
 // =============================================
 // USUARIOS                                  📌

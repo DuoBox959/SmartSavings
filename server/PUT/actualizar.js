@@ -3,7 +3,7 @@ const { parsearPrecioHistorico } = require("../UTILS/utils");
 
 const express = require("express");
 const router = express.Router();
-const { ObjectId } = require("../conexion1"); // importa tu conexión
+const { ObjectId } = require("../../conexion1.js");
 const multer = require("multer");
 const path = require("path");
 

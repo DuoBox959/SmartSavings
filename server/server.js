@@ -5,7 +5,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const path = require("path");
-const { conectarDB} = require("./conexion1");
+const { conectarDB} = require("../conexion1");
 require("dotenv").config();
 const cron = require("node-cron");
 const fs = require("fs").promises; 
