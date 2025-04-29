@@ -337,8 +337,8 @@ router.get("/supermercados", async (req, res) => {
 // =============================================
 
 /**
- * ✅ Obtener todos los proovedores (Read)
- * Ruta: GET /proovedor
+ * ✅ Obtener todos los proveedor(Read)
+ * Ruta: GET /proveedor
  */
 router.get("/proveedor", async (req, res) => {
     const db = req.db;

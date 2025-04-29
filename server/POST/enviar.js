@@ -3,16 +3,25 @@ const { conectarDB, ObjectId } = require("../../conexion1");
 
 const express = require("express");
 const router = express.Router();
+const fs = require("fs");
 
 const multer = require("multer");
 const path = require("path");
 const { parsearPrecioHistorico } = require("../UTILS/utils"); // (según tu estructura)
 
+const rutaUpload2025 = path.join(__dirname, "../uploads/2025");
+if (!fs.existsSync(rutaUpload2025)) {
+  fs.mkdirSync(rutaUpload2025, { recursive: true });
+}
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, "uploads/2025/"),
+  destination: (req, file, cb) => {
+    const rutaAbsoluta = path.join(__dirname, "../uploads/2025");
+    cb(null, rutaAbsoluta);
+  },
   filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname)),
 });
+
 const upload = multer({ storage });
 
 // =============================================
@@ -229,14 +238,27 @@ router.post("/productos-completos", upload.single("Imagen"), async (req, res) =>
     const productoId = resultadoProducto.insertedId;
 
     // 2️⃣ Inserción del precio
+    let precioHistorico = [];
+    try {
+      if (req.body.precioHistorico && typeof req.body.precioHistorico === "string") {
+        console.log("🧪 Precio histórico recibido:", req.body.precioHistorico);
+        const parsed = JSON.parse(req.body.precioHistorico);
+        precioHistorico = Array.isArray(parsed) ? parsearPrecioHistorico(parsed) : [];
+      }
+    } catch (e) {
+      console.warn("⚠️ precioHistorico inválido:", req.body.precioHistorico);
+      precioHistorico = [];
+    }
+    
     const nuevoPrecio = {
       producto_id: productoId,
       precioActual: parseFloat(req.body.precioActual),
       precioDescuento: req.body.precioDescuento ? parseFloat(req.body.precioDescuento) : null,
       unidadLote: req.body.unidadLote || "N/A",
       precioUnidadLote: req.body.precioPorUnidad ? parseFloat(req.body.precioPorUnidad) : null,
-      precioHistorico: req.body.precioHistorico ? parsearPrecioHistorico(JSON.parse(req.body.precioHistorico)) : [],
+      precioHistorico,
     };
+    
 
     console.log("💸 [PRECIO] Datos construidos:", nuevoPrecio);
     await db.collection("Precios").insertOne(nuevoPrecio);
@@ -268,6 +290,52 @@ router.post("/productos-completos", upload.single("Imagen"), async (req, res) =>
   } catch (err) {
     console.error("❌ Error al crear producto completo:", err);
     res.status(500).json({ error: "Error interno del servidor" });
+  }
+});
+
+// =============================================
+// TIPOS Y SUBTIPOS                           📌
+// =============================================
+
+/**
+ * ✅ Crear nuevo tipo
+ * Ruta: POST /tipos
+ */
+router.post("/tipos", async (req, res) => {
+  const db = req.db;
+
+  try {
+    const { Nombre } = req.body;
+    if (!Nombre) return res.status(400).json({ error: "Nombre es obligatorio" });
+
+    const nuevoTipo = { Nombre };
+    const result = await db.collection("Tipos").insertOne(nuevoTipo);
+
+    res.status(201).json({ message: "Tipo creado correctamente", tipo: { ...nuevoTipo, _id: result.insertedId } });
+  } catch (err) {
+    console.error("❌ Error creando tipo:", err);
+    res.status(500).json({ error: "Error al crear tipo" });
+  }
+});
+
+/**
+ * ✅ Crear nuevo subtipo
+ * Ruta: POST /subtipos
+ */
+router.post("/subtipos", async (req, res) => {
+  const db = req.db;
+
+  try {
+    const { Nombre } = req.body;
+    if (!Nombre) return res.status(400).json({ error: "Nombre es obligatorio" });
+
+    const nuevoSubtipo = { Nombre };
+    const result = await db.collection("Subtipos").insertOne(nuevoSubtipo);
+
+    res.status(201).json({ message: "Subtipo creado correctamente", subtipo: { ...nuevoSubtipo, _id: result.insertedId } });
+  } catch (err) {
+    console.error("❌ Error creando subtipo:", err);
+    res.status(500).json({ error: "Error al crear subtipo" });
   }
 });
 
@@ -348,7 +416,7 @@ router.post("/supermercados", async (req, res) => {
 
     // Validar cada ubicación
     for (const ubicacion of Ubicaciones) {
-      if (!ubicacion.Pais || !ubicacion.Ciudad || !ubicacion.Ubicacion) {
+      if (!ubicacion.pais || !ubicacion.ciudad || !ubicacion.ubicacion)        {
         return res.status(400).json({
           error: "Cada ubicación debe tener Pais, Ciudad y Ubicación.",
         });
