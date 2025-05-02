@@ -124,3 +124,15 @@ inputsSinEspacios.forEach(id => {
   }
 });
 
+// ✅ Mostrar/Ocultar lista de beneficios
+const toggleBtn = document.getElementById('toggle-benefits');
+const benefitsList = document.getElementById('benefits-list');
+
+if (toggleBtn && benefitsList) {
+  toggleBtn.addEventListener('click', () => {
+    const isHidden = benefitsList.classList.toggle('hidden');
+    toggleBtn.textContent = isHidden
+      ? 'Ver qué está incluido ▼'
+      : 'Ocultar beneficios ▲';
+  });
+}
