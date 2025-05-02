@@ -1,143 +1,168 @@
 /* 🌟 Reset */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Arial", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Arial", sans-serif;
+}
+
+/* 📦 Contenedor Principal */
+.container {
+  display: flex;
+  width: 100%;
+  min-width: 100vw;
+  height: 100vh;
+}
+
+/* 🖼️ Sección Izquierda (Imagen + sombreado + animación) */
+.left-section {
+  width: 50%;
+  height: 100vh;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0)),
+              url("../assets/img/contacto.png") no-repeat center center;
+  background-size: cover;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 40px;
+}
+
+.left-section h1 {
+  font-size: 2.2rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
+  animation: fadeInUp 0.8s ease-out both;
+}
+
+.left-section p {
+  font-size: 1.1rem;
+  max-width: 500px;
+  line-height: 1.6;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
+  animation: fadeInUp 0.8s ease-out both;
+}
+
+/* ✨ Animación */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  
-  /* 📦 Contenedor Principal */
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 📋 Sección Derecha (Formulario) */
+.right-section {
+  width: 50%;
+  background: #d4d4d4;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+.right-section h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #365a7e;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+/* 🧾 Formulario */
+form {
+  width: 100%;
+  max-width: 350px;
+}
+
+form label {
+  font-weight: bold;
+  font-size: 14px;
+  color: #365a7e;
+  display: block;
+  margin-top: 15px;
+}
+
+form input,
+form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #b0bec5;
+  border-radius: 5px;
+  font-size: 14px;
+  background: #ffffff;
+  margin-bottom: 5px;
+  font-family: "Arial", sans-serif;
+  color: #333;
+  line-height: 1.4;
+  resize: vertical;
+}
+
+form input:focus,
+form textarea:focus {
+  outline: 2px solid #3a5a40;;
+  box-shadow: 0 0 0 3px rgba(109, 183, 140, 0.3);
+}
+
+/* 🎨 Botón Enviar */
+form button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: #3a5a40;
+  color: white;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background 0.3s ease, transform 0.2s;
+}
+
+form button:hover {
+  background: #6db78c;
+  transform: scale(1.02);
+}
+
+/* 🔙 Botón de Regreso */
+.back-button {
+  background: #7bbb95;
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  width: 100%;
+  transition: all 0.3s ease-in-out;
+}
+
+.back-button:hover {
+  background: #3a5a40;
+}
+
+/* 📱 Responsividad */
+@media (max-width: 768px) {
   .container {
-    display: flex;
-    width: 100%;
-    min-width: 100vw;
-    height: 100vh;
-  }
-  
-  /* 🖼️ Sección Izquierda (Imagen/Info) */
-  .left-section {
-    width: 50%;
-    height: 100vh;
-    background: url("../assets/img/contacto.png") no-repeat center center;
-    background-size: cover;
-    color: white;
-    display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 40px;
-  }
-  
-  /* 📋 Sección Derecha (Formulario) */
-  .right-section {
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: #d4d4d4;
-    padding: 40px;
-  }
-  
-  /* 📌 Ajuste del título principal */
-  .right-section h2 {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #1e3c5a;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  /* 📌 Estilos del formulario */
-  form {
-    width: 100%;
-    max-width: 350px;
-  }
-  
-  form label {
-    font-weight: bold;
-    display: block;
-    font-size: 14px;
-    margin: 10px 0 5px;
-    color: #1e3c5a;
-  }
-  
-  /* 📌 Inputs */
-  form input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #b0bec5;
-    border-radius: 5px;
-    font-size: 14px;
-    margin-bottom: 5px;
-    background: #ffffff;
-  }
-  
-  /* 🎨 Estilo del botón principal */
-  form button {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    background: #237f27;
-    color: white;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 15px;
-    transition: background 0.3s ease;
-  }
-  
-  form button:hover {
-    background: #185f1a;
   }
 
-  form textarea {
+  .left-section {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #b0bec5;
-    border-radius: 5px;
-    font-size: 14px;
-    margin-bottom: 5px;
-    background: #ffffff;
-    resize: vertical;
-    font-family: "Arial", sans-serif;
-    color: #333;
-    line-height: 1.4;
+    height: 40vh;
   }
-  
-  
-  /* 🔙 Botón de Regreso */
-  .back-button {
-    background: #7bbb95;
-    color: white;
-    border: none;
-    padding: 10px;
-    font-size: 14px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
+
+  .right-section {
     width: 100%;
-    transition: all 0.3s ease-in-out;
+    height: auto;
+    padding: 30px;
   }
-  
-  .back-button:hover {
-    background: #237f27;
-  }
-  
-  /* 📱 Responsividad */
-  @media (max-width: 768px) {
-    .container {
-      flex-direction: column;
-    }
-  
-    .left-section {
-      width: 100%;
-      height: 40vh;
-    }
-  
-    .right-section {
-      width: 100%;
-      height: 60vh;
-    }
-  }
+}
