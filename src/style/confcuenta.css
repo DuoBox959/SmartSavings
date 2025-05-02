@@ -1,141 +1,271 @@
-/* 🌟 Reset */
+/* ====================================================
+🌟 RESET BÁSICO
+==================================================== */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  /* 🌐 General */
-  body {
-    font-family: "Roboto", sans-serif;
-    background: #cecfcfe8;
-    color: #333;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    align-items: center;
-  }
-  
-  #header,
-  #footer {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ====================================================
+🌐 ESTILOS GENERALES
+==================================================== */
+body {
+  font-family: "Roboto", sans-serif;
+  background: #cecfcfe8;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  align-items: center;
+}
+
+#header,
+#footer {
+  width: 100%;
+}
+
+.container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 1000px;
+  width: 100%;
+  margin: 20px 0;
+}
+
+section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+section:not(:last-child) {
+  margin-bottom: 20px;
+}
+
+section:last-child {
+  border-bottom: none;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #222;
+  width: 100%;
+}
+
+label {
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 8px;
+  width: 48%;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+input[type="checkbox"] {
+  width: auto;
+  margin-right: 5px;
+}
+
+/* ====================================================
+🔘 BOTONES
+==================================================== */
+.btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 12px;
+  margin-top: 15px;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+}
+
+.guardar {
+  background: #3a5a40;
+  color: #fff;
+  transition: background 0.3s ease, transform 0.2s;
+}
+
+.guardar:hover {
+  background: #6db78c;
+  transform: scale(1.02);
+}
+
+.cancelar {
+  background: #e74c3c;
+  color: #fff;
+  transition: background 0.3s ease, transform 0.2s;
+}
+
+.cancelar:hover {
+  background: #c0392b;
+  transform: scale(1.02);
+}
+
+/* ====================================================
+🛠️ ENLACES DE GESTIÓN
+==================================================== */
+.update,
+.delete {
+  display: block;
+  font-size: 1.1rem;
+  text-decoration: underline;
+  color: black;
+  margin: 10px 0;
+  padding: 8px 0;
+  text-align: left;
+  transition: color 0.3s;
+  border-left-width: 6px;
+  font-weight: 500;
+  padding-left: 15px;
+  border-radius: 4px;
+}
+
+.update {
+  border-left: 4px solid #a8d5ba;
+}
+
+.delete {
+  border-left: 4px solid #c0392b;
+}
+
+.update:hover,
+.delete:hover {
+  color: #007bff;
+}
+
+/* ====================================================
+📱 RESPONSIVE
+==================================================== */
+@media (max-width: 768px) {
+  label,
+  .configuracion label,
+  .preferencias label {
     width: 100%;
-  }
-  
-  .container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    background: #fff;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 1000px;
-    width: 100%;
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
-  
-  section {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    padding: 15px;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  section:last-child {
-    border-bottom: none;
-  }
-  
-  h2 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-    color: #222;
-    width: 100%;
-  }
-  
-  label {
-    display: block;
-    font-size: 1rem;
-    margin-bottom: 8px;
-    width: 48%;
-  }
-  
-  input,
-  select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1rem;
-  }
-  
-  input[type="checkbox"] {
-    width: auto;
-    margin-right: 5px;
-  }
-  
-  .btn {
-    display: block;
-    width: 100%;
-    text-align: center;
-    padding: 12px;
-    margin-top: 15px;
-    border-radius: 5px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    border: none;
-  }
-  
-  .update,
-  .delete {
-    display: block;
-    font-size: 1.1rem;
-    text-decoration: underline;
-    color: black;
-    margin: 10px 0;
-    padding: 8px 0;
-    text-align: left;
-    transition: color 0.3s;
-  }
-  
-  .update {
-    border-left: 4px solid #a8d5ba;
-    padding-left: 12px;
-  }
-  
-  .delete {
-    border-left: 4px solid #dc3545;
-    padding-left: 12px;
-  }
-  
-  .update:hover,
-  .delete:hover {
-    color: #007bff;
-  }
-  
-  .guardar {
-    background: #28a745;
-    color: white;
-    margin-top: 10px;
   }
 
-  .cancelar {
-    background: #dc3545;
-    color: white;
-    margin-top: 10px;
-    border: none;
+  .container {
+    padding: 15px;
   }
-  
-  /* Para pequeños dispositivos */
-  @media (max-width: 768px) {
-    label {
-      width: 100%;
-    }
-  
-    .container {
-      padding: 15px;
-    }
-  }
-  
+}
+
+/* ====================================================
+🧾 INFORMACIÓN PERSONAL (.configuracion)
+==================================================== */
+.configuracion {
+  background: #fff;
+  border: 1px solid #a8d5ba;
+  border-radius: 12px;
+  padding: 25px 30px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.configuracion h2 {
+  width: 100%;
+  font-size: 1.6rem;
+  color: #365a7e;
+  margin-bottom: 20px;
+  border-left: 6px solid #6db78c;
+  padding-left: 15px;
+}
+
+.configuracion label {
+  display: flex;
+  flex-direction: column;
+  font-size: 1rem;
+  color: #333;
+}
+
+.configuracion input,
+.configuracion select {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  margin-top: 5px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.configuracion input:focus,
+.configuracion select:focus {
+  border-color: #6db78c;
+  box-shadow: 0 0 0 3px rgba(109, 183, 140, 0.2);
+  outline: none;
+}
+
+/* ====================================================
+🎛️ PREFERENCIAS (.preferencias)
+==================================================== */
+.preferencias {
+  background: #fff;
+  border: 1px solid #81c784;
+  border-radius: 12px;
+  padding: 25px 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.preferencias h2 {
+  width: 100%;
+  font-size: 1.6rem;
+  color: #365a7e;
+  margin-bottom: 20px;
+  border-left: 6px solid #6db78c;
+  padding-left: 15px;
+}
+
+.preferencias label {
+  display: flex;
+  flex-direction: column;
+  font-size: 1rem;
+  color: #333;
+}
+
+.preferencias input,
+.preferencias select {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  margin-top: 5px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.preferencias input:focus,
+.preferencias select:focus {
+  border-color: #6db78c;
+  box-shadow: 0 0 0 3px rgba(109, 183, 140, 0.2);
+  outline: none;
+}
+
+/* ✅ Checkbox alineado horizontalmente */
+.preferencias label.checkbox-label {
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+}
