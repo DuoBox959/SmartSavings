@@ -1,90 +1,99 @@
 <!DOCTYPE html>
 <html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inicio | Comparador de Precios</title>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Inicio | Comparador de Precios</title>
+    <!-- ✅ Fuentes de Google -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
 
-  <!-- ✅ Fuentes de Google -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+    <!-- ✅ Estilos CSS -->
+    <link rel="stylesheet" href="../style/global/header.css" />
+    <!-- Estilos del header -->
+    <link rel="stylesheet" href="../style/index.css" />
+    <!-- Estilos específicos de la página -->
+    <link rel="stylesheet" href="../style/global/footer.css" />
+    <!-- Estilos del footer -->
+    <link rel="stylesheet" href="/src/style/global/chatbot.css" />
+    <!-- Estilos del chatbot -->
 
-  <!-- ✅ Estilos CSS -->
-  <link rel="stylesheet" href="../style/global/header.css" />
-  <!-- Estilos del header -->
-  <link rel="stylesheet" href="../style/index.css" />
-  <!-- Estilos específicos de la página -->
-  <link rel="stylesheet" href="../style/global/footer.css" />
-  <!-- Estilos del footer -->
-  <link rel="stylesheet" href="/src/style/global/chatbot.css" />
-  <!-- Estilos del chatbot -->
+    <!-- ✅ Scripts JS -->
+    <script src="../functions/index.js" type="module" defer></script>
 
-  <!-- ✅ Scripts JS -->
-  <script src="../functions/index.js" type="module" defer></script>
+    <!-- ✅ Librería SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-  <!-- ✅ Librería SweetAlert2 -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Funciones principales -->
+    <script src="/src/functions/global/chatbot.js" defer></script>
+    <!-- Chatbot IA -->
+  </head>
 
-  <!-- Funciones principales -->
-  <script src="/src/functions/global/chatbot.js" defer></script>
-  <!-- Chatbot IA -->
-</head>
+  <body>
+    <!-- 🧩 Header dinámico (cargado desde JS) -->
+    <div id="header"></div>
 
-<body>
-  <!-- 🧩 Header dinámico (cargado desde JS) -->
-  <div id="header"></div>
-
-  <!-- 📌 Contenedor principal -->
-  <div class="container">
-    <main>
-      <!-- 🎯 Sección de Tarjetas (Opciones principales) -->
-      <section class="tarjetas">
-        <!-- 🔹 Tarjeta 1: Gestión de Productos -->
-        <div class="tarjeta">
-          <div class="icono-contenedor">
-            <img src="../assets/icons/icon1.webp" alt="Gestión de Productos" />
+    <!-- 📌 Contenedor principal -->
+    <div class="container">
+      <main>
+        <!-- 🎯 Sección de Tarjetas (Opciones principales) -->
+        <section class="tarjetas">
+          <!-- 🔹 Tarjeta 1: Gestión de Productos -->
+          <div class="tarjeta">
+            <div class="icono-contenedor">
+              <img
+                src="../assets/icons/icon1.webp"
+                alt="Gestión de Productos"
+              />
+            </div>
+            <a href="productos.html" class="enlace">Gestión de Productos</a>
           </div>
-          <a href="productos.html" class="enlace">Gestión de Productos</a>
-        </div>
 
-        <!-- 🔹 Tarjeta 2: Comparador de Precios -->
-        <div class="tarjeta">
-          <div class="icono-contenedor">
-            <img src="../assets/icons/icon2.webp" alt="Comparador de Precios" />
+          <!-- 🔹 Tarjeta 2: Comparador de Precios -->
+          <div class="tarjeta">
+            <div class="icono-contenedor">
+              <img
+                src="../assets/icons/icon2.webp"
+                alt="Comparador de Precios"
+              />
+            </div>
+            <a href="comparador.html" class="enlace">Comparador de Precios</a>
           </div>
-          <a href="comparador.html" class="enlace">Comparador de Precios</a>
+        </section>
+      </main>
+    </div>
+
+    <!-- 🤖 Contenedor del Chatbot -->
+    <div id="chatBot"></div>
+
+    <!-- 🍪 Banner de Cookies -->
+    <div class="cookies-banner" id="cookies-banner">
+      <div class="cookies-content">
+        <p>
+          Este sitio web utiliza cookies para mejorar tu experiencia. Al
+          continuar navegando, aceptas su uso.
+          <a href="../pages/global/politicacookies.html" class="cookies-link"
+            >Leer más</a
+          >.
+        </p>
+        <div class="cookies-buttons">
+          <button id="aceptar-cookies" class="cookies-btn cookies-aceptar">
+            Aceptar
+          </button>
+          <button id="rechazar-cookies" class="cookies-btn cookies-rechazar">
+            Rechazar
+          </button>
         </div>
-      </section>
-    </main>
-  </div>
-
-  <!-- 🤖 Contenedor del Chatbot -->
-  <div id="chatBot"></div>
-
-  <!-- 🍪 Banner de Cookies -->
-  <div class="cookies-banner" id="cookies-banner">
-    <div class="cookies-content">
-      <p>
-        Este sitio web utiliza cookies para mejorar tu experiencia. Al
-        continuar navegando, aceptas su uso.
-        <a href="../pages/global/politicacookies.html" class="cookies-link">Leer más</a>.
-      </p>
-      <div class="cookies-buttons">
-        <button id="aceptar-cookies" class="cookies-btn cookies-aceptar">
-          Aceptar
-        </button>
-        <button id="rechazar-cookies" class="cookies-btn cookies-rechazar">
-          Rechazar
-        </button>
       </div>
     </div>
-  </div>
 
-  <!-- 🔲 Superposición para el banner de cookies -->
-  <div class="overlay" id="overlay"></div>
+    <!-- 🔲 Superposición para el banner de cookies -->
+    <div class="overlay" id="overlay"></div>
 
-  <!-- 🧩 Footer dinámico (cargado desde JS) -->
-  <div id="footer"></div>
-</body>
-
+    <!-- 🧩 Footer dinámico (cargado desde JS) -->
+    <div id="footer"></div>
+  </body>
 </html>

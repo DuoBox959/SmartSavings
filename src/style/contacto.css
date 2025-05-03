@@ -19,7 +19,7 @@
   width: 50%;
   height: 100vh;
   background: linear-gradient(to right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0)),
-              url("../assets/img/contacto.png") no-repeat center center;
+    url("../assets/img/contacto.png") no-repeat center center;
   background-size: cover;
   color: white;
   display: flex;
@@ -108,7 +108,7 @@ form textarea {
 
 form input:focus,
 form textarea:focus {
-  outline: 2px solid #3a5a40;;
+  outline: 2px solid #3a5a40;
   box-shadow: 0 0 0 3px rgba(109, 183, 140, 0.3);
 }
 

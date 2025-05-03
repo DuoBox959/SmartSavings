@@ -81,12 +81,18 @@ document.querySelector(".btn.guardar").addEventListener("click", async () => {
 
     // Validaciones de los campos usando validaciones.js
     if (validaciones.camposVacios(nombre, apellidos, zonaHoraria)) {
-      validaciones.mostrarAlertaError("Campos incompletos", "Por favor, completa todos los campos requeridos.");
+      validaciones.mostrarAlertaError(
+        "Campos incompletos",
+        "Por favor, completa todos los campos requeridos."
+      );
       return;
     }
 
     if (!validaciones.esFechaValida(fechaNacimiento)) {
-      validaciones.mostrarAlertaError("Fecha inválida", "La fecha de nacimiento no es válida.");
+      validaciones.mostrarAlertaError(
+        "Fecha inválida",
+        "La fecha de nacimiento no es válida."
+      );
       return;
     }
 
@@ -95,7 +101,10 @@ document.querySelector(".btn.guardar").addEventListener("click", async () => {
       JSON.parse(localStorage.getItem("user"));
 
     if (!user || !user.id) {
-      validaciones.mostrarAlertaError("Usuario no identificado", "⚠️ No se pudo identificar al usuario.");
+      validaciones.mostrarAlertaError(
+        "Usuario no identificado",
+        "⚠️ No se pudo identificar al usuario."
+      );
       return;
     }
 
@@ -112,23 +121,28 @@ document.querySelector(".btn.guardar").addEventListener("click", async () => {
     };
 
     // Comprobar si ya existen datos personales para este usuario
-    const check = await fetch(`http://localhost:3000/api/datos-personales?usuario_id=${user.id}`);
+    const check = await fetch(
+      `http://localhost:3000/api/datos-personales?usuario_id=${user.id}`
+    );
     const existentes = await check.json();
 
     let response;
     if (existentes.length > 0) {
       // Si ya existen, actualizamos el registro
       const idExistente = existentes[0]._id;
-      response = await fetch(`http://localhost:3000/api/datos-personales/${idExistente}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...datos,
-          usuario_id: user.id, // Aseguramos que el usuario_id sea el correcto
-        }),
-      });
+      response = await fetch(
+        `http://localhost:3000/api/datos-personales/${idExistente}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...datos,
+            usuario_id: user.id, // Aseguramos que el usuario_id sea el correcto
+          }),
+        }
+      );
     } else {
       // Si no existen, creamos uno nuevo
       response = await fetch("http://localhost:3000/api/datos-personales", {
@@ -175,7 +189,9 @@ async function cargarDatosPersonales() {
 
     if (!user || !user.id) return;
 
-    const response = await fetch(`http://localhost:3000/api/datos-personales?usuario_id=${user.id}`);
+    const response = await fetch(
+      `http://localhost:3000/api/datos-personales?usuario_id=${user.id}`
+    );
     const datos = await response.json();
 
     const datosUsuario = datos.length > 0 ? datos[0] : null;
@@ -188,28 +204,30 @@ async function cargarDatosPersonales() {
     // ✅ Rellenar o dejar vacíos el resto de campos (todos editables)
     document.getElementById("nombre").value = datosUsuario?.nombre || "";
     document.getElementById("apellidos").value = datosUsuario?.apellidos || "";
-    document.getElementById("fecha-nacimiento").value = datosUsuario?.fechaNacimiento || "";
-    document.getElementById("genero").value = datosUsuario?.genero || "masculino";
+    document.getElementById("fecha-nacimiento").value =
+      datosUsuario?.fechaNacimiento || "";
+    document.getElementById("genero").value =
+      datosUsuario?.genero || "masculino";
     document.getElementById("idioma").value = datosUsuario?.idioma || "es";
-    document.getElementById("zona-horaria").value = datosUsuario?.zonaHoraria || "";
-    document.getElementById("notificaciones").checked = datosUsuario?.recibirNotificaciones || false;
-
+    document.getElementById("zona-horaria").value =
+      datosUsuario?.zonaHoraria || "";
+    document.getElementById("notificaciones").checked =
+      datosUsuario?.recibirNotificaciones || false;
   } catch (error) {
     console.error("❌ Error cargando datos personales:", error);
   }
 }
 
 // ✅ Campos donde solo queremos evitar espacios al principio
-const camposEvitarEspaciosInicio = ['nombre', 'apellidos', 'zona-horaria'];
+const camposEvitarEspaciosInicio = ["nombre", "apellidos", "zona-horaria"];
 
-camposEvitarEspaciosInicio.forEach(id => {
+camposEvitarEspaciosInicio.forEach((id) => {
   const input = document.getElementById(id);
 
   if (input) {
-    input.addEventListener('input', (e) => {
+    input.addEventListener("input", (e) => {
       // Elimina espacios al principio del valor
-      e.target.value = e.target.value.replace(/^\s+/, '');
+      e.target.value = e.target.value.replace(/^\s+/, "");
     });
   }
 });
-

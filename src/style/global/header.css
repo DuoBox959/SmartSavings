@@ -5,42 +5,31 @@
 /* 🎯 Estilos generales del <header> */
 header {
   background: linear-gradient(to right, #6db78c, #3a5a40);
-  /* Fondo con degradado verde */
   display: flex;
-  /* Flexbox para alinear elementos horizontalmente */
   align-items: center;
-  /* Alineación vertical centrada */
   justify-content: space-between;
-  /* Distribuye el logo, eslogan y acciones */
   padding: 25px 40px;
-  /* Espaciado interior */
   flex-wrap: wrap;
-  /* Permite que los elementos bajen en pantallas pequeñas */
   color: #ffffff;
-  /* Color de texto blanco */
 }
 
 /* 🧷 Estilo del logo (izquierda) */
 .logo a {
   font-size: 1.5em;
-  /* Tamaño grande del texto del logo */
   font-weight: bold;
   text-decoration: none;
-  /* Quita subrayado */
   color: #fff;
   transition: color 0.3s ease;
 }
 
 .logo a:hover {
   color: #2c3e34;
-  /* Color más oscuro al hacer hover */
 }
 
 /* 🧾 Estilo del eslogan (centro) */
 header .eslogan {
   text-align: center;
   flex-grow: 1;
-  /* Toma el espacio restante para centrar el contenido */
 }
 
 header .eslogan .subtitulo {
@@ -62,10 +51,9 @@ header .eslogan .subtitulo {
 /* 🛠️ Contenedor de acciones (derecha) */
 header .acciones {
   display: flex;
-  align-items: center;     /* 🔥 esto es lo que lo centra */
+  align-items: center;
   gap: 15px;
 }
-
 
 header .acciones .enlace {
   font-size: 1em;
@@ -100,7 +88,6 @@ header .acciones .enlace:hover {
 
 .comparaTu:hover {
   color: #365a7e;
-  /* Azul al pasar el mouse */
 }
 
 /* 🔽 Menú desplegable de usuario */
@@ -121,17 +108,15 @@ header .acciones .enlace:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 40px;               /* 👈 asegura altura coherente */
+  height: 40px;
   line-height: 1;
   transition: background 0.3s ease;
 }
-
 
 #userName:hover {
   background-color: #27425c;
   color: #a8d5ba;
 }
-
 
 /* 🔍 Contenedor del menú desplegable */
 .dropdown-content {

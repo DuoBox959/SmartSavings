@@ -5,10 +5,10 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const path = require("path");
-const { conectarDB} = require("../conexion1");
+const { conectarDB } = require("../conexion1");
 require("dotenv").config();
 const cron = require("node-cron");
-const fs = require("fs").promises; 
+const fs = require("fs").promises;
 let db;
 
 // Middleware
@@ -37,29 +37,34 @@ app.use("/api", rutas);
     console.log("✅ Conectado correctamente a MongoDB Atlas");
 
     const collections = await db.listCollections().toArray();
-    console.log("📌 Colecciones disponibles:", collections.map(c => c.name));
+    console.log(
+      "📌 Colecciones disponibles:",
+      collections.map((c) => c.name)
+    );
 
     // Cron diario 3 AM
     cron.schedule("0 3 * * *", async () => {
       console.log("🧹 Ejecutando limpieza automática de historiales...");
       try {
         const historialCollection = db.collection("HistorialUsuario");
-        const primerosMovimientos = await historialCollection.aggregate([
-          { $sort: { fecha: 1 } },
-          {
-            $group: {
-              _id: "$usuario_id",
-              primerMovimiento: { $first: "$fecha" },
-            },
-          },
-          {
-            $match: {
-              primerMovimiento: {
-                $lte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+        const primerosMovimientos = await historialCollection
+          .aggregate([
+            { $sort: { fecha: 1 } },
+            {
+              $group: {
+                _id: "$usuario_id",
+                primerMovimiento: { $first: "$fecha" },
               },
             },
-          },
-        ]).toArray();
+            {
+              $match: {
+                primerMovimiento: {
+                  $lte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+                },
+              },
+            },
+          ])
+          .toArray();
 
         const idsUsuariosAEliminar = primerosMovimientos.map((m) => m._id);
 
@@ -81,7 +86,6 @@ app.use("/api", rutas);
     app.listen(PORT, () => {
       console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
     });
-
   } catch (err) {
     console.error("❌ Error al conectar a la base de datos:", err);
     process.exit(1);

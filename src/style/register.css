@@ -11,18 +11,14 @@
   display: flex;
   width: 100%;
   min-height: 100vh;
-
 }
-
-
-
 
 /* 🖼️ Sección Izquierda: Imagen y mensaje */
 .left-section {
   width: 50%;
   height: 100vh;
   background: linear-gradient(to right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0)),
-              url("../assets/img/product.png") no-repeat center center;
+    url("../assets/img/product.png") no-repeat center center;
   background-size: cover;
   color: white;
   display: flex;
@@ -269,10 +265,10 @@ form button:hover {
   margin-right: auto;
   color: white;
   font-size: 0.95rem;
-  background: rgba(255, 255, 255, 0.75); /* Más transparencia */
+  background: rgba(255, 255, 255, 0.75);
   border-radius: 10px;
   padding: 20px;
-  color: #333; /* Texto oscuro para contraste */
+  color: #333;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
@@ -287,6 +283,7 @@ form button:hover {
 .hidden {
   display: none;
 }
+
 /* ✨ Animación de entrada al cargar la ventana */
 @keyframes fadeInPage {
   0% {

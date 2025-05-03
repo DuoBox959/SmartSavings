@@ -7,6 +7,4 @@ router.use(require("../PUT/actualizar"));
 router.use(require("../DELETE/eliminar"));
 router.use(require("../STATIC/estatico"));
 
-
 module.exports = router;
-

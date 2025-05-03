@@ -18,7 +18,8 @@
   width: 50%;
   height: 100vh;
   background: linear-gradient(to right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0)),
-  url("../assets/img/update.png") no-repeat center center;  background-size: cover;
+    url("../assets/img/update.png") no-repeat center center;
+  background-size: cover;
   color: white;
   display: flex;
   flex-direction: column;

@@ -5,19 +5,12 @@
 /* 🚀 Contenedor principal del nav */
 .nav-categorias {
   background-color: #7ca08b;
-  /* Color de fondo suave */
   padding: 15px 30px;
-  /* Espaciado interno */
   display: flex;
-  /* Flex para alinear elementos */
   justify-content: center;
-  /* Centrado horizontal */
   align-items: center;
-  /* Centrado vertical */
   flex-wrap: wrap;
-  /* Permite que se ajusten en varias líneas */
   gap: 40px;
-  /* Espacio entre los elementos hijos */
 }
 
 /* 🔗 Lista horizontal de categorías */
@@ -26,7 +19,6 @@
   align-items: center;
   gap: 40px;
   list-style: none;
-  /* Elimina los bullets */
   margin: 0;
   padding: 0;
 }
@@ -37,19 +29,15 @@
   flex-direction: column;
   align-items: center;
   color: #fff;
-  /* Blanco */
   font-weight: bold;
   text-decoration: none;
-  /* Sin subrayado */
   transition: transform 0.3s;
 }
 
 /* 🔄 Efecto hover para escalar el enlace y aclarar */
 .nav-categorias li a:hover {
   transform: scale(1.1);
-  /* Agranda un poco */
   color: #dff0ea;
-  /* Verde claro */
 }
 
 /* 🖼️ Imagen dentro del nav (si la hay) */
@@ -58,7 +46,6 @@
   height: 32px;
   margin-bottom: 5px;
   filter: brightness(0) invert(1);
-  /* Blanco aunque sea PNG con fondo negro */
 }
 
 /* 📋 Estilos especiales para el botón de menú hamburguesa */
@@ -82,14 +69,12 @@
 .nav-categorias li a.btn-menu:hover {
   transform: scale(1.05);
   background-color: #e8f5e9;
-  /* Verde muy clarito */
 }
 
 /* 🧩 Icono dentro del botón menú */
 .nav-categorias li a.btn-menu i {
   font-size: 22px;
   color: #365a7e;
-  /* Azul oscuro */
 }
 
 /* ====================================================
@@ -113,7 +98,7 @@
   padding: 5px 14px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
   gap: 10px;
-  position: relative; /* 👈🔥 Esto es clave */
+  position: relative;
 }
 
 /* 🖊️ Input sin bordes ni fondo */
@@ -138,7 +123,6 @@
   gap: 10px;
 }
 
-
 #busqueda-input {
   flex-grow: 1;
   padding: 8px;
@@ -156,17 +140,17 @@
   border: 1px solid #ccc;
   background-color: white;
   cursor: pointer;
-  position: relative; /* 👈 Importante */
+  position: relative;
 }
 
 .product-card {
-  position: relative; /* 🔵 Añadir posición relativa si no lo tienes */
-  z-index: 1; /* 🔵 Asegura que las tarjetas estén por debajo del filtro */
+  position: relative;
+  z-index: 1;
 }
 
 #campo-filtro-menu {
   position: absolute;
-  top: 110%; /* Justo debajo */
+  top: 110%;
   right: 0;
   background: white;
   border: 1px solid #ccc;
@@ -175,8 +159,8 @@
   width: 220px;
   max-height: 250px;
   overflow-y: auto;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
-  z-index: 10000; /* 🔥 más alto que todo */
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  z-index: 10000;
   transition: all 0.25s ease;
 }
 
@@ -192,7 +176,6 @@
   font-size: 22px;
   color: #555;
 }
-
 
 .filtros-opciones {
   margin-top: 10px;
@@ -214,17 +197,17 @@
 
 /* 🧹 Span con ancho fijo */
 .filtro-item span {
-  width: 120px; 
+  width: 120px;
   text-align: left;
   white-space: nowrap;
 }
 
 .filtro-item input:checked {
-  accent-color: #4CAF50; /* verde bonito */
+  accent-color: #4caf50;
 }
 .filtro-item input[type="checkbox"] {
   transform: scale(1.2);
-  accent-color: #4CAF50;
+  accent-color: #4caf50;
 }
 
 #busqueda-tags {
@@ -243,7 +226,7 @@
   gap: 8px;
   font-size: 14px;
   color: #333;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .cerrar-tag {

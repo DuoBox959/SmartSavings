@@ -6,9 +6,8 @@
 const mapaCategorias = {
   alimentacion: ["comida", "bebida", "lácteos", "panadería", "snacks"],
   drogueria: ["higiene", "limpieza", "salud", "cuidado personal"],
-  mascotas: ["mascota", "comida para mascotas", "juguetes mascotas"]
+  mascotas: ["mascota", "comida para mascotas", "juguetes mascotas"],
 };
-
 
 // 🌍 Variables globales solo en este archivo
 let productosGlobal = [];
@@ -22,20 +21,22 @@ export function inicializarNavegacion(productos, precios) {
   productosGlobal = productos;
   preciosGlobal = precios;
 
-  const enlaces = document.querySelectorAll(".nav-categorias a[data-categoria]");
+  const enlaces = document.querySelectorAll(
+    ".nav-categorias a[data-categoria]"
+  );
   if (!enlaces.length) {
     console.warn("⚠️ No se encontraron enlaces de navegación");
     return;
   }
 
-  enlaces.forEach(link => {
-    link.addEventListener("click", e => {
+  enlaces.forEach((link) => {
+    link.addEventListener("click", (e) => {
       e.preventDefault();
       const categoria = link.getAttribute("data-categoria");
       const tiposPermitidos = mapaCategorias[categoria];
       if (!tiposPermitidos) return;
 
-      const filtrados = productosGlobal.filter(p =>
+      const filtrados = productosGlobal.filter((p) =>
         tiposPermitidos.includes(p.Tipo?.toLowerCase())
       );
 
@@ -71,7 +72,6 @@ export function aplicarFiltroBusqueda() {
     e.stopPropagation(); // 🔥 Aquí está la clave
     filtroMenu.classList.toggle("hidden");
   });
-  
 
   if (cerrarFiltroBtn) {
     cerrarFiltroBtn.addEventListener("click", (e) => {
@@ -80,8 +80,9 @@ export function aplicarFiltroBusqueda() {
     });
   }
 
-  document.addEventListener('click', (e) => {
-    const esClickDentro = filtroMenu.contains(e.target) || filtroToggle.contains(e.target);
+  document.addEventListener("click", (e) => {
+    const esClickDentro =
+      filtroMenu.contains(e.target) || filtroToggle.contains(e.target);
     if (!esClickDentro) filtroMenu.classList.add("hidden");
   });
 
@@ -116,12 +117,16 @@ export function aplicarFiltroBusqueda() {
 
   function buscarConTexto(texto) {
     const valor = texto.replace(",", ".").toLowerCase(); // Ahora soporta coma o punto
-    const camposSeleccionados = Array.from(filtroMenu.querySelectorAll("input:checked")).map(input => input.value);
-  
-    const productosFiltrados = productosGlobal.filter(producto => {
-      const precioEncontrado = preciosGlobal.find(p => p.producto_id === producto._id);
+    const camposSeleccionados = Array.from(
+      filtroMenu.querySelectorAll("input:checked")
+    ).map((input) => input.value);
+
+    const productosFiltrados = productosGlobal.filter((producto) => {
+      const precioEncontrado = preciosGlobal.find(
+        (p) => p.producto_id === producto._id
+      );
       const precioActual = precioEncontrado?.precioActual;
-  
+
       if (camposSeleccionados.length === 0) {
         return (
           producto.Nombre?.toLowerCase().includes(valor) ||
@@ -132,10 +137,12 @@ export function aplicarFiltroBusqueda() {
           producto.Supermercado_id?.toLowerCase().includes(valor)
         );
       }
-  
-      return camposSeleccionados.some(campo => {
+
+      return camposSeleccionados.some((campo) => {
         if (campo === "Precio") {
-          return (precioActual != null && precioActual.toString().includes(valor));
+          return (
+            precioActual != null && precioActual.toString().includes(valor)
+          );
         } else {
           const datoProducto = producto[campo];
           if (datoProducto == null) return false;
@@ -143,10 +150,9 @@ export function aplicarFiltroBusqueda() {
         }
       });
     });
-  
+
     renderizarProductos(productosFiltrados, preciosGlobal);
   }
-  
 
   input.addEventListener("input", buscarYFiltrar);
   filtroMenu.addEventListener("change", buscarYFiltrar);

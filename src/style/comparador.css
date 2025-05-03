@@ -5,17 +5,16 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  /* 🔧 Elimina márgenes y paddings por defecto. */
 }
 
 /* ====================================================
 🚫 RESETEO COMPLEMENTARIO HTML Y BODY
 ==================================================== */
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   width: 100%;
-  /* 🔄 Se asegura que el body y html usen todo el ancho del viewport. */
 }
 
 /* ====================================================
@@ -29,7 +28,6 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  /* 🌈 Fondo neutro claro, centrado vertical y horizontal. */
 }
 
 /* ====================================================
@@ -42,7 +40,6 @@ body {
   align-items: center;
   padding: 30px 20px;
   width: 100%;
-  /* 📦 Contenedores centrales con padding y alineación. */
 }
 
 /* ====================================================
@@ -54,7 +51,6 @@ body {
   color: #2c3e50;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
   text-align: center;
-  /* 🎯 Título grande con sombra suave para resaltar. */
 }
 
 /* ====================================================
@@ -70,7 +66,6 @@ body {
   width: 100%;
   max-width: 500px;
   gap: 20px;
-  /* 📋 Tarjeta limpia para el formulario */
 }
 
 /* ====================================================
@@ -159,7 +154,6 @@ body {
   flex-direction: column;
   gap: 8px;
   padding: 10px 0;
-  /* 📦 Cada tienda extra es una fila completa con espacio entre campos */
 }
 
 /* ====================================================
@@ -174,7 +168,6 @@ body {
   background-color: #ffffff;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
   font-size: 1em;
-  /* 🧾 Caja blanca donde aparece la comparación */
 }
 
 /* ====================================================

@@ -38,7 +38,9 @@ router.get("/forzar-limpieza-historial", async (req, res) => {
         usuario_id: { $in: idsUsuariosAEliminar },
       });
 
-      res.json({ message: `Eliminados ${deleteResult.deletedCount} historiales.` });
+      res.json({
+        message: `Eliminados ${deleteResult.deletedCount} historiales.`,
+      });
     } else {
       res.json({ message: "No hay historiales para eliminar." });
     }
@@ -121,7 +123,8 @@ router.delete("/productos-completos/:id", async (req, res) => {
 
   try {
     const { id } = req.params;
-    if (!ObjectId.isValid(id)) return res.status(400).json({ error: "ID inválido" });
+    if (!ObjectId.isValid(id))
+      return res.status(400).json({ error: "ID inválido" });
 
     const _id = new ObjectId(id);
 
@@ -131,7 +134,9 @@ router.delete("/productos-completos/:id", async (req, res) => {
     await db.collection("Descripcion").deleteMany({ Producto_id: _id });
     await db.collection("Opiniones").deleteMany({ Producto_id: _id }); // si usas opiniones
 
-    res.json({ message: "Producto y datos asociados eliminados correctamente" });
+    res.json({
+      message: "Producto y datos asociados eliminados correctamente",
+    });
   } catch (err) {
     console.error("❌ Error eliminando producto completo:", err);
     res.status(500).json({ error: "Error interno al eliminar producto" });

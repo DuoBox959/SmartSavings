@@ -9,7 +9,8 @@ const path = require("path");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, "uploads/2025/"),
-  filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname)),
+  filename: (req, file, cb) =>
+    cb(null, Date.now() + path.extname(file.originalname)),
 });
 const upload = multer({ storage });
 
@@ -92,7 +93,12 @@ router.put("/productos/:id", upload.single("Imagen"), async (req, res) => {
       updateData.Imagen = `/uploads/2025/${req.file.filename}`;
 
       if (req.body.imagenAnterior) {
-        const rutaAnterior = path.join(__dirname, "uploads", "2025", req.body.imagenAnterior);
+        const rutaAnterior = path.join(
+          __dirname,
+          "uploads",
+          "2025",
+          req.body.imagenAnterior
+        );
 
         try {
           await fs.unlink(rutaAnterior);
@@ -118,7 +124,9 @@ router.put("/productos/:id", upload.single("Imagen"), async (req, res) => {
     console.log("🛠️ Datos a actualizar:", updateData);
 
     if (Object.keys(updateData).length === 0) {
-      return res.status(200).json({ message: "No hubo cambios en el producto." });
+      return res
+        .status(200)
+        .json({ message: "No hubo cambios en el producto." });
     }
 
     const result = await db
@@ -142,124 +150,142 @@ router.put("/productos/:id", upload.single("Imagen"), async (req, res) => {
  * ✅ Editar todos los productos completos (Update)
  * Ruta: PUT /productos-completos/:id
  */
-router.put("/productos-completos/:id", upload.single("Imagen"), async (req, res) => {
-  const db = req.db;
+router.put(
+  "/productos-completos/:id",
+  upload.single("Imagen"),
+  async (req, res) => {
+    const db = req.db;
 
-  try {
-    const { id } = req.params;
-    console.log("📦 [PUT /productos-completos/:id] Datos recibidos:");
-    console.log("req.body:", req.body);
-    console.log("req.file:", req.file);
+    try {
+      const { id } = req.params;
+      console.log("📦 [PUT /productos-completos/:id] Datos recibidos:");
+      console.log("req.body:", req.body);
+      console.log("req.file:", req.file);
 
-    if (!ObjectId.isValid(id)) {
-      return res.status(400).json({ error: "ID de producto no válido" });
-    }
+      if (!ObjectId.isValid(id)) {
+        return res.status(400).json({ error: "ID de producto no válido" });
+      }
 
-    const objectId = new ObjectId(id);
+      const objectId = new ObjectId(id);
 
-    const updateData = {
-      Nombre: req.body.nombre,
-      Marca: req.body.marca,
-      Peso: req.body.peso,
-      UnidadPeso: req.body.unidadPeso,
-      Estado: req.body.estado,
-      fechaActualizacion: req.body.fechaActualizacion || new Date().toISOString(),
-      Utilidad: req.body.utilidad || "Sin descripción",
-      Tipo: req.body.tipo || "Sin tipo",
-      Subtipo: req.body.subtipo || "Sin subtipo",
-      PaisProveedor: req.body.paisProveedor || "España",
-    };
-
-    if (req.file) {
-      updateData.Imagen = `/uploads/2025/${req.file.filename}`;
-    }
-
-    if (ObjectId.isValid(req.body.supermercado)) {
-      updateData.Supermercado_id = new ObjectId(req.body.supermercado);
-    }
-
-    if (ObjectId.isValid(req.body.proveedor)) {
-      updateData.Proveedor_id = new ObjectId(req.body.proveedor);
-    }
-
-    if (ObjectId.isValid(req.body.usuario)) {
-      updateData.Usuario_id = new ObjectId(req.body.usuario);
-    }
-
-    // ✅ 1️⃣ Actualizar producto
-    const result = await db.collection("Productos").updateOne(
-      { _id: objectId },
-      { $set: updateData }
-    );
-
-    if (result.matchedCount === 0) {
-      return res.status(404).json({ error: "Producto no encontrado" });
-    }
-
-    // ✅ 2️⃣ Actualizar precios
-    const nuevoPrecio = {
-      producto_id: objectId,
-      precioActual: parseFloat(req.body.precioActual),
-      precioDescuento: req.body.precioDescuento ? parseFloat(req.body.precioDescuento) : null,
-      unidadLote: req.body.unidadLote || "N/A",
-      precioUnidadLote: req.body.precioPorUnidad ? parseFloat(req.body.precioPorUnidad) : null,
-      precioHistorico: parsearPrecioHistorico(req.body.precioHistorico),
-    };
-
-    await db.collection("Precios").updateOne(
-      { producto_id: objectId },
-      { $set: nuevoPrecio },
-      { upsert: true }
-    );
-
-    // ✅ 3️⃣ Actualizar descripción
-    if (req.body.tipo) {
-      const descripcionActualizada = {
-        Producto_id: objectId,
-        Tipo: req.body.tipo,
-        Subtipo: req.body.subtipo || null,
+      const updateData = {
+        Nombre: req.body.nombre,
+        Marca: req.body.marca,
+        Peso: req.body.peso,
+        UnidadPeso: req.body.unidadPeso,
+        Estado: req.body.estado,
+        fechaActualizacion:
+          req.body.fechaActualizacion || new Date().toISOString(),
         Utilidad: req.body.utilidad || "Sin descripción",
-        Ingredientes: req.body.ingredientes
-          ? req.body.ingredientes.split(",").map((i) => i.trim())
-          : [],
+        Tipo: req.body.tipo || "Sin tipo",
+        Subtipo: req.body.subtipo || "Sin subtipo",
+        PaisProveedor: req.body.paisProveedor || "España",
       };
 
-      await db.collection("Descripcion").updateOne(
-        { Producto_id: objectId },
-        { $set: descripcionActualizada },
-        { upsert: true }
-      );
-    }
+      if (req.file) {
+        updateData.Imagen = `/uploads/2025/${req.file.filename}`;
+      }
 
-    // ✅ 4️⃣ Actualizar país del proveedor
-    if (req.body.paisProveedor && ObjectId.isValid(req.body.proveedor)) {
-      await db.collection("Proveedor").updateOne(
-        { _id: new ObjectId(req.body.proveedor) },
-        { $set: { Pais: req.body.paisProveedor } }
-      );
-    }
+      if (ObjectId.isValid(req.body.supermercado)) {
+        updateData.Supermercado_id = new ObjectId(req.body.supermercado);
+      }
 
-    // ✅ 5️⃣ Actualizar país y ciudad del supermercado
-    if ((req.body.paisSupermercado || req.body.ciudad) && ObjectId.isValid(req.body.supermercado)) {
-      await db.collection("Supermercados").updateOne(
-        { _id: new ObjectId(req.body.supermercado) },
-        {
-          $set: {
-            Pais: req.body.paisSupermercado || "España",
-            Ciudad: req.body.ciudad || "N/A",
-            Ubicacion: [req.body.ubicacion || ""]
+      if (ObjectId.isValid(req.body.proveedor)) {
+        updateData.Proveedor_id = new ObjectId(req.body.proveedor);
+      }
+
+      if (ObjectId.isValid(req.body.usuario)) {
+        updateData.Usuario_id = new ObjectId(req.body.usuario);
+      }
+
+      // ✅ 1️⃣ Actualizar producto
+      const result = await db
+        .collection("Productos")
+        .updateOne({ _id: objectId }, { $set: updateData });
+
+      if (result.matchedCount === 0) {
+        return res.status(404).json({ error: "Producto no encontrado" });
+      }
+
+      // ✅ 2️⃣ Actualizar precios
+      const nuevoPrecio = {
+        producto_id: objectId,
+        precioActual: parseFloat(req.body.precioActual),
+        precioDescuento: req.body.precioDescuento
+          ? parseFloat(req.body.precioDescuento)
+          : null,
+        unidadLote: req.body.unidadLote || "N/A",
+        precioUnidadLote: req.body.precioPorUnidad
+          ? parseFloat(req.body.precioPorUnidad)
+          : null,
+        precioHistorico: parsearPrecioHistorico(req.body.precioHistorico),
+      };
+
+      await db
+        .collection("Precios")
+        .updateOne(
+          { producto_id: objectId },
+          { $set: nuevoPrecio },
+          { upsert: true }
+        );
+
+      // ✅ 3️⃣ Actualizar descripción
+      if (req.body.tipo) {
+        const descripcionActualizada = {
+          Producto_id: objectId,
+          Tipo: req.body.tipo,
+          Subtipo: req.body.subtipo || null,
+          Utilidad: req.body.utilidad || "Sin descripción",
+          Ingredientes: req.body.ingredientes
+            ? req.body.ingredientes.split(",").map((i) => i.trim())
+            : [],
+        };
+
+        await db
+          .collection("Descripcion")
+          .updateOne(
+            { Producto_id: objectId },
+            { $set: descripcionActualizada },
+            { upsert: true }
+          );
+      }
+
+      // ✅ 4️⃣ Actualizar país del proveedor
+      if (req.body.paisProveedor && ObjectId.isValid(req.body.proveedor)) {
+        await db
+          .collection("Proveedor")
+          .updateOne(
+            { _id: new ObjectId(req.body.proveedor) },
+            { $set: { Pais: req.body.paisProveedor } }
+          );
+      }
+
+      // ✅ 5️⃣ Actualizar país y ciudad del supermercado
+      if (
+        (req.body.paisSupermercado || req.body.ciudad) &&
+        ObjectId.isValid(req.body.supermercado)
+      ) {
+        await db.collection("Supermercados").updateOne(
+          { _id: new ObjectId(req.body.supermercado) },
+          {
+            $set: {
+              Pais: req.body.paisSupermercado || "España",
+              Ciudad: req.body.ciudad || "N/A",
+              Ubicacion: [req.body.ubicacion || ""],
+            },
           }
-        }
-      );
+        );
+      }
+
+      res.json({ message: "Producto completo actualizado correctamente" });
+    } catch (err) {
+      console.error("❌ Error actualizando producto completo:", err);
+      res
+        .status(500)
+        .json({ error: "Error interno al actualizar producto completo" });
     }
-
-    res.json({ message: "Producto completo actualizado correctamente" });
-
-  } catch (err) {
-    console.error("❌ Error actualizando producto completo:", err);
-    res.status(500).json({ error: "Error interno al actualizar producto completo" });
   }
-});
+);
 
 // =============================================
 // PRECIOS                                    📌
@@ -311,13 +337,19 @@ router.put("/precios/por-producto/:productoId", async (req, res) => {
 
     // ✅ Parsear números (aunque vengan como strings)
     updateData.precioActual = parseFloat(updateData.precioActual) || 0;
-    updateData.precioDescuento = updateData.precioDescuento ? parseFloat(updateData.precioDescuento) : null;
-    updateData.precioUnidadLote = updateData.precioUnidadLote ? parseFloat(updateData.precioUnidadLote) : null;
+    updateData.precioDescuento = updateData.precioDescuento
+      ? parseFloat(updateData.precioDescuento)
+      : null;
+    updateData.precioUnidadLote = updateData.precioUnidadLote
+      ? parseFloat(updateData.precioUnidadLote)
+      : null;
     updateData.unidadLote = updateData.unidadLote || "N/A";
 
     // ✅ Asegurar que precioHistorico está bien formado
     if (typeof updateData.precioHistorico === "string") {
-      const partes = updateData.precioHistorico.split(/,|\n/).map(p => p.trim());
+      const partes = updateData.precioHistorico
+        .split(/,|\n/)
+        .map((p) => p.trim());
       const historico = [];
       for (let i = 0; i < partes.length - 1; i += 2) {
         const precio = parseFloat(partes[i]);
@@ -331,30 +363,33 @@ router.put("/precios/por-producto/:productoId", async (req, res) => {
 
     // ✅ Si ya viene como array, validarlo igual
     if (Array.isArray(updateData.precioHistorico)) {
-      updateData.precioHistorico = updateData.precioHistorico.map(entry => ({
-        precio: parseFloat(entry.precio),
-        año: parseInt(entry.año)
-      })).filter(e => !isNaN(e.precio) && !isNaN(e.año));
+      updateData.precioHistorico = updateData.precioHistorico
+        .map((entry) => ({
+          precio: parseFloat(entry.precio),
+          año: parseInt(entry.año),
+        }))
+        .filter((e) => !isNaN(e.precio) && !isNaN(e.año));
     }
 
     // 🔄 Actualiza (sin upsert para evitar sobrescribir)
-    const result = await db.collection("Precios").updateOne(
-      { producto_id: productoObjectId },
-      { $set: updateData }
-    );
+    const result = await db
+      .collection("Precios")
+      .updateOne({ producto_id: productoObjectId }, { $set: updateData });
 
     if (result.matchedCount === 0) {
-      return res.status(404).json({ error: "No se encontró precio para ese producto" });
+      return res
+        .status(404)
+        .json({ error: "No se encontró precio para ese producto" });
     }
 
-    res.json({ message: "✅ Precio actualizado correctamente (por producto_id)" });
-
+    res.json({
+      message: "✅ Precio actualizado correctamente (por producto_id)",
+    });
   } catch (err) {
     console.error("❌ Error en PUT /precios/por-producto:", err);
     res.status(500).json({ error: "Error interno del servidor" });
   }
 });
-
 
 // =============================================
 // SUPERMERCADOS                              📌

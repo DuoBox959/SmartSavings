@@ -18,7 +18,7 @@
   width: 50%;
   height: 100vh;
   background: linear-gradient(to right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0)),
-              url("../assets/img/login.png") no-repeat center center;
+    url("../assets/img/login.png") no-repeat center center;
   background-size: cover;
   color: white;
   display: flex;
@@ -115,7 +115,7 @@ form input:focus {
 
 .password-container input {
   width: 100%;
-  padding-right: 40px; /* Espacio para el icono */
+  padding-right: 40px;
 }
 
 .password-container span {

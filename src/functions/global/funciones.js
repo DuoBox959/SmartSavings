@@ -1,4 +1,3 @@
-
 // =======================================
 // 🚀 FUNCIONES DE CARGAS
 // =======================================
@@ -106,26 +105,42 @@ export function renderizarProductos(productos, precios = []) {
   const productosContainer = document.getElementById("productos-container");
   productosContainer.innerHTML = ""; // 🧹 Limpia contenido anterior
 
-  productos.forEach(producto => {
-    const precio = precios.find(p => p.producto_id === producto._id);
+  productos.forEach((producto) => {
+    const precio = precios.find((p) => p.producto_id === producto._id);
     const precioActual = precio?.precioActual || "N/D";
 
     const productoHTML = `
       <div class="product-card">
         <a href="detalle-producto.html?id=${producto._id}">
-          <img src="${producto.Imagen ? `http://localhost:3000${producto.Imagen}` : '../assets/img/default.webp'}" alt="${producto.Nombre}">
+          <img src="${
+            producto.Imagen
+              ? `http://localhost:3000${producto.Imagen}`
+              : "../assets/img/default.webp"
+          }" alt="${producto.Nombre}">
           <h3>${producto.Nombre}</h3>
         </a>
         <div class="info-producto">
-          <p class="supermercado">Supermercado: ${producto.Supermercado_id || "Desconocido"}</p>
+          <p class="supermercado">Supermercado: ${
+            producto.Supermercado_id || "Desconocido"
+          }</p>
           <p class="precio">Precio: ${precioActual} €</p>
-          <p class="peso">Peso: ${producto.Peso || "?"} ${producto.UnidadPeso || ""}</p>
-          <p class="marca">Marca: ${producto.Marca?.trim() || "Marca desconocida"}</p>
-          <p class="estado">Estado: ${producto.Estado?.trim() || "No especificado"}</p>
+          <p class="peso">Peso: ${producto.Peso || "?"} ${
+      producto.UnidadPeso || ""
+    }</p>
+          <p class="marca">Marca: ${
+            producto.Marca?.trim() || "Marca desconocida"
+          }</p>
+          <p class="estado">Estado: ${
+            producto.Estado?.trim() || "No especificado"
+          }</p>
         </div>
         <div class="acciones">
-          <button class="btn-editar" onclick="editarProducto('${producto._id}')">✏️ Editar</button>
-          <button class="btn-eliminar" onclick="eliminarProducto('${producto._id}')">🗑️ Eliminar</button>
+          <button class="btn-editar" onclick="editarProducto('${
+            producto._id
+          }')">✏️ Editar</button>
+          <button class="btn-eliminar" onclick="eliminarProducto('${
+            producto._id
+          }')">🗑️ Eliminar</button>
         </div>
       </div>
     `;

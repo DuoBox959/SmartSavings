@@ -37,21 +37,30 @@ registerForm.addEventListener("submit", async (event) => {
 
   // ✅ Validación de campos vacíos
   if (validaciones.camposVacios(username, email, password)) {
-    validaciones.mostrarAlertaError("⚠️ Campos incompletos", "Por favor, completa todos los campos.");
+    validaciones.mostrarAlertaError(
+      "⚠️ Campos incompletos",
+      "Por favor, completa todos los campos."
+    );
     return;
   }
 
   // ✅ Validación de email
   if (!validaciones.esEmailValido(email)) {
-    validaciones.mostrarAlertaError("⚠️ Email inválido", "Por favor, ingresa un email válido.");
+    validaciones.mostrarAlertaError(
+      "⚠️ Email inválido",
+      "Por favor, ingresa un email válido."
+    );
     return;
   }
 
   // ✅ Validación de contraseña (mínimo 8 caracteres)
   if (!validaciones.esPasswordSegura(password)) {
-    validaciones.mostrarAlertaError("⚠️ Contraseña débil", "La contraseña debe tener al menos 8 caracteres, un número y una letra minúscula.");
+    validaciones.mostrarAlertaError(
+      "⚠️ Contraseña débil",
+      "La contraseña debe tener al menos 8 caracteres, un número y una letra minúscula."
+    );
     return;
-}
+  }
 
   // ✅ Validación de nombre de usuario
   if (!usernameRegex.test(username)) {
@@ -104,35 +113,35 @@ registerForm.addEventListener("submit", async (event) => {
 });
 
 // ❌ No permitir espacios en email, password y username
-const inputsSinEspacios = ['email', 'password', 'username'];
+const inputsSinEspacios = ["email", "password", "username"];
 
-inputsSinEspacios.forEach(id => {
+inputsSinEspacios.forEach((id) => {
   const input = document.getElementById(id);
 
   if (input) {
     // Evita que se presione la barra espaciadora
-    input.addEventListener('keydown', (e) => {
-      if (e.key === ' ') {
+    input.addEventListener("keydown", (e) => {
+      if (e.key === " ") {
         e.preventDefault();
       }
     });
 
     // Elimina cualquier espacio pegado desde el portapapeles
-    input.addEventListener('input', (e) => {
-      e.target.value = e.target.value.replace(/\s/g, '');
+    input.addEventListener("input", (e) => {
+      e.target.value = e.target.value.replace(/\s/g, "");
     });
   }
 });
 
 // ✅ Mostrar/Ocultar lista de beneficios
-const toggleBtn = document.getElementById('toggle-benefits');
-const benefitsList = document.getElementById('benefits-list');
+const toggleBtn = document.getElementById("toggle-benefits");
+const benefitsList = document.getElementById("benefits-list");
 
 if (toggleBtn && benefitsList) {
-  toggleBtn.addEventListener('click', () => {
-    const isHidden = benefitsList.classList.toggle('hidden');
+  toggleBtn.addEventListener("click", () => {
+    const isHidden = benefitsList.classList.toggle("hidden");
     toggleBtn.textContent = isHidden
-      ? 'Ver qué está incluido ▼'
-      : 'Ocultar beneficios ▲';
+      ? "Ver qué está incluido ▼"
+      : "Ocultar beneficios ▲";
   });
 }

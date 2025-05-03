@@ -5,77 +5,52 @@
 /* 🎯 Estilos base del <footer> */
 footer {
   text-align: center;
-  /* Centra el texto dentro del footer */
   background: #333;
-  /* Fondo oscuro para mejor contraste */
   color: #e0e0e0;
-  /* Color claro para el texto sobre fondo oscuro */
   padding: 20px;
-  /* Espaciado interno para dar aire */
   font-size: 0.95em;
-  /* Tamaño de fuente ligeramente reducido */
   margin-top: auto;
-  /* Empuja el footer hacia el fondo si se usa con flexbox */
   border-top: 1px solid rgba(255, 255, 255, 0.05);
-  /* Línea superior sutil y elegante */
   animation: fadeInFooter 0.6s ease-in-out;
-  /* Añade animación de entrada */
 }
 
 /* 📂 Contenedor de enlaces dentro del footer */
 footer .footer-enlaces {
   margin-top: 12px;
-  /* Espacio arriba del grupo de enlaces */
   display: flex;
-  /* Usa Flexbox para distribución horizontal */
   flex-wrap: wrap;
-  /* Permite que los enlaces pasen a una nueva línea si no caben */
   justify-content: center;
-  /* Centra los enlaces horizontalmente */
   gap: 12px;
-  /* Espaciado entre enlaces */
 }
 
 /* 🔗 Enlaces individuales del footer */
 footer .footer-enlaces a {
   color: #81c784;
-  /* Verde suave para los enlaces */
   text-decoration: none;
-  /* Sin subrayado para limpieza visual */
   font-weight: 500;
-  /* Peso de fuente medio */
   transition: color 0.3s ease, transform 0.2s ease;
-  /* Suaviza el hover */
   transform: scale(1);
-  /* Estado base del tamaño del enlace */
 }
 
 /* 🖱️ Hover para enlaces: cambio de color y ligero zoom */
 footer .footer-enlaces a:hover {
   color: #a8d5ba;
-  /* Verde más claro al pasar el mouse */
   transform: scale(1.05);
-  /* Ligeramente más grande para dar feedback visual */
 }
 
 /* 🌗 Modo oscuro respetando las preferencias del usuario */
 @media (prefers-color-scheme: dark) {
   footer {
     background: #222;
-    /* Fondo más oscuro para entornos oscuros */
     color: #ddd;
-    /* Texto un poco más claro para contraste */
     border-top: 1px solid rgba(255, 255, 255, 0.1);
-    /* Línea superior más notoria */
   }
 
   footer .footer-enlaces a {
     color: #81c784;
-    /* Se mantiene igual para visibilidad en ambos modos */
   }
 
   footer .footer-enlaces a:hover {
     color: #b9e2c5;
-    /* Hover ligeramente más brillante en modo oscuro */
   }
 }

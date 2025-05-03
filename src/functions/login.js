@@ -1,5 +1,9 @@
 import { volverAtras } from "../functions/global/funciones.js";
-import { esEmailValido, esTextoValido, mostrarAlertaError } from "../valid/validaciones.js";
+import {
+  esEmailValido,
+  esTextoValido,
+  mostrarAlertaError,
+} from "../valid/validaciones.js";
 
 // Seleccionamos elementos del formulario
 const loginForm = document.querySelector("form");
@@ -44,21 +48,30 @@ loginForm.addEventListener("submit", async (event) => {
 
   // 🚨 Verificar que los campos no estén vacíos
   if (!esTextoValido(emailOrUsername) || !esTextoValido(password)) {
-    mostrarAlertaError("⚠️ Campos incompletos", "Por favor, completa todos los campos.");
+    mostrarAlertaError(
+      "⚠️ Campos incompletos",
+      "Por favor, completa todos los campos."
+    );
     return;
   }
 
   // 📧 Si el usuario ingresa un email, validar formato
   if (emailOrUsername.includes("@")) {
     if (!esEmailValido(emailOrUsername)) {
-      mostrarAlertaError("⚠️ Email inválido", "Ingresa un correo electrónico válido.");
+      mostrarAlertaError(
+        "⚠️ Email inválido",
+        "Ingresa un correo electrónico válido."
+      );
       return;
     }
   } else {
     // 🔡 Si es un nombre de usuario, validar que sea alfanumérico con guiones permitidos
     const usernameRegex = /^[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$/;
     if (!usernameRegex.test(emailOrUsername)) {
-      mostrarAlertaError("⚠️ Usuario inválido", "El nombre de usuario solo puede contener letras, números y guiones (sin empezar ni terminar con guión).");
+      mostrarAlertaError(
+        "⚠️ Usuario inválido",
+        "El nombre de usuario solo puede contener letras, números y guiones (sin empezar ni terminar con guión)."
+      );
       return;
     }
   }
@@ -103,23 +116,22 @@ loginForm.addEventListener("submit", async (event) => {
 });
 
 // ❌ No permitir espacios en emailOrUsername y password
-const loginInputsSinEspacios = ['emailOrUsername', 'password'];
+const loginInputsSinEspacios = ["emailOrUsername", "password"];
 
-loginInputsSinEspacios.forEach(id => {
+loginInputsSinEspacios.forEach((id) => {
   const input = document.getElementById(id);
 
   if (input) {
     // Bloquea la tecla espacio
-    input.addEventListener('keydown', (e) => {
-      if (e.key === ' ') {
+    input.addEventListener("keydown", (e) => {
+      if (e.key === " ") {
         e.preventDefault();
       }
     });
 
     // Elimina espacios pegados
-    input.addEventListener('input', (e) => {
-      e.target.value = e.target.value.replace(/\s/g, '');
+    input.addEventListener("input", (e) => {
+      e.target.value = e.target.value.replace(/\s/g, "");
     });
   }
 });
-

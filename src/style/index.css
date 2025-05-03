@@ -13,7 +13,6 @@
 body {
   font-family: "Roboto", sans-serif;
   background: #cecfcfe8;
-  /* Fondo gris claro con transparencia */
   color: #333;
   display: flex;
   flex-direction: column;
@@ -25,7 +24,6 @@ main {
   justify-content: center;
   align-items: center;
   min-height: calc(100vh - 200px);
-  /* Se descuenta header/footer */
 }
 
 .container {
@@ -42,7 +40,6 @@ main {
   justify-content: center;
   align-items: center;
   gap: 50px;
-  /* Espacio entre tarjetas */
   padding: 50px;
 }
 
@@ -57,7 +54,6 @@ main {
 /* 🎴 Tarjeta individual (icono + botón) */
 .tarjeta {
   background: none !important;
-  /* No background visual */
   box-shadow: none !important;
   border-radius: 0;
   width: auto;
@@ -78,7 +74,6 @@ main {
   background: #e0e0e0;
   padding: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  /* Sombra para dar profundidad */
 }
 
 /* Texto del botón inferior */
@@ -112,18 +107,15 @@ main {
 
 .tarjeta:hover img {
   transform: scale(1.4);
-  /* Aumenta el tamaño del icono */
 }
 
 .tarjeta:hover .enlace {
   transform: scale(1.1);
-  /* También el botón */
 }
 
 /* ====================================================
 🍪 BANNER DE COOKIES
 ==================================================== */
-
 .cookies-banner {
   position: fixed;
   bottom: 0;
@@ -207,5 +199,5 @@ main {
   height: 100%;
   background: rgba(20, 20, 20, 0.7);
   z-index: 1000;
-  display: none;
+  display: none;
 }

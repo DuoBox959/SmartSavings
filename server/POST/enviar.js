@@ -19,7 +19,8 @@ const storage = multer.diskStorage({
     const rutaAbsoluta = path.join(__dirname, "../uploads/2025");
     cb(null, rutaAbsoluta);
   },
-  filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname)),
+  filename: (req, file, cb) =>
+    cb(null, Date.now() + path.extname(file.originalname)),
 });
 
 const upload = multer({ storage });
@@ -40,11 +41,9 @@ router.post("/login", async (req, res) => {
 
     // ⚠️ Verificar datos ingresados
     if (!emailOrUsername || !password) {
-      return res
-        .status(400)
-        .json({
-          error: "Email o nombre de usuario y contraseña son requeridos",
-        });
+      return res.status(400).json({
+        error: "Email o nombre de usuario y contraseña son requeridos",
+      });
     }
 
     // 🔍 Buscar usuario por email o nombre de usuario
@@ -202,96 +201,124 @@ router.post("/productos", upload.single("Imagen"), async (req, res) => {
 
 // CREAR UN NUEVO PRODUCTO COMPLETO 🧩
 
-router.post("/productos-completos", upload.single("Imagen"), async (req, res) => {
-  const db = req.db;
+router.post(
+  "/productos-completos",
+  upload.single("Imagen"),
+  async (req, res) => {
+    const db = req.db;
 
-  try {
-    // ✅ Validaciones de ID
-    const proveedorId = ObjectId.isValid(req.body.proveedor) ? new ObjectId(req.body.proveedor) : null;
-    const supermercadoId = ObjectId.isValid(req.body.supermercado) ? new ObjectId(req.body.supermercado) : null;
-    const usuarioId = ObjectId.isValid(req.body.usuario) ? new ObjectId(req.body.usuario) : null;
-
-    // 🎯 LOG DE DEPURACIÓN
-    console.log("📥 [REQ] Campos recibidos desde el cliente:");
-    console.log("req.body:", req.body);
-    console.log("📷 req.file (imagen):", req.file);
-
-    // 1️⃣ Inserción del producto
-    const nuevoProducto = {
-      Nombre: req.body.nombre,
-      Imagen: req.file ? `/uploads/2025/${req.file.filename}` : req.body.imagen || null,
-      Marca: req.body.marca || "Sin marca",
-      Peso: req.body.peso,
-      UnidadPeso: req.body.unidadPeso,
-      Estado: req.body.estado,
-      Proveedor_id: proveedorId,
-      Supermercado_id: supermercadoId,
-      Usuario_id: usuarioId,
-      fechaSubida: req.body.fechaSubida || new Date().toISOString(),
-      fechaActualizacion: req.body.fechaActualizacion || new Date().toISOString(),
-    };
-
-    // 🎯 LOG NUEVO PRODUCTO
-    console.log("🆕 [PRODUCTO] Datos construidos:", nuevoProducto);
-
-    const resultadoProducto = await db.collection("Productos").insertOne(nuevoProducto);
-    const productoId = resultadoProducto.insertedId;
-
-    // 2️⃣ Inserción del precio
-    let precioHistorico = [];
     try {
-      if (req.body.precioHistorico && typeof req.body.precioHistorico === "string") {
-        console.log("🧪 Precio histórico recibido:", req.body.precioHistorico);
-        const parsed = JSON.parse(req.body.precioHistorico);
-        precioHistorico = Array.isArray(parsed) ? parsearPrecioHistorico(parsed) : [];
-      }
-    } catch (e) {
-      console.warn("⚠️ precioHistorico inválido:", req.body.precioHistorico);
-      precioHistorico = [];
-    }
-    
-    const nuevoPrecio = {
-      producto_id: productoId,
-      precioActual: parseFloat(req.body.precioActual),
-      precioDescuento: req.body.precioDescuento ? parseFloat(req.body.precioDescuento) : null,
-      unidadLote: req.body.unidadLote || "N/A",
-      precioUnidadLote: req.body.precioPorUnidad ? parseFloat(req.body.precioPorUnidad) : null,
-      precioHistorico,
-    };
-    
+      // ✅ Validaciones de ID
+      const proveedorId = ObjectId.isValid(req.body.proveedor)
+        ? new ObjectId(req.body.proveedor)
+        : null;
+      const supermercadoId = ObjectId.isValid(req.body.supermercado)
+        ? new ObjectId(req.body.supermercado)
+        : null;
+      const usuarioId = ObjectId.isValid(req.body.usuario)
+        ? new ObjectId(req.body.usuario)
+        : null;
 
-    console.log("💸 [PRECIO] Datos construidos:", nuevoPrecio);
-    await db.collection("Precios").insertOne(nuevoPrecio);
+      // 🎯 LOG DE DEPURACIÓN
+      console.log("📥 [REQ] Campos recibidos desde el cliente:");
+      console.log("req.body:", req.body);
+      console.log("📷 req.file (imagen):", req.file);
 
-    // 3️⃣ Inserción de descripción
-    if (req.body.tipo) {
-      const nuevaDescripcion = {
-        Producto_id: productoId,
-        Tipo: req.body.tipo,
-        Subtipo: req.body.subtipo || null,
-        Utilidad: req.body.utilidad || null,
-        Ingredientes: req.body.ingredientes
-          ? req.body.ingredientes.split(",").map(i => i.trim()).filter(i => i.length > 0)
-          : [],
+      // 1️⃣ Inserción del producto
+      const nuevoProducto = {
+        Nombre: req.body.nombre,
+        Imagen: req.file
+          ? `/uploads/2025/${req.file.filename}`
+          : req.body.imagen || null,
+        Marca: req.body.marca || "Sin marca",
+        Peso: req.body.peso,
+        UnidadPeso: req.body.unidadPeso,
+        Estado: req.body.estado,
+        Proveedor_id: proveedorId,
+        Supermercado_id: supermercadoId,
+        Usuario_id: usuarioId,
+        fechaSubida: req.body.fechaSubida || new Date().toISOString(),
+        fechaActualizacion:
+          req.body.fechaActualizacion || new Date().toISOString(),
       };
 
-      // 🎯 LOG DESCRIPCIÓN
-      console.log("📝 [DESCRIPCIÓN] Datos construidos:", nuevaDescripcion);
-      await db.collection("Descripcion").insertOne(nuevaDescripcion);
-    } else {
-      console.warn("⚠️ Tipo no enviado. No se creó descripción.");
+      // 🎯 LOG NUEVO PRODUCTO
+      console.log("🆕 [PRODUCTO] Datos construidos:", nuevoProducto);
+
+      const resultadoProducto = await db
+        .collection("Productos")
+        .insertOne(nuevoProducto);
+      const productoId = resultadoProducto.insertedId;
+
+      // 2️⃣ Inserción del precio
+      let precioHistorico = [];
+      try {
+        if (
+          req.body.precioHistorico &&
+          typeof req.body.precioHistorico === "string"
+        ) {
+          console.log(
+            "🧪 Precio histórico recibido:",
+            req.body.precioHistorico
+          );
+          const parsed = JSON.parse(req.body.precioHistorico);
+          precioHistorico = Array.isArray(parsed)
+            ? parsearPrecioHistorico(parsed)
+            : [];
+        }
+      } catch (e) {
+        console.warn("⚠️ precioHistorico inválido:", req.body.precioHistorico);
+        precioHistorico = [];
+      }
+
+      const nuevoPrecio = {
+        producto_id: productoId,
+        precioActual: parseFloat(req.body.precioActual),
+        precioDescuento: req.body.precioDescuento
+          ? parseFloat(req.body.precioDescuento)
+          : null,
+        unidadLote: req.body.unidadLote || "N/A",
+        precioUnidadLote: req.body.precioPorUnidad
+          ? parseFloat(req.body.precioPorUnidad)
+          : null,
+        precioHistorico,
+      };
+
+      console.log("💸 [PRECIO] Datos construidos:", nuevoPrecio);
+      await db.collection("Precios").insertOne(nuevoPrecio);
+
+      // 3️⃣ Inserción de descripción
+      if (req.body.tipo) {
+        const nuevaDescripcion = {
+          Producto_id: productoId,
+          Tipo: req.body.tipo,
+          Subtipo: req.body.subtipo || null,
+          Utilidad: req.body.utilidad || null,
+          Ingredientes: req.body.ingredientes
+            ? req.body.ingredientes
+                .split(",")
+                .map((i) => i.trim())
+                .filter((i) => i.length > 0)
+            : [],
+        };
+
+        // 🎯 LOG DESCRIPCIÓN
+        console.log("📝 [DESCRIPCIÓN] Datos construidos:", nuevaDescripcion);
+        await db.collection("Descripcion").insertOne(nuevaDescripcion);
+      } else {
+        console.warn("⚠️ Tipo no enviado. No se creó descripción.");
+      }
+
+      res.status(201).json({
+        message: "Producto completo creado correctamente",
+        producto_id: productoId,
+      });
+    } catch (err) {
+      console.error("❌ Error al crear producto completo:", err);
+      res.status(500).json({ error: "Error interno del servidor" });
     }
-
-    res.status(201).json({
-      message: "Producto completo creado correctamente",
-      producto_id: productoId,
-    });
-
-  } catch (err) {
-    console.error("❌ Error al crear producto completo:", err);
-    res.status(500).json({ error: "Error interno del servidor" });
   }
-});
+);
 
 // =============================================
 // TIPOS Y SUBTIPOS                           📌
@@ -306,12 +333,18 @@ router.post("/tipos", async (req, res) => {
 
   try {
     const { Nombre } = req.body;
-    if (!Nombre) return res.status(400).json({ error: "Nombre es obligatorio" });
+    if (!Nombre)
+      return res.status(400).json({ error: "Nombre es obligatorio" });
 
     const nuevoTipo = { Nombre };
     const result = await db.collection("Tipos").insertOne(nuevoTipo);
 
-    res.status(201).json({ message: "Tipo creado correctamente", tipo: { ...nuevoTipo, _id: result.insertedId } });
+    res
+      .status(201)
+      .json({
+        message: "Tipo creado correctamente",
+        tipo: { ...nuevoTipo, _id: result.insertedId },
+      });
   } catch (err) {
     console.error("❌ Error creando tipo:", err);
     res.status(500).json({ error: "Error al crear tipo" });
@@ -327,12 +360,18 @@ router.post("/subtipos", async (req, res) => {
 
   try {
     const { Nombre } = req.body;
-    if (!Nombre) return res.status(400).json({ error: "Nombre es obligatorio" });
+    if (!Nombre)
+      return res.status(400).json({ error: "Nombre es obligatorio" });
 
     const nuevoSubtipo = { Nombre };
     const result = await db.collection("Subtipos").insertOne(nuevoSubtipo);
 
-    res.status(201).json({ message: "Subtipo creado correctamente", subtipo: { ...nuevoSubtipo, _id: result.insertedId } });
+    res
+      .status(201)
+      .json({
+        message: "Subtipo creado correctamente",
+        subtipo: { ...nuevoSubtipo, _id: result.insertedId },
+      });
   } catch (err) {
     console.error("❌ Error creando subtipo:", err);
     res.status(500).json({ error: "Error al crear subtipo" });
@@ -393,7 +432,6 @@ router.post("/precios", async (req, res) => {
   }
 });
 
-
 // =============================================
 // SUPERMERCADOS                              📌
 // =============================================
@@ -406,9 +444,14 @@ router.post("/supermercados", async (req, res) => {
   const db = req.db;
 
   try {
-    const { Nombre, Ubicaciones } = req.body;  // Aseguramos que recibimos 'Ubicaciones' como un array
+    const { Nombre, Ubicaciones } = req.body; // Aseguramos que recibimos 'Ubicaciones' como un array
 
-    if (!Nombre || !Ubicaciones || !Array.isArray(Ubicaciones) || Ubicaciones.length === 0) {
+    if (
+      !Nombre ||
+      !Ubicaciones ||
+      !Array.isArray(Ubicaciones) ||
+      Ubicaciones.length === 0
+    ) {
       return res
         .status(400)
         .json({ error: "El nombre y al menos una ubicación son obligatorios" });
@@ -416,7 +459,7 @@ router.post("/supermercados", async (req, res) => {
 
     // Validar cada ubicación
     for (const ubicacion of Ubicaciones) {
-      if (!ubicacion.pais || !ubicacion.ciudad || !ubicacion.ubicacion)        {
+      if (!ubicacion.pais || !ubicacion.ciudad || !ubicacion.ubicacion) {
         return res.status(400).json({
           error: "Cada ubicación debe tener Pais, Ciudad y Ubicación.",
         });
@@ -492,12 +535,10 @@ router.post("/datos-personales", async (req, res) => {
     data.usuario_id = new ObjectId(data.usuario_id);
 
     const result = await db.collection("DatosUsuario").insertOne(data);
-    res
-      .status(201)
-      .json({
-        message: "Datos guardados correctamente",
-        id: result.insertedId,
-      });
+    res.status(201).json({
+      message: "Datos guardados correctamente",
+      id: result.insertedId,
+    });
   } catch (err) {
     console.error("❌ Error guardando datos personales:", err);
     res.status(500).json({ error: "Error en el servidor" });

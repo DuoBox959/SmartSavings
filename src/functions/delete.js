@@ -224,16 +224,20 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ✅ Campos donde se eliminarán espacios al inicio y final
-const camposEliminarCuenta = ['username', 'email', 'password', 'confirm-password'];
+const camposEliminarCuenta = [
+  "username",
+  "email",
+  "password",
+  "confirm-password",
+];
 
-camposEliminarCuenta.forEach(id => {
+camposEliminarCuenta.forEach((id) => {
   const input = document.getElementById(id);
 
   if (input) {
-    input.addEventListener('input', (e) => {
+    input.addEventListener("input", (e) => {
       // Elimina espacios al inicio y al final
-      e.target.value = e.target.value.replace(/^\s+|\s+$/g, '');
+      e.target.value = e.target.value.replace(/^\s+|\s+$/g, "");
     });
   }
 });
-

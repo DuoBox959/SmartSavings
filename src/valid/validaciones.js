@@ -52,7 +52,6 @@ function esPasswordSegura(password) {
   return regex.test(password);
 }
 
-
 // 🔡 Eliminar espacios iniciales y finales
 function limpiarEspacios(texto) {
   return texto.replace(/\s+/g, " ").trim();
@@ -112,8 +111,6 @@ export function esFechaValida(fecha) {
 
   return fechaValida;
 }
-
-
 
 // ✅ Exporta todas las necesarias
 export {

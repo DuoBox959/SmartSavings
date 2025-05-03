@@ -93,7 +93,7 @@ function configurarFormulario() {
         title: "Campos vacíos",
         text: "Debes ingresar al menos un dato para actualizar.",
         icon: "error",
-        confirmButtonText: "Aceptar"
+        confirmButtonText: "Aceptar",
       });
     }
 
@@ -102,7 +102,7 @@ function configurarFormulario() {
         title: "Nombre de usuario inválido",
         text: "Solo se permiten caracteres alfanuméricos y guiones. No puede comenzar ni terminar con un guión, ni contener espacios.",
         icon: "error",
-        confirmButtonText: "Aceptar"
+        confirmButtonText: "Aceptar",
       });
     }
 
@@ -111,7 +111,7 @@ function configurarFormulario() {
         title: "Email inválido",
         text: "Por favor, ingresa un email válido.",
         icon: "error",
-        confirmButtonText: "Aceptar"
+        confirmButtonText: "Aceptar",
       });
     }
 
@@ -120,14 +120,18 @@ function configurarFormulario() {
         title: "Contraseña inválida",
         text: "Debe contener al menos: 8 caracteres, Una letra minúscula, Un número",
         icon: "error",
-        confirmButtonText: "Aceptar"
+        confirmButtonText: "Aceptar",
       });
     }
 
-    const currentUser = JSON.parse(sessionStorage.getItem("user")) || JSON.parse(localStorage.getItem("user"));
+    const currentUser =
+      JSON.parse(sessionStorage.getItem("user")) ||
+      JSON.parse(localStorage.getItem("user"));
 
     if (!currentUser || !currentUser.id) {
-      return console.error("No se encontró un usuario autenticado o el ID es inválido.");
+      return console.error(
+        "No se encontró un usuario autenticado o el ID es inválido."
+      );
     }
 
     try {
@@ -147,11 +151,14 @@ function configurarFormulario() {
           pass: password || currentUser.password,
         };
 
-        const response = await fetch(`http://localhost:3000/api/usuarios/${currentUser.id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(updateData),
-        });
+        const response = await fetch(
+          `http://localhost:3000/api/usuarios/${currentUser.id}`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updateData),
+          }
+        );
 
         if (!response.ok) {
           const errorText = await response.text();
@@ -183,7 +190,6 @@ function configurarFormulario() {
   });
 }
 
-
 // Mostrar/ocultar contraseña
 function configurarMostrarContrasena() {
   const passwordField = document.getElementById("password");
@@ -199,15 +205,15 @@ function configurarMostrarContrasena() {
 }
 
 // ✅ Campos donde se deben eliminar espacios al inicio y final
-const camposActualizar = ['username', 'email', 'password'];
+const camposActualizar = ["username", "email", "password"];
 
-camposActualizar.forEach(id => {
+camposActualizar.forEach((id) => {
   const input = document.getElementById(id);
 
   if (input) {
-    input.addEventListener('input', (e) => {
+    input.addEventListener("input", (e) => {
       // Elimina espacios al principio y al final
-      e.target.value = e.target.value.replace(/^\s+|\s+$/g, '');
+      e.target.value = e.target.value.replace(/^\s+|\s+$/g, "");
     });
   }
 });
