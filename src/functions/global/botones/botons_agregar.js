@@ -1,4 +1,4 @@
-import { API_BASE } from "../../../../server/UTILS/utils.js";
+import { API_BASE } from "../UTILS/utils.js"; 
 import { obtenerUbicacionesGenerico } from "../selects/cargar.js";
 import { parsearPrecioHistorico  } from "../selects/helpers.js";
 
