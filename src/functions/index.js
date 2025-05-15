@@ -2,7 +2,6 @@
 import { cargarHeaderFooter } from "../functions/global/funciones.js";
 import { gestionarUsuarioAutenticado } from "../functions/global/header.js";
 import { cerrarSesion } from "../functions/global/funciones.js";
-import { cargarChatbot } from "../functions/global/funciones.js";
 
 // Evento que se ejecuta cuando el DOM se ha cargado completamente
 document.addEventListener("DOMContentLoaded", async () => {
@@ -12,7 +11,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     manejarCookies();
     manejarUsuario();
     restringirAccesoProductos();
-    // await cargarChatbot();
   } catch (error) {
     console.error("Hubo un error durante la inicialización:", error);
   }

@@ -103,6 +103,7 @@ router.get("/productos", async (req, res) => {
             Proveedor_id: { $arrayElemAt: ["$ProveedorInfo.Nombre", 0] }, // Nombre del proveedor
             Supermercado_id: { $arrayElemAt: ["$SupermercadoInfo.Nombre", 0] }, // Nombre del supermercado
             Usuario_id: { $arrayElemAt: ["$UsuarioInfo.nombre", 0] }, // Nombre del usuario
+            Ubicaciones: 1
           },
         },
       ])
@@ -180,9 +181,25 @@ router.get("/productos-completos", async (req, res) => {
           },
         },
         {
+          $lookup: {
+            from: "Supermercados",
+            localField: "Supermercado_id",
+            foreignField: "_id",
+            as: "SupermercadoInfo",
+          },
+        },
+        {
+          $unwind: {
+            path: "$SupermercadoInfo",
+            preserveNullAndEmptyArrays: true,
+          },
+        },
+        {
           $addFields: {
             Utilidad: "$Descripcion.Utilidad",
             Ingredientes: "$Descripcion.Ingredientes",
+            SupermercadoNombre: "$SupermercadoInfo.Nombre",
+            Ubicaciones: "$SupermercadoInfo.Ubicaciones",
           },
         },
         {
@@ -196,6 +213,8 @@ router.get("/productos-completos", async (req, res) => {
             Estado: 1,
             Utilidad: 1,
             Ingredientes: 1,
+            SupermercadoNombre: 1,
+            Ubicaciones: 1, // <-- esto te dará países, ciudades, direcciones
           },
         },
       ])
@@ -207,6 +226,7 @@ router.get("/productos-completos", async (req, res) => {
     res.status(500).json({ error: "Error al obtener productos completos" });
   }
 });
+
 
 // =============================================
 // PRECIOS                                    📌

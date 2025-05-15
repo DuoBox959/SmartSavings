@@ -7,8 +7,8 @@ const fs = require("fs");
 
 const multer = require("multer");
 const path = require("path");
-const { parsearPrecioHistorico } = require("../UTILS/utils"); // (según tu estructura)
-
+console.log("Directorio actual:", __dirname);
+const { parsearPrecioHistorico } = require("../../src/functions/global/helpers/helpers");
 const rutaUpload2025 = path.join(__dirname, "../uploads/2025");
 if (!fs.existsSync(rutaUpload2025)) {
   fs.mkdirSync(rutaUpload2025, { recursive: true });
@@ -240,6 +240,9 @@ router.post(
         fechaSubida: req.body.fechaSubida || new Date().toISOString(),
         fechaActualizacion:
           req.body.fechaActualizacion || new Date().toISOString(),
+          Ubicaciones: req.body.ubicaciones
+          ? JSON.parse(req.body.ubicaciones)
+          : [],
       };
 
       // 🎯 LOG NUEVO PRODUCTO

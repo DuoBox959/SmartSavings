@@ -1,5 +1,5 @@
 // server/PUT/actualizar.js
-const { parsearPrecioHistorico } = require("../UTILS/utils");
+const { parsearPrecioHistorico } = require("../../src/functions/global/helpers/helpers");
 
 const express = require("express");
 const router = express.Router();

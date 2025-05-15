@@ -162,14 +162,20 @@ async function cargarProducto() {
       "<strong>Subtipo:</strong> " + (descripcion?.Subtipo || "N/A");
     document.getElementById("producto-supermercado").innerHTML =
       "<strong>Supermercado:</strong> " + (supermercado?.Nombre || "");
-    document.getElementById("producto-ubicacion").innerHTML =
-      "<strong>Ubicación del supermercado:</strong> " +
-      (supermercado?.Ubicacion || "");
-    document.getElementById("producto-pais-super").innerHTML =
-      "<strong>País del supermercado:</strong> " + (supermercado?.Pais || "");
-    document.getElementById("producto-ciudad-super").innerHTML =
-      "<strong>Ciudad del supermercado:</strong> " +
-      (supermercado?.Ciudad || "");
+      const ubicacion = supermercado?.Ubicaciones?.[0] || {};
+
+      document.getElementById("producto-ubicacion").innerHTML =
+        "<strong>Ubicación del supermercado:</strong> " +
+        (ubicacion.Ubicacion || "N/A");
+      
+      document.getElementById("producto-pais-super").innerHTML =
+        "<strong>País del supermercado:</strong> " +
+        (ubicacion.Pais || "N/A");
+      
+      document.getElementById("producto-ciudad-super").innerHTML =
+        "<strong>Ciudad del supermercado:</strong> " +
+        (ubicacion.Ciudad || "N/A");
+      
     document.getElementById("producto-proveedor").innerHTML =
       "<strong>Proveedor:</strong> " + (proveedor?.Nombre || "");
     document.getElementById("producto-pais-proveedor").innerHTML =

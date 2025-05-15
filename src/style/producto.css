@@ -425,3 +425,69 @@ label.required::after {
   flex-direction: column;
   justify-content: flex-start;
 }
+
+/* ====================================================
+📄 SELECTOR
+==================================================== */
+#selector-ubicacion-dinamico label {
+  font-weight: 600;
+  color: #333;
+}
+
+#selector-ubicacion-dinamico input,
+#selector-ubicacion-dinamico select {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.grid-ubicacion {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.fieldset-ubicacion {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 1.5em;
+  margin-top: 1em;
+  background-color: #fdfdfd;
+}
+
+.legend-ubicacion {
+  font-weight: bold;
+  color: #1976d2;
+  padding: 0 10px;
+  font-size: 1.1em;
+}
+
+.grid-ubicacion {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 1em;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+}
+
+.full-width {
+  grid-column: span 2;
+}
+
+.form-row label {
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.form-row select,
+.form-row input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1em;
+}
