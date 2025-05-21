@@ -50,7 +50,7 @@ export async function cargarOpcionesEnSelects(configs) {
 // ==============================
 
 // 📥 Cargar productos y precios para renderizar en el listado principal
-async function cargarProductos() {
+export async function cargarProductos() {
   try {
     const [productosRes, preciosRes] = await Promise.all([
       fetch("http://localhost:3000/api/productos"),
@@ -67,7 +67,7 @@ async function cargarProductos() {
 
 
 
-function cargarUbicaciones(supermercado, pais, ciudad) {
+export function cargarUbicaciones(supermercado, pais, ciudad) {
   const ubicacionSelect = document.getElementById("add-ubicacion-existente");
   const nuevaUbicacionInput = document.getElementById("add-nueva-ubicacion");
   const labelNuevaUbicacion = document.getElementById("label-add-nueva-ubicacion");

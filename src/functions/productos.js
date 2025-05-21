@@ -7,6 +7,7 @@ import { aplicarFiltroBusqueda } from "../functions/global/nav.js";
 
 import { eliminarProducto } from "../functions/global/botones/botons_eliminar.js";
 import { guardarCambiosDesdeFormulario } from "../functions/global/botones/botons_actualizar.js";
+import { guardarProductoNuevo } from "../functions/global/botones/botons_agregar.js";
 
 import { mostrarFormularioAgregar } from "../functions/global/modals/mostrar.js";
 
@@ -77,6 +78,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       botonGuardarCambios.addEventListener("click", guardarCambiosDesdeFormulario);
     }
 
+      const botonGuardarProducto = document.getElementById("btn-guardar-producto");
+      if (botonGuardarProducto) {
+        console.log("🟢 Escuchando click en 'Agregar Producto' dentro del modal...");
+        botonGuardarProducto.addEventListener("click", guardarProductoNuevo);
+      } else {
+        console.warn("❌ No se encontró el botón 'btn-guardar-producto'");
+      }
 
   } catch (error) {
     console.error("Error en la inicialización:", error);

@@ -1,6 +1,9 @@
-import { API_BASE } from "../UTILS/utils.js"; 
-import { obtenerUbicacionesGenerico } from "../selects/cargar.js";
-import { parsearPrecioHistorico  } from "../selects/helpers.js";
+import { API_BASE } from "../UTILS/utils.js";
+import { obtenerUbicacionesGenerico, cargarProductos } from "../selects/carga.js";
+import { parsearPrecioHistorico } from "../helpers/helpers.js";
+import { insertarNuevaMarca, insertarNuevoProveedor, insertarNuevoSubtipo, insertarNuevoSupermercado, insertarNuevoTipo } from "../actions/insertar.js";
+import { cerrarFormularioAgregar } from "../modals/cerrar.js";
+import { procesarCampoNuevo } from "../selects/procesarCampos.js";
 
 // ==============================
 // 💾 GUARDAR PRODUCTO NUEVO
