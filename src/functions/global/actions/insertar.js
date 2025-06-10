@@ -1,8 +1,10 @@
+import { API_BASE } from "../UTILS/utils.js"; 
+
 // ==============================
 // ➕ CREACIÓN DE NUEVO SUPERMERCADO
 // ==============================
 export async function insertarNuevoSupermercado(nombre, ubicacionesArray) {
-  const res = await fetch("http://localhost:3000/api/supermercados", {
+  const res = await fetch(`${API_BASE}/api/supermercados`, { 
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -21,7 +23,7 @@ export async function insertarNuevoSupermercado(nombre, ubicacionesArray) {
 // ➕ CREACIÓN DE NUEVO PROVEEDOR
 // ==============================
 export async function insertarNuevoProveedor(nombre, pais, comunidad = "N/A") {
-  const res = await fetch("http://localhost:3000/api/proveedor", {
+  const res = await fetch(`${API_BASE}/api/proveedor`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -41,7 +43,7 @@ export async function insertarNuevoProveedor(nombre, pais, comunidad = "N/A") {
 // ➕ CREACIÓN DE NUEVA MARCA
 // ==============================
 export async function insertarNuevaMarca(nombre) {
-  const res = await fetch("http://localhost:3000/api/marcas", {
+  const res = await fetch(`${API_BASE}/api/marcas`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ Nombre: nombre }),
@@ -57,7 +59,7 @@ export async function insertarNuevaMarca(nombre) {
 // ➕ CREACIÓN DE NUEVO TIPO
 // ==============================
 export async function insertarNuevoTipo(nombre) {
-  const res = await fetch("http://localhost:3000/api/tipos", {
+  const res = await fetch(`${API_BASE}/api/tipos`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ Nombre: nombre }),
@@ -73,7 +75,7 @@ export async function insertarNuevoTipo(nombre) {
 // ➕ CREACIÓN DE NUEVO SUBTIPO
 // ==============================
 export async function insertarNuevoSubtipo(nombre) {
-  const res = await fetch("http://localhost:3000/api/subtipos", {
+  const res = await fetch(`${API_BASE}/api/subtipos`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ Nombre: nombre }),

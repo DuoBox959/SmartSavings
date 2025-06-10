@@ -4,7 +4,8 @@
 import { API_BASE } from "../UTILS/utils.js";
 import { volverAtras } from "../funciones.js";
 import { cerrarFormularioAgregar, cerrarFormulario } from "../modals/cerrar.js";
-import { agregarUbicacion } from "../helpers/helpers.js";
+import { agregarUbicacion, toggleNuevoCampo } from "../helpers/helpers.js";
+import { cargarUbicaciones } from "../selects/carga.js";
 
 //ONCLICK
 export function inicializarBotonesGlobales() {

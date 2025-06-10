@@ -1,4 +1,8 @@
 import { API_BASE } from "../UTILS/utils.js"; 
+import { obtenerUbicacionesGenerico } from "../selects/carga.js"; 
+import { insertarNuevaMarca, insertarNuevoProveedor, insertarNuevoSubtipo, insertarNuevoSupermercado, insertarNuevoTipo } from "../actions/insertar.js"; 
+import { procesarCampoNuevo } from "../selects/procesarCampos.js"; 
+import { cerrarFormulario } from "../modals/cerrar.js"; 
 
 // ==============================
 // 📝 GUARDAR CAMBIOS DESDE EL FORMULARIO DE EDICIÓN: productos y sus detalles.

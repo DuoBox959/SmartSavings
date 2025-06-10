@@ -1,4 +1,5 @@
 import { API_BASE } from "../UTILS/utils.js";
+import { cargarProductos } from "../selects/carga.js";
 
 // ==============================
 // 🗑️ ELIMINAR UN PRODUCTO DEL SISTEMA: productos y sus detalles
@@ -23,7 +24,7 @@ export async function eliminarProducto(id) {
     if (!res.ok) throw new Error("Error al eliminar producto completo");
 
     Swal.fire("✅ Eliminado", "Producto eliminado correctamente", "success");
-    window.cargarProductos(); // Llamada global
+    cargarProductos(); 
   } catch (err) {
     console.error("❌ Error al eliminar producto:", err);
     Swal.fire("Error", "Hubo un problema al eliminar el producto.", "error");
