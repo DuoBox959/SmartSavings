@@ -50,8 +50,8 @@ export function renderizarProductos(productos, precios = []) {
           <p class="estado">Estado: ${producto.Estado?.trim() || "No especificado"}</p>
         </div>
         <div class="acciones">
-          <button class="btn-editar" onclick="editarProducto('${producto._id}')">✏️ Editar</button>
-          <button class="btn-eliminar" onclick="eliminarProducto('${producto._id}')">🗑️ Eliminar</button>
+          <button class="btn-editar"  data-product-id="${producto._id}">✏️ Editar</button>
+          <button class="btn-eliminar"data-product-id="${producto._id}">🗑️ Eliminar</button>
         </div>
       </div>
     `;

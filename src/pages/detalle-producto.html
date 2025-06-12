@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <!-- 🌐 Configuración básica -->
   <meta charset="UTF-8" />
@@ -14,7 +15,7 @@
   <link rel="stylesheet" href="/src/style/global/nav.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
- 
+
 
   <!-- 📦 Librerías JS -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -29,179 +30,185 @@
   <div id="header"></div>
 
   <section class="acciones-superiores">
-  <strong></strong>
-
-  <!-- 🧾 Detalle del producto -->
-  <section id="detalle-producto">
-       <!-- ✏️ & 🗑️ Botones de acción -->
-
-    <div class="producto-imagen">
-      <img id="producto-imagen" src="../assets/img/default.webp" alt="Imagen del Producto" />
-    </div>
-
-    <div class="producto-info">
-        <!-- Botones en la parte superior derecha -->
-    <div class="acciones-producto-superior">
-     <button id="btn-editar-detalle" class="btn-editar" onclick="editarProductoFromHTML()">✏️ Editar</button>
-<button id="btn-eliminar-detalle" class="btn-eliminar">🗑️ Eliminar</button>
-
-    </div>
-
-      <h1 id="producto-nombre">Nombre del producto</h1>
-
-      <!-- 📦 Información general -->
-      <p id="producto-marca">Marca:</p>
-      <p id="producto-tipo">Tipo: </p>
-      <p id="producto-subtipo"> Subtipo: </p>
-      <p id="producto-utilidad">Descripción: </p>
-      <p id="producto-ingredientes">Ingredientes:</p>
-
-      <!-- 💰 Información de precios -->
-      <p id="producto-precio">Precio: </p>
-      <p id="producto-precio-descuento">Precio Descuento: </p>
-      <p id="producto-precio-unidad">Precio por unidad/lote: </p>
-      <p id="producto-unidad-lote">Unidad/Lote: </p>
-      <p id="producto-historico">Precio histórico: </p> 
-
-      <!-- ⚖️ Peso y estado -->
-      <p id="producto-peso">Peso: </p>
-      <p id="producto-estado">Estado: </p>
-
-      <!-- 🛒 Supermercado -->
-      <p id="producto-supermercado">Supermercado: </p>
-      <p id="producto-ubicacion">Ubicación del supermercado: </p> 
-      <p id="producto-ciudad-super">Ciudad del supermercado: </p>
-      <p id="producto-pais-super">País del supermercado: </p>
-
-      <!-- 🏭 Proveedor -->
-      <p id="producto-proveedor">Proveedor: </p>
-      <p id="producto-pais-proveedor">País del proveedor: </p>
     <strong></strong>
+
+    <!-- 🧾 Detalle del producto -->
+    <section id="detalle-producto">
+      <!-- ✏️ & 🗑️ Botones de acción -->
+
+      <div class="producto-imagen">
+        <img id="producto-imagen" src="../assets/img/default.webp" alt="Imagen del Producto" />
+      </div>
+
+      <div class="producto-info">
+        <!-- Botones en la parte superior derecha -->
+        <div class="acciones-producto-superior">
+          <button id="btn-editar-detalle" class="btn-editar">✏️ Editar</button>
+          <button id="btn-eliminar-detalle" class="btn-eliminar">🗑️ Eliminar</button>
+
+        </div>
+
+        <h1 id="producto-nombre">Nombre del producto</h1>
+
+        <!-- 📦 Información general -->
+        <p id="producto-marca">Marca:</p>
+        <p id="producto-tipo">Tipo: </p>
+        <p id="producto-subtipo"> Subtipo: </p>
+        <p id="producto-utilidad">Descripción: </p>
+        <p id="producto-ingredientes">Ingredientes:</p>
+
+        <!-- 💰 Información de precios -->
+        <p id="producto-precio">Precio: </p>
+        <p id="producto-precio-descuento">Precio Descuento: </p>
+        <p id="producto-precio-unidad">Precio por unidad/lote: </p>
+        <p id="producto-unidad-lote">Unidad/Lote: </p>
+        <p id="producto-historico">Precio histórico: </p>
+
+        <!-- ⚖️ Peso y estado -->
+        <p id="producto-peso">Peso: </p>
+        <p id="producto-estado">Estado: </p>
+
+        <!-- 🛒 Supermercado -->
+        <p id="producto-supermercado">Supermercado: </p>
+        <p id="producto-ubicacion">Ubicación del supermercado: </p>
+        <p id="producto-ciudad-super">Ciudad del supermercado: </p>
+        <p id="producto-pais-super">País del supermercado: </p>
+
+        <!-- 🏭 Proveedor -->
+        <p id="producto-proveedor">Proveedor: </p>
+        <p id="producto-pais-proveedor">País del proveedor: </p>
+        <strong></strong>
+      </div>
+    </section>
+
+
     </div>
-  </section>
+
+    <!-- 🔙 Botón para volver -->
+    <button class="volver-btn" id="btn-volver-atras">Volver</button>
+    <!-- ✏️ MODAL: Editar Producto -->
+    <div id="modal-editar" class="modal">
+      <div class="modal-content">
+        <span class="close" id="close-modal-span">&times;</span>
 
 
-  </div>
+        <form id="form-editar-producto">
+          <h2>Editar Producto</h2>
+          <!-- ✅ Campos obligatorios -->
+          <label>Nombre del producto: *</label>
+          <input type="text" id="edit-nombre" required />
 
-  <!-- 🔙 Botón para volver -->
-  <button class="volver-btn" onclick="volverAtras()">Volver</button>
-  <!-- ✏️ MODAL: Editar Producto -->
-<div id="modal-editar" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="cerrarFormulario()">&times;</span>
-   
+          <label>Tipo del producto: *</label>
+          <select id="edit-tipo-select" class="select-toggle" data-target-id="edit-tipo-nuevo" data-type="tipo"
+            required>
+            <option value="">Selecciona un tipo</option>
+            <option value="nuevo">Otro (escribir nuevo)</option>
+          </select>
+          <input type="text" id="edit-tipo-nuevo" placeholder="Nuevo tipo" style="display: none;" />
 
-    <form id="form-editar-producto">
-      <h2>Editar Producto</h2>
-      <!-- ✅ Campos obligatorios -->
-      <label>Nombre del producto: *</label>
-      <input type="text" id="edit-nombre" required />
+          <label>Precio actual (€): *</label>
+          <input type="number" id="edit-precio" step="0.01" required />
 
-      <label>Tipo del producto: *</label>
-      <select id="edit-tipo-select" onchange="toggleNuevoCampo('edit', 'tipo')" required>
-        <option value="">Selecciona un tipo</option>
-        <option value="nuevo">Otro (escribir nuevo)</option>
-      </select>
-      <input type="text" id="edit-tipo-nuevo" placeholder="Nuevo tipo" style="display: none;" />
+          <label>Peso: *</label>
+          <input type="number" id="edit-peso" step="0.01" required />
 
-      <label>Precio actual (€): *</label>
-      <input type="number" id="edit-precio" step="0.01" required />
+          <label>Unidad de Peso: *</label>
+          <select id="edit-unidadPeso" required>
+            <option value="kg">Kilogramos (kg)</option>
+            <option value="g">Gramos (g)</option>
+            <option value="l">Litros (l)</option>
+            <option value="ml">Mililitros (ml)</option>
+          </select>
 
-      <label>Peso: *</label>
-      <input type="number" id="edit-peso" step="0.01" required />
+          <label>Supermercado: *</label>
+          <select id="edit-supermercado-select" class="select-toggle" data-target-id="edit-supermercado-nuevo"
+            data-type="supermercado" required>
+            <option value="">Selecciona un supermercado</option>
+            <option value="nuevo">Otro (escribir nuevo)</option>
+          </select>
+          <input type="text" id="edit-supermercado-nuevo" placeholder="Nuevo supermercado" style="display: none;" />
 
-      <label>Unidad de Peso: *</label>
-      <select id="edit-unidadPeso" required>
-        <option value="kg">Kilogramos (kg)</option>
-        <option value="g">Gramos (g)</option>
-        <option value="l">Litros (l)</option>
-        <option value="ml">Mililitros (ml)</option>
-      </select>
+          <label>Estado: *</label>
+          <select id="edit-estado" required>
+            <option value="En stock">En stock</option>
+            <option value="Sin stock">Sin stock</option>
+          </select>
 
-      <label>Supermercado: *</label>
-      <select id="edit-supermercado-select" required onchange="toggleNuevoCampo('edit', 'supermercado')">
-        <option value="">Selecciona un supermercado</option>
-        <option value="nuevo">Otro (escribir nuevo)</option>
-      </select>
-      <input type="text" id="edit-supermercado-nuevo" placeholder="Nuevo supermercado" style="display: none;" />
+          <!-- 🔒 Campos ocultos -->
+          <input type="hidden" id="edit-producto-id" />
+          <input type="hidden" id="edit-fecha-subida" />
+          <input type="hidden" id="edit-usuario" />
+          <input type="hidden" id="edit-fecha-actualizacion" />
 
-      <label>Estado: *</label>
-      <select id="edit-estado" required>
-        <option value="En stock">En stock</option>
-        <option value="Sin stock">Sin stock</option>
-      </select>
+          <!-- 🔽 Campos opcionales desplegables -->
+          <details>
+            <summary>Ver más campos para tu producto</summary>
 
-      <!-- 🔒 Campos ocultos -->
-      <input type="hidden" id="edit-producto-id" />
-      <input type="hidden" id="edit-fecha-subida" />
-      <input type="hidden" id="edit-usuario" />
-      <input type="hidden" id="edit-fecha-actualizacion" />
+            <label>Imagen del producto:</label>
+            <input type="file" id="edit-imagen" name="Imagen" />
 
-      <!-- 🔽 Campos opcionales desplegables -->
-      <details>
-        <summary>Ver más campos para tu producto</summary>
+            <label>Marca:</label>
+            <select id="edit-marca-select" class="select-toggle" data-target-id="edit-marca-nuevo" data-type="marca">
+              <option value="">Selecciona una marca</option>
+              <option value="nuevo">Otra (escribir nueva)</option>
+            </select>
+            <input type="text" id="edit-marca-nuevo" style="display: none;" />
 
-        <label>Imagen del producto:</label>
-        <input type="file" id="edit-imagen" name="Imagen" />
+            <label>Ubicación del supermercado:</label>
+            <input type="text" id="edit-ubicacion-super" />
 
-        <label>Marca:</label>
-        <select id="edit-marca-select" onchange="toggleNuevoCampo('edit', 'marca')">
-          <option value="">Selecciona una marca</option>
-          <option value="nuevo">Otra (escribir nueva)</option>
-        </select>
-        <input type="text" id="edit-marca-nuevo" style="display: none;" />
+            <label>País del supermercado:</label>
+            <input type="text" id="edit-pais-super" />
 
-        <label>Ubicación del supermercado:</label>
-        <input type="text" id="edit-ubicacion-super" />
+            <label>Proveedor:</label>
+            <select id="edit-proveedor-select" class="select-toggle" data-target-id="edit-proveedor-nuevo"
+              data-type="proveedor">
+              <option value="">Selecciona un proveedor</option>
+              <option value="nuevo">Otro (escribir nuevo)</option>
+            </select>
+            <input type="text" id="edit-proveedor-nuevo" style="display: none;" />
 
-        <label>País del supermercado:</label>
-        <input type="text" id="edit-pais-super" />
+            <label>País del proveedor:</label>
+            <input type="text" id="edit-pais-proveedor" />
 
-        <label>Proveedor:</label>
-        <select id="edit-proveedor-select" onchange="toggleNuevoCampo('edit', 'proveedor')">
-          <option value="">Selecciona un proveedor</option>
-          <option value="nuevo">Otro (escribir nuevo)</option>
-        </select>
-        <input type="text" id="edit-proveedor-nuevo" style="display: none;" />
+            <label>Subtipo:</label>
+            <select id="edit-subtipo-select" class="select-toggle" data-target-id="edit-subtipo-nuevo"
+              data-type="subtipo">
+              <option value="">Selecciona un subtipo</option>
+              <option value="nuevo">Otro (escribir nuevo)</option>
+            </select>
+            <input type="text" id="edit-subtipo-nuevo" style="display: none;" />
 
-        <label>País del proveedor:</label>
-        <input type="text" id="edit-pais-proveedor" />
+            <label>Precio descuento (€):</label>
+            <input type="number" id="edit-precioDescuento" step="0.01" />
 
-        <label>Subtipo:</label>
-        <select id="edit-subtipo-select" onchange="toggleNuevoCampo('edit', 'subtipo')">
-          <option value="">Selecciona un subtipo</option>
-          <option value="nuevo">Otro (escribir nuevo)</option>
-        </select>
-        <input type="text" id="edit-subtipo-nuevo" style="display: none;" />
+            <label>Unidad/Lote:</label>
+            <input type="number" id="edit-unidadLote" />
 
-        <label>Precio descuento (€):</label>
-        <input type="number" id="edit-precioDescuento" step="0.01" />
+            <label>Precio por unidad/lote (€):</label>
+            <input type="number" id="edit-precioPorUnidad" step="0.01" />
 
-        <label>Unidad/Lote:</label>
-        <input type="number" id="edit-unidadLote" />
+            <label>Precio Histórico:</label>
+            <textarea id="edit-precioHistorico" rows="3" placeholder="Ejemplo: 10, 2023, 12, 2024"></textarea>
 
-        <label>Precio por unidad/lote (€):</label>
-        <input type="number" id="edit-precioPorUnidad" step="0.01" />
+            <label>Descripción del producto (Utilidad):</label>
+            <input type="text" id="edit-utilidad" placeholder="Ej. Bebida refrescante y energizante" />
 
-        <label>Precio Histórico:</label>
-        <textarea id="edit-precioHistorico" rows="3" placeholder="Ejemplo: 10, 2023, 12, 2024"></textarea>
-        
-        <label>Descripción del producto (Utilidad):</label>
-        <input type="text" id="edit-utilidad" placeholder="Ej. Bebida refrescante y energizante" />
-        
-        <label>Ingredientes (separados por coma):</label>
-        <input type="text" id="edit-ingredientes" placeholder="Ej: agua, azúcar, gas carbónico" />
-      </details>
+            <label>Ingredientes (separados por coma):</label>
+            <input type="text" id="edit-ingredientes" placeholder="Ej: agua, azúcar, gas carbónico" />
+          </details>
 
-      <!-- ✅ Botón para guardar cambios -->
-  <button type="button" id="btn-guardar-cambios">Guardar Cambios</button>
-<button type="button" class="btn-cerrar" id="btn-cerrar-formulario">Cancelar</button>
-<span class="close" id="cerrar-modal">&times;</span>
+          <!-- ✅ Botón para guardar cambios -->
+          <button type="button" id="btn-guardar-cambios">Guardar Cambios</button>
+          <button type="button" class="btn-cerrar" id="btn-cerrar-formulario">Cancelar</button>
+          <span class="close" id="cerrar-modal">&times;</span>
 
-    </form>
-  </div>
-</div> 
-  <!-- ✅ Footer dinámico -->
-  <div id="footer"></div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ✅ Footer dinámico -->
+    <div id="footer"></div>
 </body>
+
 </html>

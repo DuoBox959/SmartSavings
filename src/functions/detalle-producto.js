@@ -1,13 +1,14 @@
 // ==============================
 // 📦 IMPORTACIONES
 // ==============================
-import { cargarHeaderFooter, volverAtras, cargarNav, } from "../functions/global/funciones.js";
+import { cargarHeaderFooter, volverAtras, cargarNav } from "../functions/global/funciones.js";
 import { gestionarUsuarioAutenticado } from "../functions/global/header.js";
 import { cargarOpcionesEnSelects, cargarDetalleProductos } from "../functions/global/selects/carga.js";
-import { cerrarFormularioAgregar, cerrarFormulario } from "../functions/global/modals/cerrar.js";
+import { cerrarFormulario } from "../functions/global/modals/cerrar.js";
 import { toggleNuevoCampo } from "../functions/global/helpers/helpers.js";
 import { editarProducto } from "../functions/global/actions/editar.js";
 import { guardarCambiosDesdeFormulario } from "../functions/global/botones/botons_actualizar.js";
+import { aplicarFiltroBusqueda } from "../functions/global/nav.js";
 
 import { API_BASE } from "../functions/global/UTILS/utils.js";
 
@@ -18,8 +19,21 @@ document.addEventListener("DOMContentLoaded", async () => {
   try {
     await cargarHeaderFooter(); // ✅ Cargar header/footer
     gestionarUsuarioAutenticado(); // ✅ Si estás autenticando usuarios
-    await cargarNav([], []);
-    // aplicarFiltroBusqueda(productos);
+
+    // --- Fetch product and price data for nav ---
+    const productosRes = await fetch(`${API_BASE}/api/productos-completos`);
+    const preciosRes = await fetch(`${API_BASE}/api/precios`);
+
+    if (!productosRes.ok || !preciosRes.ok) {
+      throw new Error("Failed to fetch products or prices for navigation.");
+    }
+
+    const productos = await productosRes.json();
+    const precios = await preciosRes.json();
+    // ---------------------------------------------
+
+    await cargarNav(productos, precios); // ✅ Cargar y popular el nav
+    aplicarFiltroBusqueda(); // ✅ Aplicar la funcionalidad de búsqueda a la nav
 
     await cargarOpcionesEnSelects([
       { campo: "supermercado", endpoint: "supermercados", usarId: true },
@@ -30,7 +44,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     ]);
 
     await cargarDetalleProductos();
-    // ✏️ Botón Editar
+
+    // ✏️ Botón Editar (sin el onclick en HTML)
     document.getElementById("btn-editar-detalle")?.addEventListener("click", async () => {
       const id = new URLSearchParams(window.location.search).get("id");
       if (!id) {
@@ -50,13 +65,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       cerrarFormulario();
     });
 
-    // ❌ Botón "X" cerrar modal
-    document.getElementById("cerrar-modal")?.addEventListener("click", () => {
+    // ❌ Botón "X" cerrar modal (usando el nuevo ID)
+    document.getElementById("close-modal-span")?.addEventListener("click", () => {
       cerrarFormulario();
     });
 
-    // 🔙 Botón Volver
-    document.querySelector(".volver-btn")?.addEventListener("click", () => {
+    // 🔙 Botón Volver (usando el nuevo ID)
+    document.getElementById("btn-volver-atras")?.addEventListener("click", () => {
       volverAtras();
     });
 
@@ -80,12 +95,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (!confirm.isConfirmed) return;
 
       try {
-        const res = await fetch(`${API_BASE}/api/productos-completos/${productId}`,
-
-          {
-            method: "DELETE",
-          }
-        );
+        const res = await fetch(`${API_BASE}/api/productos-completos/${productId}`, {
+          method: "DELETE",
+        });
 
         if (!res.ok) throw new Error("Error al eliminar producto");
 
@@ -106,14 +118,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         );
       }
     });
+
+    // === MANEJO DE ONCHANGE PARA LOS SELECTS QUE MUESTRAN CAMPOS NUEVOS ===
+    // Seleccionamos todos los selects con la clase 'select-toggle'
+    document.querySelectorAll(".select-toggle").forEach(selectElement => {
+      selectElement.addEventListener("change", (event) => {
+        const targetId = event.target.dataset.targetId; // Obtiene el ID del input a alternar
+        const type = event.target.dataset.type; // Obtiene el tipo de campo
+        toggleNuevoCampo(type, targetId); // Llama a la función toggleNuevoCampo
+      });
+    });
+
   } catch (err) {
     console.error("❌ Error al iniciar la página:", err);
   }
 });
-
-// ==============================
-// 🔁 EXPOSICIÓN GLOBAL PARA HTML
-// ==============================
-window.toggleNuevoCampo = toggleNuevoCampo;
-window.cargarOpcionesEnSelects = cargarOpcionesEnSelects;
-window.cerrarFormularioAgregar = cerrarFormularioAgregar;

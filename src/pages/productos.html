@@ -2,63 +2,51 @@
 <html lang="es">
 
 <head>
-  <!-- 🌐 Configuración general del documento HTML -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gestión de Productos</title>
 
-  <!-- 🎨 Inclusión de estilos CSS (globales y específicos de producto) -->
   <link rel="stylesheet" href="../style/global/header.css" />
   <link rel="stylesheet" href="../style/producto.css" />
   <link rel="stylesheet" href="../style/global/footer.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="/src/style/global/nav.css" />
 
-  <!-- 📦 Importación de bibliotecas JavaScript y scripts del proyecto -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
 
 <body>
-  <!-- ✅ Contenedor del header dinámico (cargado por JS desde funciones globales) -->
   <div id="header"></div>
 
-  <!-- 📌 Sección superior con acciones rápidas -->
   <section class="acciones-superiores">
-    <!-- Placeholder para elementos destacados (actualmente vacío) -->
     <strong></strong>
 
-    <!-- Botón para abrir el formulario de creación de un nuevo producto -->
     <button class="btn-agregar" id="btn-agregar-producto">
       Agregar Producto
     </button>
 
   </section>
 
-  <!-- 📦 Contenedor principal donde se renderizan las tarjetas de productos existentes -->
   <section class="productos-container" id="productos-container" aria-label="Lista de productos disponibles"></section>
 
-  <!-- 🔙 Botón de navegación para volver atrás en la interfaz -->
   <div class="volver-atras">
     <button class="back-button" id="btn-volver-atras">Volver Atrás</button>
   </div>
 
-  <!-- ➕ Modal para la creación de un nuevo producto -->
   <div id="modal-agregar" class="modal">
     <div class="modal-content">
       <span class="close" id="btn-cerrar-agregar">&times;</span>
       <h2>Agregar Producto</h2>
 
       <form id="form-agregar-producto">
-        <!-- Campos base requeridos -->
         <label>Nombre del producto: *</label>
         <input type="text" id="add-nombre" required />
 
-        <!-- Selección o creación de nuevo tipo -->
         <label for="add-tipo-select">Tipo del producto: *</label>
         <div class="campo-compuesto">
-          <select id="add-subtipo-select">
+          <select id="add-tipo-select">
             <option value="">Selecciona un tipo</option>
             <option value="nuevo">Otro (escribir nuevo)</option>
           </select>
@@ -79,7 +67,6 @@
           <option value="ml">Mililitros</option>
         </select>
 
-        <!-- Selección dinámica de supermercados -->
         <label>Supermercado: *</label>
         <div class="campo-compuesto">
           <select id="add-supermercado-select" required>
@@ -95,7 +82,6 @@
           <option value="Sin stock">Sin stock</option>
         </select>
 
-        <!-- 🔽 Campos opcionales -->
         <details>
           <summary>Ver más campos para tu producto</summary>
 
@@ -105,7 +91,6 @@
           <label>Ingredientes (separados por coma):</label>
           <input type="text" id="add-ingredientes" name="ingredientes" placeholder="Ej: azúcar, agua, gas carbónico" />
 
-          <!-- Marca seleccionable -->
           <label>Marca:</label>
           <div class="campo-compuesto">
             <select id="add-marca-select">
@@ -118,27 +103,23 @@
 
           <label>Descripción del producto (Utilidad):</label>
           <input type="text" id="add-utilidad" name="utilidad" placeholder="Ej. Bebida refrescante y energizante" />
-          <!-- 🌍 Selección dinámica de país, ciudad y ubicación -->
           <div id="selector-ubicacion-dinamico" style="display: none; margin-top: 1.5em; grid-column: span 2;">
             <fieldset class="fieldset-ubicacion">
               <legend class="legend-ubicacion">📍 Ubicación del supermercado</legend>
 
               <div class="grid-ubicacion">
-                <!-- País -->
                 <div class="form-row">
                   <label for="add-pais-existente">País:</label>
                   <select id="add-pais-existente"></select>
                   <input type="text" id="add-nuevo-pais" placeholder="Nuevo país" style="display: none;" />
                 </div>
 
-                <!-- Ciudad -->
                 <div class="form-row">
                   <label for="add-ciudad-existente">Ciudad:</label>
                   <select id="add-ciudad-existente" style="display: none;"></select>
                   <input type="text" id="add-nueva-ciudad" placeholder="Nueva ciudad" style="display: none;" />
                 </div>
 
-                <!-- Ubicación -->
                 <div class="form-row full-width">
                   <label for="add-ubicacion-existente">Ubicación existente:</label>
                   <select id="add-ubicacion-existente" style="display: none;"></select>
@@ -174,7 +155,6 @@
             <input type="text" id="add-subtipo-nuevo" class="nuevo-campo" placeholder="Nuevo subtipo" />
           </div>
 
-          <!-- Campos de precios adicionales -->
           <label>Precio descuento (€):</label>
           <input type="number" id="add-precioDescuento" step="0.01" />
 
@@ -188,11 +168,9 @@
           <textarea id="add-precioHistorico" rows="3" placeholder="Ejemplo: 10, 2023, 12, 2024"></textarea>
         </details>
 
-        <!-- Acciones del formulario de creación -->
         <button type="button" id="btn-guardar-producto" aria-label="Guardar nuevo producto">
           Agregar Producto
         </button>
-
 
         <button type="button" class="btn-cerrar" id="btn-cancelar-agregar">
           Cancelar
@@ -201,21 +179,18 @@
     </div>
   </div>
 
-  <!-- ✏️ Modal de edición de productos existentes -->
   <div id="modal-editar" class="modal">
     <div class="modal-content">
       <span class="close" id="btn-cerrar-editar">&times;</span>
       <h2>Editar Producto</h2>
 
       <form id="form-editar-producto">
-        <!-- Campos obligatorios para editar el producto -->
         <label>Nombre del producto: *</label>
         <input type="text" id="edit-nombre" required />
 
         <label for="edit-tipo-select">Tipo del producto: *</label>
         <div class="campo-compuesto">
-          <select id="add-tipo-select">
-            <option value="">Selecciona un tipo</option>
+          <select id="edit-tipo-select"> <option value="">Selecciona un tipo</option>
             <option value="nuevo">Otro (escribir nuevo)</option>
           </select>
           <input type="text" id="edit-tipo-nuevo" class="nuevo-campo" placeholder="Nuevo tipo" />
@@ -235,31 +210,35 @@
           <option value="ml">Mililitros (ml)</option>
         </select>
 
+        <label>Supermercado: *</label>
+        <div class="campo-compuesto">
+          <select id="edit-supermercado-select" required>
+            <option value="">Selecciona un supermercado</option>
+            <option value="nuevo">Otro (escribir nuevo)</option>
+          </select>
+          <input type="text" id="edit-supermercado-nuevo" class="nuevo-campo" placeholder="Nuevo supermercado" />
+        </div>
+
         <label>Estado: *</label>
         <select id="edit-estado" required>
           <option value="En stock">En stock</option>
           <option value="Sin stock">Sin stock</option>
         </select>
 
-        <!-- 🕵️ Campos ocultos para control interno -->
         <input type="hidden" id="edit-producto-id" />
         <input type="hidden" id="edit-fecha-subida" />
         <input type="hidden" id="edit-usuario" />
         <input type="hidden" id="edit-fecha-actualizacion" />
 
-        <!-- 🔽 Campos opcionales agrupados bajo un desplegable -->
         <details>
           <summary>Ver más campos para tu producto</summary>
 
-          <!-- Multimedia -->
           <label>Imagen del producto:</label>
           <input type="file" id="edit-imagen" name="Imagen" accept="image/*" />
 
-          <!-- Ingredientes como lista separada por comas -->
           <label>Ingredientes (separados por coma):</label>
           <input type="text" id="edit-ingredientes" placeholder="Ej: agua, azúcar, gas" />
 
-          <!-- Marca (opcionalmente editable como nuevo campo) -->
           <label>Marca:</label>
           <div class="campo-compuesto">
             <select id="edit-marca-select">
@@ -269,18 +248,15 @@
             <input type="text" id="edit-marca-nuevo" class="nuevo-campo" placeholder="Nueva marca" />
           </div>
 
-          <!-- Utilidad descriptiva del producto -->
           <label>Descripción del producto (Utilidad):</label>
           <input type="text" id="edit-utilidad" placeholder="Ej. Bebida refrescante y energizante" />
 
-          <!-- Gestión dinámica de ubicaciones -->
           <label>Ubicaciones del supermercado:</label>
           <div id="ubicaciones-container-add"></div>
           <button type="button" id="btn-agregar-ubicacion">
             ➕ Añadir ubicación
           </button>
 
-          <!-- Proveedor editable -->
           <label>Proveedor:</label>
           <div class="campo-compuesto">
             <select id="edit-proveedor-select">
@@ -293,7 +269,6 @@
           <label>País del proveedor:</label>
           <input type="text" id="edit-pais-proveedor" />
 
-          <!-- Subtipo editable -->
           <label>Subtipo:</label>
           <div class="campo-compuesto">
             <select id="edit-subtipo-select">
@@ -303,7 +278,6 @@
             <input type="text" id="edit-subtipo-nuevo" class="nuevo-campo" placeholder="Nuevo subtipo" />
           </div>
 
-          <!-- Otros precios adicionales -->
           <label>Precio descuento (€):</label>
           <input type="number" id="edit-precioDescuento" step="0.01" />
 
@@ -317,7 +291,6 @@
           <textarea id="edit-precioHistorico" rows="3" placeholder="Ejemplo: 10, 2023, 12, 2024"></textarea>
         </details>
 
-        <!-- 📝 Acciones del formulario -->
         <button type="button" id="btn-guardar-cambios" aria-label="Guardar cambios al producto">
           Guardar Cambios
         </button>
@@ -329,7 +302,6 @@
     </div>
   </div>
 
-  <!-- 📥 Footer dinámico cargado por JavaScript -->
   <div id="footer"></div>
   <script type="module" src="../functions/productos.js" defer></script>
   <script type="module" src="/src/functions/global/nav.js" defer></script>

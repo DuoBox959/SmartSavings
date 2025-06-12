@@ -6,7 +6,7 @@ import { safeSetValue } from "../helpers/helpers.js";
 // ==============================
 export async function editarProducto(id) {
   try {
-    const producto = await (await fetch(`${API_BASE}/${id}`)).json();
+const producto = await (await fetch(`${API_BASE}/api/productos/${id}`)).json();
     const precios = await (await fetch("http://localhost:3000/api/precios")).json();
     const descripcion = await (await fetch(`http://localhost:3000/api/descripcion/producto/${id}`)).json();
     const supermercados = await (await fetch("http://localhost:3000/api/supermercados")).json();
