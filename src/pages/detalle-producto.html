@@ -42,8 +42,9 @@
     <div class="producto-info">
         <!-- Botones en la parte superior derecha -->
     <div class="acciones-producto-superior">
-      <button id="btn-editar-detalle" class="btn-editar" onclick="editarProductoFromHTML()">✏️ Editar</button>
-      <button id="btn-eliminar-detalle" class="btn-eliminar">🗑️ Eliminar</button>
+     <button id="btn-editar-detalle" class="btn-editar" onclick="editarProductoFromHTML()">✏️ Editar</button>
+<button id="btn-eliminar-detalle" class="btn-eliminar">🗑️ Eliminar</button>
+
     </div>
 
       <h1 id="producto-nombre">Nombre del producto</h1>
@@ -193,9 +194,9 @@
       </details>
 
       <!-- ✅ Botón para guardar cambios -->
-      <button type="button" onclick="guardarCambiosDesdeFormulario()">Guardar Cambios</button>
-      <!-- ✅ Botón para cerrar el formulario -->
-<button type="button" class="btn-cerrar" onclick="cerrarFormulario()">Cancelar</button>
+  <button type="button" id="btn-guardar-cambios">Guardar Cambios</button>
+<button type="button" class="btn-cerrar" id="btn-cerrar-formulario">Cancelar</button>
+<span class="close" id="cerrar-modal">&times;</span>
 
     </form>
   </div>
