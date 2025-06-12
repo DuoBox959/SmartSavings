@@ -81,7 +81,7 @@ export async function cargarDetalleProductos() {
   try {
     const [productoRes, preciosRes, supermercadosRes, proveedoresRes, descRes] =
       await Promise.all([
-        fetch(`<span class="math-inline">\{PRODUCTOS\_API\_URL\}/</span>{productId}`), 
+        fetch(`${API_BASE}/api/productos/${productId}`),
         fetch(`${API_BASE}/api/precios`),
         fetch(`${API_BASE}/api/supermercados`),
         fetch(`${API_BASE}/api/proveedor`),
@@ -113,7 +113,10 @@ export async function cargarDetalleProductos() {
 
     // Mostrar datos
     document.getElementById("producto-imagen").src =
-      producto.Imagen || "../assets/img/default.webp";
+  producto.Imagen && producto.Imagen.startsWith("/uploads")
+    ? `http://localhost:3000${producto.Imagen}`
+    : "../assets/img/default.webp";
+
     document.getElementById("producto-nombre").textContent =
       producto.Nombre || "Producto sin nombre";
     document.getElementById("producto-marca").innerHTML =

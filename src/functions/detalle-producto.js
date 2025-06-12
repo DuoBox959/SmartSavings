@@ -80,18 +80,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 });
 
-
-
-
 // ==============================
 // 🔁 EXPOSICIÓN GLOBAL PARA HTML
 // ==============================
 window.toggleNuevoCampo = toggleNuevoCampo;
 window.cargarOpcionesEnSelects = cargarOpcionesEnSelects;
-window.guardarCambiosDesdeFormulario = guardarCambiosDesdeFormulario;
 window.cerrarFormularioAgregar = cerrarFormularioAgregar;
 window.cerrarFormulario = cerrarFormulario;
-window.editarProducto = editarProducto;
-window.eliminarProducto = eliminarProducto;
-window.mostrarFormularioAgregar = mostrarFormularioAgregar;
 window.volverAtras = volverAtras;
