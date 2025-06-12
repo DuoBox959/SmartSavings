@@ -1,4 +1,4 @@
-import { API_BASE } from "../UTILS/utils.js"; 
+import { ENDPOINTS } from "../UTILS/utils.js"; 
 import { safeSetValue } from "../helpers/helpers.js";
 
 // ==============================
@@ -6,11 +6,12 @@ import { safeSetValue } from "../helpers/helpers.js";
 // ==============================
 export async function editarProducto(id) {
   try {
-const producto = await (await fetch(`${API_BASE}/api/productos/${id}`)).json();
-    const precios = await (await fetch("http://localhost:3000/api/precios")).json();
-    const descripcion = await (await fetch(`http://localhost:3000/api/descripcion/producto/${id}`)).json();
-    const supermercados = await (await fetch("http://localhost:3000/api/supermercados")).json();
-    const proveedores = await (await fetch("http://localhost:3000/api/proveedor")).json();
+    // Usando los ENDPOINTS definidos
+    const producto = await (await fetch(`${ENDPOINTS.productos}/${id}`)).json();
+    const precios = await (await fetch(ENDPOINTS.precios)).json();
+    const descripcion = await (await fetch(`${ENDPOINTS.descripcionProducto}/${id}`)).json();
+    const supermercados = await (await fetch(ENDPOINTS.supermercados)).json();
+    const proveedores = await (await fetch(ENDPOINTS.proveedores)).json();
 
     const precioData = precios.find((p) => p.producto_id === id) || {};
     const supermercado = supermercados.find((s) => s._id === producto.Supermercado_id) || {};

@@ -1,4 +1,5 @@
-import { agregarUbicacionAdd } from "../helpers/helpers.js"; 
+import { agregarUbicacionAdd } from "../helpers/helpers.js";
+import { ENDPOINTS, API_BASE } from "../UTILS/utils.js"; 
 
 // ==============================
 // ➕ ABRIR FORMULARIO DE AGREGAR PRODUCTO
@@ -17,6 +18,7 @@ export function mostrarFormularioAgregar() {
 
   // ➕ Agregar el primer grupo de inputs de ubicación para que el usuario pueda empezar
   agregarUbicacionAdd();
+
 }
 
 // =======================================
@@ -35,11 +37,10 @@ export function renderizarProductos(productos, precios = []) {
     const productoHTML = `
       <div class="product-card">
         <a href="detalle-producto.html?id=${producto._id}">
-          <img src="${
-            producto.Imagen
-              ? `http://localhost:3000${producto.Imagen}`
-              : "../assets/img/default.webp"
-          }" alt="${producto.Nombre}">
+          <img src="${producto.Imagen
+        ? `http://localhost:3000${producto.Imagen}`
+        : "../assets/img/default.webp"
+      }" alt="${producto.Nombre}">
           <h3>${producto.Nombre}</h3>
         </a>
         <div class="info-producto">
@@ -50,8 +51,8 @@ export function renderizarProductos(productos, precios = []) {
           <p class="estado">Estado: ${producto.Estado?.trim() || "No especificado"}</p>
         </div>
         <div class="acciones">
-          <button class="btn-editar"  data-product-id="${producto._id}">✏️ Editar</button>
-          <button class="btn-eliminar"data-product-id="${producto._id}">🗑️ Eliminar</button>
+          <button class="btn-editar" data-product-id="${producto._id}">✏️ Editar</button>
+          <button class="btn-eliminar" data-product-id="${producto._id}">🗑️ Eliminar</button>
         </div>
       </div>
     `;
