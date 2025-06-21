@@ -84,10 +84,16 @@
 
         <details>
           <summary>Ver más campos para tu producto</summary>
+          <div class="campo-imagen-transparente">
 
-          <label>Imagen:</label>
-          <input type="file" id="add-imagen" name="Imagen" accept="image/*" />
+            <label>Imagen:</label>
+            <input type="file" id="add-imagen" name="Imagen" accept="image/*" />
+            <div class="texto-y-boton">
+              <small>Si deseas poner el fondo transparente haz clic aquí:</small>
+                 <a href="../pages/global/rem_fondo.html" target="_blank" class="btn-quitar-fondo">🎯 Click aquí</a>
 
+            </div>
+          </div>
           <label>Ingredientes (separados por coma):</label>
           <input type="text" id="add-ingredientes" name="ingredientes" placeholder="Ej: azúcar, agua, gas carbónico" />
 
@@ -190,7 +196,8 @@
 
         <label for="edit-tipo-select">Tipo del producto: *</label>
         <div class="campo-compuesto">
-          <select id="edit-tipo-select"> <option value="">Selecciona un tipo</option>
+          <select id="edit-tipo-select">
+            <option value="">Selecciona un tipo</option>
             <option value="nuevo">Otro (escribir nuevo)</option>
           </select>
           <input type="text" id="edit-tipo-nuevo" class="nuevo-campo" placeholder="Nuevo tipo" />
@@ -232,10 +239,16 @@
 
         <details>
           <summary>Ver más campos para tu producto</summary>
+          <div class="campo-imagen-transparente">
 
-          <label>Imagen del producto:</label>
-          <input type="file" id="edit-imagen" name="Imagen" accept="image/*" />
+            <label>Imagen del producto:</label>
+            <input type="file" id="edit-imagen" name="Imagen" accept="image/*" />
+            <div class="texto-y-boton">
+              <small>Si deseas poner el fondo transparente haz clic aquí:</small>
+                  <a href="/src/global/rem_fondo.html" target="_blank" class="btn-quitar-fondo">🎯 Click aquí</a>
 
+            </div>
+          </div>
           <label>Ingredientes (separados por coma):</label>
           <input type="text" id="edit-ingredientes" placeholder="Ej: agua, azúcar, gas" />
 

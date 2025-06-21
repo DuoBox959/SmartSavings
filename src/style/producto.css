@@ -173,24 +173,29 @@ main {
 🔙 BOTÓN VOLVER ATRÁS
 ==================================================== */
 .back-button {
-  background-color: #3a5a40;
+ background: linear-gradient(to right, #3a5a40, #588157);
   color: white;
   border: none;
-  padding: 15px 30px;
+  padding: 15px 35px;
   font-size: 1.2em;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
   margin-top: 20px;
-  border-radius: 8px;
+  border-radius: 10px;
+  margin-left: auto;
+  margin-right: auto;
   width: 200px;
   text-align: center;
   display: block;
   margin: 20px auto;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
 .back-button:hover {
-  background-color: #388e3c;
+   background: linear-gradient(to right, #2f6e4c, #3a5a40);
+  color: #fff;
+  transform: scale(1.05);
 }
 
 /* ====================================================
@@ -359,6 +364,49 @@ label.required::after {
   transform: scale(1.05);
 }
 
+
+/* 🔘 BOTÓN PRINCIPAL: Agregar / Guardar Cambios */
+#form-editar-producto #btn-guardar-cambios,
+#form-agregar-producto #btn-guardar-producto {
+  background: linear-gradient(to right, #3a5a40, #588157);
+  color: white;
+  padding: 12px;
+  font-size: 1em;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  grid-column: span 2;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+#form-editar-producto #btn-guardar-cambios:hover,
+#form-agregar-producto #btn-guardar-producto:hover {
+  background: linear-gradient(to right, #2f6e4c, #3a5a40);
+  transform: scale(1.04);
+}
+
+/* ❌ BOTÓN SECUNDARIO: Cancelar */
+#form-editar-producto .btn-cerrar,
+#form-agregar-producto .btn-cerrar {
+  background-color: #ccc;
+  color: #333;
+  padding: 12px;
+  font-size: 1em;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  grid-column: span 2;
+  transition: background-color 0.2s ease-in-out, transform 0.2s ease;
+}
+
+#form-editar-producto .btn-cerrar:hover,
+#form-agregar-producto .btn-cerrar:hover {
+  background-color:  #c0392b;
+  transform: scale(1.03);
+}
 /* ====================================================
 ➕ BOTÓN AGREGAR PRODUCTO
 ==================================================== */
@@ -490,4 +538,41 @@ label.required::after {
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 1em;
+}
+.campo-imagen-transparente {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.campo-imagen-transparente input[type="file"] {
+  flex: 1;
+}
+
+.texto-y-boton {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  max-width: 200px;
+}
+
+.btn-quitar-fondo {
+  background-color: #3a5a40;
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+}
+
+.btn-quitar-fondo:hover {
+  background-color: #55845d;
+  transform: scale(1.03);
 }
