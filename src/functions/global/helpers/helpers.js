@@ -10,17 +10,36 @@ export function safeSetValue(id, value) {
 // ==============================
 // 🧩 TOGGLE ENTRE SELECT EXISTENTE E INPUT NUEVO
 // ==============================
-export function toggleNuevoCampo(modo, campo) {
+// export function toggleNuevoCampo(modo, campo) {
+//   const select = document.getElementById(`${modo}-${campo}-select`);
+//   const input = document.getElementById(`${modo}-${campo}-nuevo`);
+//   if (!select || !input) return;
+
+//   const esNuevo = select.value === "nuevo";
+//   input.style.display = esNuevo ? "block" : "none";
+//   input.required = esNuevo;
+//   if (!esNuevo) input.value = "";
+// }
+export function toggleNuevoCampo(modo, campo, contenedorAdicionalId = null) { // <-- Se añadió contenedorAdicionalId
   const select = document.getElementById(`${modo}-${campo}-select`);
   const input = document.getElementById(`${modo}-${campo}-nuevo`);
-  if (!select || !input) return;
+  const contenedorAdicionalElement = contenedorAdicionalId ? document.getElementById(contenedorAdicionalId) : null; // <-- Se obtiene el elemento adicional
+
+  if (!select || !input) {
+    console.warn(`⚠️ Elementos principales no encontrados para toggleNuevoCampo: #${modo}-${campo}-select o #${modo}-${campo}-nuevo`);
+    return;
+  }
 
   const esNuevo = select.value === "nuevo";
   input.style.display = esNuevo ? "block" : "none";
   input.required = esNuevo;
   if (!esNuevo) input.value = "";
-}
 
+  // Lógica específica para el contenedor de ubicaciones del supermercado <-- ¡Esta es la clave!
+  if (campo === "supermercado" && contenedorAdicionalElement) {
+    contenedorAdicionalElement.style.display = "block"; // Asegura que el contenedor de ubicaciones siempre se muestre
+  }
+}
 // ==============================
 // ➕ AÑADIR UN NUEVO GRUPO DE CAMPOS DE UBICACIÓN
 // ==============================

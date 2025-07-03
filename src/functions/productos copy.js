@@ -126,20 +126,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     // Escuchadores de eventos para alternar los campos de entrada 'nuevo' cuando se selecciona 'Otro (escribir nuevo)'
-    document.getElementById("add-tipo-select")?.addEventListener("change", () => toggleNuevoCampo("add", "tipo"));
-    document.getElementById("add-supermercado-select")?.addEventListener("change", () => toggleNuevoCampo("add", "supermercado", "selector-ubicacion-dinamico"));
-    document.getElementById("add-marca-select")?.addEventListener("change", () => toggleNuevoCampo("add", "marca"));
-    document.getElementById("add-proveedor-select")?.addEventListener("change", () => toggleNuevoCampo("add", "proveedor"));
-    document.getElementById("add-subtipo-select")?.addEventListener("change", () => toggleNuevoCampo("add", "subtipo"));
+    // Idealmente, esto debería formar parte de `inicializarSelectsDinamicos` o una función de ayuda similar
+    // ya que ya has importado `toggleNuevoCampo`.
+    document.getElementById("add-tipo-select")?.addEventListener("change", (event) => toggleNuevoCampo(event.target.id, "add-tipo-nuevo"));
+  document.getElementById("add-supermercado-select")?.addEventListener("change", () => toggleNuevoCampo("add", "supermercado", "selector-ubicacion-dinamico"));
+    document.getElementById("add-marca-select")?.addEventListener("change", (event) => toggleNuevoCampo(event.target.id, "add-marca-nuevo"));
+    document.getElementById("add-proveedor-select")?.addEventListener("change", (event) => toggleNuevoCampo(event.target.id, "add-proveedor-nuevo"));
+    document.getElementById("add-subtipo-select")?.addEventListener("change", (event) => toggleNuevoCampo(event.target.id, "add-subtipo-nuevo"));
 
-    document.getElementById("edit-tipo-select")?.addEventListener("change", () => toggleNuevoCampo("edit", "tipo"));
-    document.getElementById("edit-supermercado-select")?.addEventListener("change", () => toggleNuevoCampo("edit", "supermercado"));
-    document.getElementById("edit-marca-select")?.addEventListener("change", () => toggleNuevoCampo("edit", "marca"));
-    document.getElementById("edit-proveedor-select")?.addEventListener("change", () => toggleNuevoCampo("edit", "proveedor"));
-    document.getElementById("edit-subtipo-select")?.addEventListener("change", () => toggleNuevoCampo("edit", "subtipo"));
+    document.getElementById("edit-tipo-select")?.addEventListener("change", (event) => toggleNuevoCampo(event.target.id, "edit-tipo-nuevo"));
+    document.getElementById("edit-supermercado-select")?.addEventListener("change", (event) => toggleNuevoCampo(event.target.id, "edit-supermercado-nuevo"));
+    document.getElementById("edit-proveedor-select")?.addEventListener("change", (event) => toggleNuevoCampo(event.target.id, "edit-proveedor-nuevo"));
+    document.getElementById("edit-subtipo-select")?.addEventListener("change", (event) => toggleNuevoCampo(event.target.id, "edit-subtipo-nuevo"));
 
 
   } catch (error) {
     console.error("Error en la inicialización:", error);
   }
-  });
+});
