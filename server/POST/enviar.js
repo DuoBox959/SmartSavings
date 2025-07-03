@@ -639,6 +639,39 @@ router.post("/opiniones", async (req, res) => {
   }
 });
 
+
+// =============================================
+// MARCAS                                    📌
+// =============================================
+
+/**
+ * ✅ Crear nueva marca
+ * Ruta: POST /marcas
+ */
+router.post("/marcas", async (req, res) => {
+  const db = req.db;
+
+  try {
+    const { Nombre } = req.body;
+    if (!Nombre) {
+      return res.status(400).json({ error: "El nombre de la marca es obligatorio" });
+    }
+
+    const nuevaMarca = { Nombre };
+    const result = await db.collection("Marcas").insertOne(nuevaMarca); // Asumiendo que tu colección se llama "Marcas"
+
+    res
+      .status(201)
+      .json({
+        message: "Marca creada correctamente",
+        marca: { ...nuevaMarca, _id: result.insertedId },
+      });
+  } catch (err) {
+    console.error("❌ Error creando marca:", err);
+    res.status(500).json({ error: "Error al crear marca" });
+  }
+});
+
 // =============================================
 // HISTORIAL DEL USUARIO                      📌
 // =============================================
