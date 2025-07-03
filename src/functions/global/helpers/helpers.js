@@ -61,10 +61,10 @@ export function parsearPrecioHistorico(input) {
 
   for (let i = 0; i < partes.length - 1; i += 2) {
     const precio = parseFloat(partes[i]);
-    const año = parseInt(partes[i + 1]);
+    const anio = parseInt(partes[i + 1]);
 
-    if (!isNaN(precio) && !isNaN(año)) {
-      resultado.push({ precio, año });
+    if (!isNaN(precio) && !isNaN(anio)) {
+      resultado.push({ precio, anio });
     }
   }
 
