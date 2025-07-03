@@ -10,17 +10,8 @@ export function safeSetValue(id, value) {
 // ==============================
 // 🧩 TOGGLE ENTRE SELECT EXISTENTE E INPUT NUEVO
 // ==============================
-// export function toggleNuevoCampo(modo, campo) {
-//   const select = document.getElementById(`${modo}-${campo}-select`);
-//   const input = document.getElementById(`${modo}-${campo}-nuevo`);
-//   if (!select || !input) return;
 
-//   const esNuevo = select.value === "nuevo";
-//   input.style.display = esNuevo ? "block" : "none";
-//   input.required = esNuevo;
-//   if (!esNuevo) input.value = "";
-// }
-export function toggleNuevoCampo(modo, campo, contenedorAdicionalId = null) { // <-- Se añadió contenedorAdicionalId
+export function toggleNuevoCampo(modo, campo, contenedorAdicionalId = null) { 
   const select = document.getElementById(`${modo}-${campo}-select`);
   const input = document.getElementById(`${modo}-${campo}-nuevo`);
   const contenedorAdicionalElement = contenedorAdicionalId ? document.getElementById(contenedorAdicionalId) : null; // <-- Se obtiene el elemento adicional
@@ -40,6 +31,7 @@ export function toggleNuevoCampo(modo, campo, contenedorAdicionalId = null) { //
     contenedorAdicionalElement.style.display = "block"; // Asegura que el contenedor de ubicaciones siempre se muestre
   }
 }
+
 // ==============================
 // ➕ AÑADIR UN NUEVO GRUPO DE CAMPOS DE UBICACIÓN
 // ==============================
@@ -63,11 +55,12 @@ export function agregarUbicacionAdd() {
   div.innerHTML = `
     <input type="text" class="ubicacion" placeholder="Ubicación (ej: Calle Mayor 45)" />
     <input type="text" class="ciudad" placeholder="Ciudad (ej: Madrid)" />
-    <input type="text" class="pais" placeholder="País (ej: España)" value="España" />
+    <input type="text" class="pais" placeholder="País (ej: España)" />
     <button type="button" onclick="eliminarUbicacion(this)">❌</button>
   `;
   contenedor.appendChild(div);
 }
+
 
 // ==============================
 // 📊 Parsear string de precios históricos en pares [precio, año]
