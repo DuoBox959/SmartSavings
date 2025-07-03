@@ -449,27 +449,18 @@ router.post("/supermercados", async (req, res) => {
   try {
     const { Nombre, Ubicaciones } = req.body; // Aseguramos que recibimos 'Ubicaciones' como un array
 
-    if (
-      !Nombre ||
-      !Ubicaciones ||
-      !Array.isArray(Ubicaciones) ||
-      Ubicaciones.length === 0
-    ) {
-      return res
-        .status(400)
-        .json({ error: "El nombre y al menos una ubicación son obligatorios" });
-    }
+    if (!Nombre) {
+  return res
+    .status(400)
+    .json({ error: "El nombre del supermercado es obligatorio" });
+}
 
-    // Validar cada ubicación
-    for (const ubicacion of Ubicaciones) {
-      if (!ubicacion.pais || !ubicacion.ciudad || !ubicacion.ubicacion) {
-        return res.status(400).json({
-          error: "Cada ubicación debe tener Pais, Ciudad y Ubicación.",
-        });
-      }
-    }
+const ubicacionesLimpias =
+  Array.isArray(Ubicaciones) && Ubicaciones.length > 0
+    ? Ubicaciones.filter((u) => u.pais && u.ciudad && u.ubicacion)
+    : [];
 
-    const nuevoSupermercado = { Nombre, Ubicaciones };
+const nuevoSupermercado = { Nombre, Ubicaciones: ubicacionesLimpias };
 
     const resultado = await db
       .collection("Supermercados")
