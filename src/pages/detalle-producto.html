@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="../style/producto.css" />
   <link rel="stylesheet" href="../style/global/footer.css" />
   <link rel="stylesheet" href="../style/detalle-producto.css" />
+  <link rel="stylesheet" href="../style/opinione.css" />
   <link rel="stylesheet" href="/src/style/global/nav.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
@@ -83,7 +84,49 @@
 
 
     </div>
+    </div>
+    <details id="opiniones-plegables" class="opiniones-plegables">
+      <summary class="opiniones-summary">
+        <h2>Opiniones de Clientes</h2>
+        <span class="toggle-icon">▼</span>
+      </summary>
 
+      <div class="reviews-content">
+        <div class="reviews-container">
+          <div class="opinion-item">
+            <h3 class="opinion-title">Excelente producto</h3>
+            <p class="opinion-rating">⭐ ⭐ ⭐ ⭐ ⭐</p>
+            <p class="opinion-comment">"Me encantó este producto, superó mis expectativas. Lo recomiendo totalmente."
+            </p>
+            <small class="opinion-author-date">— Juan Pérez, 15 de julio de 2025</small>
+          </div>
+        </div>
+
+        <div class="add-review-form">
+          <h3>Deja tu opinión</h3>
+          <form id="form-nueva-opinion">
+            <label for="review-title">Título:</label>
+            <input type="text" id="review-title" placeholder="Ej. ¡Me encanta!" required>
+
+            <label for="review-rating">Calificación:</label>
+            <select id="review-rating" required>
+              <option value="">Selecciona una calificación</option>
+              <option value="5">⭐ ⭐ ⭐ ⭐ ⭐ (Excelente)</option>
+              <option value="4">⭐ ⭐ ⭐ ⭐ (Muy bueno)</option>
+              <option value="3">⭐ ⭐ ⭐ (Bueno)</option>
+              <option value="2">⭐ ⭐ (Regular)</option>
+              <option value="1">⭐ (Malo)</option>
+            </select>
+
+            <label for="review-comment">Comentario:</label>
+            <textarea id="review-comment" rows="4" placeholder="Escribe tu opinión aquí..." required></textarea>
+
+            <button type="submit">Enviar Opinión</button>
+          </form>
+        </div>
+      </div>
+    </details>
+    </div>
     <!-- 🔙 Botón para volver -->
     <button class="volver-btn" id="btn-volver-atras">Volver</button>
     <!-- ✏️ MODAL: Editar Producto -->

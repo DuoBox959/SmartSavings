@@ -1,0 +1,183 @@
+
+/* Contenedor general de las opiniones, ahora el elemento details */
+.opiniones-plegables {
+    background-color: #f9f9f9;
+    border-top: 1px solid #eee;
+    padding: 20px 30px; /* Ajusta el padding para details */
+    margin-top: 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* Estilos para el summary (la parte siempre visible y clicable) */
+.opiniones-summary {
+    cursor: pointer;
+    display: flex; /* Para alinear el título y el icono */
+    justify-content: space-between; /* Espacio entre título e icono */
+    align-items: center;
+    padding: 0 0 15px 0; /* Padding inferior para separar del contenido desplegado */
+    margin: -5px 0 0 0; /* Ajuste el margen superior e inferior del summary */
+    list-style: none; /* Oculta el marcador de flecha nativo de details */
+    outline: none; /* Eliminar el contorno al hacer clic */
+}
+
+/* Oculta el marcador de flecha nativo en algunos navegadores */
+.opiniones-plegables summary::-webkit-details-marker {
+    display: none;
+}
+.opiniones-plegables summary::marker {
+    display: none;
+}
+
+
+/* Estilos para el título dentro del summary */
+.opiniones-summary h2 {
+    font-size: 2em;
+    color: #333;
+    margin: 0; /* Elimina márgenes por defecto del h2 */
+    padding-bottom: 0; /* Elimina el padding inferior del h2 */
+    border-bottom: none; /* Elimina el borde inferior del h2 */
+    display: inline; /* Hace que el h2 se comporte como inline para el flexbox */
+}
+
+/* Icono de plegado/desplegado */
+.toggle-icon {
+    font-size: 1.5em;
+    color: #007bff;
+    transition: transform 0.2s ease-in-out;
+    margin-left: 15px; /* Espacio entre el título y el icono */
+}
+
+/* Gira el icono cuando la ventana está abierta */
+.opiniones-plegables[open] .toggle-icon {
+    transform: rotate(180deg);
+}
+
+/* Contenedor del contenido que se pliega/despliega */
+.reviews-content {
+    padding-top: 15px; /* Espacio entre el summary y el contenido */
+    border-top: 1px solid #eee; /* Línea separadora */
+}
+
+
+.reviews-container {
+    display: grid;
+    gap: 25px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
+}
+
+.opinion-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease-in-out;
+}
+
+.opinion-item:hover {
+    transform: translateY(-5px);
+}
+
+.opinion-item h3 {
+    font-size: 1.5em;
+    color: #007bff; /* Blue for review titles */
+    margin-bottom: 10px;
+}
+
+.opinion-item p {
+    font-size: 1em;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.opinion-item p.opinion-rating { /* Usar la clase que definimos en el HTML */
+    color: #ffc107; /* Gold for stars */
+    font-size: 1.2em;
+    margin-bottom: 8px;
+}
+
+.opinion-item small {
+    display: block;
+    text-align: right;
+    color: #777;
+    font-style: italic;
+    margin-top: 15px;
+}
+
+.no-opinions, .error-loading-opinions {
+    text-align: center;
+    color: #777;
+    font-style: italic;
+    margin-top: 20px;
+    grid-column: 1 / -1; /* Centrar estos mensajes si están en el grid */
+}
+
+/* Formulario de nuevas opiniones */
+.add-review-form {
+    background-color: #eaf6ff; /* Light blue background for the form */
+    border: 1px dashed #007bff;
+    border-radius: 8px;
+    padding: 25px;
+    margin-top: 40px;
+    grid-column: 1 / -1; /* Make the form span all columns in the grid */
+}
+
+.add-review-form h3 {
+    font-size: 1.8em;
+    color: #007bff;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.add-review-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.add-review-form label {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.add-review-form input[type="text"],
+.add-review-form select,
+.add-review-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    box-sizing: border-box; /* Include padding in element's total width and height */
+}
+
+.add-review-form textarea {
+    resize: vertical; /* Allow vertical resizing */
+    min-height: 80px;
+}
+
+.add-review-form button[type="submit"] {
+    background-color: #28a745; /* Green button */
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    align-self: flex-end; /* Align button to the right */
+}
+
+.add-review-form button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .reviews-container {
+        grid-template-columns: 1fr; /* Stack reviews on smaller screens */
+    }
+}

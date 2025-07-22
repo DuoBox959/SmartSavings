@@ -1,52 +1,52 @@
-import { renderizarProductos} from "../modals/mostrar.js";
-import { API_BASE } from "../UTILS/utils.js"; 
+import { renderizarProductos } from "../modals/mostrar.js";
+import { API_BASE } from "../UTILS/utils.js";
 
 // 📥 Cargar datos dinámicos en los selects (tipo, marca, etc.)
 
-export async function cargarOpcionesEnSelects(configs) { 
+export async function cargarOpcionesEnSelects(configs) {
 
-    try {
-      const fetchPromises = configs.map(({ campo, endpoint }) =>
-        fetch(`http://localhost:3000/api/${endpoint}`).then((response) => {
-          if (!response.ok) throw new Error(`No se pudo cargar ${campo}`);
-          return response.json();
-        })
-      );
-  
-      const datosArray = await Promise.all(fetchPromises);
-  
-      configs.forEach(({ campo, usarId }, index) => {
-        const datos = datosArray[index];
-        const modos = ["add", "edit"];
-  
-        modos.forEach((modo) => {
-          const select = document.getElementById(`${modo}-${campo}-select`);
-          if (!select) return;
-  
-          select.innerHTML = `<option value="">Selecciona una opción</option>`;
-  
-          datos.forEach((item) => {
-            const option = document.createElement("option");
-            option.value = usarId ? item._id : item.Nombre || item;
-            option.textContent = item.Nombre || item;
-            select.appendChild(option);
-          });
-  
-          // ➕ Opción para escribir un nuevo valor manualmente
-          const optionOtro = document.createElement("option");
-          optionOtro.value = "nuevo";
-          optionOtro.textContent = "Otro (escribir nuevo)";
-          select.appendChild(optionOtro);
+  try {
+    const fetchPromises = configs.map(({ campo, endpoint }) =>
+      fetch(`http://localhost:3000/api/${endpoint}`).then((response) => {
+        if (!response.ok) throw new Error(`No se pudo cargar ${campo}`);
+        return response.json();
+      })
+    );
+
+    const datosArray = await Promise.all(fetchPromises);
+
+    configs.forEach(({ campo, usarId }, index) => {
+      const datos = datosArray[index];
+      const modos = ["add", "edit"];
+
+      modos.forEach((modo) => {
+        const select = document.getElementById(`${modo}-${campo}-select`);
+        if (!select) return;
+
+        select.innerHTML = `<option value="">Selecciona una opción</option>`;
+
+        datos.forEach((item) => {
+          const option = document.createElement("option");
+          option.value = usarId ? item._id : item.Nombre || item;
+          option.textContent = item.Nombre || item;
+          select.appendChild(option);
         });
+
+        // ➕ Opción para escribir un nuevo valor manualmente
+        const optionOtro = document.createElement("option");
+        optionOtro.value = "nuevo";
+        optionOtro.textContent = "Otro (escribir nuevo)";
+        select.appendChild(optionOtro);
       });
-    } catch (err) {
-      console.error("❌ Error cargando selects dinámicos:", err);
-    }
-  
+    });
+  } catch (err) {
+    console.error("❌ Error cargando selects dinámicos:", err);
+  }
 
- }
 
- // ==============================
+}
+
+// ==============================
 // 📥 FUNCIONES DE CARGA Y LISTADO 
 // ==============================
 
@@ -113,16 +113,16 @@ export async function cargarDetalleProductos() {
 
     // Mostrar datos
     document.getElementById("producto-imagen").src =
-  producto.Imagen && producto.Imagen.startsWith("/uploads")
-    ? `http://localhost:3000${producto.Imagen}`
-    : "../assets/img/default.webp";
+      producto.Imagen && producto.Imagen.startsWith("/uploads")
+        ? `http://localhost:3000${producto.Imagen}`
+        : "../assets/img/default.webp";
 
     document.getElementById("producto-nombre").textContent =
       producto.Nombre || "Producto sin nombre";
     document.getElementById("producto-marca").innerHTML =
       "<strong>Marca:</strong>" + (producto.Marca || "Desconocida");
     document.getElementById("producto-precio").innerHTML =
-      "<strong>Precio:</strong>" + (precioData?.precioActual ?? "N/A") + "€";
+      "<strong>Precio:</strong>" + (precioData?.precioActual ?? "<p style='color:red'>No disponible</p>") + "€";
     document.getElementById("producto-precio-descuento").innerHTML =
       precioData?.precioDescuento
         ? `<strong>Precio Descuento:</strong> ${precioData.precioDescuento}€`
@@ -140,44 +140,44 @@ export async function cargarDetalleProductos() {
       (descripcion?.Utilidad || "Sin descripción");
     document.getElementById("producto-peso").innerHTML =
       "<strong>Peso:</strong>" +
-      (producto.Peso || "N/A") +
+      (producto.Peso || "<p style='color:red'>No disponible</p>") +
       " " +
       (producto.UnidadPeso || "");
     document.getElementById("producto-estado").innerHTML =
       "<strong>Estado:</strong>" + (producto.Estado || "Sin stock");
     document.getElementById("producto-tipo").innerHTML =
-      "<strong>Tipo:</strong>" + (descripcion?.Tipo || "N/A");
+      "<strong>Tipo:</strong>" + (descripcion?.Tipo || "<p style='color:red'>No disponible</p>");
     document.getElementById("producto-subtipo").innerHTML =
-      "<strong>Subtipo:</strong> " + (descripcion?.Subtipo || "N/A");
+      "<strong>Subtipo:</strong> " + (descripcion?.Subtipo || "<p style='color:red'>No disponible</p>");
     document.getElementById("producto-supermercado").innerHTML =
       "<strong>Supermercado:</strong> " + (supermercado?.Nombre || "");
-      const ubicacion = supermercado?.Ubicaciones?.[0] || {};
+    const ubicacion = supermercado?.Ubicaciones?.[0] || {};
 
-      document.getElementById("producto-ubicacion").innerHTML =
-        "<strong>Ubicación del supermercado:</strong> " +
-        (ubicacion.Ubicacion || "N/A");
-      
-      document.getElementById("producto-pais-super").innerHTML =
-        "<strong>País del supermercado:</strong> " +
-        (ubicacion.Pais || "N/A");
-      
-      document.getElementById("producto-ciudad-super").innerHTML =
-        "<strong>Ciudad del supermercado:</strong> " +
-        (ubicacion.Ciudad || "N/A");
-      
+    document.getElementById("producto-ubicacion").innerHTML =
+      "<strong>Ubicación del supermercado:</strong> " +
+      ubicacion.Ubicacion || "<p style='color:red'>No disponible</p>";
+
+    document.getElementById("producto-pais-super").innerHTML =
+      "<strong>País del supermercado:</strong> " +
+      (ubicacion.Pais || "<p style='color:red'>No disponible</p>");
+
+    document.getElementById("producto-ciudad-super").innerHTML =
+      "<strong>Ciudad del supermercado:</strong> " +
+      (ubicacion.Ciudad || "<p style='color:red'>No disponible</p>");
+
     document.getElementById("producto-proveedor").innerHTML =
       "<strong>Proveedor:</strong> " + (proveedor?.Nombre || "");
     document.getElementById("producto-pais-proveedor").innerHTML =
       "<strong>País del proveedor:</strong> " + (proveedor?.Pais || "");
     document.getElementById("producto-ingredientes").innerHTML =
       "<strong>Ingredientes:</strong> " +
-      (descripcion?.Ingredientes?.join(", ") || "N/A");
+      (descripcion?.Ingredientes?.join(", ") || "<p style='color:red'>No disponible</p>");
 
     const historial = precioData?.precioHistorico?.length
       ? precioData.precioHistorico
-          .map((h) => `${h.año || h.fecha || "¿Año?"}: ${h.precio}€`)
-          .join("\n")
-      : "No disponible";
+        .map((h) => `${h.año || h.fecha || "¿Año?"}: ${h.precio}€`)
+        .join("\n")
+      : "<p style='color:red'>No disponible</p>";
 
     document.getElementById("producto-historico").innerHTML =
       "<strong>Precio histórico:</strong><br>" +
@@ -227,29 +227,60 @@ export function cargarUbicaciones(supermercado, pais, ciudad) {
 export function obtenerUbicacionesGenerico(prefijo) {
   const ubicaciones = [];
 
-  const pais = document.getElementById(`${prefijo}-pais-existente`)?.value === "nuevo"
-    ? document.getElementById(`${prefijo}-nuevo-pais`).value.trim()
-    : document.getElementById(`${prefijo}-pais-existente`).value;
-
-  const ciudad = document.getElementById(`${prefijo}-ciudad-existente`)?.value === "nuevo"
-    ? document.getElementById(`${prefijo}-nueva-ciudad`).value.trim()
-    : document.getElementById(`${prefijo}-ciudad-existente`).value;
-
-  let ubicacion = "";
+  const paisSelect = document.getElementById(`${prefijo}-pais-existente`);
+  const ciudadSelect = document.getElementById(`${prefijo}-ciudad-existente`);
   const ubicacionSelect = document.getElementById(`${prefijo}-ubicacion-existente`);
 
-  if (ubicacionSelect?.value === "nuevo") {
-    ubicacion = document.getElementById(`${prefijo}-nueva-ubicacion`).value.trim();
-  } else {
-    ubicacion = ubicacionSelect?.value;
+  const paisInput = document.getElementById(`${prefijo}-nuevo-pais`);
+  const ciudadInput = document.getElementById(`${prefijo}-nueva-ciudad`);
+  const ubicacionInput = document.getElementById(`${prefijo}-nueva-ubicacion`);
+
+  // 📦 Detectar valores
+  const pais =
+    paisSelect?.value === "nuevo" ? paisInput?.value.trim() : paisSelect?.value;
+  const ciudad =
+    ciudadSelect?.value === "nuevo" ? ciudadInput?.value.trim() : ciudadSelect?.value;
+  const ubicacion =
+    ubicacionSelect?.value === "nuevo" ? ubicacionInput?.value.trim() : ubicacionSelect?.value;
+
+  // 🚨 Validaciones por campo NUEVO no escrito
+  const errores = [];
+
+  if (paisSelect?.value === "nuevo" && !paisInput?.value.trim()) {
+    errores.push("País (nuevo)");
+    paisInput?.classList.add("input-error");
   }
 
+  if (ciudadSelect?.value === "nuevo" && !ciudadInput?.value.trim()) {
+    errores.push("Ciudad (nueva)");
+    ciudadInput?.classList.add("input-error");
+  }
+
+  if (ubicacionSelect?.value === "nuevo" && !ubicacionInput?.value.trim()) {
+    errores.push("Ubicación (nueva)");
+    ubicacionInput?.classList.add("input-error");
+  }
+
+  // ❌ Si hay errores, no seguir
+  if (errores.length > 0) {
+    Swal.fire({
+      icon: "warning",
+      title: "Campos requeridos vacíos",
+      html: `Has marcado "nuevo" pero no escribiste:<br><strong>${errores.join(
+        "<br>"
+      )}</strong>`,
+    });
+    return [];
+  }
+
+  // ✅ Solo si los 3 existen (aunque sean de origen mixto), devolvemos la ubicación
   if (pais && ciudad && ubicacion) {
     ubicaciones.push({ pais, ciudad, ubicacion });
   }
 
   return ubicaciones;
 }
+
 
 //OBTENER SUPERMERCADOS
 

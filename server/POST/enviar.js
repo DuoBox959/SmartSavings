@@ -8,7 +8,7 @@ const fs = require("fs");
 const multer = require("multer");
 const path = require("path");
 console.log("Directorio actual:", __dirname);
-const { parsearPrecioHistorico } = require("../../src/functions/global/helpers/helpers");
+// const { parsearPrecioHistorico } = require("../../src/functions/global/helpers/helpers");
 const rutaUpload2025 = path.join(__dirname, "../uploads/2025");
 if (!fs.existsSync(rutaUpload2025)) {
   fs.mkdirSync(rutaUpload2025, { recursive: true });
@@ -265,9 +265,15 @@ router.post(
             req.body.precioHistorico
           );
           const parsed = JSON.parse(req.body.precioHistorico);
-          precioHistorico = Array.isArray(parsed)
-            ? parsearPrecioHistorico(parsed)
-            : [];
+           if (Array.isArray(parsed)) {
+            // Opcional: Asegurarse de que los elementos tengan el tipo correcto (número para precio y año)
+            precioHistorico = parsed.map(item => ({
+              precio: parseFloat(item.precio),
+              año: parseInt(item.año)
+            })).filter(item => !isNaN(item.precio) && !isNaN(item.año));
+          } else {
+            console.warn("⚠️ precioHistorico parseado no es un array:", parsed);
+          }
         }
       } catch (e) {
         console.warn("⚠️ precioHistorico inválido:", req.body.precioHistorico);
