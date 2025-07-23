@@ -6,6 +6,7 @@ const router = express.Router();
 const { ObjectId } = require("../../conexion1.js");
 const multer = require("multer");
 const path = require("path");
+const fs = require('fs').promises;
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, "uploads/2025/"),
@@ -399,27 +400,90 @@ router.put("/precios/por-producto/:productoId", async (req, res) => {
  * ✅ Actualizar supermercados existente (Update)
  * Ruta: PUT /supermercados/:id
  */
-router.put("/supermercados/:id", async (req, res) => {
+// router.put("/supermercados/:id", async (req, res) => {
+//   const db = req.db;
+
+//   try {
+//     const id = new ObjectId(req.params.id);
+//     const updateData = req.body;
+
+//     const result = await db
+//       .collection("Supermercados")
+//       .updateOne({ _id: id }, { $set: updateData });
+
+//     if (result.modifiedCount === 0) {
+//       return res.status(404).json({ error: "Supermercado no encontrado" });
+//     }
+
+//     res.json({ message: "Supermercado actualizado correctamente" });
+//   } catch (err) {
+//     console.error("❌ Error actualizando Supermercado:", err);
+//     res.status(500).json({ error: "Error al actualizar Supermercado" });
+//   }
+// });
+
+router.patch("/supermercados/:id/ubicacion", async (req, res) => {
   const db = req.db;
+  const supermercadoId = req.params.id;
 
   try {
-    const id = new ObjectId(req.params.id);
-    const updateData = req.body;
-
-    const result = await db
-      .collection("Supermercados")
-      .updateOne({ _id: id }, { $set: updateData });
-
-    if (result.modifiedCount === 0) {
-      return res.status(404).json({ error: "Supermercado no encontrado" });
+    if (!ObjectId.isValid(supermercadoId)) {
+      return res.status(400).json({ error: "ID de supermercado inválido." });
     }
 
-    res.json({ message: "Supermercado actualizado correctamente" });
+    const { pais, ciudad, ubicacion } = req.body;
+
+    if (!pais || !ciudad || !ubicacion) {
+      return res.status(400).json({
+        error: "Se requiere 'pais', 'ciudad' y 'ubicacion' para añadir una nueva ubicación.",
+      });
+    }
+
+    const nuevaUbicacion = { pais, ciudad, ubicacion };
+
+    // 🔍 Buscar supermercado actual
+    const supermercado = await db
+      .collection("Supermercados")
+      .findOne({ _id: new ObjectId(supermercadoId) });
+
+    if (!supermercado) {
+      return res.status(404).json({ error: "Supermercado no encontrado." });
+    }
+
+    // 🔁 Validar si la calle ya existe (exactamente)
+    const yaExiste = supermercado.Ubicaciones?.some(
+      (u) => u.ubicacion === ubicacion
+    );
+
+    if (yaExiste) {
+      return res.status(200).json({
+        message: "Ubicación ya registrada para este supermercado.",
+        ubicacion: nuevaUbicacion,
+      });
+    }
+
+    // ✅ Si no existe, agregarla con $push
+    await db.collection("Supermercados").updateOne(
+      { _id: new ObjectId(supermercadoId) },
+      { $push: { Ubicaciones: nuevaUbicacion } }
+    );
+
+    const supermercadoActualizado = await db
+      .collection("Supermercados")
+      .findOne({ _id: new ObjectId(supermercadoId) });
+
+    res.status(200).json({
+      message: "Ubicación añadida correctamente.",
+      supermercado: supermercadoActualizado,
+    });
   } catch (err) {
-    console.error("❌ Error actualizando Supermercado:", err);
-    res.status(500).json({ error: "Error al actualizar Supermercado" });
+    console.error("❌ Error al añadir ubicación:", err);
+    res
+      .status(500)
+      .json({ error: "Error interno del servidor al añadir ubicación." });
   }
 });
+
 
 // =============================================
 // PROOVEDOR                                  📌

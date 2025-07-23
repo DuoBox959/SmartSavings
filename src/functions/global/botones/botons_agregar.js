@@ -1,7 +1,7 @@
 import { API_BASE } from "../UTILS/utils.js";
 import { obtenerUbicacionesGenerico, cargarProductos } from "../selects/carga.js";
 import { parsearPrecioHistorico } from "../helpers/helpers.js";
-import { insertarNuevaMarca, insertarNuevoProveedor, insertarNuevoSubtipo, insertarNuevoSupermercado, insertarNuevoTipo } from "../actions/insertar.js";
+import { insertarNuevaMarca, insertarNuevoProveedor, insertarNuevoSubtipo, insertarNuevoSupermercado, insertarNuevoTipo, aniadirUbicacionASupermercadoExistente } from "../actions/insertar.js";
 import { cerrarFormularioAgregar } from "../modals/cerrar.js";
 import { procesarCampoNuevo } from "../selects/procesarCampos.js";
 
@@ -39,6 +39,7 @@ export async function guardarProductoNuevo() {
     let selectedSupermercadoValue = supermercadoSelect ? supermercadoSelect.value : "";
     let supermercadoNombre = "";
 
+
     if (!supermercadoSelect) {
       throw new Error("Elemento HTML requerido no encontrado: #add-supermercado-select.");
     }
@@ -64,6 +65,7 @@ export async function guardarProductoNuevo() {
 
     const formData = new FormData();
     const ubicaciones = obtenerUbicacionesGenerico("add"); // Obtiene todas las ubicaciones del formulario
+console.log("🧪 Ubicaciones a enviar:", ubicaciones);
 
     // ✅ Campos posiblemente nuevos (Marca, Tipo, Subtipo, Proveedor)
     // Se asume que procesarCampoNuevo ya maneja sus propias validaciones internas
@@ -76,23 +78,32 @@ export async function guardarProductoNuevo() {
     });
 
     // 🎯 Lógica para el Supermercado
-    let supermercadoId;
-    
-    if (selectedSupermercadoValue === "nuevo") {
-      // Siempre inserta uno nuevo si se seleccionó "nuevo"
-      supermercadoId = await insertarNuevoSupermercado(supermercadoNombre, ubicaciones);
-    } else {
-      // El usuario seleccionó un supermercado existente
-      // Si se han proporcionado nuevas ubicaciones, crear una nueva entrada de supermercado.
-      // Esto se alinea con "añadir otro supermercado con el mismo nombre pero con distinto país".
-      if (ubicaciones.length > 0) {
-        console.log(`Creando nuevo supermercado con nombre existente "${supermercadoNombre}" y nuevas ubicaciones.`);
-        supermercadoId = await insertarNuevoSupermercado(supermercadoNombre, ubicaciones);
-      } else {
-        // No se proporcionaron nuevas ubicaciones, usar el ID del supermercado existente seleccionado
-        supermercadoId = selectedSupermercadoValue;
-      }
-    }
+        let finalSupermercadoId; // Este será el ID del supermercado al que se vinculará el producto
+
+        if (selectedSupermercadoValue === "nuevo") {
+            // El usuario quiere un supermercado completamente nuevo.
+            // Se inserta un nuevo supermercado con las ubicaciones proporcionadas.
+            finalSupermercadoId = await insertarNuevoSupermercado(supermercadoNombre, ubicaciones);
+            console.log("Nuevo supermercado creado con ID:", finalSupermercadoId);
+        } else {
+            // El usuario seleccionó un supermercado existente.
+            finalSupermercadoId = selectedSupermercadoValue; // El ID del supermercado existente
+
+            // Si hay ubicaciones nuevas en el formulario, intentar añadirlas al supermercado existente.
+            if (ubicaciones.length > 0) {
+                console.log(`Intentando añadir ${ubicaciones.length} ubicaciones al supermercado existente (ID: ${finalSupermercadoId}).`);
+                for (const ubicacion of ubicaciones) {
+                    try {
+                        await añadirUbicacionASupermercadoExistente(finalSupermercadoId, ubicacion);
+                        console.log(`Ubicación añadida/existente en el supermercado:`, ubicacion);
+                    } catch (updateErr) {
+                        console.error(`Error al añadir ubicación ${JSON.stringify(ubicacion)} al supermercado ${finalSupermercadoId}:`, updateErr);
+                        // Puedes decidir si quieres que esto detenga la creación del producto
+                        // o si solo es una advertencia. Por ahora, solo logueamos el error.
+                    }
+                }
+            }
+        }
 
     // 🏷️ Datos principales
     formData.append("nombre", document.getElementById("add-nombre").value);
@@ -102,8 +113,7 @@ export async function guardarProductoNuevo() {
     formData.append("peso", document.getElementById("add-peso").value);
     formData.append("unidadPeso", document.getElementById("add-unidadPeso").value);
     formData.append("estado", document.getElementById("add-estado").value);
-    formData.append("supermercado", supermercadoId); // Usar el ID de supermercado determinado
-    formData.append("proveedor", proveedor);
+   formData.append("supermercado", finalSupermercadoId);    formData.append("proveedor", proveedor);
     formData.append("ubicaciones", JSON.stringify(ubicaciones)); // Seguir enviando ubicaciones con el producto
 
     // 🧠 Detalles adicionales

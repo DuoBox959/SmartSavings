@@ -72,9 +72,9 @@
         <!-- 🛒 Supermercado -->
         <p id="producto-supermercado">Supermercado: </p>
         <p id="producto-ubicacion">Ubicación del supermercado: </p>
-        <p id="producto-ciudad-super">Ciudad del supermercado: </p>
         <p id="producto-pais-super">País del supermercado: </p>
-
+        <p id="producto-ciudad-super">Ciudad del supermercado: </p>
+        
         <!-- 🏭 Proveedor -->
         <p id="producto-proveedor">Proveedor: </p>
         <p id="producto-pais-proveedor">País del proveedor: </p>
@@ -197,11 +197,36 @@
             </select>
             <input type="text" id="edit-marca-nuevo" style="display: none;" />
 
-            <label>Ubicación del supermercado:</label>
-            <input type="text" id="edit-ubicacion-super" />
+          <div id="selector-ubicacion-dinamico" style="display: none; margin-top: 1.5em; grid-column: span 2;">
+            <fieldset class="fieldset-ubicacion">
+              <legend class="legend-ubicacion">📍 Ubicación del supermercado</legend>
 
-            <label>País del supermercado:</label>
-            <input type="text" id="edit-pais-super" />
+              <div class="grid-ubicacion">
+                <div class="form-row">
+                  <label for="edit-pais-existente">País:</label>
+                  <select id="edit-pais-existente"></select>
+                  <input type="text" id="edit-nuevo-pais" placeholder="Nuevo país" style="display: none;" />
+                </div>
+
+                <div class="form-row">
+                  <label for="edit-ciudad-existente">Ciudad:</label>
+                  <select id="edit-ciudad-existente" style="display: none;"></select>
+                  <input type="text" id="edit-nueva-ciudad" placeholder="Nueva ciudad" style="display: none;" />
+                </div>
+
+                <div class="form-row full-width">
+                  <label for="edit-ubicacion-existente">Ubicación existente:</label>
+                  <select id="edit-ubicacion-existente" style="display: none;"></select>
+                  <label for="edit-nueva-ubicacion" id="label-edit-nueva-ubicacion">
+                    Ubicación nueva (dirección o zona):
+                  </label>
+                  <input type="text" id="edit-nueva-ubicacion" placeholder="Ej: Calle Mayor 45" style="display: none;" />
+
+                </div>
+
+              </div>
+            </fieldset>
+          </div>
 
             <label>Proveedor:</label>
             <select id="edit-proveedor-select" class="select-toggle" data-target-id="edit-proveedor-nuevo"

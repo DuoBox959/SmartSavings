@@ -223,6 +223,7 @@ router.post(
       console.log("📥 [REQ] Campos recibidos desde el cliente:");
       console.log("req.body:", req.body);
       console.log("📷 req.file (imagen):", req.file);
+console.log("💡 ubicaciones:", req.body.ubicaciones);
 
       // 1️⃣ Inserción del producto
       const nuevoProducto = {
@@ -266,11 +267,10 @@ router.post(
           );
           const parsed = JSON.parse(req.body.precioHistorico);
            if (Array.isArray(parsed)) {
-            // Opcional: Asegurarse de que los elementos tengan el tipo correcto (número para precio y año)
             precioHistorico = parsed.map(item => ({
               precio: parseFloat(item.precio),
-              año: parseInt(item.año)
-            })).filter(item => !isNaN(item.precio) && !isNaN(item.año));
+              anio: parseInt(item.anio)
+            })).filter(item => !isNaN(item.precio) && !isNaN(item.anio));
           } else {
             console.warn("⚠️ precioHistorico parseado no es un array:", parsed);
           }
