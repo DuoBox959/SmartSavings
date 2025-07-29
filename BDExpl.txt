@@ -1,0 +1,50 @@
+Descripción del Formulario de Entrada de Datos
+
+Este formulario está diseñado para introducir información de productos, supermercados y proveedores, con una lógica de opciones que se adapta a las necesidades del usuario, permitiendo seleccionar entre datos existentes o introducir datos nuevos. La interfaz utiliza un sistema de codificación por color para indicar el número de ramas de decisión o niveles de opciones disponibles en cada campo:
+
+* **Azul (Opción '1'):** Indica que, tras seleccionar la opción '1' (generalmente "Selecciona una opción" o un campo directo), solo hay **una única opción siguiente** o un campo de entrada de texto directo para completar el dato.
+    * Ejemplo: "Nombre del producto: 1" significa que solo se introducirá un nombre.
+    * Ejemplo: "Selecciona una opción: 1" bajo "Tipo del producto:" significa que solo puedes elegir entre las opciones predefinidas o la "Nueva opción: 2". Si eliges "Nueva opción: 2", solo habrá un campo para el nuevo tipo.
+
+* **Verde (Opción '2'):** Indica que, tras seleccionar la opción '1' (o un campo directo), hay **dos posibles caminos o niveles de opciones**. Esto generalmente implica la posibilidad de elegir entre una opción existente o crear una nueva.
+    * Ejemplo: Bajo "País:", la "Nueva opción: 2" significa que puedes seleccionar un país existente o introducir un país nuevo.
+    * Ejemplo: Bajo "Ciudad:", la "Nueva opción: 2" implica seleccionar una ciudad existente o introducir una nueva.
+
+* **Morado (Opción '3'):** Indica que hay **tres posibles caminos o niveles de opciones**, lo que sugiere un anidamiento más profundo en las decisiones. Este es el caso más complejo en la "Ubicación del supermercado" y se aplica la misma lógica para el País proveedor.
+    * Ejemplo: En "Ubicación del supermercado":
+        * Si seleccionas un "País: 1" (existente), entonces puedes optar por una "Ciudad: Selecciona una opción: 1" (existente) O una "Nueva opción: 2" (nueva ciudad).
+        * Si eliges "Nueva opción: 2" para el país, entonces se abrirán opciones para la ciudad (existente o nueva).
+        * Dentro de la elección de ciudad:
+            * Si seleccionas una "Ciudad: Selecciona una opción: 1" (existente), tendrás la opción de una "Ubicación existente: Selecciona una opción: 1" (calle existente de esa ciudad) O una "Nueva opción: 2" (nueva calle para esa ciudad existente).
+            * Si eliges "Nueva opción: 2" para la ciudad (nueva ciudad), entonces solo podrás introducir una "Nueva opción: 3" (nueva calle para la ciudad recién creada).
+
+* **Amarillo (Opción '4'):** Este color no se ha visualizado completamente en las imágenes, pero siguiendo la lógica anterior, indicaría **cuatro posibles caminos o niveles de opciones**. Es el nivel más complejo y está presente en el campo "Proveedor".
+    * Ejemplo: Para "Proveedor:", la "Nueva opción: 4" (mostrada en la imagen pero sin contexto completo) sugiere un nivel de complejidad adicional en la elección o creación de proveedores. La nota "ESTA PUESTA, HAY QUE PONER QUE UN PROVEEDOR PUEDE FABRICAR Y VENDER SUS PRODUCTOS EN VARIOS PAISES" indica que, al crear o seleccionar un proveedor (posiblemente a través de la opción amarilla), se debe habilitar la capacidad de asociarlo con múltiples países de fabricación y venta, añadiendo una capa de opciones para gestionar estos países.
+
+**Resumen por Sección:**
+
+* **Descripción del producto (Utilidad):** Directa (Azul - 1 opción de entrada).
+* **Ubicación del supermercado (Complejo - Morado):**
+    * **País:** Permite seleccionar uno existente o añadir uno nuevo (Verde - 2 opciones).
+    * **Ciudad:** Depende de la selección de país. Si el país es existente, puedes elegir ciudad existente o nueva. Si el país es nuevo, la ciudad será nueva. (Verde/Morado - 2 o 3 opciones, dependiendo del contexto).
+    * **Ubicación existente (Calle):** Depende de la selección de ciudad. Si la ciudad es existente, puedes elegir calle existente o nueva. Si la ciudad es nueva, solo podrás añadir una nueva calle. (Verde/Morado - 2 o 3 opciones, dependiendo del contexto).
+* **Proveedor (Complejo - Amarillo):**
+    * Permite seleccionar un proveedor existente o introducir uno nuevo (Verde - 2 opciones).
+    * El campo "Nueva opción: 3" con la nota del país fabricante indica una característica avanzada: un proveedor nuevo o existente debe poder asociarse a múltiples países de operación, añadiendo una nueva capa de opciones/entradas para cada país.
+* **Subtipo:** Permite seleccionar uno existente o añadir uno nuevo (Verde - 2 opciones).
+* **Precio descuento (€):** Directo (Azul - 1 opción de entrada).
+* **Unidad/Lote:** Directo (Azul - 1 opción de entrada).
+* **Precio por unidad/lote (€):** Directo (Azul - 1 opción de entrada).
+* **Precio Histórico:** Directo (Azul - 1 opción de entrada, probablemente para ver o añadir registros históricos).
+* **Nombre del producto:** Directo (Azul - 1 opción de entrada).
+* **Tipo del producto:** Permite seleccionar uno existente o añadir uno nuevo (Verde - 2 opciones).
+* **Precio actual (€):** Directo (Azul - 1 opción de entrada).
+* **Peso:** Directo (Azul - 1 opción de entrada).
+* **Unidad de Peso:** Permite seleccionar una unidad existente (Azul - 1 opción de selección).
+* **Supermercado:** Permite seleccionar uno existente o añadir uno nuevo (Verde - 2 opciones).
+* **Estado:** Directo (Azul - 1 opción de entrada).
+* **Imagen:** Directo (Azul - 1 opción para subir/seleccionar imagen).
+* **Ingredientes (separados por coma):** Directo (Azul - 1 opción de entrada de texto).
+* **Marca:** Permite seleccionar una existente o añadir una nueva (Verde - 2 opciones).
+
+En resumen, el formulario busca una flexibilidad considerable, permitiendo la creación de nuevos registros (países, ciudades, proveedores, tipos de producto, etc.) directamente desde la interfaz de entrada, en lugar de requerir que estos datos existan previamente en la base de datos.

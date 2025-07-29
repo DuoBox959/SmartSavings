@@ -151,19 +151,19 @@ export async function cargarDetalleProductos() {
       "<strong>Subtipo:</strong> " + (descripcion?.Subtipo || "<p style='color:red'>No disponible</p>");
     document.getElementById("producto-supermercado").innerHTML =
       "<strong>Supermercado:</strong> " + (supermercado?.Nombre || "");
-    const ubicacion = supermercado?.Ubicaciones?.[0] || {};
+const ubicacion = supermercado?.Ubicaciones?.at(-1) || {};
 
-    document.getElementById("producto-ubicacion").innerHTML =
-      "<strong>Ubicación del supermercado:</strong> " +
-      ubicacion.Ubicacion || "<p style='color:red'>No disponible</p>";
+  document.getElementById("producto-ubicacion").innerHTML =
+  "<strong>Ubicación del supermercado:</strong> " +
+  (ubicacion.ubicacion || "<p style='color:red'>No disponible</p>");
 
-    document.getElementById("producto-pais-super").innerHTML =
-      "<strong>País del supermercado:</strong> " +
-      (ubicacion.Pais || "<p style='color:red'>No disponible</p>");
+document.getElementById("producto-pais-super").innerHTML =
+  "<strong>País del supermercado:</strong> " +
+  (ubicacion.pais || "<p style='color:red'>No disponible</p>");
 
-    document.getElementById("producto-ciudad-super").innerHTML =
-      "<strong>Ciudad del supermercado:</strong> " +
-      (ubicacion.Ciudad || "<p style='color:red'>No disponible</p>");
+document.getElementById("producto-ciudad-super").innerHTML =
+  "<strong>Ciudad del supermercado:</strong> " +
+  (ubicacion.ciudad || "<p style='color:red'>No disponible</p>");
 
     document.getElementById("producto-proveedor").innerHTML =
       "<strong>Proveedor:</strong> " + (proveedor?.Nombre || "");
@@ -175,7 +175,7 @@ export async function cargarDetalleProductos() {
 
     const historial = precioData?.precioHistorico?.length
       ? precioData.precioHistorico
-        .map((h) => `${h.año || h.fecha || "¿Año?"}: ${h.precio}€`)
+        .map((h) => `${h.anio || h.fecha || "¿Año?"}: ${h.precio}€`)
         .join("\n")
       : "<p style='color:red'>No disponible</p>";
 
@@ -223,7 +223,6 @@ export function cargarUbicaciones(supermercado, pais, ciudad) {
   if (nuevaUbicacionInput) nuevaUbicacionInput.style.display = "none";
   if (labelNuevaUbicacion) labelNuevaUbicacion.style.display = "none";
 }
-
 export function obtenerUbicacionesGenerico(prefijo) {
   const ubicaciones = [];
 
@@ -235,51 +234,110 @@ export function obtenerUbicacionesGenerico(prefijo) {
   const ciudadInput = document.getElementById(`${prefijo}-nueva-ciudad`);
   const ubicacionInput = document.getElementById(`${prefijo}-nueva-ubicacion`);
 
-  // 📦 Detectar valores
-  const pais =
-    paisSelect?.value === "nuevo" ? paisInput?.value.trim() : paisSelect?.value;
-  const ciudad =
-    ciudadSelect?.value === "nuevo" ? ciudadInput?.value.trim() : ciudadSelect?.value;
-  const ubicacion =
-    ubicacionSelect?.value === "nuevo" ? ubicacionInput?.value.trim() : ubicacionSelect?.value;
+  const pais = paisSelect?.value === "nuevo"
+    ? paisInput?.value.trim()
+    : (paisSelect?.value || paisInput?.value.trim());
 
-  // 🚨 Validaciones por campo NUEVO no escrito
+  const ciudad = ciudadSelect?.value === "nuevo"
+    ? ciudadInput?.value.trim()
+    : (ciudadSelect?.value || ciudadInput?.value.trim());
+
+  const ubicacion = ubicacionSelect?.value === "nuevo"
+    ? ubicacionInput?.value.trim()
+    : (ubicacionSelect?.value || ubicacionInput?.value.trim());
+
   const errores = [];
 
-  if (paisSelect?.value === "nuevo" && !paisInput?.value.trim()) {
-    errores.push("País (nuevo)");
+  if (!pais) {
+    errores.push("País");
     paisInput?.classList.add("input-error");
   }
 
-  if (ciudadSelect?.value === "nuevo" && !ciudadInput?.value.trim()) {
-    errores.push("Ciudad (nueva)");
+  if (!ciudad) {
+    errores.push("Ciudad");
     ciudadInput?.classList.add("input-error");
   }
 
-  if (ubicacionSelect?.value === "nuevo" && !ubicacionInput?.value.trim()) {
-    errores.push("Ubicación (nueva)");
+  if (!ubicacion) {
+    errores.push("Ubicación");
     ubicacionInput?.classList.add("input-error");
   }
 
-  // ❌ Si hay errores, no seguir
   if (errores.length > 0) {
     Swal.fire({
       icon: "warning",
       title: "Campos requeridos vacíos",
-      html: `Has marcado "nuevo" pero no escribiste:<br><strong>${errores.join(
-        "<br>"
-      )}</strong>`,
+      html: `Has dejado vacío:<br><strong>${errores.join("<br>")}</strong>`,
     });
     return [];
   }
 
-  // ✅ Solo si los 3 existen (aunque sean de origen mixto), devolvemos la ubicación
-  if (pais && ciudad && ubicacion) {
-    ubicaciones.push({ pais, ciudad, ubicacion });
-  }
-
+  ubicaciones.push({ pais, ciudad, ubicacion });
   return ubicaciones;
 }
+
+// export function obtenerUbicacionesGenerico(prefijo) {
+//   const ubicaciones = [];
+
+//   const paisSelect = document.getElementById(`${prefijo}-pais-existente`);
+//   const ciudadSelect = document.getElementById(`${prefijo}-ciudad-existente`);
+//   const ubicacionSelect = document.getElementById(`${prefijo}-ubicacion-existente`);
+
+//   const paisInput = document.getElementById(`${prefijo}-nuevo-pais`);
+//   const ciudadInput = document.getElementById(`${prefijo}-nueva-ciudad`);
+//   const ubicacionInput = document.getElementById(`${prefijo}-nueva-ubicacion`);
+
+//   // 📦 Detectar valores
+//  const pais = paisSelect?.value === "nuevo"
+//   ? paisInput?.value.trim()
+//   : (paisSelect?.value || paisInput?.value.trim());
+
+// const ciudad = ciudadSelect?.value === "nuevo"
+//   ? ciudadInput?.value.trim()
+//   : (ciudadSelect?.value || ciudadInput?.value.trim());
+
+// const ubicacion = ubicacionSelect?.value === "nuevo"
+//   ? ubicacionInput?.value.trim()
+//   : (ubicacionSelect?.value || ubicacionInput?.value.trim());
+
+
+//   // 🚨 Validaciones por campo NUEVO no escrito
+//   const errores = [];
+
+//   if (paisSelect?.value === "nuevo" && !paisInput?.value.trim()) {
+//     errores.push("País (nuevo)");
+//     paisInput?.classList.add("input-error");
+//   }
+
+//   if (ciudadSelect?.value === "nuevo" && !ciudadInput?.value.trim()) {
+//     errores.push("Ciudad (nueva)");
+//     ciudadInput?.classList.add("input-error");
+//   }
+
+//   if (ubicacionSelect?.value === "nuevo" && !ubicacionInput?.value.trim()) {
+//     errores.push("Ubicación (nueva)");
+//     ubicacionInput?.classList.add("input-error");
+//   }
+
+//   // ❌ Si hay errores, no seguir
+//   if (errores.length > 0) {
+//     Swal.fire({
+//       icon: "warning",
+//       title: "Campos requeridos vacíos",
+//       html: `Has marcado "nuevo" pero no escribiste:<br><strong>${errores.join(
+//         "<br>"
+//       )}</strong>`,
+//     });
+//     return [];
+//   }
+
+//   // ✅ Solo si los 3 existen (aunque sean de origen mixto), devolvemos la ubicación
+//   if (pais && ciudad && ubicacion) {
+//     ubicaciones.push({ pais, ciudad, ubicacion });
+//   }
+
+//   return ubicaciones;
+// }
 
 
 //OBTENER SUPERMERCADOS

@@ -1,0 +1,184 @@
+Base de Datos: CompPrecios
+
+1. Colección: DatosUsuario
+
+Descripción: Almacena información detallada sobre los usuarios.
+
+Campos:
+
+_id: ObjectId (identificador único del documento).
+
+usuario_id: ObjectId (referencia al _id en la colección Usuarios).
+
+nombre: String (ej. "Javier").
+
+apellidos: String (ej. "Domínguez Santos").
+
+usuario: String (ej. "Javier34").
+
+fechaNacimiento: String (ej. "1995-12-20").
+
+genero: String (ej. "masculino").
+
+idioma: String (ej. "es").
+
+zonaHoraria: String (ej. "UTC-5").
+
+recibirNotificaciones: Boolean (ej. true).
+
+2. Colección: Descripcion
+
+Descripción: Contiene descripciones detalladas de productos, incluyendo tipo, subtipo, utilidad e ingredientes.
+
+Campos:
+
+_id: ObjectId (identificador único del documento).
+
+Producto_id: ObjectId (referencia al _id en la colección Productos).
+
+Tipo: String (ej. "Bebida").
+
+Subtipo: String (ej. "Refresco").
+
+Utilidad: String (ej. "Bebida refrescante y energizante").
+
+Ingredientes: Array de String (ej. Array con 7 elementos).
+
+3. Colección: HistorialUsuario
+
+Descripción: Registra las acciones realizadas por los usuarios en la aplicación.
+
+Campos:
+
+_id: ObjectId (identificador único del documento).
+
+usuario_id: ObjectId (referencia al _id en la colección Usuarios).
+
+accion: String (ej. "Inicio de sesión").
+
+fecha: Date (ej. "2025-05-03T11:35:52.845+00:00").
+
+4. Colección: Opiniones
+
+Descripción: Almacena las opiniones y calificaciones de los usuarios sobre los productos.
+
+Campos:
+
+_id: ObjectId (identificador único del documento).
+
+Producto_id: ObjectId (referencia al _id en la colección Productos).
+
+Usuario_id: ObjectId (referencia al _id en la colección Usuarios).
+
+Opinion: String (ej. "Mejor que coca-cola").
+
+Calificacion: Number (ej. 7).
+
+Fecha: Date (ej. "2025-03-29T22:38:23.439Z").
+
+5. Colección: Precios
+
+Descripción: Contiene información sobre el precio actual, descuentos y precios históricos de los productos.
+
+Campos:
+
+_id: ObjectId (identificador único del documento).
+
+producto_id: ObjectId (referencia al _id en la colección Productos).
+
+precioActual: Number (ej. 1.2).
+
+precioDescuento: Number (ej. 1).
+
+unidadLote: String (ej. "2").
+
+precioUnidadLote: Number (ej. 2.25).
+
+precioHistorico: Array (ej. Array con 2 elementos, presumiblemente objetos con fechas y precios anteriores).
+
+6. Colección: Productos
+
+Descripción: Almacena los datos principales de los productos.
+
+Campos:
+
+_id: ObjectId (identificador único del documento).
+
+Nombre: String (ej. "Botella Pepsi").
+
+Imagen: String (ruta o URL de la imagen, ej. "/uploads/2025/1745313277143.png").
+
+Marca: String (ej. "Pepsi").
+
+Peso: String (ej. "1.20").
+
+UnidadPeso: String (campo vacío en el ejemplo, podría ser "kg", "ml", etc.).
+
+Estado: String (ej. "En stock").
+
+Proveedor_id: ObjectId (referencia al _id en la colección Proveedor).
+
+Supermercado_id: ObjectId (referencia al _id en la colección Supermercados).
+
+Usuario_id: ObjectId (referencia al _id en la colección Usuarios).
+
+fechaActualizacion: Date (ej. "2025-04-29T08:28:10.217Z").
+
+PaisProveedor: String (ej. "España").
+
+Subtipo: String (ej. "Refresco").
+
+Tipo: String (ej. "Bebida").
+
+Utilidad: String (ej. "Bebida refrescante y energizante").
+
+7. Colección: Proveedor
+
+Descripción: Contiene información sobre los proveedores de productos.
+
+Campos:
+
+_id: ObjectId (identificador único del documento).
+
+Nombre: String (ej. "Pepsico").
+
+Pais: String (ej. "España").
+
+C.Autonoma: String (ej. "Andalucía").
+
+8. Colección: Supermercados
+
+Descripción: Almacena datos de los supermercados y sus ubicaciones.
+
+Campos:
+
+_id: ObjectId (identificador único del documento).
+
+Nombre: String (ej. "Cash Fresh").
+
+Ubicaciones: Array de Object (cada objeto representa una ubicación).
+
+Pais: String (ej. "España").
+
+Ciudad: String (ej. "Madrid", "Barcelona").
+
+Ubicacion: String (ej. "Calle Mayor 45", "Avinguda Diagonal 390").
+
+9. Colección: Usuarios
+
+Descripción: Contiene los datos de registro básicos de los usuarios.
+
+Campos:
+
+_id: ObjectId (identificador único del documento).
+
+nombre: String (ej. "Javier34").
+
+pass: String (contraseña, ej. "Javier123.98").
+
+email: String (ej. "javierfj@gmail.com").
+
+fechaRegistro: String (ej. "11/03/2025").
+
+rol: String (ej. "admin").
+

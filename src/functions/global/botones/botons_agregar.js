@@ -94,7 +94,7 @@ console.log("🧪 Ubicaciones a enviar:", ubicaciones);
                 console.log(`Intentando añadir ${ubicaciones.length} ubicaciones al supermercado existente (ID: ${finalSupermercadoId}).`);
                 for (const ubicacion of ubicaciones) {
                     try {
-                        await añadirUbicacionASupermercadoExistente(finalSupermercadoId, ubicacion);
+                        await aniadirUbicacionASupermercadoExistente(finalSupermercadoId, ubicacion);
                         console.log(`Ubicación añadida/existente en el supermercado:`, ubicacion);
                     } catch (updateErr) {
                         console.error(`Error al añadir ubicación ${JSON.stringify(ubicacion)} al supermercado ${finalSupermercadoId}:`, updateErr);
@@ -113,8 +113,9 @@ console.log("🧪 Ubicaciones a enviar:", ubicaciones);
     formData.append("peso", document.getElementById("add-peso").value);
     formData.append("unidadPeso", document.getElementById("add-unidadPeso").value);
     formData.append("estado", document.getElementById("add-estado").value);
-   formData.append("supermercado", finalSupermercadoId);    formData.append("proveedor", proveedor);
-    formData.append("ubicaciones", JSON.stringify(ubicaciones)); // Seguir enviando ubicaciones con el producto
+    formData.append("supermercado", finalSupermercadoId);
+    formData.append("proveedor", proveedor);
+   
 
     // 🧠 Detalles adicionales
     const utilidad = document.getElementById("add-utilidad")?.value.trim();

@@ -65,10 +65,33 @@ export function agregarUbicacionAdd() {
 // ==============================
 // 📊 Parsear string de precios históricos en pares [precio, año]
 // ==============================
+// export function parsearPrecioHistorico(input) {
+//   if (!input || typeof input !== "string") return [];
+
+//   const partes = input.split(",").map((e) => e.trim());
+//   const resultado = [];
+
+//   for (let i = 0; i < partes.length - 1; i += 2) {
+//     const precio = parseFloat(partes[i]);
+//     const anio = parseInt(partes[i + 1]);
+
+//     if (!isNaN(precio) && !isNaN(anio)) {
+//       resultado.push({ precio, anio });
+//     }
+//   }
+
+//   return resultado;
+// }
 export function parsearPrecioHistorico(input) {
   if (!input || typeof input !== "string") return [];
 
-  const partes = input.split(",").map((e) => e.trim());
+  const partes = input
+    .replace(/€/g, "")
+    .replace(/:/g, ",")
+    .split(",")
+    .map((e) => e.trim())
+    .filter(Boolean); 
+
   const resultado = [];
 
   for (let i = 0; i < partes.length - 1; i += 2) {
