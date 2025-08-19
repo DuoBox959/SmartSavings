@@ -14,7 +14,6 @@
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 </head>
 
 <body>
@@ -26,7 +25,6 @@
     <button class="btn-agregar" id="btn-agregar-producto">
       Agregar Producto
     </button>
-
   </section>
 
   <section class="productos-container" id="productos-container" aria-label="Lista de productos disponibles"></section>
@@ -61,10 +59,10 @@
 
         <label>Unidad de Peso: *</label>
         <select id="add-unidadPeso" required>
-          <option value="kg">Kilogramos</option>
-          <option value="g">Gramos</option>
-          <option value="l">Litros</option>
-          <option value="ml">Mililitros</option>
+          <option value="kg">Kilogramos (kg)</option>
+          <option value="g">Gramos (g)</option>
+          <option value="l">Litros (l)</option>
+          <option value="ml">Mililitros (ml)</option>
         </select>
 
         <label>Supermercado: *</label>
@@ -85,13 +83,11 @@
         <details>
           <summary>Ver más campos para tu producto</summary>
           <div class="campo-imagen-transparente">
-
-            <label>Imagen:</label>
+            <label>Imagen del producto:</label>
             <input type="file" id="add-imagen" name="Imagen" accept="image/*" />
             <div class="texto-y-boton">
               <small>Si deseas poner el fondo transparente haz clic aquí:</small>
-                 <a href="../pages/global/rem_fondo.html" target="_blank" class="btn-quitar-fondo">🎯 Click aquí</a>
-
+              <a href="../pages/global/rem_fondo.html" target="_blank" class="btn-quitar-fondo">🎯 Click aquí</a>
             </div>
           </div>
           <label>Ingredientes (separados por coma):</label>
@@ -103,39 +99,39 @@
               <option value="">Selecciona una marca</option>
               <option value="nuevo">Otra (escribir nueva)</option>
             </select>
-            <input type="text" id="add-marca-nuevo" class="nuevo-campo" style="display:none;"
+            <input type="text" id="add-marca-nuevo" class="nuevo-campo" style="display: none"
               placeholder="Nueva marca" />
           </div>
 
           <label>Descripción del producto (Utilidad):</label>
           <input type="text" id="add-utilidad" name="utilidad" placeholder="Ej. Bebida refrescante y energizante" />
-          <div id="selector-ubicacion-dinamico" style="display: none; margin-top: 1.5em; grid-column: span 2;">
+          <div id="selector-ubicacion-dinamico" style="display: none; margin-top: 1.5em; grid-column: span 2">
             <fieldset class="fieldset-ubicacion">
-              <legend class="legend-ubicacion">📍 Ubicación del supermercado</legend>
+              <legend class="legend-ubicacion">
+                📍 Ubicación del supermercado
+              </legend>
 
               <div class="grid-ubicacion">
                 <div class="form-row">
-                  <label for="add-pais-existente">País:</label>
-                  <select id="add-pais-existente"></select>
-                  <input type="text" id="add-nuevo-pais" placeholder="Nuevo país" style="display: none;" />
+                  <label for="edit-pais-existente">País:</label>
+                  <select id="edit-pais-existente"></select>
+                  <input type="text" id="edit-nuevo-pais" placeholder="Nuevo país" style="display: none" />
                 </div>
 
                 <div class="form-row">
-                  <label for="add-ciudad-existente">Ciudad:</label>
-                  <select id="add-ciudad-existente" style="display: none;"></select>
-                  <input type="text" id="add-nueva-ciudad" placeholder="Nueva ciudad" style="display: none;" />
+                  <label for="edit-ciudad-existente">Ciudad:</label>
+                  <select id="edit-ciudad-existente" style="display: none"></select>
+                  <input type="text" id="edit-nueva-ciudad" placeholder="Nueva ciudad" style="display: none" />
                 </div>
 
                 <div class="form-row full-width">
-                  <label for="add-ubicacion-existente">Ubicación existente:</label>
-                  <select id="add-ubicacion-existente" style="display: none;"></select>
-                  <label for="add-nueva-ubicacion" id="label-add-nueva-ubicacion">
+                  <label for="edit-ubicacion-existente">Ubicación existente:</label>
+                  <select id="edit-ubicacion-existente" style="display: none"></select>
+                  <label for="edit-nueva-ubicacion" id="label-edit-nueva-ubicacion">
                     Ubicación nueva (dirección o zona):
                   </label>
-                  <input type="text" id="add-nueva-ubicacion" placeholder="Ej: Calle Mayor 45" style="display: none;" />
-
+                  <input type="text" id="edit-nueva-ubicacion" placeholder="Ej: Calle Mayor 45" style="display: none" />
                 </div>
-
               </div>
             </fieldset>
           </div>
@@ -149,7 +145,7 @@
             <input type="text" id="add-proveedor-nuevo" class="nuevo-campo" placeholder="Nuevo proveedor" />
           </div>
 
-          <label>País proveedor:</label>
+          <label>País del proveedor:</label>
           <input type="text" id="add-pais-proveedor" />
 
           <label>Subtipo:</label>
@@ -217,13 +213,19 @@
           <option value="ml">Mililitros (ml)</option>
         </select>
 
+
         <label>Supermercado: *</label>
         <div class="campo-compuesto">
-          <select id="edit-supermercado-select" required>
+          <select id="add-supermercado-select" required>
             <option value="">Selecciona un supermercado</option>
             <option value="nuevo">Otro (escribir nuevo)</option>
           </select>
-          <input type="text" id="edit-supermercado-nuevo" class="nuevo-campo" placeholder="Nuevo supermercado" />
+          <input type="text" id="add-supermercado-nuevo" class="nuevo-campo" placeholder="Nuevo supermercado" />
+          <label for="add-editar-nombre-supermercado" class="label-editar-nombre">
+            <input type="checkbox" id="add-editar-nombre-supermercado" class="checkbox-editar-nombre" /> Editar nombre
+          </label>
+          <input type="text" id="add-nombre-supermercado-actual" class="campo-editar-nombre" style="display: none;"
+            placeholder="Nombre actual del supermercado" />
         </div>
 
         <label>Estado: *</label>
@@ -240,17 +242,16 @@
         <details>
           <summary>Ver más campos para tu producto</summary>
           <div class="campo-imagen-transparente">
-
             <label>Imagen del producto:</label>
             <input type="file" id="edit-imagen" name="Imagen" accept="image/*" />
             <div class="texto-y-boton">
               <small>Si deseas poner el fondo transparente haz clic aquí:</small>
-                  <a href="/src/global/rem_fondo.html" target="_blank" class="btn-quitar-fondo">🎯 Click aquí</a>
-
+              <a href="../pages/global/rem_fondo.html" target="_blank" class="btn-quitar-fondo">🎯 Click aquí</a>
             </div>
           </div>
+
           <label>Ingredientes (separados por coma):</label>
-          <input type="text" id="edit-ingredientes" placeholder="Ej: agua, azúcar, gas" />
+          <input type="text" id="edit-ingredientes" placeholder="Ej: azúcar, agua, gas carbónico" />
 
           <label>Marca:</label>
           <div class="campo-compuesto">

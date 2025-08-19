@@ -63,152 +63,170 @@ export function inicializarSelectsDinamicos() {
 // ==============================
 // 📍 Cuando seleccionas supermercado
 // ==============================
-document.getElementById("add-supermercado-select").addEventListener("change", async (e) => {
-  const supermercadoId = e.target.value;
+const supermercadoSelect = document.getElementById("add-supermercado-select");
+if (supermercadoSelect) {
+  supermercadoSelect.addEventListener("change", async (e) => {
+    const supermercadoId = e.target.value;
 
-  const ubicacionContenedor = document.getElementById("selector-ubicacion-dinamico");
-  const paisSelect = document.getElementById("add-pais-existente");
-  const nuevoPaisInput = document.getElementById("add-nuevo-pais");
-  const ciudadSelect = document.getElementById("add-ciudad-existente");
-  const nuevaCiudadInput = document.getElementById("add-nueva-ciudad");
-  const ubicacionInput = document.getElementById("add-nueva-ubicacion");
+    const ubicacionContenedor = document.getElementById("selector-ubicacion-dinamico");
+    const paisSelect = document.getElementById("add-pais-existente");
+    const nuevoPaisInput = document.getElementById("add-nuevo-pais");
+    const ciudadSelect = document.getElementById("add-ciudad-existente");
+    const nuevaCiudadInput = document.getElementById("add-nueva-ciudad");
+    const ubicacionInput = document.getElementById("add-nueva-ubicacion");
 
-  if (!supermercadoId || supermercadoId === "nuevo") {
-    ubicacionContenedor.style.display = "none";
-    return;
-  }
+    if (!supermercadoId || supermercadoId === "nuevo") {
+      ubicacionContenedor.style.display = "none";
+      return;
+    }
 
-  ubicacionContenedor.style.display = "block";
+    ubicacionContenedor.style.display = "block";
 
-  // ✅ Obtener datos del supermercado desde API
-  const supermercados = await fetch(`${API_BASE}/api/supermercados`).then(res => res.json());
-  const supermercado = supermercados.find((s) => s._id === supermercadoId);
+    // ✅ Obtener datos del supermercado desde API
+    const supermercados = await fetch(`${API_BASE}/api/supermercados`).then(res => res.json());
+    const supermercado = supermercados.find((s) => s._id === supermercadoId);
 
-  if (!supermercado || !Array.isArray(supermercado.Ubicaciones)) {
-    console.warn("❌ Supermercado sin ubicaciones válidas");
-    return;
-  }
+    if (!supermercado || !Array.isArray(supermercado.Ubicaciones)) {
+      console.warn("❌ Supermercado sin ubicaciones válidas");
+      return;
+    }
 
-  // 🌍 Filtrar países válidos del supermercado
-  const paises = [
-    ...new Set(
-      supermercado.Ubicaciones
-        .map((u) => u.Pais)
-        .filter((p) => typeof p === "string" && p.trim() !== "" && p !== "undefined")
-    ),
-  ];
+    // 🌍 Filtrar países válidos del supermercado
+    const paises = [
+      ...new Set(
+        supermercado.Ubicaciones
+          .map((u) => u.Pais)
+          .filter((p) => typeof p === "string" && p.trim() !== "" && p !== "undefined")
+      ),
+    ];
 
-  paisSelect.innerHTML = `<option value="">Selecciona un país</option>`;
-  paises.forEach((p) => {
-    paisSelect.innerHTML += `<option value="${p}">${p}</option>`;
+    paisSelect.innerHTML = `<option value="">Selecciona un país</option>`;
+    paises.forEach((p) => {
+      paisSelect.innerHTML += `<option value="${p}">${p}</option>`;
+    });
+    paisSelect.innerHTML += `<option value="nuevo">Otro (nuevo país)</option>`;
+    paisSelect.style.display = "inline-block";
+
+    if (paises.length === 1) {
+      paisSelect.value = paises[0];
+      paisSelect.dispatchEvent(new Event("change"));
+    }
+
+    nuevoPaisInput.style.display = "none";
+    ciudadSelect.style.display = "none";
+    nuevaCiudadInput.style.display = "none";
+    ubicacionInput.style.display = "none";
   });
-  paisSelect.innerHTML += `<option value="nuevo">Otro (nuevo país)</option>`;
-  paisSelect.style.display = "inline-block";
-
-  // 💡 Si solo hay un país, seleccionarlo automáticamente
-  if (paises.length === 1) {
-    paisSelect.value = paises[0];
-    paisSelect.dispatchEvent(new Event("change"));
-  }
-
-  // Ocultar campos secundarios
-  nuevoPaisInput.style.display = "none";
-  ciudadSelect.style.display = "none";
-  nuevaCiudadInput.style.display = "none";
-  ubicacionInput.style.display = "none";
-});
+}
 
 // ==============================
 // 🌍 Cuando seleccionas un país
 // ==============================
-document.getElementById("add-pais-existente").addEventListener("change", async (e) => {
-  const paisSeleccionado = e.target.value;
-  const supermercadoId = document.getElementById("add-supermercado-select").value;
+// ==============================
+// 🌍 Cuando seleccionas un país
+// ==============================
+const paisSelect = document.getElementById("add-pais-existente");
+if (paisSelect) {
+  paisSelect.addEventListener("change", async (e) => {
+    const paisSeleccionado = e.target.value;
+    const supermercadoId = document.getElementById("add-supermercado-select").value;
 
-  const nuevoPaisInput = document.getElementById("add-nuevo-pais");
-  const ciudadSelect = document.getElementById("add-ciudad-existente");
-  const nuevaCiudadInput = document.getElementById("add-nueva-ciudad");
-  const ubicacionInput = document.getElementById("add-nueva-ubicacion");
+    const nuevoPaisInput = document.getElementById("add-nuevo-pais");
+    const ciudadSelect = document.getElementById("add-ciudad-existente");
+    const nuevaCiudadInput = document.getElementById("add-nueva-ciudad");
+    const ubicacionInput = document.getElementById("add-nueva-ubicacion");
 
-  if (paisSeleccionado === "nuevo") {
-    nuevoPaisInput.style.display = "inline-block";
-    ciudadSelect.style.display = "none";
-    nuevaCiudadInput.style.display = "inline-block";
-    ubicacionInput.style.display = "inline-block";
-    return;
-  }
+    if (paisSeleccionado === "nuevo") {
+      nuevoPaisInput.style.display = "inline-block";
+      ciudadSelect.style.display = "none";
+      nuevaCiudadInput.style.display = "inline-block";
+      ubicacionInput.style.display = "inline-block";
+      return;
+    }
 
-  nuevoPaisInput.style.display = "none";
+    nuevoPaisInput.style.display = "none";
 
-  // ✅ Obtener ciudades para ese país desde API
-  const supermercados = await fetch(`${API_BASE}/api/supermercados`).then(res => res.json());
-  const supermercado = supermercados.find((s) => s._id === supermercadoId);
+    // ✅ Obtener ciudades para ese país desde API
+    const supermercados = await fetch(`${API_BASE}/api/supermercados`).then(res => res.json());
+    const supermercado = supermercados.find((s) => s._id === supermercadoId);
 
-  const ciudades = [
-    ...new Set(
-      supermercado.Ubicaciones
-        .filter((u) => u.Pais === paisSeleccionado)
-        .map((u) => u.Ciudad)
-    ),
-  ];
+    const ciudades = [
+      ...new Set(
+        supermercado.Ubicaciones
+          .filter((u) => u.Pais === paisSeleccionado)
+          .map((u) => u.Ciudad)
+      ),
+    ];
 
-  ciudadSelect.innerHTML = `<option value="">Selecciona una ciudad</option>`;
-  ciudades.forEach((c) => {
-    ciudadSelect.innerHTML += `<option value="${c}">${c}</option>`;
+    ciudadSelect.innerHTML = `<option value="">Selecciona una ciudad</option>`;
+    ciudades.forEach((c) => {
+      ciudadSelect.innerHTML += `<option value="${c}">${c}</option>`;
+    });
+    ciudadSelect.innerHTML += `<option value="nuevo">Otra (nueva ciudad)</option>`;
+
+    ciudadSelect.style.display = "inline-block";
+    nuevaCiudadInput.style.display = "none";
+    ubicacionInput.style.display = "none";
   });
-  ciudadSelect.innerHTML += `<option value="nuevo">Otra (nueva ciudad)</option>`;
+}
 
-  ciudadSelect.style.display = "inline-block";
-  nuevaCiudadInput.style.display = "none";
-  ubicacionInput.style.display = "none";
-});
 
 // ==============================
 // 🏙️ Cuando seleccionas una ciudad
 // ==============================
-document.getElementById("add-ciudad-existente").addEventListener("change", async (e) => {
-  const ciudad = e.target.value;
-  const supermercadoId = document.getElementById("add-supermercado-select").value;
-  const pais = document.getElementById("add-pais-existente").value;
+// ==============================
+// 🏙️ Cuando seleccionas una ciudad
+// ==============================
+const ciudadSelect = document.getElementById("add-ciudad-existente");
+if (ciudadSelect) {
+  ciudadSelect.addEventListener("change", async (e) => {
+    const ciudad = e.target.value;
+    const supermercadoId = document.getElementById("add-supermercado-select").value;
+    const pais = document.getElementById("add-pais-existente").value;
 
-  const nuevaCiudadInput = document.getElementById("add-nueva-ciudad");
-  const ubicacionInput = document.getElementById("add-nueva-ubicacion");
+    const nuevaCiudadInput = document.getElementById("add-nueva-ciudad");
+    const ubicacionInput = document.getElementById("add-nueva-ubicacion");
 
-  if (ciudad === "nuevo") {
-    nuevaCiudadInput.style.display = "inline-block";
-    ubicacionInput.style.display = "inline-block";
-    return;
-  }
+    if (ciudad === "nuevo") {
+      nuevaCiudadInput.style.display = "inline-block";
+      ubicacionInput.style.display = "inline-block";
+      return;
+    }
 
-  nuevaCiudadInput.style.display = "none";
+    nuevaCiudadInput.style.display = "none";
 
-  // ✅ Cargar ubicaciones disponibles desde API
-  try {
-    const supermercados = await fetch(`${API_BASE}/api/supermercados`).then(res => res.json());
-    const supermercado = supermercados.find((s) => s._id === supermercadoId);
-    if (!supermercado) return;
+    // ✅ Cargar ubicaciones disponibles desde API
+    try {
+      const supermercados = await fetch(`${API_BASE}/api/supermercados`).then(res => res.json());
+      const supermercado = supermercados.find((s) => s._id === supermercadoId);
+      if (!supermercado) return;
 
-    // Esta función deberías tenerla en helpers.js o funciones.js
-    cargarUbicaciones(supermercado, pais, ciudad);
-  } catch (err) {
-    console.error("❌ Error cargando ubicaciones por ciudad:", err);
-  }
-});
+      // Usa tu helper
+      cargarUbicaciones(supermercado, pais, ciudad);
+    } catch (err) {
+      console.error("❌ Error cargando ubicaciones por ciudad:", err);
+    }
+  });
+}
 
 // ==============================
 // 🧭 Cuando seleccionas ubicación
 // ==============================
-document.getElementById("add-ubicacion-existente").addEventListener("change", (e) => {
-  const nuevaUbicacionInput = document.getElementById("add-nueva-ubicacion");
-  const labelNuevaUbicacion = document.getElementById("label-add-nueva-ubicacion");
-  const mostrar = e.target.value === "nuevo";
+const ubicacionSelect = document.getElementById("add-ubicacion-existente");
+if (ubicacionSelect) {
+  ubicacionSelect.addEventListener("change", (e) => {
+    const nuevaUbicacionInput = document.getElementById("add-nueva-ubicacion");
+    const labelNuevaUbicacion = document.getElementById("label-add-nueva-ubicacion");
+    const mostrar = e.target.value === "nuevo";
 
-  if (nuevaUbicacionInput && labelNuevaUbicacion) {
-    nuevaUbicacionInput.style.display = mostrar ? "inline-block" : "none";
-    labelNuevaUbicacion.style.display = mostrar ? "inline-block" : "none";
+    if (nuevaUbicacionInput && labelNuevaUbicacion) {
+      nuevaUbicacionInput.style.display = mostrar ? "inline-block" : "none";
+      labelNuevaUbicacion.style.display = mostrar ? "inline-block" : "none";
 
-    if (!mostrar) {
-      nuevaUbicacionInput.value = ""; // Limpiar si oculta
+      if (!mostrar) {
+        nuevaUbicacionInput.value = ""; // Limpiar si se oculta
+      }
     }
-  }
-});
+  });
+}
+

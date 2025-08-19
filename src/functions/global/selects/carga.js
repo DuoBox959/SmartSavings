@@ -121,8 +121,12 @@ export async function cargarDetalleProductos() {
       producto.Nombre || "Producto sin nombre";
     document.getElementById("producto-marca").innerHTML =
       "<strong>Marca:</strong>" + (producto.Marca || "Desconocida");
-    document.getElementById("producto-precio").innerHTML =
-      "<strong>Precio:</strong>" + (precioData?.precioActual ?? "<p style='color:red'>No disponible</p>") + "€";
+   document.getElementById("producto-precio").innerHTML =
+  "<strong>Precio:</strong> " + 
+  (precioData?.precioActual !== undefined
+    ? `${precioData.precioActual} €`
+    : "<span style='color:red'>No disponible</span>");
+
     document.getElementById("producto-precio-descuento").innerHTML =
       precioData?.precioDescuento
         ? `<strong>Precio Descuento:</strong> ${precioData.precioDescuento}€`
@@ -223,6 +227,7 @@ export function cargarUbicaciones(supermercado, pais, ciudad) {
   if (nuevaUbicacionInput) nuevaUbicacionInput.style.display = "none";
   if (labelNuevaUbicacion) labelNuevaUbicacion.style.display = "none";
 }
+
 export function obtenerUbicacionesGenerico(prefijo) {
   const ubicaciones = [];
 
@@ -234,49 +239,103 @@ export function obtenerUbicacionesGenerico(prefijo) {
   const ciudadInput = document.getElementById(`${prefijo}-nueva-ciudad`);
   const ubicacionInput = document.getElementById(`${prefijo}-nueva-ubicacion`);
 
-  const pais = paisSelect?.value === "nuevo"
-    ? paisInput?.value.trim()
-    : (paisSelect?.value || paisInput?.value.trim());
-
-  const ciudad = ciudadSelect?.value === "nuevo"
-    ? ciudadInput?.value.trim()
-    : (ciudadSelect?.value || ciudadInput?.value.trim());
-
-  const ubicacion = ubicacionSelect?.value === "nuevo"
-    ? ubicacionInput?.value.trim()
-    : (ubicacionSelect?.value || ubicacionInput?.value.trim());
+  const pais = paisSelect?.value === "nuevo" ? paisInput?.value.trim() : paisSelect?.value;
+  const ciudad = ciudadSelect?.value === "nuevo" ? ciudadInput?.value.trim() : ciudadSelect?.value;
+  const ubicacion = ubicacionSelect?.value === "nuevo" ? ubicacionInput?.value.trim() : ubicacionSelect?.value;
 
   const errores = [];
 
-  if (!pais) {
-    errores.push("País");
-    paisInput?.classList.add("input-error");
+  // 💡 Solo hacemos validaciones estrictas en modo "add"
+  if (prefijo === "add") {
+    if (!pais) errores.push("País");
+    if (!ciudad) errores.push("Ciudad");
+    if (!ubicacion) errores.push("Ubicación");
+
+    if (errores.length > 0) {
+      Swal.fire({
+        icon: "warning",
+        title: "Campos requeridos vacíos",
+        html: `Has dejado vacío:<br><strong>${errores.join("<br>")}</strong>`,
+      });
+      return [];
+    }
   }
 
-  if (!ciudad) {
-    errores.push("Ciudad");
-    ciudadInput?.classList.add("input-error");
-  }
+  // 📌 Si seleccionó "nuevo", validamos lo mínimo necesario también en "edit"
+  if (
+    prefijo === "edit" &&
+    (paisSelect?.value === "nuevo" ||
+      ciudadSelect?.value === "nuevo" ||
+      ubicacionSelect?.value === "nuevo")
+  ) {
+    if (paisSelect?.value === "nuevo" && !paisInput?.value.trim()) errores.push("País");
+    if (ciudadSelect?.value === "nuevo" && !ciudadInput?.value.trim()) errores.push("Ciudad");
+    if (ubicacionSelect?.value === "nuevo" && !ubicacionInput?.value.trim()) errores.push("Ubicación");
 
-  if (!ubicacion) {
-    errores.push("Ubicación");
-    ubicacionInput?.classList.add("input-error");
-  }
-
-  if (errores.length > 0) {
-    Swal.fire({
-      icon: "warning",
-      title: "Campos requeridos vacíos",
-      html: `Has dejado vacío:<br><strong>${errores.join("<br>")}</strong>`,
-    });
-    return [];
-  }
-
-  ubicaciones.push({ pais, ciudad, ubicacion });
-  return ubicaciones;
-}
+    if (errores.length > 0) {
+      Swal.fire({
+        icon: "warning",
+        title: "Campos requeridos vacíos",
+        html: `Has marcado "nuevo" pero no escribiste:<br><strong>${errores.join("<br>")}</strong>`,
+      });
+      return [];
+    }
+}}
 
 // export function obtenerUbicacionesGenerico(prefijo) {
+//   const ubicaciones = [];
+
+//   const paisSelect = document.getElementById(`${prefijo}-pais-existente`);
+//   const ciudadSelect = document.getElementById(`${prefijo}-ciudad-existente`);
+//   const ubicacionSelect = document.getElementById(`${prefijo}-ubicacion-existente`);
+
+//   const paisInput = document.getElementById(`${prefijo}-nuevo-pais`);
+//   const ciudadInput = document.getElementById(`${prefijo}-nueva-ciudad`);
+//   const ubicacionInput = document.getElementById(`${prefijo}-nueva-ubicacion`);
+
+//   const pais = paisSelect?.value === "nuevo"
+//     ? paisInput?.value.trim()
+//     : (paisSelect?.value || paisInput?.value.trim());
+
+//   const ciudad = ciudadSelect?.value === "nuevo"
+//     ? ciudadInput?.value.trim()
+//     : (ciudadSelect?.value || ciudadInput?.value.trim());
+
+//   const ubicacion = ubicacionSelect?.value === "nuevo"
+//     ? ubicacionInput?.value.trim()
+//     : (ubicacionSelect?.value || ubicacionInput?.value.trim());
+
+//   const errores = [];
+
+//   if (!pais) {
+//     errores.push("País");
+//     paisInput?.classList.add("input-error");
+//   }
+
+//   if (!ciudad) {
+//     errores.push("Ciudad");
+//     ciudadInput?.classList.add("input-error");
+//   }
+
+//   if (!ubicacion) {
+//     errores.push("Ubicación");
+//     ubicacionInput?.classList.add("input-error");
+//   }
+
+//   if (errores.length > 0) {
+//     Swal.fire({
+//       icon: "warning",
+//       title: "Campos requeridos vacíos",
+//       html: `Has dejado vacío:<br><strong>${errores.join("<br>")}</strong>`,
+//     });
+//     return [];
+//   }
+
+//   ubicaciones.push({ pais, ciudad, ubicacion });
+//   return ubicaciones;
+// }
+
+
 //   const ubicaciones = [];
 
 //   const paisSelect = document.getElementById(`${prefijo}-pais-existente`);

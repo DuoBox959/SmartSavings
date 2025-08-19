@@ -1,8 +1,9 @@
-import { API_BASE } from "../UTILS/utils.js"; 
-import { obtenerUbicacionesGenerico } from "../selects/carga.js"; 
-import { insertarNuevaMarca, insertarNuevoProveedor, insertarNuevoSubtipo, insertarNuevoSupermercado, insertarNuevoTipo } from "../actions/insertar.js"; 
-import { procesarCampoNuevo } from "../selects/procesarCampos.js"; 
-import { cerrarFormulario } from "../modals/cerrar.js"; 
+import { API_BASE } from "../UTILS/utils.js";
+import { obtenerUbicacionesGenerico, cargarProductos } from "../selects/carga.js";
+import { insertarNuevaMarca, insertarNuevoProveedor, insertarNuevoSubtipo, insertarNuevoSupermercado, insertarNuevoTipo } from "../actions/insertar.js";
+import { procesarCampoNuevo } from "../selects/procesarCampos.js";
+import { cerrarFormulario } from "../modals/cerrar.js";
+
 
 // ==============================
 // 📝 GUARDAR CAMBIOS DESDE EL FORMULARIO DE EDICIÓN: productos y sus detalles.
@@ -90,9 +91,9 @@ export async function guardarCambiosDesdeFormulario() {
         .split("\n")
         .map((l) => l.split(",").map((e) => e.trim()))
         .filter((a) => a.length === 2)
-        .map(([precio, año]) => ({
+        .map(([precio, anio]) => ({
           precio: parseFloat(precio),
-          año: parseInt(año),
+          anio: parseInt(anio),
         }));
     } else {
       const arr = historialTexto.split(",").map((e) => e.trim());
@@ -100,24 +101,43 @@ export async function guardarCambiosDesdeFormulario() {
         if (arr[i + 1]) {
           historialArray.push({
             precio: parseFloat(arr[i]),
-            año: parseInt(arr[i + 1]),
+            anio: parseInt(arr[i + 1]),
           });
         }
       }
     }
+    console.log("🛠️ Enviando datos al backend para actualizar producto...");
 
-    await fetch(`${API_BASE}/api/precios/por-producto/${id}`, {
+
+
+
+    const payloadPrecio = {
+      producto_id: id,
+      precioActual: precio,
+      precioDescuento: limpiarVacio(document.getElementById("edit-precioDescuento").value),
+      unidadLote: limpiarVacio(document.getElementById("edit-unidadLote").value) || "N/A",
+      precioUnidadLote: parseFloat(limpiarVacio(document.getElementById("edit-precioPorUnidad").value) || "0"),
+      precioHistorico: historialArray,
+    };
+
+    console.log("📦 Payload de precio a enviar:", payloadPrecio);
+    const precioRes = await fetch(`${API_BASE}/api/precios/por-producto/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        producto_id: id,
-        precioActual: precio,
-        precioDescuento: limpiarVacio(document.getElementById("edit-precioDescuento").value),
-        unidadLote: limpiarVacio(document.getElementById("edit-unidadLote").value) || "N/A",
-        precioUnidadLote: parseFloat(limpiarVacio(document.getElementById("edit-precioPorUnidad").value) || "0"),
-        precioHistorico: historialArray,
-      }),
+      body: JSON.stringify(payloadPrecio), 
     });
+
+
+    const precioResText = await precioRes.text();
+
+    if (precioRes.ok) {
+      console.log("✅ Producto actualizado correctamente");
+      console.log("📊 Precio actualizado a:", document.getElementById("edit-precio").value);
+    } else {
+      console.warn("⚠️ Algo falló al actualizar el producto", precioResText);
+    }
+
+    console.log("🔁 Respuesta del backend:", precioResText);
 
     // ✍️ Descripción
     await fetch(`${API_BASE}/api/descripcion`, {

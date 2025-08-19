@@ -175,6 +175,8 @@ console.log("🧪 Ubicaciones a enviar:", ubicaciones);
       console.warn(result);
       throw new Error("Error al crear producto");
     }
+console.log("✅ Producto AGREGADO con éxito");
+console.log("🆕 Precio guardado:", document.getElementById("add-precio").value);
 
     // 🎉 Producto creado
     Swal.fire("✅ Éxito", "Producto creado correctamente", "success");
