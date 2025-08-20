@@ -1,55 +1,77 @@
-import { ENDPOINTS } from "../UTILS/utils.js"; 
+import { ENDPOINTS } from "../UTILS/utils.js";
 import { safeSetValue } from "../helpers/helpers.js";
 
-// ==============================
 // ✏️ EDICIÓN DE PRODUCTOS
-// ==============================
 export async function editarProducto(id) {
   try {
-    // Usando los ENDPOINTS definidos
-    const producto = await (await fetch(`${ENDPOINTS.productos}/${id}`)).json();
-    const precios = await (await fetch(ENDPOINTS.precios)).json();
-    const descripcion = await (await fetch(`${ENDPOINTS.descripcionProducto}/${id}`)).json();
-    const supermercados = await (await fetch(ENDPOINTS.supermercados)).json();
-    const proveedores = await (await fetch(ENDPOINTS.proveedores)).json();
+    // Cargamos en paralelo: producto, precio del producto, supers y proveedores
+    const [prodRes, precioRes, supersRes, provRes] = await Promise.all([
+      fetch(`${ENDPOINTS.productos}/${id}`),
+      fetch(`${ENDPOINTS.precios}/producto/${id}`),     // /api/precios/producto/:id
+      fetch(ENDPOINTS.supermercados),                   // /api/supermercados
+      fetch(ENDPOINTS.proveedores),                     // /api/proveedor
+    ]);
 
-    const precioData = precios.find((p) => p.producto_id === id) || {};
-    const supermercado = supermercados.find((s) => s._id === producto.Supermercado_id) || {};
-    const proveedor = proveedores.find((p) => p._id === producto.Proveedor_id) || {};
+    if (!prodRes.ok) throw new Error("Producto no encontrado");
 
-    console.log("📦 Producto cargado:", producto);
+    const producto       = await prodRes.json();
+    const precioData     = precioRes.ok ? await precioRes.json() : null;
+    const supermercados  = supersRes.ok ? await supersRes.json() : [];
+    const proveedores    = provRes.ok ? await provRes.json() : [];
 
-    // 📄 Asignar valores al formulario
+    // Buscar súper y proveedor por _id
+    const sup = supermercados.find(
+      s => String(s._id) === String(producto.Supermercado_id)
+    ) || {};
+    const prov = proveedores.find(
+      p => String(p._id) === String(producto.Proveedor_id)
+    ) || {};
+
+    // ----- Producto (campos directos de tu colección Productos)
     safeSetValue("edit-producto-id", producto._id);
     safeSetValue("edit-nombre", producto.Nombre);
     safeSetValue("edit-marca-select", producto.Marca);
     safeSetValue("edit-peso", producto.Peso);
     safeSetValue("edit-unidadPeso", producto.UnidadPeso);
     safeSetValue("edit-estado", producto.Estado || "En stock");
-    safeSetValue("edit-supermercado-select", supermercado._id);
-    safeSetValue("edit-supermercado-nuevo", supermercado.Nombre || "");
-    safeSetValue("edit-proveedor-select", proveedor._id);
-    safeSetValue("edit-pais-proveedor", proveedor.Pais);
-    safeSetValue("edit-fecha-subida", producto.fechaSubida);
+
+    // selects por ID
+    safeSetValue("edit-supermercado-select", sup._id || "");
+    safeSetValue("edit-proveedor-select",   prov._id || "");
+
+    // extras
+    safeSetValue("edit-pais-proveedor", prov.Pais || "");
+    safeSetValue("edit-fecha-subida", producto.fechaSubida || "");
     safeSetValue("edit-fecha-actualizacion", new Date().toISOString());
-    safeSetValue("edit-usuario", producto.usuario);
+    safeSetValue("edit-usuario", producto.usuario || "");
 
-    // 🧠 Descripción
-    safeSetValue("edit-tipo-select", descripcion.Tipo || "Sin tipo");
-    safeSetValue("edit-subtipo-select", descripcion.Subtipo || "Sin subtipo");
-    safeSetValue("edit-utilidad", descripcion.Utilidad || "Sin descripción");
-    safeSetValue("edit-ingredientes", (descripcion.Ingredientes || []).join(", "));
+    // ----- “Descripción” ahora viene del propio producto
+    safeSetValue("edit-tipo-select", producto.Tipo || "Sin tipo");
+    safeSetValue("edit-subtipo-select", producto.Subtipo || "Sin subtipo");
+    safeSetValue("edit-utilidad", producto.Utilidad || "Sin descripción");
+    safeSetValue("edit-ingredientes", Array.isArray(producto.Ingredientes) ? producto.Ingredientes.join(", ") : "");
 
-    // 💸 Precios
-    safeSetValue("edit-precio", precioData.precioActual);
-    safeSetValue("edit-precioDescuento", precioData.precioDescuento);
-    safeSetValue("edit-unidadLote", precioData.unidadLote);
-    safeSetValue("edit-precioPorUnidad", precioData.precioUnidadLote);
+    // ----- Precios
+    if (precioData) {
+      safeSetValue("edit-precio",            precioData.precioActual ?? "");
+      safeSetValue("edit-precioDescuento",   precioData.precioDescuento ?? "");
+      safeSetValue("edit-unidadLote",        precioData.unidadLote ?? "N/A");
+      safeSetValue("edit-precioPorUnidad",   precioData.precioUnidadLote ?? "");
 
-    const historial = (precioData.precioHistorico || [])
-      .map((entry) => `${entry.precio}, ${entry.año}`)
-      .join("\n");
-    safeSetValue("edit-precioHistorico", historial);
+      const historial = Array.isArray(precioData.precioHistorico)
+        ? precioData.precioHistorico
+            .map(e => `${e.precio}, ${e.año ?? e.anio ?? ""}`.trim())
+            .join("\n")
+        : "";
+      safeSetValue("edit-precioHistorico", historial);
+    } else {
+      // si no hay registro de precios aún
+      safeSetValue("edit-precio", "");
+      safeSetValue("edit-precioDescuento", "");
+      safeSetValue("edit-unidadLote", "N/A");
+      safeSetValue("edit-precioPorUnidad", "");
+      safeSetValue("edit-precioHistorico", "");
+    }
 
     // Mostrar modal
     document.getElementById("modal-editar").style.display = "flex";
