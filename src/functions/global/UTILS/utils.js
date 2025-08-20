@@ -1,31 +1,36 @@
-export const API_BASE = "http://localhost:3000";
+// /src/functions/global/UTILS/utils.js
 
-export const ENDPOINTS = {
-    // Productos
-    productos: `${API_BASE}/api/productos`,
-    // Para obtener un producto específico por ID, lo construirías como `${ENDPOINTS.productos}/${id}`
+// Base de la API (permite sobreescribir con window.__API_BASE si quieres)
+export const API_BASE = (window.__API_BASE ?? "http://localhost:3000").replace(/\/+$/, "");
 
-    // Precios
-    precios: `${API_BASE}/api/precios`,
+// Rutas de colecciones
+export const ENDPOINTS = Object.freeze({
+  productos:           `${API_BASE}/api/productos`,
+  productosCompletos:  `${API_BASE}/api/productos-completos`,
+  precios:             `${API_BASE}/api/precios`,
+  descripcion:         `${API_BASE}/api/descripcion`,    
+  supermercados:       `${API_BASE}/api/supermercados`,
+  proveedor:           `${API_BASE}/api/proveedor`,       
+  proveedores:         `${API_BASE}/api/proveedor`,      
+  usuarios:            `${API_BASE}/api/usuarios`,
+  datosUsuario:        `${API_BASE}/api/datosUsuario`,
+  historialUsuario:    `${API_BASE}/api/historialUsuario`,
+  opiniones:           `${API_BASE}/api/opiniones`,
+});
 
-    // Descripciones
-    descripcionProducto: `${API_BASE}/api/descripcion/producto`,
+// Builders para recursos concretos
+export const URLS = Object.freeze({
+  producto:              (id) => `${ENDPOINTS.productos}/${id}`,
+  productoCompleto:      (id) => `${ENDPOINTS.productosCompletos}/${id}`,
+  precioPorProducto:     (id) => `${ENDPOINTS.precios}/por-producto/${id}`,
+  supermercadoUbicacion: (id) => `${ENDPOINTS.supermercados}/${id}/ubicacion`,
+});
 
-    // Supermercados
-    supermercados: `${API_BASE}/api/supermercados`,
+// Headers comunes
+export const jsonHeaders = Object.freeze({ "Content-Type": "application/json" });
 
-    // Proveedores
-    proveedores: `${API_BASE}/api/proveedor`,
-
-    // Usuarios
-    usuarios: `${API_BASE}/api/usuarios`,
-
-    //Datos Usuario
-    datosUsuario: `${API_BASE}/api/datosUsuario`,
-
-    //Historial Usuario
-    historialUsuario: `${API_BASE}/api/historialUsuario`,
-
-    //Opiniones
-    opiniones: `${API_BASE}/api/opiniones`,
-};
+// Resolver URL de imagen desde /uploads o devolver un fallback
+export const imgURL = (path) =>
+  path?.startsWith("/uploads")
+    ? `${API_BASE}${path}`
+    : (path || "../assets/img/default.webp");

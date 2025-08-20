@@ -9,79 +9,97 @@ import { toggleNuevoCampo } from "../functions/global/helpers/helpers.js";
 import { editarProducto } from "../functions/global/actions/editar.js";
 import { guardarCambiosDesdeFormulario } from "../functions/global/botones/botons_actualizar.js";
 import { aplicarFiltroBusqueda } from "../functions/global/nav.js";
-
 import { API_BASE } from "../functions/global/UTILS/utils.js";
+
+// ==============================
+// 🧰 Helpers locales
+// ==============================
+const unicos = (arr, mapFn) => [...new Set(arr.map(mapFn).filter(Boolean))];
+
+const poblarSelectCampo = (campo, valores) => {
+  const ids = [`edit-${campo}-select`];
+  ids.forEach((id) => {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    const etiqueta = sel.querySelector("option[value='']")?.textContent || "Selecciona una opción";
+    sel.innerHTML = `
+      <option value="">${etiqueta}</option>
+      <option value="nuevo">Otro (escribir nuevo)</option>
+    `;
+    valores.forEach((v) => {
+      const opt = document.createElement("option");
+      opt.value = v;
+      opt.textContent = v;
+      sel.appendChild(opt);
+    });
+  });
+};
+
+const poblarDesdeProductos = (productos) => {
+  const tipos    = unicos(productos, (p) => p.Tipo ?? p.tipo);
+  const subtipos = unicos(productos, (p) => p.Subtipo ?? p.subtipo);
+  const marcas   = unicos(productos, (p) => p.Marca ?? p.marca);
+  poblarSelectCampo("tipo", tipos);
+  poblarSelectCampo("subtipo", subtipos);
+  poblarSelectCampo("marca", marcas);
+};
 
 // ==============================
 // 🚀 INICIALIZACIÓN
 // ==============================
 document.addEventListener("DOMContentLoaded", async () => {
   try {
-    await cargarHeaderFooter(); // ✅ Cargar header/footer
-    gestionarUsuarioAutenticado(); // ✅ Si estás autenticando usuarios
+    await cargarHeaderFooter();
+    gestionarUsuarioAutenticado();
 
-    // --- Fetch product and price data for nav ---
-    const productosRes = await fetch(`${API_BASE}/api/productos-completos`);
-    const preciosRes = await fetch(`${API_BASE}/api/precios`);
-
+    // Cargamos productos y precios para la barra de búsqueda
+    const [productosRes, preciosRes] = await Promise.all([
+      fetch(`${API_BASE}/api/productos`),
+      fetch(`${API_BASE}/api/precios`),
+    ]);
     if (!productosRes.ok || !preciosRes.ok) {
-      throw new Error("Failed to fetch products or prices for navigation.");
+      throw new Error("No se pudieron cargar productos/precios para la navegación.");
     }
+    const [productos, precios] = await Promise.all([productosRes.json(), preciosRes.json()]);
 
-    const productos = await productosRes.json();
-    const precios = await preciosRes.json();
-    // ---------------------------------------------
+    await cargarNav(productos, precios);
+    aplicarFiltroBusqueda();
 
-    await cargarNav(productos, precios); // ✅ Cargar y popular el nav
-    aplicarFiltroBusqueda(); // ✅ Aplicar la funcionalidad de búsqueda a la nav
-
+    // Selects que vienen de colecciones: supermercados y proveedor
     await cargarOpcionesEnSelects([
       { campo: "supermercado", endpoint: "supermercados", usarId: true },
-      { campo: "tipo", endpoint: "tipos", usarId: false },
-      { campo: "subtipo", endpoint: "subtipos", usarId: false },
-      { campo: "marca", endpoint: "marcas", usarId: false },
-      { campo: "proveedor", endpoint: "proveedores", usarId: true },
+      { campo: "proveedor",    endpoint: "proveedor",     usarId: true },
     ]);
 
+    // Selects que salen de Productos: tipo/subtipo/marca
+    poblarDesdeProductos(productos);
+
+    // Pinta la ficha del producto (usa el id del querystring)
     await cargarDetalleProductos();
 
-    // ✏️ Botón Editar (sin el onclick en HTML)
+    // ✏️ Editar
     document.getElementById("btn-editar-detalle")?.addEventListener("click", async () => {
       const id = new URLSearchParams(window.location.search).get("id");
-      if (!id) {
-        Swal.fire("Error", "ID de producto no encontrado", "error");
-        return;
-      }
+      if (!id) return Swal.fire("Error", "ID de producto no encontrado", "error");
       await editarProducto(id);
     });
 
-    // 💾 Botón Guardar Cambios
+    // 💾 Guardar cambios
     document.getElementById("btn-guardar-cambios")?.addEventListener("click", () => {
       guardarCambiosDesdeFormulario();
     });
 
-    // ❌ Botón Cancelar del modal
-    document.getElementById("btn-cerrar-formulario")?.addEventListener("click", () => {
-      cerrarFormulario();
-    });
+    // ❌ Cerrar modal
+    document.getElementById("btn-cerrar-formulario")?.addEventListener("click", cerrarFormulario);
+    document.getElementById("close-modal-span")?.addEventListener("click", cerrarFormulario);
 
-    // ❌ Botón "X" cerrar modal (usando el nuevo ID)
-    document.getElementById("close-modal-span")?.addEventListener("click", () => {
-      cerrarFormulario();
-    });
+    // 🔙 Volver
+    document.getElementById("btn-volver-atras")?.addEventListener("click", volverAtras);
 
-    // 🔙 Botón Volver (usando el nuevo ID)
-    document.getElementById("btn-volver-atras")?.addEventListener("click", () => {
-      volverAtras();
-    });
-
-    // 🗑️ Botón Eliminar
+    // 🗑️ Eliminar
     document.getElementById("btn-eliminar-detalle")?.addEventListener("click", async () => {
       const productId = new URLSearchParams(window.location.search).get("id");
-      if (!productId) {
-        Swal.fire("Error", "ID de producto no encontrado", "error");
-        return;
-      }
+      if (!productId) return Swal.fire("Error", "ID de producto no encontrado", "error");
 
       const confirm = await Swal.fire({
         title: "¿Estás seguro?",
@@ -91,45 +109,33 @@ document.addEventListener("DOMContentLoaded", async () => {
         confirmButtonText: "Sí, eliminar",
         cancelButtonText: "Cancelar",
       });
-
       if (!confirm.isConfirmed) return;
 
       try {
-        const res = await fetch(`${API_BASE}/api/productos-completos/${productId}`, {
-          method: "DELETE",
-        });
-
+        const res = await fetch(`${API_BASE}/api/productos-completos/${productId}`, { method: "DELETE" });
         if (!res.ok) throw new Error("Error al eliminar producto");
-
-        await Swal.fire(
-          "✅ Eliminado",
-          "Producto eliminado correctamente",
-          "success"
-        );
-
-        // 🔁 Redirigir al listado
+        await Swal.fire("✅ Eliminado", "Producto eliminado correctamente", "success");
         window.location.href = "../pages/productos.html";
       } catch (err) {
         console.error("❌ Error al eliminar:", err);
-        Swal.fire(
-          "Error",
-          "Hubo un problema al eliminar el producto.",
-          "error"
-        );
+        Swal.fire("Error", "Hubo un problema al eliminar el producto.", "error");
       }
     });
 
-    // === MANEJO DE ONCHANGE PARA LOS SELECTS QUE MUESTRAN CAMPOS NUEVOS ===
-    // Seleccionamos todos los selects con la clase 'select-toggle'
-    document.querySelectorAll(".select-toggle").forEach(selectElement => {
-      selectElement.addEventListener("change", (event) => {
-        const targetId = event.target.dataset.targetId; // Obtiene el ID del input a alternar
-        const type = event.target.dataset.type; // Obtiene el tipo de campo
-        toggleNuevoCampo(type, targetId); // Llama a la función toggleNuevoCampo
-      });
-    });
+    // 🔀 Toggles para inputs "nuevo" en EDITAR
+    document.getElementById("edit-tipo-select")
+      ?.addEventListener("change", () => toggleNuevoCampo("edit", "tipo"));
+    document.getElementById("edit-marca-select")
+      ?.addEventListener("change", () => toggleNuevoCampo("edit", "marca"));
+    document.getElementById("edit-subtipo-select")
+      ?.addEventListener("change", () => toggleNuevoCampo("edit", "subtipo"));
+    document.getElementById("edit-proveedor-select")
+      ?.addEventListener("change", () => toggleNuevoCampo("edit", "proveedor"));
+    document.getElementById("edit-supermercado-select")
+      ?.addEventListener("change", () => toggleNuevoCampo("edit", "supermercado", "selector-ubicacion-dinamico"));
 
   } catch (err) {
     console.error("❌ Error al iniciar la página:", err);
+    Swal.fire("Error", "No se pudo cargar el detalle del producto.", "error");
   }
 });

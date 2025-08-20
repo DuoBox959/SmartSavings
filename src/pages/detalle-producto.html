@@ -1,203 +1,193 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-  <!-- 🌐 Configuración básica -->
+  <!-- 🌐 Meta básicos -->
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Detalle del Producto</title>
 
-  <!-- 🎨 Estilos globales y específicos -->
+  <!-- 🎨 Estilos -->
   <link rel="stylesheet" href="../style/global/header.css" />
   <link rel="stylesheet" href="../style/producto.css" />
   <link rel="stylesheet" href="../style/global/footer.css" />
   <link rel="stylesheet" href="../style/detalle-producto.css" />
   <link rel="stylesheet" href="../style/opinione.css" />
-  <link rel="stylesheet" href="/src/style/global/nav.css" />
+  <link rel="stylesheet" href="../style/global/nav.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-
-
-
-  <!-- 📦 Librerías JS -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script type="module" src="../functions/detalle-producto.js"></script>
-  <script type="module" src="/src/functions/global/nav.js" defer></script>
-
 </head>
 
 <body>
-  <!-- ✅ Header dinámico -->
+  <noscript>Para usar esta página necesitas habilitar JavaScript.</noscript>
+
+  <!-- ✅ Header inyectado por JS -->
   <div id="header"></div>
 
+  <!-- Barra superior (por si luego añades métricas, breadcrumbs, etc.) -->
   <section class="acciones-superiores">
     <strong></strong>
+  </section>
 
-    <!-- 🧾 Detalle del producto -->
-    <section id="detalle-producto">
-      <!-- ✏️ & 🗑️ Botones de acción -->
+  <!-- 🧾 Detalle del producto -->
+  <main id="detalle-producto" aria-labelledby="titulo-detalle">
+    <figure class="producto-imagen">
+      <img id="producto-imagen" src="../assets/img/default.webp" alt="Imagen del producto" />
+    </figure>
 
-      <div class="producto-imagen">
-        <img id="producto-imagen" src="../assets/img/default.webp" alt="Imagen del Producto" />
+    <section class="producto-info">
+      <!-- Acciones en el detalle -->
+      <div class="acciones-producto-superior">
+        <button id="btn-editar-detalle" class="btn-editar" type="button">✏️ Editar</button>
+        <button id="btn-eliminar-detalle" class="btn-eliminar" type="button">🗑️ Eliminar</button>
       </div>
 
-      <div class="producto-info">
-        <!-- Botones en la parte superior derecha -->
-        <div class="acciones-producto-superior">
-          <button id="btn-editar-detalle" class="btn-editar">✏️ Editar</button>
-          <button id="btn-eliminar-detalle" class="btn-eliminar">🗑️ Eliminar</button>
+      <h1 id="titulo-detalle" class="producto-titulo">Nombre del producto</h1>
 
-        </div>
+      <!-- 📦 Información general -->
+      <p id="producto-marca">Marca:</p>
+      <p id="producto-tipo">Tipo:</p>
+      <p id="producto-subtipo">Subtipo:</p>
+      <p id="producto-utilidad">Descripción:</p>
+      <p id="producto-ingredientes">Ingredientes:</p>
 
-        <h1 id="producto-nombre">Nombre del producto</h1>
+      <!-- 💰 Precios -->
+      <p id="producto-precio">Precio:</p>
+      <p id="producto-precio-descuento">Precio Descuento:</p>
+      <p id="producto-precio-unidad">Precio por unidad/lote:</p>
+      <p id="producto-unidad-lote">Unidad/Lote:</p>
+      <p id="producto-historico">Precio histórico:</p>
 
-        <!-- 📦 Información general -->
-        <p id="producto-marca">Marca:</p>
-        <p id="producto-tipo">Tipo: </p>
-        <p id="producto-subtipo"> Subtipo: </p>
-        <p id="producto-utilidad">Descripción: </p>
-        <p id="producto-ingredientes">Ingredientes:</p>
+      <!-- ⚖️ Peso y estado -->
+      <p id="producto-peso">Peso:</p>
+      <p id="producto-estado">Estado:</p>
 
-        <!-- 💰 Información de precios -->
-        <p id="producto-precio">Precio: </p>
-        <p id="producto-precio-descuento">Precio Descuento: </p>
-        <p id="producto-precio-unidad">Precio por unidad/lote: </p>
-        <p id="producto-unidad-lote">Unidad/Lote: </p>
-        <p id="producto-historico">Precio histórico: </p>
+      <!-- 🛒 Supermercado -->
+      <p id="producto-supermercado">Supermercado:</p>
+      <p id="producto-ubicacion">Ubicación del supermercado:</p>
+      <p id="producto-pais-super">País del supermercado:</p>
+      <p id="producto-ciudad-super">Ciudad del supermercado:</p>
 
-        <!-- ⚖️ Peso y estado -->
-        <p id="producto-peso">Peso: </p>
-        <p id="producto-estado">Estado: </p>
-
-        <!-- 🛒 Supermercado -->
-        <p id="producto-supermercado">Supermercado: </p>
-        <p id="producto-ubicacion">Ubicación del supermercado: </p>
-        <p id="producto-pais-super">País del supermercado: </p>
-        <p id="producto-ciudad-super">Ciudad del supermercado: </p>
-        
-        <!-- 🏭 Proveedor -->
-        <p id="producto-proveedor">Proveedor: </p>
-        <p id="producto-pais-proveedor">País del proveedor: </p>
-        <strong></strong>
-      </div>
+      <!-- 🏭 Proveedor -->
+      <p id="producto-proveedor">Proveedor:</p>
+      <p id="producto-pais-proveedor">País del proveedor:</p>
     </section>
+  </main>
 
+  <!-- ⭐ Opiniones (plegable) -->
+  <details id="opiniones-plegables" class="opiniones-plegables">
+    <summary class="opiniones-summary">
+      <h2>Opiniones de Clientes</h2>
+      <span class="toggle-icon">▼</span>
+    </summary>
 
-    </div>
-    </div>
-    <details id="opiniones-plegables" class="opiniones-plegables">
-      <summary class="opiniones-summary">
-        <h2>Opiniones de Clientes</h2>
-        <span class="toggle-icon">▼</span>
-      </summary>
-
-      <div class="reviews-content">
-        <div class="reviews-container">
-          <div class="opinion-item">
-            <h3 class="opinion-title">Excelente producto</h3>
-            <p class="opinion-rating">⭐ ⭐ ⭐ ⭐ ⭐</p>
-            <p class="opinion-comment">"Me encantó este producto, superó mis expectativas. Lo recomiendo totalmente."
-            </p>
-            <small class="opinion-author-date">— Juan Pérez, 15 de julio de 2025</small>
-          </div>
-        </div>
-
-        <div class="add-review-form">
-          <h3>Deja tu opinión</h3>
-          <form id="form-nueva-opinion">
-            <label for="review-title">Título:</label>
-            <input type="text" id="review-title" placeholder="Ej. ¡Me encanta!" required>
-
-            <label for="review-rating">Calificación:</label>
-            <select id="review-rating" required>
-              <option value="">Selecciona una calificación</option>
-              <option value="5">⭐ ⭐ ⭐ ⭐ ⭐ (Excelente)</option>
-              <option value="4">⭐ ⭐ ⭐ ⭐ (Muy bueno)</option>
-              <option value="3">⭐ ⭐ ⭐ (Bueno)</option>
-              <option value="2">⭐ ⭐ (Regular)</option>
-              <option value="1">⭐ (Malo)</option>
-            </select>
-
-            <label for="review-comment">Comentario:</label>
-            <textarea id="review-comment" rows="4" placeholder="Escribe tu opinión aquí..." required></textarea>
-
-            <button type="submit">Enviar Opinión</button>
-          </form>
+    <div class="reviews-content">
+      <div class="reviews-container">
+        <!-- Ejemplo estático (lo puedes quitar cuando las cargues desde la API) -->
+        <div class="opinion-item">
+          <h3 class="opinion-title">Excelente producto</h3>
+          <p class="opinion-rating">⭐ ⭐ ⭐ ⭐ ⭐</p>
+          <p class="opinion-comment">"Me encantó este producto, superó mis expectativas."</p>
+          <small class="opinion-author-date">— Juan Pérez, 15 de julio de 2025</small>
         </div>
       </div>
-    </details>
+
+      <div class="add-review-form">
+        <h3>Deja tu opinión</h3>
+        <form id="form-nueva-opinion">
+          <label for="review-title">Título:</label>
+          <input type="text" id="review-title" placeholder="Ej. ¡Me encanta!" required>
+
+          <label for="review-rating">Calificación:</label>
+          <select id="review-rating" required>
+            <option value="">Selecciona una calificación</option>
+            <option value="5">⭐ ⭐ ⭐ ⭐ ⭐ (Excelente)</option>
+            <option value="4">⭐ ⭐ ⭐ ⭐ (Muy bueno)</option>
+            <option value="3">⭐ ⭐ ⭐ (Bueno)</option>
+            <option value="2">⭐ ⭐ (Regular)</option>
+            <option value="1">⭐ (Malo)</option>
+          </select>
+
+          <label for="review-comment">Comentario:</label>
+          <textarea id="review-comment" rows="4" placeholder="Escribe tu opinión aquí..." required></textarea>
+
+          <button type="submit">Enviar Opinión</button>
+        </form>
+      </div>
     </div>
-    <!-- 🔙 Botón para volver -->
-    <button class="volver-btn" id="btn-volver-atras">Volver</button>
-    <!-- ✏️ MODAL: Editar Producto -->
-    <div id="modal-editar" class="modal">
-      <div class="modal-content">
-        <span class="close" id="close-modal-span">&times;</span>
+  </details>
 
+  <!-- 🔙 Volver -->
+  <div class="volver-atras">
+    <button class="volver-btn" id="btn-volver-atras" type="button">Volver</button>
+  </div>
 
-        <form id="form-editar-producto">
-          <h2>Editar Producto</h2>
-          <!-- ✅ Campos obligatorios -->
-          <label>Nombre del producto: *</label>
-          <input type="text" id="edit-nombre" required />
+  <!-- ✏️ Modal: Editar producto -->
+  <div id="modal-editar" class="modal" role="dialog" aria-modal="true" aria-labelledby="edit-title" aria-hidden="true">
+    <div class="modal-content">
+      <span class="close" id="close-modal-span" aria-label="Cerrar">&times;</span>
 
-          <label>Tipo del producto: *</label>
-          <select id="edit-tipo-select" class="select-toggle" data-target-id="edit-tipo-nuevo" data-type="tipo"
-            required>
-            <option value="">Selecciona un tipo</option>
-            <option value="nuevo">Otro (escribir nuevo)</option>
+      <form id="form-editar-producto">
+        <h2 id="edit-title">Editar Producto</h2>
+
+        <!-- Obligatorios -->
+        <label for="edit-nombre">Nombre del producto: *</label>
+        <input type="text" id="edit-nombre" required />
+
+        <label for="edit-tipo-select">Tipo del producto: *</label>
+        <select id="edit-tipo-select" required>
+          <option value="">Selecciona un tipo</option>
+          <option value="nuevo">Otro (escribir nuevo)</option>
+        </select>
+        <input type="text" id="edit-tipo-nuevo" placeholder="Nuevo tipo" style="display:none;" />
+
+        <label for="edit-precio">Precio actual (€): *</label>
+        <input type="number" id="edit-precio" step="0.01" min="0" inputmode="decimal" required />
+
+        <label for="edit-peso">Peso: *</label>
+        <input type="number" id="edit-peso" step="0.01" min="0" inputmode="decimal" required />
+
+        <label for="edit-unidadPeso">Unidad de Peso: *</label>
+        <select id="edit-unidadPeso" required>
+          <option value="kg">Kilogramos (kg)</option>
+          <option value="g">Gramos (g)</option>
+          <option value="l">Litros (l)</option>
+          <option value="ml">Mililitros (ml)</option>
+        </select>
+
+        <label for="edit-supermercado-select">Supermercado: *</label>
+        <select id="edit-supermercado-select" required>
+          <option value="">Selecciona un supermercado</option>
+          <option value="nuevo">Otro (escribir nuevo)</option>
+        </select>
+        <input type="text" id="edit-supermercado-nuevo" placeholder="Nuevo supermercado" style="display:none;" />
+
+        <label for="edit-estado">Estado: *</label>
+        <select id="edit-estado" required>
+          <option value="En stock">En stock</option>
+          <option value="Sin stock">Sin stock</option>
+        </select>
+
+        <!-- Ocultos -->
+        <input type="hidden" id="edit-producto-id" />
+        <input type="hidden" id="edit-fecha-subida" />
+        <input type="hidden" id="edit-usuario" />
+        <input type="hidden" id="edit-fecha-actualizacion" />
+
+        <!-- Opcionales -->
+        <details>
+          <summary>Ver más campos para tu producto</summary>
+
+          <label for="edit-imagen">Imagen del producto:</label>
+          <input type="file" id="edit-imagen" name="Imagen" accept="image/*" />
+
+          <label for="edit-marca-select">Marca:</label>
+          <select id="edit-marca-select">
+            <option value="">Selecciona una marca</option>
+            <option value="nuevo">Otra (escribir nueva)</option>
           </select>
-          <input type="text" id="edit-tipo-nuevo" placeholder="Nuevo tipo" style="display: none;" />
+          <input type="text" id="edit-marca-nuevo" style="display:none;" />
 
-          <label>Precio actual (€): *</label>
-          <input type="number" id="edit-precio" step="0.01" required />
-
-          <label>Peso: *</label>
-          <input type="number" id="edit-peso" step="0.01" required />
-
-          <label>Unidad de Peso: *</label>
-          <select id="edit-unidadPeso" required>
-            <option value="kg">Kilogramos (kg)</option>
-            <option value="g">Gramos (g)</option>
-            <option value="l">Litros (l)</option>
-            <option value="ml">Mililitros (ml)</option>
-          </select>
-
-          <label>Supermercado: *</label>
-          <select id="edit-supermercado-select" class="select-toggle" data-target-id="edit-supermercado-nuevo"
-            data-type="supermercado" required>
-            <option value="">Selecciona un supermercado</option>
-            <option value="nuevo">Otro (escribir nuevo)</option>
-          </select>
-          <input type="text" id="edit-supermercado-nuevo" placeholder="Nuevo supermercado" style="display: none;" />
-
-          <label>Estado: *</label>
-          <select id="edit-estado" required>
-            <option value="En stock">En stock</option>
-            <option value="Sin stock">Sin stock</option>
-          </select>
-
-          <!-- 🔒 Campos ocultos -->
-          <input type="hidden" id="edit-producto-id" />
-          <input type="hidden" id="edit-fecha-subida" />
-          <input type="hidden" id="edit-usuario" />
-          <input type="hidden" id="edit-fecha-actualizacion" />
-
-          <!-- 🔽 Campos opcionales desplegables -->
-          <details>
-            <summary>Ver más campos para tu producto</summary>
-
-            <label>Imagen del producto:</label>
-            <input type="file" id="edit-imagen" name="Imagen" />
-
-            <label>Marca:</label>
-            <select id="edit-marca-select" class="select-toggle" data-target-id="edit-marca-nuevo" data-type="marca">
-              <option value="">Selecciona una marca</option>
-              <option value="nuevo">Otra (escribir nueva)</option>
-            </select>
-            <input type="text" id="edit-marca-nuevo" style="display: none;" />
-
-          <div id="selector-ubicacion-dinamico" style="display: none; margin-top: 1.5em; grid-column: span 2;">
+          <!-- Ubicación dinámica (si se crea supermercado nuevo) -->
+          <div id="selector-ubicacion-dinamico" style="display:none; margin-top:1.5em; grid-column: span 2;">
             <fieldset class="fieldset-ubicacion">
               <legend class="legend-ubicacion">📍 Ubicación del supermercado</legend>
 
@@ -205,78 +195,77 @@
                 <div class="form-row">
                   <label for="edit-pais-existente">País:</label>
                   <select id="edit-pais-existente"></select>
-                  <input type="text" id="edit-nuevo-pais" placeholder="Nuevo país" style="display: none;" />
+                  <input type="text" id="edit-nuevo-pais" placeholder="Nuevo país" style="display:none;" />
                 </div>
 
                 <div class="form-row">
                   <label for="edit-ciudad-existente">Ciudad:</label>
-                  <select id="edit-ciudad-existente" style="display: none;"></select>
-                  <input type="text" id="edit-nueva-ciudad" placeholder="Nueva ciudad" style="display: none;" />
+                  <select id="edit-ciudad-existente" style="display:none;"></select>
+                  <input type="text" id="edit-nueva-ciudad" placeholder="Nueva ciudad" style="display:none;" />
                 </div>
 
                 <div class="form-row full-width">
                   <label for="edit-ubicacion-existente">Ubicación existente:</label>
-                  <select id="edit-ubicacion-existente" style="display: none;"></select>
-                  <label for="edit-nueva-ubicacion" id="label-edit-nueva-ubicacion">
-                    Ubicación nueva (dirección o zona):
-                  </label>
-                  <input type="text" id="edit-nueva-ubicacion" placeholder="Ej: Calle Mayor 45" style="display: none;" />
-
+                  <select id="edit-ubicacion-existente" style="display:none;"></select>
+                  <label for="edit-nueva-ubicacion" id="label-edit-nueva-ubicacion">Ubicación nueva (dirección o zona):</label>
+                  <input type="text" id="edit-nueva-ubicacion" placeholder="Ej: Calle Mayor 45" style="display:none;" />
                 </div>
-
               </div>
             </fieldset>
           </div>
 
-            <label>Proveedor:</label>
-            <select id="edit-proveedor-select" class="select-toggle" data-target-id="edit-proveedor-nuevo"
-              data-type="proveedor">
-              <option value="">Selecciona un proveedor</option>
-              <option value="nuevo">Otro (escribir nuevo)</option>
-            </select>
-            <input type="text" id="edit-proveedor-nuevo" style="display: none;" />
+          <label for="edit-proveedor-select">Proveedor:</label>
+          <select id="edit-proveedor-select">
+            <option value="">Selecciona un proveedor</option>
+            <option value="nuevo">Otro (escribir nuevo)</option>
+          </select>
+          <input type="text" id="edit-proveedor-nuevo" style="display:none;" />
 
-            <label>País del proveedor:</label>
-            <input type="text" id="edit-pais-proveedor" />
+          <label for="edit-pais-proveedor">País del proveedor:</label>
+          <input type="text" id="edit-pais-proveedor" />
 
-            <label>Subtipo:</label>
-            <select id="edit-subtipo-select" class="select-toggle" data-target-id="edit-subtipo-nuevo"
-              data-type="subtipo">
-              <option value="">Selecciona un subtipo</option>
-              <option value="nuevo">Otro (escribir nuevo)</option>
-            </select>
-            <input type="text" id="edit-subtipo-nuevo" style="display: none;" />
+          <label for="edit-subtipo-select">Subtipo:</label>
+          <select id="edit-subtipo-select">
+            <option value="">Selecciona un subtipo</option>
+            <option value="nuevo">Otro (escribir nuevo)</option>
+          </select>
+          <input type="text" id="edit-subtipo-nuevo" style="display:none;" />
 
-            <label>Precio descuento (€):</label>
-            <input type="number" id="edit-precioDescuento" step="0.01" />
+          <label for="edit-precioDescuento">Precio descuento (€):</label>
+          <input type="number" id="edit-precioDescuento" step="0.01" min="0" inputmode="decimal" />
 
-            <label>Unidad/Lote:</label>
-            <input type="number" id="edit-unidadLote" />
+          <label for="edit-unidadLote">Unidad/Lote:</label>
+          <input type="number" id="edit-unidadLote" min="0" inputmode="numeric" />
 
-            <label>Precio por unidad/lote (€):</label>
-            <input type="number" id="edit-precioPorUnidad" step="0.01" />
+          <label for="edit-precioPorUnidad">Precio por unidad/lote (€):</label>
+          <input type="number" id="edit-precioPorUnidad" step="0.01" min="0" inputmode="decimal" />
 
-            <label>Precio Histórico:</label>
-            <textarea id="edit-precioHistorico" rows="3" placeholder="Ejemplo: 10, 2023, 12, 2024"></textarea>
+          <label for="edit-precioHistorico">Precio Histórico:</label>
+          <textarea id="edit-precioHistorico" rows="3" placeholder="Ejemplo: 10, 2023, 12, 2024"></textarea>
 
-            <label>Descripción del producto (Utilidad):</label>
-            <input type="text" id="edit-utilidad" placeholder="Ej. Bebida refrescante y energizante" />
+          <label for="edit-utilidad">Descripción del producto (Utilidad):</label>
+          <input type="text" id="edit-utilidad" placeholder="Ej. Bebida refrescante y energizante" />
 
-            <label>Ingredientes (separados por coma):</label>
-            <input type="text" id="edit-ingredientes" placeholder="Ej: agua, azúcar, gas carbónico" />
-          </details>
+          <label for="edit-ingredientes">Ingredientes (separados por coma):</label>
+          <input type="text" id="edit-ingredientes" placeholder="Ej: agua, azúcar, gas carbónico" />
+        </details>
 
-          <!-- ✅ Botón para guardar cambios -->
+        <!-- Acciones modal -->
+        <div class="acciones-modal">
           <button type="button" id="btn-guardar-cambios">Guardar Cambios</button>
           <button type="button" class="btn-cerrar" id="btn-cerrar-formulario">Cancelar</button>
-          <span class="close" id="cerrar-modal">&times;</span>
-
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
+  </div>
 
-    <!-- ✅ Footer dinámico -->
-    <div id="footer"></div>
+  <!-- ✅ Footer inyectado por JS -->
+  <div id="footer"></div>
+
+  <!-- 📚 Librerías -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- 🧠 Lógica de esta vista -->
+  <script type="module" src="../functions/detalle-producto.js"></script>
 </body>
-
 </html>

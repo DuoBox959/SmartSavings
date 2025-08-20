@@ -2,80 +2,66 @@
 const express = require("express");
 const router = express.Router();
 const { ObjectId } = require("mongodb");
+const fs = require("fs");
+const path = require("path");
+
+// ==================== Helpers ====================
+function oidOr400(res, id, what = "ID") {
+  if (!ObjectId.isValid(id)) {
+    res.status(400).json({ error: `${what} no válido` });
+    return null;
+  }
+  return new ObjectId(id);
+}
+function safeUnlink(absPath) {
+  try {
+    if (!absPath) return;
+    if (fs.existsSync(absPath)) fs.unlinkSync(absPath);
+  } catch (e) {
+    console.warn("⚠️ No se pudo borrar archivo:", absPath, e?.message);
+  }
+}
 
 // =============================================
-// FORZAR LIMPIEZA HISTORIAL                                 📌
+// Limpieza manual de historiales (debug)
 // =============================================
 router.get("/forzar-limpieza-historial", async (req, res) => {
   const db = req.db;
-
   try {
-    const historialCollection = db.collection("HistorialUsuario");
+    const historial = db.collection("HistorialUsuario");
+    const desde = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
 
-    const primerosMovimientos = await historialCollection
+    const primeros = await historial
       .aggregate([
         { $sort: { fecha: 1 } },
-        {
-          $group: {
-            _id: "$usuario_id",
-            primerMovimiento: { $first: "$fecha" },
-          },
-        },
-        {
-          $match: {
-            primerMovimiento: {
-              $lte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-            },
-          },
-        },
+        { $group: { _id: "$usuario_id", primerMovimiento: { $first: "$fecha" } } },
+        { $match: { primerMovimiento: { $lte: desde } } },
       ])
       .toArray();
 
-    const idsUsuariosAEliminar = primerosMovimientos.map((m) => m._id);
+    const idsUsuarios = primeros.map((m) => m._id);
+    if (!idsUsuarios.length) return res.json({ message: "No hay historiales para eliminar." });
 
-    if (idsUsuariosAEliminar.length > 0) {
-      const deleteResult = await historialCollection.deleteMany({
-        usuario_id: { $in: idsUsuariosAEliminar },
-      });
-
-      res.json({
-        message: `Eliminados ${deleteResult.deletedCount} historiales.`,
-      });
-    } else {
-      res.json({ message: "No hay historiales para eliminar." });
-    }
+    const del = await historial.deleteMany({ usuario_id: { $in: idsUsuarios } });
+    res.json({ message: `Eliminados ${del.deletedCount} historiales.` });
   } catch (err) {
-    console.error("❌ Error manual:", err);
+    console.error("❌ Error limpieza manual:", err);
     res.status(500).json({ error: "Error al ejecutar limpieza manual" });
   }
 });
 
 // =============================================
-// USUARIOS                                  📌
+// USUARIOS
 // =============================================
-/**
- * ✅ Eliminar un usuario (Delete)
- * Ruta: DELETE /usuarios/:id
- */
 router.delete("/usuarios/:id", async (req, res) => {
   const db = req.db;
+  const _id = oidOr400(res, req.params.id, "ID de usuario");
+  if (!_id) return;
 
   try {
-    const { id } = req.params;
-
-    // ⚠️ Validar ID antes de convertirlo a ObjectId
-    if (!ObjectId.isValid(id)) {
-      return res.status(400).json({ error: "ID no válido" });
-    }
-
-    const objectId = new ObjectId(id);
-    const result = await db.collection("Usuarios").deleteOne({ _id: objectId });
-
-    if (result.deletedCount === 0) {
-      return res.status(404).json({ error: "Usuario no encontrado" });
-    }
-
-    res.json({ message: "Usuario eliminado correctamente" });
+    const out = await db.collection("Usuarios").deleteOne({ _id });
+    if (!out.deletedCount) return res.status(404).json({ error: "Usuario no encontrado" });
+    res.json({ message: "Usuario eliminado", deletedCount: out.deletedCount });
   } catch (err) {
     console.error("❌ Error eliminando usuario:", err);
     res.status(500).json({ error: "Error al eliminar usuario" });
@@ -83,59 +69,60 @@ router.delete("/usuarios/:id", async (req, res) => {
 });
 
 // =============================================
-// PRODUCTOS                                  📌
+// PRODUCTOS (simple)
 // =============================================
-
-/**
- * ✅ Eliminar producto (Delete)
- * Ruta: DELETE /productos/:id
- */
 router.delete("/productos/:id", async (req, res) => {
   const db = req.db;
+  const _id = oidOr400(res, req.params.id, "ID de producto");
+  if (!_id) return;
 
   try {
-    const { id } = req.params;
-
-    // ⚠️ Validar ID antes de convertirlo a ObjectId
-    if (!ObjectId.isValid(id)) {
-      return res.status(400).json({ error: "ID de producto no válido" });
-    }
-
-    const objectId = new ObjectId(id);
-    const result = await db
-      .collection("Productos")
-      .deleteOne({ _id: objectId });
-
-    if (result.deletedCount === 0) {
-      return res.status(404).json({ error: "Producto no encontrado" });
-    }
-
-    res.json({ message: "Producto eliminado correctamente" });
+    const out = await db.collection("Productos").deleteOne({ _id });
+    if (!out.deletedCount) return res.status(404).json({ error: "Producto no encontrado" });
+    res.json({ message: "Producto eliminado", deletedCount: out.deletedCount });
   } catch (err) {
     console.error("❌ Error eliminando producto:", err);
     res.status(500).json({ error: "Error al eliminar producto" });
   }
 });
 
-// ELIMINAR PRODUCTO COMPLETO  🧩
+// =============================================
+// PRODUCTOS (completo: producto + precios + opiniones + imagen)
+// =============================================
 router.delete("/productos-completos/:id", async (req, res) => {
   const db = req.db;
+  const _id = oidOr400(res, req.params.id, "ID de producto");
+  if (!_id) return;
 
   try {
-    const { id } = req.params;
-    if (!ObjectId.isValid(id))
-      return res.status(400).json({ error: "ID inválido" });
+    // 1) Leer producto (para ruta de imagen y nombre)
+    const producto = await db.collection("Productos").findOne({ _id });
+    if (!producto) return res.status(404).json({ error: "Producto no encontrado" });
 
-    const _id = new ObjectId(id);
+    // 2) Borrar documentos relacionados
+    const [delProducto, delPrecios, delOpin] = await Promise.all([
+      db.collection("Productos").deleteOne({ _id }),
+      db.collection("Precios").deleteMany({
+        $or: [{ producto_id: _id }, { producto_id: String(_id) }],
+      }),
+      db.collection("Opiniones").deleteMany({
+        $or: [{ Producto_id: _id }, { Producto_id: String(_id) }, { Producto_id: producto.Nombre }],
+      }),
+    ]);
 
-    // 🔥 Borrar de todas las colecciones relacionadas
-    await db.collection("Productos").deleteOne({ _id });
-    await db.collection("Precios").deleteMany({ producto_id: _id });
-    await db.collection("Descripcion").deleteMany({ Producto_id: _id });
-    await db.collection("Opiniones").deleteMany({ Producto_id: _id }); // si usas opiniones
+    // 3) Borrar imagen física si existía en /uploads
+    if (typeof producto.Imagen === "string" && producto.Imagen.startsWith("/uploads")) {
+      const abs = path.resolve(process.cwd(), `.${producto.Imagen}`);
+      safeUnlink(abs);
+    }
 
     res.json({
       message: "Producto y datos asociados eliminados correctamente",
+      stats: {
+        productos: delProducto.deletedCount,
+        precios: delPrecios.deletedCount,
+        opiniones: delOpin.deletedCount,
+      },
     });
   } catch (err) {
     console.error("❌ Error eliminando producto completo:", err);
@@ -144,130 +131,85 @@ router.delete("/productos-completos/:id", async (req, res) => {
 });
 
 // =============================================
-// PRECIOS                                    📌
+// PRECIOS
 // =============================================
-
-/**
- * ✅ Eliminar precios (Delete)
- * Ruta: DELETE /precios/:id
- */
 router.delete("/precios/:id", async (req, res) => {
   const db = req.db;
+  const _id = oidOr400(res, req.params.id, "ID de precio");
+  if (!_id) return;
 
   try {
-    const { id } = req.params;
-
-    // ⚠️ Validar ID antes de convertirlo a ObjectId
-    if (!ObjectId.isValid(id)) {
-      return res.status(400).json({ error: "ID no válido" });
-    }
-
-    const objectId = new ObjectId(id);
-    const result = await db.collection("Precios").deleteOne({ _id: objectId });
-
-    if (result.deletedCount === 0) {
-      return res.status(404).json({ error: "Precio no encontrado" });
-    }
-
-    res.json({ message: "Precio eliminado correctamente" });
+    const out = await db.collection("Precios").deleteOne({ _id });
+    if (!out.deletedCount) return res.status(404).json({ error: "Precio no encontrado" });
+    res.json({ message: "Precio eliminado", deletedCount: out.deletedCount });
   } catch (err) {
-    console.error("❌ Error eliminando Precio:", err);
+    console.error("❌ Error eliminando precio:", err);
     res.status(500).json({ error: "Error al eliminar precio" });
   }
 });
 
 // =============================================
-// SUPERMERCADOS                              📌
+// SUPERMERCADOS
 // =============================================
-
-/**
- * ✅ Eliminar supermercados (Delete)
- * Ruta: DELETE /supermercados/:id
- */
 router.delete("/supermercados/:id", async (req, res) => {
   const db = req.db;
+  const _id = oidOr400(res, req.params.id, "ID de supermercado");
+  if (!_id) return;
 
   try {
-    const { id } = req.params;
+    const out = await db.collection("Supermercados").deleteOne({ _id });
+    if (!out.deletedCount) return res.status(404).json({ error: "Supermercado no encontrado" });
 
-    // ⚠️ Validar ID antes de convertirlo a ObjectId
-    if (!ObjectId.isValid(id)) {
-      return res.status(400).json({ error: "ID no válido" });
-    }
-
-    const objectId = new ObjectId(id);
-    const result = await db
-      .collection("Supermercados")
-      .deleteOne({ _id: objectId });
-
-    if (result.deletedCount === 0) {
-      return res.status(404).json({ error: "Supermercado no encontrado" });
-    }
-
-    res.json({ message: "Supermercado eliminado correctamente" });
+    // Opcional: cuántos productos referencian este super
+    const orfanos = await db.collection("Productos").countDocuments({ Supermercado_id: _id });
+    res.json({
+      message: "Supermercado eliminado",
+      deletedCount: out.deletedCount,
+      productosQueReferencian: orfanos,
+    });
   } catch (err) {
-    console.error("❌ Error eliminando Supermercado:", err);
-    res.status(500).json({ error: "Error al eliminar Supermercado" });
+    console.error("❌ Error eliminando supermercado:", err);
+    res.status(500).json({ error: "Error al eliminar supermercado" });
   }
 });
 
 // =============================================
-// PROOVEDOR                                  📌
+// PROVEEDOR
 // =============================================
-
-/**
- * ✅ Eliminar proovedor (Delete)
- * Ruta: DELETE /proovedor/:id
- */
 router.delete("/proveedor/:id", async (req, res) => {
   const db = req.db;
+  const _id = oidOr400(res, req.params.id, "ID de proveedor");
+  if (!_id) return;
 
   try {
-    const { id } = req.params;
+    const out = await db.collection("Proveedor").deleteOne({ _id });
+    if (!out.deletedCount) return res.status(404).json({ error: "Proveedor no encontrado" });
 
-    // ⚠️ Validar ID antes de convertirlo a ObjectId
-    if (!ObjectId.isValid(id)) {
-      return res.status(400).json({ error: "ID no válido" });
-    }
-
-    const objectId = new ObjectId(id);
-    const result = await db
-      .collection("Proveedor")
-      .deleteOne({ _id: objectId });
-
-    if (result.deletedCount === 0) {
-      return res.status(404).json({ error: "Proveedor no encontrado" });
-    }
-
-    res.json({ message: "Proveedor eliminado correctamente" });
+    // Opcional: cuántos productos referencian este proveedor
+    const usados = await db.collection("Productos").countDocuments({ Proveedor_id: _id });
+    res.json({
+      message: "Proveedor eliminado",
+      deletedCount: out.deletedCount,
+      productosQueReferencian: usados,
+    });
   } catch (err) {
-    console.error("❌ Error eliminando Proveedor:", err);
-    res.status(500).json({ error: "Error al eliminar Proveedor" });
+    console.error("❌ Error eliminando proveedor:", err);
+    res.status(500).json({ error: "Error al eliminar proveedor" });
   }
 });
 
 // =============================================
-// DATOS DEL USUARIO                          📌
+// DATOS DEL USUARIO
 // =============================================
-
-/**
- * ✅ Eliminar Dato personal (Delete)
- * Ruta: DELETE /datos-personales/:id
- */
 router.delete("/datos-personales/:id", async (req, res) => {
   const db = req.db;
+  const _id = oidOr400(res, req.params.id, "ID del dato");
+  if (!_id) return;
 
   try {
-    const datoId = new ObjectId(req.params.id);
-    const result = await db
-      .collection("DatosUsuario")
-      .deleteOne({ _id: datoId });
-
-    if (result.deletedCount === 0) {
-      return res.status(404).json({ error: "Dato no encontrado" });
-    }
-
-    res.json({ message: "Dato personal eliminado correctamente" });
+    const out = await db.collection("DatosUsuario").deleteOne({ _id });
+    if (!out.deletedCount) return res.status(404).json({ error: "Dato no encontrado" });
+    res.json({ message: "Dato personal eliminado", deletedCount: out.deletedCount });
   } catch (err) {
     console.error("❌ Error eliminando dato personal:", err);
     res.status(500).json({ error: "Error en el servidor" });
@@ -275,97 +217,35 @@ router.delete("/datos-personales/:id", async (req, res) => {
 });
 
 // =============================================
-// DESCRIPCION                                📌
+// OPINIONES
 // =============================================
-
-/**
- * ✅ Eliminar Descripcion (Delete)
- * Ruta: DELETE /descripcion/:id
- */
-router.delete("/descripcion/:id", async (req, res) => {
-  const db = req.db;
-
-  try {
-    const { id } = req.params;
-
-    // ⚠️ Validar ID antes de convertirlo a ObjectId
-    if (!ObjectId.isValid(id)) {
-      return res.status(400).json({ error: "ID no válido" });
-    }
-
-    const objectId = new ObjectId(id);
-    const result = await db
-      .collection("Descripcion")
-      .deleteOne({ _id: objectId });
-
-    if (result.deletedCount === 0) {
-      return res.status(404).json({ error: "Descripcion no encontrado" });
-    }
-
-    res.json({ message: "Descripcion eliminado correctamente" });
-  } catch (err) {
-    console.error("❌ Error eliminando Descripcion:", err);
-    res.status(500).json({ error: "Error al eliminar Descripcion" });
-  }
-});
-
-// =============================================
-// OPINIONES                                  📌
-// =============================================
-
-/**
- * ✅ Eliminar opinión (Delete)
- * Ruta: DELETE /opiniones/:id
- */
 router.delete("/opiniones/:id", async (req, res) => {
   const db = req.db;
+  const _id = oidOr400(res, req.params.id, "ID de opinión");
+  if (!_id) return;
 
   try {
-    const { id } = req.params;
-
-    // ⚠️ Validar ID antes de convertirlo a ObjectId
-    if (!ObjectId.isValid(id)) {
-      return res.status(400).json({ error: "ID no válido" });
-    }
-
-    const objectId = new ObjectId(id);
-    const result = await db
-      .collection("Opiniones")
-      .deleteOne({ _id: objectId });
-
-    if (result.deletedCount === 0) {
-      return res.status(404).json({ error: "Opinion no encontrado" });
-    }
-
-    res.json({ message: "Opinion eliminado correctamente" });
+    const out = await db.collection("Opiniones").deleteOne({ _id });
+    if (!out.deletedCount) return res.status(404).json({ error: "Opinión no encontrada" });
+    res.json({ message: "Opinión eliminada", deletedCount: out.deletedCount });
   } catch (err) {
-    console.error("❌ Error eliminando Opinion:", err);
-    res.status(500).json({ error: "Error al eliminar Opinion" });
+    console.error("❌ Error eliminando opinión:", err);
+    res.status(500).json({ error: "Error al eliminar opinión" });
   }
 });
-// =============================================
-// HISTORIAL DEL USUARIO                      📌
-// =============================================
 
-/**
- * ✅ Eliminar entrada del historial (Delete)
- * Ruta: DELETE /historial/:id
- */
+// =============================================
+// HISTORIAL DEL USUARIO
+// =============================================
 router.delete("/historial/:id", async (req, res) => {
   const db = req.db;
+  const _id = oidOr400(res, req.params.id, "ID de movimiento");
+  if (!_id) return;
 
   try {
-    const id = new ObjectId(req.params.id);
-
-    const result = await db
-      .collection("HistorialUsuario")
-      .deleteOne({ _id: id });
-
-    if (result.deletedCount === 0) {
-      return res.status(404).json({ error: "Movimiento no encontrado" });
-    }
-
-    res.json({ message: "Movimiento eliminado correctamente" });
+    const out = await db.collection("HistorialUsuario").deleteOne({ _id });
+    if (!out.deletedCount) return res.status(404).json({ error: "Movimiento no encontrado" });
+    res.json({ message: "Movimiento eliminado", deletedCount: out.deletedCount });
   } catch (err) {
     console.error("❌ Error eliminando historial:", err);
     res.status(500).json({ error: "Error en el servidor" });

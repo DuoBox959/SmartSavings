@@ -1,201 +1,187 @@
 import { renderizarProductos } from "../modals/mostrar.js";
 import { API_BASE } from "../UTILS/utils.js";
 
-// 📥 Cargar datos dinámicos en los selects (tipo, marca, etc.)
-
+/* ==============================
+   📥 Cargar datos dinámicos en selects
+   configs: [{ campo, endpoint, usarId }]
+   ============================== */
 export async function cargarOpcionesEnSelects(configs) {
-
   try {
-    const fetchPromises = configs.map(({ campo, endpoint }) =>
-      fetch(`http://localhost:3000/api/${endpoint}`).then((response) => {
-        if (!response.ok) throw new Error(`No se pudo cargar ${campo}`);
-        return response.json();
-      })
+    const datosArray = await Promise.all(
+      configs.map(({ endpoint, campo }) =>
+        fetch(`${API_BASE}/api/${endpoint}`).then((r) => {
+          if (!r.ok) throw new Error(`No se pudo cargar ${campo}`);
+          return r.json();
+        })
+      )
     );
 
-    const datosArray = await Promise.all(fetchPromises);
-
     configs.forEach(({ campo, usarId }, index) => {
-      const datos = datosArray[index];
-      const modos = ["add", "edit"];
+      const datos = datosArray[index] ?? [];
+      ["add", "edit"].forEach((modo) => {
+        const sel = document.getElementById(`${modo}-${campo}-select`);
+        if (!sel) return;
 
-      modos.forEach((modo) => {
-        const select = document.getElementById(`${modo}-${campo}-select`);
-        if (!select) return;
-
-        select.innerHTML = `<option value="">Selecciona una opción</option>`;
+        const etiqueta = sel.querySelector("option[value='']")?.textContent || "Selecciona una opción";
+        sel.innerHTML = `<option value="">${etiqueta}</option>`;
 
         datos.forEach((item) => {
-          const option = document.createElement("option");
-          option.value = usarId ? item._id : item.Nombre || item;
-          option.textContent = item.Nombre || item;
-          select.appendChild(option);
+          const value = usarId ? item._id : (item?.Nombre ?? item);
+          const text  = item?.Nombre ?? item;
+          if (!value || !text) return;
+          const opt = document.createElement("option");
+          opt.value = value;
+          opt.textContent = text;
+          sel.appendChild(opt);
         });
 
-        // ➕ Opción para escribir un nuevo valor manualmente
-        const optionOtro = document.createElement("option");
-        optionOtro.value = "nuevo";
-        optionOtro.textContent = "Otro (escribir nuevo)";
-        select.appendChild(optionOtro);
+        const optNuevo = document.createElement("option");
+        optNuevo.value = "nuevo";
+        optNuevo.textContent = "Otro (escribir nuevo)";
+        sel.appendChild(optNuevo);
       });
     });
   } catch (err) {
     console.error("❌ Error cargando selects dinámicos:", err);
   }
-
-
 }
 
-// ==============================
-// 📥 FUNCIONES DE CARGA Y LISTADO 
-// ==============================
-
-// 📥 Cargar productos y precios para renderizar en el listado principal
+/* ==============================
+   📥 Cargar productos para el listado principal
+   ============================== */
 export async function cargarProductos() {
   try {
-    const [productosRes, preciosRes] = await Promise.all([
-      fetch("http://localhost:3000/api/productos"),
-      fetch("http://localhost:3000/api/precios"),
+    const [prRes, preRes] = await Promise.all([
+      fetch(`${API_BASE}/api/productos`),
+      fetch(`${API_BASE}/api/precios`),
     ]);
-    const productos = await productosRes.json();
-    const precios = await preciosRes.json();
-
+    const [productos, precios] = await Promise.all([prRes.json(), preRes.json()]);
     renderizarProductos(productos, precios);
   } catch (err) {
     console.error("Error cargando productos:", err);
   }
 }
 
-
-// ==============================
-// 📥 CARGAR Y MOSTRAR PRODUCTO EN DETALLE
-// ==============================
+/* ==============================
+   📥 Cargar y pintar detalle de un producto
+   ============================== */
 export async function cargarDetalleProductos() {
   const urlParams = new URLSearchParams(window.location.search);
   const productId = urlParams.get("id");
-
-  if (!productId) {
-    return Swal.fire("Error", "No se especificó un producto", "error");
-  }
+  if (!productId) return Swal.fire("Error", "No se especificó un producto", "error");
 
   try {
+    // Trae lo necesario (la colección descripcion puede no existir; la tratamos como opcional)
     const [productoRes, preciosRes, supermercadosRes, proveedoresRes, descRes] =
       await Promise.all([
         fetch(`${API_BASE}/api/productos/${productId}`),
         fetch(`${API_BASE}/api/precios`),
         fetch(`${API_BASE}/api/supermercados`),
         fetch(`${API_BASE}/api/proveedor`),
-        fetch(`${API_BASE}/api/descripcion`),
+        fetch(`${API_BASE}/api/descripcion`).catch(() => ({ ok: false, json: async () => [] })),
       ]);
 
     if (!productoRes.ok) throw new Error("Producto no encontrado");
 
-    const producto = await productoRes.json();
-    const precios = await preciosRes.json();
+    const producto      = await productoRes.json();
+    const precios       = await preciosRes.json();
     const supermercados = await supermercadosRes.json();
-    const proveedores = await proveedoresRes.json();
-    const descripciones = await descRes.json();
+    const proveedores   = await proveedoresRes.json();
+    const descripciones = descRes.ok ? await descRes.json() : [];
 
-    const productoIdStr = producto._id?.toString();
-
-    const precioData = precios.find(
-      (p) => p.producto_id?.toString() === productoIdStr
+    // Asociaciones
+    const pidStr = String(producto._id);
+    const precioData = precios.find(p => String(p.producto_id) === pidStr);
+    const supermercado = supermercados.find(s =>
+      String(s._id) === String(producto.Supermercado_id ?? producto.supermercado)
     );
-    const supermercado = supermercados.find(
-      (s) => s._id?.toString() === producto.Supermercado_id?.toString()
-    );
-    const proveedor = proveedores.find(
-      (p) => p._id?.toString() === producto.Proveedor_id?.toString()
-    );
-    const descripcion = descripciones.find(
-      (d) => d.Producto_id === producto.Nombre
+    const proveedor = proveedores.find(p =>
+      String(p._id) === String(producto.Proveedor_id ?? producto.proveedor)
     );
 
-    // Mostrar datos
-    document.getElementById("producto-imagen").src =
-      producto.Imagen && producto.Imagen.startsWith("/uploads")
+    // Si existe doc de descripcion lo usamos; si no, caemos al propio producto
+    const descripcionDoc = descripciones.find(d => d.Producto_id === producto.Nombre) || {};
+    const tipo       = descripcionDoc.Tipo       ?? producto.Tipo       ?? "No disponible";
+    const subtipo    = descripcionDoc.Subtipo    ?? producto.Subtipo    ?? "No disponible";
+    const utilidad   = descripcionDoc.Utilidad   ?? producto.Utilidad   ?? "Sin descripción";
+    const ingredientesArr =
+      descripcionDoc.Ingredientes ??
+      (Array.isArray(producto.Ingredientes) ? producto.Ingredientes :
+        (typeof producto.Ingredientes === "string"
+          ? producto.Ingredientes.split(",").map(s => s.trim()).filter(Boolean)
+          : []));
+
+    // Imagen
+    const img = document.getElementById("producto-imagen");
+    if (img) {
+      img.src = producto.Imagen?.startsWith("/uploads")
         ? `http://localhost:3000${producto.Imagen}`
         : "../assets/img/default.webp";
+      img.alt = producto.Nombre || "Imagen del producto";
+    }
 
-    document.getElementById("producto-nombre").textContent =
-      producto.Nombre || "Producto sin nombre";
-    document.getElementById("producto-marca").innerHTML =
-      "<strong>Marca:</strong>" + (producto.Marca || "Desconocida");
-   document.getElementById("producto-precio").innerHTML =
-  "<strong>Precio:</strong> " + 
-  (precioData?.precioActual !== undefined
-    ? `${precioData.precioActual} €`
-    : "<span style='color:red'>No disponible</span>");
+    // Título (ojo: aquí es 'titulo-detalle')
+    const titulo = document.getElementById("titulo-detalle");
+    if (titulo) titulo.textContent = producto.Nombre || "Producto sin nombre";
 
-    document.getElementById("producto-precio-descuento").innerHTML =
-      precioData?.precioDescuento
-        ? `<strong>Precio Descuento:</strong> ${precioData.precioDescuento}€`
-        : "";
-    document.getElementById("producto-precio-unidad").innerHTML =
-      precioData?.precioUnidadLote
-        ? `<strong>Precio por unidad/lote:</strong> ${precioData.precioUnidadLote}€`
-        : "";
-    document.getElementById("producto-unidad-lote").innerHTML =
-      precioData?.unidadLote
-        ? `<strong>Unidad/Lote:</strong> ${precioData.unidadLote}`
-        : "";
-    document.getElementById("producto-utilidad").innerHTML =
-      "<strong>Descripción:</strong>" +
-      (descripcion?.Utilidad || "Sin descripción");
-    document.getElementById("producto-peso").innerHTML =
-      "<strong>Peso:</strong>" +
-      (producto.Peso || "<p style='color:red'>No disponible</p>") +
-      " " +
-      (producto.UnidadPeso || "");
-    document.getElementById("producto-estado").innerHTML =
-      "<strong>Estado:</strong>" + (producto.Estado || "Sin stock");
-    document.getElementById("producto-tipo").innerHTML =
-      "<strong>Tipo:</strong>" + (descripcion?.Tipo || "<p style='color:red'>No disponible</p>");
-    document.getElementById("producto-subtipo").innerHTML =
-      "<strong>Subtipo:</strong> " + (descripcion?.Subtipo || "<p style='color:red'>No disponible</p>");
-    document.getElementById("producto-supermercado").innerHTML =
-      "<strong>Supermercado:</strong> " + (supermercado?.Nombre || "");
-const ubicacion = supermercado?.Ubicaciones?.at(-1) || {};
+    // Texto auxiliar
+    const setHTML = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
 
-  document.getElementById("producto-ubicacion").innerHTML =
-  "<strong>Ubicación del supermercado:</strong> " +
-  (ubicacion.ubicacion || "<p style='color:red'>No disponible</p>");
+    // Datos “estáticos”
+    setHTML("producto-marca",         `<strong>Marca:</strong> ${producto.Marca || "Desconocida"}`);
+    setHTML("producto-tipo",          `<strong>Tipo:</strong> ${tipo}`);
+    setHTML("producto-subtipo",       `<strong>Subtipo:</strong> ${subtipo}`);
+    setHTML("producto-utilidad",      `<strong>Descripción:</strong> ${utilidad}`);
+    setHTML("producto-ingredientes",  `<strong>Ingredientes:</strong> ${ingredientesArr.length ? ingredientesArr.join(", ") : "No disponible"}`);
 
-document.getElementById("producto-pais-super").innerHTML =
-  "<strong>País del supermercado:</strong> " +
-  (ubicacion.pais || "<p style='color:red'>No disponible</p>");
+    // Precios (con llaves que usas en tu BD)
+    setHTML("producto-precio",            `<strong>Precio:</strong> ${precioData?.precioActual ?? "No disponible"} €`);
+    setHTML("producto-precio-descuento",  precioData?.precioDescuento != null ? `<strong>Precio Descuento:</strong> ${precioData.precioDescuento} €` : "");
+    setHTML("producto-precio-unidad",     precioData?.precioUnidadLote != null ? `<strong>Precio por unidad/lote:</strong> ${precioData.precioUnidadLote} €` : "");
+    setHTML("producto-unidad-lote",       precioData?.unidadLote != null ? `<strong>Unidad/Lote:</strong> ${precioData.unidadLote}` : "");
 
-document.getElementById("producto-ciudad-super").innerHTML =
-  "<strong>Ciudad del supermercado:</strong> " +
-  (ubicacion.ciudad || "<p style='color:red'>No disponible</p>");
+    // Historial (aceptamos anio, año, ano, fecha, year)
+    const historialTxt = (precioData?.precioHistorico ?? [])
+      .map(h => {
+        const year = h.anio ?? h["año"] ?? h.ano ?? h.fecha ?? h.year;
+        const price = h.precio ?? h.valor ?? h.price;
+        return (year != null && price != null) ? `${year}: ${price} €` : null;
+      })
+      .filter(Boolean)
+      .join("<br>");
+    setHTML("producto-historico", `<strong>Precio histórico:</strong><br>${historialTxt || "No disponible"}`);
 
-    document.getElementById("producto-proveedor").innerHTML =
-      "<strong>Proveedor:</strong> " + (proveedor?.Nombre || "");
-    document.getElementById("producto-pais-proveedor").innerHTML =
-      "<strong>País del proveedor:</strong> " + (proveedor?.Pais || "");
-    document.getElementById("producto-ingredientes").innerHTML =
-      "<strong>Ingredientes:</strong> " +
-      (descripcion?.Ingredientes?.join(", ") || "<p style='color:red'>No disponible</p>");
+    // Peso / estado
+    setHTML("producto-peso",   `<strong>Peso:</strong> ${producto.Peso ?? "No disponible"} ${producto.UnidadPeso ?? ""}`);
+    setHTML("producto-estado", `<strong>Estado:</strong> ${producto.Estado ?? "Sin stock"}`);
 
-    const historial = precioData?.precioHistorico?.length
-      ? precioData.precioHistorico
-        .map((h) => `${h.anio || h.fecha || "¿Año?"}: ${h.precio}€`)
-        .join("\n")
-      : "<p style='color:red'>No disponible</p>";
+    // Supermercado + última ubicación conocida
+    setHTML("producto-supermercado", `<strong>Supermercado:</strong> ${supermercado?.Nombre ?? "No disponible"}`);
+    const u = (supermercado?.Ubicaciones || []).slice(-1)[0] || {};
+    setHTML("producto-ubicacion",     `<strong>Ubicación del supermercado:</strong> ${u.Ubicacion ?? u.ubicacion ?? "No disponible"}`);
+    setHTML("producto-pais-super",    `<strong>País del supermercado:</strong> ${u.Pais ?? u.pais ?? "No disponible"}`);
+    setHTML("producto-ciudad-super",  `<strong>Ciudad del supermercado:</strong> ${u.Ciudad ?? u.ciudad ?? "No disponible"}`);
 
-    document.getElementById("producto-historico").innerHTML =
-      "<strong>Precio histórico:</strong><br>" +
-      historial.replace(/\n/g, "<br>");
+    // Proveedor
+    setHTML("producto-proveedor",       `<strong>Proveedor:</strong> ${proveedor?.Nombre ?? "No disponible"}`);
+    setHTML("producto-pais-proveedor",  `<strong>País del proveedor:</strong> ${proveedor?.Pais ?? proveedor?.pais ?? "No disponible"}`);
+
   } catch (error) {
     console.error("❌ Error al cargar el producto:", error);
     Swal.fire("Error", "No se pudo cargar el producto", "error");
   }
 }
 
+
+/* ==============================
+   🔽 Pobladores dependientes de supermercado (UI)
+   ============================== */
 export function cargarUbicaciones(supermercado, pais, ciudad) {
   const ubicacionSelect = document.getElementById("add-ubicacion-existente");
   const nuevaUbicacionInput = document.getElementById("add-nueva-ubicacion");
   const labelNuevaUbicacion = document.getElementById("label-add-nueva-ubicacion");
+
+  if (!ubicacionSelect) return;
 
   if (!supermercado || !pais || !ciudad) {
     ubicacionSelect.style.display = "none";
@@ -204,7 +190,7 @@ export function cargarUbicaciones(supermercado, pais, ciudad) {
     return;
   }
 
-  const ubicaciones = supermercado.Ubicaciones
+  const ubicaciones = (supermercado.Ubicaciones || [])
     .filter((u) => u.Pais === pais && u.Ciudad === ciudad && typeof u.Ubicacion === "string")
     .map((u) => u.Ubicacion);
 
@@ -215,201 +201,77 @@ export function cargarUbicaciones(supermercado, pais, ciudad) {
     return;
   }
 
-  // Mostrar select con opciones existentes + opción de nueva
   ubicacionSelect.innerHTML = `<option value="">Selecciona una ubicación</option>`;
   ubicaciones.forEach((u) => {
-    ubicacionSelect.innerHTML += `<option value="${u}">${u}</option>`;
+    const opt = document.createElement("option");
+    opt.value = u;
+    opt.textContent = u;
+    ubicacionSelect.appendChild(opt);
   });
-  ubicacionSelect.innerHTML += `<option value="nuevo">Otra (nueva ubicación)</option>`;
+  const optNuevo = document.createElement("option");
+  optNuevo.value = "nuevo";
+  optNuevo.textContent = "Otra (nueva ubicación)";
+  ubicacionSelect.appendChild(optNuevo);
   ubicacionSelect.style.display = "inline-block";
 
-  // Ocultar input manual hasta que se seleccione "nuevo"
   if (nuevaUbicacionInput) nuevaUbicacionInput.style.display = "none";
   if (labelNuevaUbicacion) labelNuevaUbicacion.style.display = "none";
 }
 
+/* ==============================
+   🧭 Obtener ubicaciones del formulario (add/edit)
+   ============================== */
 export function obtenerUbicacionesGenerico(prefijo) {
-  const ubicaciones = [];
+  const paisSelect       = document.getElementById(`${prefijo}-pais-existente`);
+  const ciudadSelect     = document.getElementById(`${prefijo}-ciudad-existente`);
+  const ubicacionSelect  = document.getElementById(`${prefijo}-ubicacion-existente`);
 
-  const paisSelect = document.getElementById(`${prefijo}-pais-existente`);
-  const ciudadSelect = document.getElementById(`${prefijo}-ciudad-existente`);
-  const ubicacionSelect = document.getElementById(`${prefijo}-ubicacion-existente`);
+  const paisInput        = document.getElementById(`${prefijo}-nuevo-pais`);
+  const ciudadInput      = document.getElementById(`${prefijo}-nueva-ciudad`);
+  const ubicacionInput   = document.getElementById(`${prefijo}-nueva-ubicacion`);
 
-  const paisInput = document.getElementById(`${prefijo}-nuevo-pais`);
-  const ciudadInput = document.getElementById(`${prefijo}-nueva-ciudad`);
-  const ubicacionInput = document.getElementById(`${prefijo}-nueva-ubicacion`);
+  const getVal = (sel, inp) =>
+    sel?.value === "nuevo"
+      ? (inp?.value || "").trim()
+      : (sel?.value || "").trim();
 
-  const pais = paisSelect?.value === "nuevo" ? paisInput?.value.trim() : paisSelect?.value;
-  const ciudad = ciudadSelect?.value === "nuevo" ? ciudadInput?.value.trim() : ciudadSelect?.value;
-  const ubicacion = ubicacionSelect?.value === "nuevo" ? ubicacionInput?.value.trim() : ubicacionSelect?.value;
+  const pais       = getVal(paisSelect, paisInput);
+  const ciudad     = getVal(ciudadSelect, ciudadInput);
+  const ubicacion  = getVal(ubicacionSelect, ubicacionInput);
 
-  const errores = [];
-
-  // 💡 Solo hacemos validaciones estrictas en modo "add"
+  // Validación estricta en "add"
   if (prefijo === "add") {
-    if (!pais) errores.push("País");
-    if (!ciudad) errores.push("Ciudad");
-    if (!ubicacion) errores.push("Ubicación");
-
-    if (errores.length > 0) {
+    const faltan = [];
+    if (!pais) faltan.push("País");
+    if (!ciudad) faltan.push("Ciudad");
+    if (!ubicacion) faltan.push("Ubicación");
+    if (faltan.length) {
       Swal.fire({
         icon: "warning",
         title: "Campos requeridos vacíos",
-        html: `Has dejado vacío:<br><strong>${errores.join("<br>")}</strong>`,
+        html: `Has dejado vacío:<br><strong>${faltan.join("<br>")}</strong>`,
       });
       return [];
     }
   }
 
-  // 📌 Si seleccionó "nuevo", validamos lo mínimo necesario también en "edit"
-  if (
-    prefijo === "edit" &&
-    (paisSelect?.value === "nuevo" ||
-      ciudadSelect?.value === "nuevo" ||
-      ubicacionSelect?.value === "nuevo")
-  ) {
-    if (paisSelect?.value === "nuevo" && !paisInput?.value.trim()) errores.push("País");
-    if (ciudadSelect?.value === "nuevo" && !ciudadInput?.value.trim()) errores.push("Ciudad");
-    if (ubicacionSelect?.value === "nuevo" && !ubicacionInput?.value.trim()) errores.push("Ubicación");
+  // En "edit": solo devolvemos si hay los 3 valores
+  const out = [];
+  if (pais && ciudad && ubicacion) {
+    // Usa mayúsculas para empatar con tu backend
+    out.push({ Pais: pais, Ciudad: ciudad, Ubicacion: ubicacion });
+  }
+  return out;
+}
 
-    if (errores.length > 0) {
-      Swal.fire({
-        icon: "warning",
-        title: "Campos requeridos vacíos",
-        html: `Has marcado "nuevo" pero no escribiste:<br><strong>${errores.join("<br>")}</strong>`,
-      });
-      return [];
-    }
-}}
-
-// export function obtenerUbicacionesGenerico(prefijo) {
-//   const ubicaciones = [];
-
-//   const paisSelect = document.getElementById(`${prefijo}-pais-existente`);
-//   const ciudadSelect = document.getElementById(`${prefijo}-ciudad-existente`);
-//   const ubicacionSelect = document.getElementById(`${prefijo}-ubicacion-existente`);
-
-//   const paisInput = document.getElementById(`${prefijo}-nuevo-pais`);
-//   const ciudadInput = document.getElementById(`${prefijo}-nueva-ciudad`);
-//   const ubicacionInput = document.getElementById(`${prefijo}-nueva-ubicacion`);
-
-//   const pais = paisSelect?.value === "nuevo"
-//     ? paisInput?.value.trim()
-//     : (paisSelect?.value || paisInput?.value.trim());
-
-//   const ciudad = ciudadSelect?.value === "nuevo"
-//     ? ciudadInput?.value.trim()
-//     : (ciudadSelect?.value || ciudadInput?.value.trim());
-
-//   const ubicacion = ubicacionSelect?.value === "nuevo"
-//     ? ubicacionInput?.value.trim()
-//     : (ubicacionSelect?.value || ubicacionInput?.value.trim());
-
-//   const errores = [];
-
-//   if (!pais) {
-//     errores.push("País");
-//     paisInput?.classList.add("input-error");
-//   }
-
-//   if (!ciudad) {
-//     errores.push("Ciudad");
-//     ciudadInput?.classList.add("input-error");
-//   }
-
-//   if (!ubicacion) {
-//     errores.push("Ubicación");
-//     ubicacionInput?.classList.add("input-error");
-//   }
-
-//   if (errores.length > 0) {
-//     Swal.fire({
-//       icon: "warning",
-//       title: "Campos requeridos vacíos",
-//       html: `Has dejado vacío:<br><strong>${errores.join("<br>")}</strong>`,
-//     });
-//     return [];
-//   }
-
-//   ubicaciones.push({ pais, ciudad, ubicacion });
-//   return ubicaciones;
-// }
-
-
-//   const ubicaciones = [];
-
-//   const paisSelect = document.getElementById(`${prefijo}-pais-existente`);
-//   const ciudadSelect = document.getElementById(`${prefijo}-ciudad-existente`);
-//   const ubicacionSelect = document.getElementById(`${prefijo}-ubicacion-existente`);
-
-//   const paisInput = document.getElementById(`${prefijo}-nuevo-pais`);
-//   const ciudadInput = document.getElementById(`${prefijo}-nueva-ciudad`);
-//   const ubicacionInput = document.getElementById(`${prefijo}-nueva-ubicacion`);
-
-//   // 📦 Detectar valores
-//  const pais = paisSelect?.value === "nuevo"
-//   ? paisInput?.value.trim()
-//   : (paisSelect?.value || paisInput?.value.trim());
-
-// const ciudad = ciudadSelect?.value === "nuevo"
-//   ? ciudadInput?.value.trim()
-//   : (ciudadSelect?.value || ciudadInput?.value.trim());
-
-// const ubicacion = ubicacionSelect?.value === "nuevo"
-//   ? ubicacionInput?.value.trim()
-//   : (ubicacionSelect?.value || ubicacionInput?.value.trim());
-
-
-//   // 🚨 Validaciones por campo NUEVO no escrito
-//   const errores = [];
-
-//   if (paisSelect?.value === "nuevo" && !paisInput?.value.trim()) {
-//     errores.push("País (nuevo)");
-//     paisInput?.classList.add("input-error");
-//   }
-
-//   if (ciudadSelect?.value === "nuevo" && !ciudadInput?.value.trim()) {
-//     errores.push("Ciudad (nueva)");
-//     ciudadInput?.classList.add("input-error");
-//   }
-
-//   if (ubicacionSelect?.value === "nuevo" && !ubicacionInput?.value.trim()) {
-//     errores.push("Ubicación (nueva)");
-//     ubicacionInput?.classList.add("input-error");
-//   }
-
-//   // ❌ Si hay errores, no seguir
-//   if (errores.length > 0) {
-//     Swal.fire({
-//       icon: "warning",
-//       title: "Campos requeridos vacíos",
-//       html: `Has marcado "nuevo" pero no escribiste:<br><strong>${errores.join(
-//         "<br>"
-//       )}</strong>`,
-//     });
-//     return [];
-//   }
-
-//   // ✅ Solo si los 3 existen (aunque sean de origen mixto), devolvemos la ubicación
-//   if (pais && ciudad && ubicacion) {
-//     ubicaciones.push({ pais, ciudad, ubicacion });
-//   }
-
-//   return ubicaciones;
-// }
-
-
-//OBTENER SUPERMERCADOS
-
-// ==============================
-// 🧠 CACHÉ LOCAL DE SUPERMERCADOS
-// ==============================
+/* ==============================
+   🛒 Supermercados (caché simple)
+   ============================== */
 let cacheSupermercados = [];
 
 export async function obtenerSupermercados() {
   if (cacheSupermercados.length > 0) return cacheSupermercados;
-
-  const res = await fetch("http://localhost:3000/api/supermercados");
+  const res = await fetch(`${API_BASE}/api/supermercados`);
   if (!res.ok) throw new Error("Error al cargar supermercados");
   const data = await res.json();
   cacheSupermercados = data;
@@ -420,5 +282,5 @@ export function limpiarCacheSupermercados() {
   cacheSupermercados = [];
 }
 
-
+// útil para depuración en consola
 window.renderizarProductos = renderizarProductos;

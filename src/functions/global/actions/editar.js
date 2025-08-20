@@ -27,6 +27,7 @@ export async function editarProducto(id) {
     safeSetValue("edit-unidadPeso", producto.UnidadPeso);
     safeSetValue("edit-estado", producto.Estado || "En stock");
     safeSetValue("edit-supermercado-select", supermercado._id);
+    safeSetValue("edit-supermercado-nuevo", supermercado.Nombre || "");
     safeSetValue("edit-proveedor-select", proveedor._id);
     safeSetValue("edit-pais-proveedor", proveedor.Pais);
     safeSetValue("edit-fecha-subida", producto.fechaSubida);

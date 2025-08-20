@@ -1,25 +1,71 @@
 // ==============================
 // 📦 IMPORTACIONES DE FUNCIONES EXTERNAS
 // ==============================
+// UI global (header/footer/nav)
 import { cargarHeaderFooter, cargarNav } from "../functions/global/funciones.js";
 import { gestionarUsuarioAutenticado } from "../functions/global/header.js";
 import { aplicarFiltroBusqueda } from "../functions/global/nav.js";
+
+// Utils / constantes
 import { API_BASE } from "../functions/global/UTILS/utils.js";
+
+// Acciones CRUD
 import { eliminarProducto } from "../functions/global/botones/botons_eliminar.js";
 import { guardarCambiosDesdeFormulario } from "../functions/global/botones/botons_actualizar.js";
 import { guardarProductoNuevo } from "../functions/global/botones/botons_agregar.js";
-import { mostrarFormularioAgregar } from "../functions/global/modals/mostrar.js";
+import { mostrarFormularioAgregar, renderizarProductos } from "../functions/global/modals/mostrar.js";
 import { editarProducto } from "../functions/global/actions/editar.js";
-import { renderizarProductos } from "../functions/global/modals/mostrar.js";
+
+// Inicializadores / helpers UI
 import { inicializarBotonesGlobales, inicializarSelectsDinamicos } from "../functions/global/eventos/events.js";
 import { agregarUbicacionAdd, toggleNuevoCampo } from "../functions/global/helpers/helpers.js";
 import { cargarOpcionesEnSelects } from "../functions/global/selects/carga.js";
 
 // ==============================
-// 🚀 INICIALIZACIÓN AL CARGAR DOCUMENTO
+// 🧰 HELPERS LOCALES (para esta vista)
+// ==============================
+
+/** Devuelve valores únicos limpios de un array aplicando mapFn. */
+const unicos = (arr, mapFn) => [...new Set(arr.map(mapFn).filter(Boolean))];
+
+/** Rellena los selects add/edit de un campo con valores dados. */
+const poblarSelectCampo = (campo, valores) => {
+  const ids = [`add-${campo}-select`, `edit-${campo}-select`];
+  ids.forEach((id) => {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+
+    const etiqueta = sel.querySelector("option[value='']")?.textContent || "Selecciona una opción";
+    sel.innerHTML = `
+      <option value="">${etiqueta}</option>
+      <option value="nuevo">Otro (escribir nuevo)</option>
+    `;
+
+    valores.forEach((v) => {
+      const opt = document.createElement("option");
+      opt.value = v;
+      opt.textContent = v;
+      sel.appendChild(opt);
+    });
+  });
+};
+
+/** Deriva tipo, subtipo y marca a partir de la lista de productos. */
+const poblarDesdeProductos = (productos) => {
+  const tipos = unicos(productos, (p) => p.Tipo ?? p.tipo);
+  const subtipos = unicos(productos, (p) => p.Subtipo ?? p.subtipo);
+  const marcas = unicos(productos, (p) => p.Marca ?? p.marca);
+
+  poblarSelectCampo("tipo", tipos);
+  poblarSelectCampo("subtipo", subtipos);
+  poblarSelectCampo("marca", marcas);
+};
+
+// ==============================
+// 🚀 INICIALIZACIÓN
 // ==============================
 document.addEventListener("DOMContentLoaded", async () => {
-  // 🔒 Verificar si el usuario está autenticado
+  // 🔒 Autenticación mínima en cliente
   const usuario = sessionStorage.getItem("user");
   if (!usuario) {
     Swal.fire({
@@ -28,118 +74,128 @@ document.addEventListener("DOMContentLoaded", async () => {
       text: "Por favor, inicia sesión para continuar.",
       confirmButtonText: "Ir al inicio",
       allowOutsideClick: false,
-    }).then(() => {
-      window.location.href = "index.html";
-    });
+    }).then(() => (window.location.href = "index.html"));
     return;
   }
 
   try {
+    // 🧩 Header/Footer comunes
     await cargarHeaderFooter();
 
-    // 📦 Obtener productos y precios en paralelo
-    const [productosRes, preciosRes] = await Promise.all([
+    // 📦 Cargar productos, precios y supermercados en paralelo
+    const [productosRes, preciosRes, supersRes] = await Promise.all([
       fetch(`${API_BASE}/api/productos`),
       fetch(`${API_BASE}/api/precios`),
+      fetch(`${API_BASE}/api/supermercados`),
     ]);
 
-    const productos = await productosRes.json();
-    const precios = await preciosRes.json();
+    if (!productosRes.ok || !preciosRes.ok || !supersRes.ok) {
+      throw new Error(`Fallo al cargar datos (${productosRes.status}/${preciosRes.status}/${supersRes.status})`);
+    }
 
+    const [productos, precios, supermercados] = await Promise.all([
+      productosRes.json(),
+      preciosRes.json(),
+      supersRes.json(),
+    ]);
+
+    // 🧭 Render inicial
     await cargarNav(productos, precios);
-    renderizarProductos(productos, precios); // Esta función debería también adjuntar escuchadores de edición/eliminación a las tarjetas de productos creadas dinámicamente
+    renderizarProductos(productos, precios, supermercados);
+
     aplicarFiltroBusqueda();
     gestionarUsuarioAutenticado();
+    inicializarBotonesGlobales();
 
-    inicializarBotonesGlobales(); // Esta función debería manejar los botones globales iniciales
-
-    // 📥 Cargar opciones dinámicas en los selects
+    // 🔽 Selects desde API (solo colecciones reales en tu BD)
     await cargarOpcionesEnSelects([
       { campo: "supermercado", endpoint: "supermercados", usarId: true },
-      { campo: "tipo", endpoint: "tipos", usarId: false },
-      { campo: "subtipo", endpoint: "subtipos", usarId: false },
-      { campo: "marca", endpoint: "marcas", usarId: false },
       { campo: "proveedor", endpoint: "proveedor", usarId: true },
     ]);
 
-    // 🔁 Añadir eventos a los selects que pueden tener valor "nuevo"
+    // 🧩 Selects locales (tipo/subtipo/marca desde Productos)
+    poblarDesdeProductos(productos);
+
+    // 🆕 Habilitar selects con opción "nuevo"
     inicializarSelectsDinamicos();
 
-    // Escuchador de eventos para el botón "Agregar Producto" (abre el modal de agregar)
+    // ➕ Abrir modal agregar
     document.getElementById("btn-agregar-producto")?.addEventListener("click", mostrarFormularioAgregar);
 
-    // Escuchador de eventos para el botón "Guardar Producto" (dentro del modal de agregar)
-    const botonGuardarProducto = document.getElementById("btn-guardar-producto");
-    if (botonGuardarProducto) {
-      console.log("🟢 Escuchando click en 'Agregar Producto' dentro del modal...");
-      botonGuardarProducto.addEventListener("click", guardarProductoNuevo);
-    } else {
-      console.warn("❌ No se encontró el botón 'btn-guardar-producto'");
-    }
+    // 💾 Guardar nuevo producto
+    document.getElementById("btn-guardar-producto")?.addEventListener("click", guardarProductoNuevo);
 
-    // Escuchador de eventos para el botón "Guardar Cambios" (dentro del modal de edición)
-    const botonGuardarCambios = document.getElementById("btn-guardar-cambios");
-    if (botonGuardarCambios) {
-      botonGuardarCambios.addEventListener("click", guardarCambiosDesdeFormulario);
-    }
+    // 💾 Guardar cambios en edición
+    document.getElementById("btn-guardar-cambios")?.addEventListener("click", guardarCambiosDesdeFormulario);
 
-    // Escuchador de eventos para el botón "Volver Atrás"
+    // 🔙 Volver atrás
     document.getElementById("btn-volver-atras")?.addEventListener("click", () => {
-      window.history.back(); // Vuelve a la página anterior en el historial
+      if (window.history.length > 1) window.history.back();
+      else window.location.href = "index.html";
     });
 
-    // Escuchadores de eventos para cerrar modales (Agregar y Editar)
-    document.getElementById("btn-cerrar-agregar")?.addEventListener("click", () => {
-      document.getElementById("modal-agregar").style.display = "none";
-    });
-    document.getElementById("btn-cancelar-agregar")?.addEventListener("click", () => {
-      document.getElementById("modal-agregar").style.display = "none";
+    // ✏️ Mostrar input para editar nombre de supermercado
+    document.getElementById("edit-editar-nombre-supermercado")?.addEventListener("change", function () {
+      const campo = document.getElementById("edit-nombre-supermercado-actual");
+      if (campo) campo.style.display = this.checked ? "block" : "none";
     });
 
-    document.getElementById("btn-cerrar-editar")?.addEventListener("click", () => {
-      document.getElementById("modal-editar").style.display = "none";
-    });
-    document.getElementById("btn-cancelar-editar")?.addEventListener("click", () => {
-      document.getElementById("modal-editar").style.display = "none";
+    // 🪟 Modales (accesibilidad + UX)
+    const setModalVisible = (id, visible) => {
+      const m = document.getElementById(id);
+      if (!m) return;
+      m.style.display = visible ? "block" : "none";
+      m.setAttribute("aria-hidden", visible ? "false" : "true");
+    };
+    const closeModal = (id) => setModalVisible(id, false);
+
+    // Cierres explícitos
+    document.getElementById("btn-cerrar-agregar")?.addEventListener("click", () => closeModal("modal-agregar"));
+    document.getElementById("btn-cancelar-agregar")?.addEventListener("click", () => closeModal("modal-agregar"));
+    document.getElementById("btn-cerrar-editar")?.addEventListener("click", () => closeModal("modal-editar"));
+    document.getElementById("btn-cancelar-editar")?.addEventListener("click", () => closeModal("modal-editar"));
+
+    // Escape para cerrar
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") ["modal-agregar", "modal-editar"].forEach((id) => setModalVisible(id, false));
     });
 
-    // Escuchador de eventos para el botón "Añadir ubicación" dentro del modal de añadir producto
+    // Clic en overlay para cerrar
+    document.querySelectorAll(".modal")?.forEach((m) =>
+      m.addEventListener("click", (e) => {
+        if (e.target === m) setModalVisible(m.id, false);
+      })
+    );
+
+    // ➕ Añadir ubicación (modal agregar)
     document.getElementById("btn-agregar-ubicacion")?.addEventListener("click", agregarUbicacionAdd);
 
-    // Ejemplo de delegación de eventos para los botones de edición y eliminación en las tarjetas de producto:
-    document.getElementById("productos-container")?.addEventListener("click", (event) => {
-      // Manejar clics en el botón de edición
-      if (event.target.classList.contains("btn-editar")) {
-        const productId = event.target.dataset.productId;
-        if (productId) {
-          editarProducto(productId);
-        }
-      }
-
-      // Manejar clics en el botón de eliminar
-      if (event.target.classList.contains("btn-eliminar")) {
-        const productId = event.target.dataset.productId;
-        if (productId) {
-          eliminarProducto(productId);
-        }
-      }
+    // 🧱 Delegación: editar/eliminar desde tarjetas
+    document.getElementById("productos-container")?.addEventListener("click", (e) => {
+      const btnEditar = e.target.closest(".btn-editar");
+      const btnEliminar = e.target.closest(".btn-eliminar");
+      if (btnEditar?.dataset.productId) editarProducto(btnEditar.dataset.productId);
+      if (btnEliminar?.dataset.productId) eliminarProducto(btnEliminar.dataset.productId);
     });
 
-    // Escuchadores de eventos para alternar los campos de entrada 'nuevo' cuando se selecciona 'Otro (escribir nuevo)'
+    // 🆕 Toggles para campos "nuevo"
+    // Agregar
     document.getElementById("add-tipo-select")?.addEventListener("change", () => toggleNuevoCampo("add", "tipo"));
     document.getElementById("add-supermercado-select")?.addEventListener("change", () => toggleNuevoCampo("add", "supermercado", "selector-ubicacion-dinamico"));
     document.getElementById("add-marca-select")?.addEventListener("change", () => toggleNuevoCampo("add", "marca"));
     document.getElementById("add-proveedor-select")?.addEventListener("change", () => toggleNuevoCampo("add", "proveedor"));
     document.getElementById("add-subtipo-select")?.addEventListener("change", () => toggleNuevoCampo("add", "subtipo"));
 
+    // Editar
     document.getElementById("edit-tipo-select")?.addEventListener("change", () => toggleNuevoCampo("edit", "tipo"));
     document.getElementById("edit-supermercado-select")?.addEventListener("change", () => toggleNuevoCampo("edit", "supermercado"));
     document.getElementById("edit-marca-select")?.addEventListener("change", () => toggleNuevoCampo("edit", "marca"));
     document.getElementById("edit-proveedor-select")?.addEventListener("change", () => toggleNuevoCampo("edit", "proveedor"));
     document.getElementById("edit-subtipo-select")?.addEventListener("change", () => toggleNuevoCampo("edit", "subtipo"));
 
-
   } catch (error) {
+    // 🧯 Manejo de errores global
     console.error("Error en la inicialización:", error);
+    Swal.fire({ icon: "error", title: "Error", text: "No se pudieron cargar los datos. Inténtalo más tarde." });
   }
-  });
+});
