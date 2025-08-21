@@ -65,14 +65,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     await cargarNav(productos, precios);
     aplicarFiltroBusqueda();
 
-    // Selects que vienen de colecciones: supermercados y proveedor
-    await cargarOpcionesEnSelects([
-      { campo: "supermercado", endpoint: "supermercados", usarId: true },
-      { campo: "proveedor",    endpoint: "proveedor",     usarId: true },
-    ]);
+    // Cargar todos los selects (incluye tipo/subtipo/marca desde endpoints)
+await cargarOpcionesEnSelects([
+  { campo: "supermercado", endpoint: "supermercados", usarId: true },
+  { campo: "proveedor",    endpoint: "proveedor",     usarId: true },
+  { campo: "tipo",         endpoint: "tipos" },
+  { campo: "subtipo",      endpoint: "subtipos" },
+  { campo: "marca",        endpoint: "marcas" },
+]);
 
-    // Selects que salen de Productos: tipo/subtipo/marca
-    poblarDesdeProductos(productos);
 
     // Pinta la ficha del producto (usa el id del querystring)
     await cargarDetalleProductos();

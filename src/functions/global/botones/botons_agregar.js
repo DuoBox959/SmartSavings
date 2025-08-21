@@ -4,6 +4,33 @@ import { parsearPrecioHistorico, trimOrNull, numOrNull, valorOTextoNuevo } from 
 import { insertarNuevoProveedor, insertarNuevoSupermercado, aniadirUbicacionASupermercadoExistente } from "../actions/insertar.js";
 import { cerrarFormularioAgregar } from "../modals/cerrar.js";
 
+/* -------------------------------------------------
+   UI: mostrar/ocultar campos cuando cambia el select
+   ------------------------------------------------- */
+function toggleSeccionUbicacion() {
+  const sel = document.getElementById("add-supermercado-select");
+  const contUbic = document.getElementById("selector-ubicacion-dinamico");
+  const inputNuevoWrap = document.getElementById("wrap-add-supermercado-nuevo") // <div> contenedor del input
+    || document.getElementById("add-supermercado-nuevo")?.parentElement;
+
+  if (!sel || !contUbic) return;
+
+  const esNuevo = sel.value === "nuevo";
+  // el input para el nombre del súper solo si es nuevo
+  if (inputNuevoWrap) inputNuevoWrap.style.display = esNuevo ? "block" : "none";
+  // la sección de ubicación la dejamos visible siempre (puede que quieran añadir calles a un súper existente)
+  contUbic.style.display = "block";
+}
+
+// Inicializa listeners de la vista Agregar (llámalo al cargar la página del formulario)
+export function initAgregarProductoForm() {
+  const sel = document.getElementById("add-supermercado-select");
+  if (sel) {
+    sel.addEventListener("change", toggleSeccionUbicacion);
+    toggleSeccionUbicacion();
+  }
+}
+
 // ==============================
 // 💾 GUARDAR PRODUCTO NUEVO
 // ==============================
@@ -31,7 +58,17 @@ export async function guardarProductoNuevo() {
     // 🏪 Supermercado (existente o nuevo)
     const supermercadoSelect = document.getElementById("add-supermercado-select");
     const supermercadoNuevoInput = document.getElementById("add-supermercado-nuevo");
-    const ubicaciones = obtenerUbicacionesGenerico("add") || [];
+
+    // 👉 Ubicaciones:
+    // - si el súper es "nuevo" usamos modo "add" (estricto, muestra alerta si faltan)
+    // - si es existente, modo "edit" (no obliga) para permitir dejar vacío
+    let ubicaciones = [];
+    if (supermercadoSelect.value === "nuevo") {
+      ubicaciones = obtenerUbicacionesGenerico("add") || [];
+      if (ubicaciones.length === 0) return; // el usuario canceló el aviso
+    } else {
+      ubicaciones = obtenerUbicacionesGenerico("edit") || [];
+    }
 
     let supermercadoId = null;
     if (supermercadoSelect.value === "nuevo") {
@@ -82,7 +119,7 @@ export async function guardarProductoNuevo() {
       proveedorId = trimOrNull(provSel?.value);
     }
 
-    // 🏷️ Campos que viven dentro de Productos (texto simple)
+    // 🏷️ Campos de Productos
     const nombre = trimOrNull(document.getElementById("add-nombre")?.value);
     const marca = valorOTextoNuevo("marca") || "Sin marca";
     const tipo = valorOTextoNuevo("tipo") || "Sin tipo";
@@ -91,13 +128,12 @@ export async function guardarProductoNuevo() {
     const estado = trimOrNull(document.getElementById("add-estado")?.value) || "En stock";
     const unidadPeso = trimOrNull(document.getElementById("add-unidadPeso")?.value) || "kg";
     const peso = numOrNull(document.getElementById("add-peso")?.value);
-
     if (!Number.isFinite(peso)) {
       await Swal.fire("Error", "Peso no válido.", "error");
       return;
     }
 
-    // 🧂 Ingredientes (array)
+    // 🧂 Ingredientes
     const ingInput = trimOrNull(document.getElementById("add-ingredientes")?.value) || "";
     const ingredientes = ingInput.split(",").map((s) => s.trim()).filter(Boolean);
 
@@ -107,7 +143,6 @@ export async function guardarProductoNuevo() {
     const unidadLote = numOrNull(document.getElementById("add-unidadLote")?.value);
     const precioUnidadLote = numOrNull(document.getElementById("add-precioPorUnidad")?.value);
     const precioHistorico = parsearPrecioHistorico(document.getElementById("add-precioHistorico")?.value || "");
-
     if (!Number.isFinite(precioActual)) {
       await Swal.fire("Error", "Precio actual no válido.", "error");
       return;
@@ -115,7 +150,6 @@ export async function guardarProductoNuevo() {
 
     // 📦 FormData para /api/productos-completos
     const fd = new FormData();
-    // NOTA: usamos claves en minúscula para ser coherentes con tu código de actualización
     fd.append("nombre", nombre);
     fd.append("marca", marca);
     fd.append("tipo", tipo);
@@ -131,19 +165,19 @@ export async function guardarProductoNuevo() {
     fd.append("paisProveedor", trimOrNull(document.getElementById("add-pais-proveedor")?.value) || "España");
     fd.append("fechaSubida", new Date().toISOString());
     fd.append("fechaActualizacion", new Date().toISOString());
+    fd.append("ubicaciones", JSON.stringify(ubicaciones));   // ✅ ahora viaja al backend
 
-    // Enviar precios junto al producto si tu endpoint los procesa
+    // precios
     fd.append("precioActual", String(precioActual));
     if (precioDescuento !== null) fd.append("precioDescuento", String(precioDescuento));
     if (unidadLote !== null) fd.append("unidadLote", String(unidadLote));
     if (precioUnidadLote !== null) {
-      // algunos backends lo llaman precioPorUnidad; añadimos ambos por compatibilidad
       fd.append("precioPorUnidad", String(precioUnidadLote));
       fd.append("precioUnidadLote", String(precioUnidadLote));
     }
     fd.append("precioHistorico", JSON.stringify(precioHistorico));
 
-    // Imagen
+    // imagen
     const imagenInput = document.getElementById("add-imagen");
     if (imagenInput?.files?.length > 0) {
       const file = imagenInput.files[0];
@@ -151,11 +185,10 @@ export async function guardarProductoNuevo() {
         await Swal.fire("Error", "El archivo seleccionado no es una imagen válida.", "warning");
         return;
       }
-      // Si tu backend espera "Imagen" (mayúscula), mantenlo así:
       fd.append("Imagen", file);
     }
 
-    // 🚀 Crear producto (y quizá precios) en una sola llamada
+    // 🚀 Crear producto (y quizá precios)
     const res = await fetch(`${API_BASE}/api/productos-completos`, {
       method: "POST",
       body: fd,
@@ -163,20 +196,16 @@ export async function guardarProductoNuevo() {
 
     const text = await res.text();
     let json = {};
-    try { json = JSON.parse(text); } catch { /* texto no JSON */ }
+    try { json = JSON.parse(text); } catch { }
 
     if (!res.ok) {
       console.error("Respuesta del servidor:", text);
       throw new Error(json?.message || "Error al crear producto.");
     }
 
-    // Intentar obtener el ID del producto de varias formas
     const productoId = json.producto_id || json?.producto?._id || json?._id;
-    if (!productoId) {
-      console.warn("No se recibió producto_id en la respuesta. Respuesta:", json);
-    }
 
-    // 💾 Fallback: si tu endpoint NO creó el doc de precios, lo creamos ahora
+    // fallback precios
     if (!json.precio_id && productoId) {
       const payloadPrecio = {
         producto_id: productoId,

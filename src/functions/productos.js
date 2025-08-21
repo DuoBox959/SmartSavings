@@ -107,20 +107,36 @@ document.addEventListener("DOMContentLoaded", async () => {
     gestionarUsuarioAutenticado();
     inicializarBotonesGlobales();
 
-    // 🔽 Selects desde API (solo colecciones reales en tu BD)
-    await cargarOpcionesEnSelects([
-      { campo: "supermercado", endpoint: "supermercados", usarId: true },
-      { campo: "proveedor", endpoint: "proveedor", usarId: true },
-    ]);
+    // 🔽 Selects desde API (todo: incl. tipo/subtipo/marca)
+await cargarOpcionesEnSelects([
+  { campo: "supermercado", endpoint: "supermercados", usarId: true },
+  { campo: "proveedor",    endpoint: "proveedor",     usarId: true },
+  { campo: "tipo",         endpoint: "tipos" },
+  { campo: "subtipo",      endpoint: "subtipos" },
+  { campo: "marca",        endpoint: "marcas" },
+]);
 
-    // 🧩 Selects locales (tipo/subtipo/marca desde Productos)
-    poblarDesdeProductos(productos);
+// (Opcional) Fallback si los endpoints vinieran vacíos
+const needsFallback =
+  (document.getElementById("add-tipo-select")?.options.length ?? 0) <= 2 ||
+  (document.getElementById("edit-tipo-select")?.options.length ?? 0) <= 2;
+if (needsFallback) poblarDesdeProductos(productos);
+
 
     // 🆕 Habilitar selects con opción "nuevo"
     inicializarSelectsDinamicos();
 
     // ➕ Abrir modal agregar
-    document.getElementById("btn-agregar-producto")?.addEventListener("click", mostrarFormularioAgregar);
+document.getElementById("btn-agregar-producto")?.addEventListener("click", async () => {
+  await cargarOpcionesEnSelects([
+    { campo: "supermercado", endpoint: "supermercados", usarId: true },
+    { campo: "proveedor",    endpoint: "proveedor",     usarId: true },
+    { campo: "tipo",         endpoint: "tipos" },
+    { campo: "subtipo",      endpoint: "subtipos" },
+    { campo: "marca",        endpoint: "marcas" },
+  ]);
+  mostrarFormularioAgregar();
+});
 
     // 💾 Guardar nuevo producto
     document.getElementById("btn-guardar-producto")?.addEventListener("click", guardarProductoNuevo);

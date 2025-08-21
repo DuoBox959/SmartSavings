@@ -5,16 +5,18 @@ import { API_BASE } from "/src/functions/global/UTILS/utils.js";
    - Ubicaciones: [{ Pais, Ciudad, Ubicacion }]
    ============================== */
 export async function insertarNuevoSupermercado(nombre, ubicacionesArray = []) {
+  // insertarNuevoSupermercado()
   const payload = {
     Nombre: nombre,
     Ubicaciones: (ubicacionesArray || [])
       .map(u => ({
-        Pais: u.Pais || u.pais || "",
-        Ciudad: u.Ciudad || u.ciudad || "",
-        Ubicacion: u.Ubicacion || u.ubicacion || "",
+        pais: u.pais || u.Pais || "",
+        ciudad: u.ciudad || u.Ciudad || "",
+        ubicacion: u.ubicacion || u.Ubicacion || "",
       }))
-      .filter(u => u.Pais && u.Ciudad && u.Ubicacion),
+      .filter(u => u.pais && u.ciudad && u.ubicacion),
   };
+
 
   const res = await fetch(`${API_BASE}/api/supermercados`, {
     method: "POST",
@@ -34,11 +36,10 @@ export async function insertarNuevoSupermercado(nombre, ubicacionesArray = []) {
    ============================== */
 export async function aniadirUbicacionASupermercadoExistente(supermercadoId, ubicacion) {
   const nueva = {
-    Pais: ubicacion?.Pais || ubicacion?.pais,
-    Ciudad: ubicacion?.Ciudad || ubicacion?.ciudad,
-    Ubicacion: ubicacion?.Ubicacion || ubicacion?.ubicacion,
+    pais: ubicacion?.pais || ubicacion?.Pais,
+    ciudad: ubicacion?.ciudad || ubicacion?.Ciudad,
+    ubicacion: ubicacion?.ubicacion || ubicacion?.Ubicacion,
   };
-
   const res = await fetch(`${API_BASE}/api/supermercados/${supermercadoId}/ubicacion`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },

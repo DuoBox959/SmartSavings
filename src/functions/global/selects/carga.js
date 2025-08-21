@@ -27,7 +27,7 @@ export async function cargarOpcionesEnSelects(configs) {
 
         datos.forEach((item) => {
           const value = usarId ? item._id : (item?.Nombre ?? item);
-          const text  = item?.Nombre ?? item;
+          const text = item?.Nombre ?? item;
           if (!value || !text) return;
           const opt = document.createElement("option");
           opt.value = value;
@@ -71,14 +71,13 @@ export async function cargarDetalleProductos() {
   if (!productId) return Swal.fire("Error", "No se especificó un producto", "error");
 
   try {
-    // Trae lo necesario (la colección descripcion puede no existir; la tratamos como opcional)
-    const [productoRes, preciosRes, supermercadosRes, proveedoresRes, descRes] =
+    // Trae solo lo que existe
+    const [productoRes, preciosRes, supermercadosRes, proveedoresRes] =
       await Promise.all([
         fetch(`${API_BASE}/api/productos/${productId}`),
         fetch(`${API_BASE}/api/precios`),
         fetch(`${API_BASE}/api/supermercados`),
-        fetch(`${API_BASE}/api/proveedor`),
-        fetch(`${API_BASE}/api/descripcion`).catch(() => ({ ok: false, json: async () => [] })),
+        fetch(`${API_BASE}/api/proveedor`)
       ]);
 
     if (!productoRes.ok) throw new Error("Producto no encontrado");
@@ -87,11 +86,13 @@ export async function cargarDetalleProductos() {
     const precios       = await preciosRes.json();
     const supermercados = await supermercadosRes.json();
     const proveedores   = await proveedoresRes.json();
-    const descripciones = descRes.ok ? await descRes.json() : [];
 
+    // =========================
     // Asociaciones
+    // =========================
     const pidStr = String(producto._id);
     const precioData = precios.find(p => String(p.producto_id) === pidStr);
+
     const supermercado = supermercados.find(s =>
       String(s._id) === String(producto.Supermercado_id ?? producto.supermercado)
     );
@@ -99,19 +100,21 @@ export async function cargarDetalleProductos() {
       String(p._id) === String(producto.Proveedor_id ?? producto.proveedor)
     );
 
-    // Si existe doc de descripcion lo usamos; si no, caemos al propio producto
-    const descripcionDoc = descripciones.find(d => d.Producto_id === producto.Nombre) || {};
-    const tipo       = descripcionDoc.Tipo       ?? producto.Tipo       ?? "No disponible";
-    const subtipo    = descripcionDoc.Subtipo    ?? producto.Subtipo    ?? "No disponible";
-    const utilidad   = descripcionDoc.Utilidad   ?? producto.Utilidad   ?? "Sin descripción";
-    const ingredientesArr =
-      descripcionDoc.Ingredientes ??
-      (Array.isArray(producto.Ingredientes) ? producto.Ingredientes :
-        (typeof producto.Ingredientes === "string"
+    // =========================
+    // Datos del propio producto
+    // =========================
+    const tipo       = producto.Tipo      ?? producto.tipo      ?? "No disponible";
+    const subtipo    = producto.Subtipo   ?? producto.subtipo   ?? "No disponible";
+    const utilidad   = producto.Utilidad  ?? producto.utilidad  ?? "Sin descripción";
+    const ingredientesArr = Array.isArray(producto.Ingredientes)
+      ? producto.Ingredientes
+      : (typeof producto.Ingredientes === "string"
           ? producto.Ingredientes.split(",").map(s => s.trim()).filter(Boolean)
-          : []));
+          : []);
 
-    // Imagen
+    // =========================
+    // Imagen y título
+    // =========================
     const img = document.getElementById("producto-imagen");
     if (img) {
       img.src = producto.Imagen?.startsWith("/uploads")
@@ -120,30 +123,47 @@ export async function cargarDetalleProductos() {
       img.alt = producto.Nombre || "Imagen del producto";
     }
 
-    // Título (ojo: aquí es 'titulo-detalle')
     const titulo = document.getElementById("titulo-detalle");
     if (titulo) titulo.textContent = producto.Nombre || "Producto sin nombre";
 
-    // Texto auxiliar
-    const setHTML = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
+    // Helper para escribir HTML
+    const setHTML = (id, html) => {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = html;
+    };
 
-    // Datos “estáticos”
-    setHTML("producto-marca",         `<strong>Marca:</strong> ${producto.Marca || "Desconocida"}`);
-    setHTML("producto-tipo",          `<strong>Tipo:</strong> ${tipo}`);
-    setHTML("producto-subtipo",       `<strong>Subtipo:</strong> ${subtipo}`);
-    setHTML("producto-utilidad",      `<strong>Descripción:</strong> ${utilidad}`);
-    setHTML("producto-ingredientes",  `<strong>Ingredientes:</strong> ${ingredientesArr.length ? ingredientesArr.join(", ") : "No disponible"}`);
+    // =========================
+    // Campos “estáticos”
+    // =========================
+    setHTML("producto-marca", `<strong>Marca:</strong> ${producto.Marca || "Desconocida"}`);
+    setHTML("producto-tipo", `<strong>Tipo:</strong> ${tipo}`);
+    setHTML("producto-subtipo", `<strong>Subtipo:</strong> ${subtipo}`);
+    setHTML("producto-utilidad", `<strong>Descripción:</strong> ${utilidad}`);
+    setHTML(
+      "producto-ingredientes",
+      `<strong>Ingredientes:</strong> ${ingredientesArr.length ? ingredientesArr.join(", ") : "No disponible"}`
+    );
 
-    // Precios (con llaves que usas en tu BD)
-    setHTML("producto-precio",            `<strong>Precio:</strong> ${precioData?.precioActual ?? "No disponible"} €`);
-    setHTML("producto-precio-descuento",  precioData?.precioDescuento != null ? `<strong>Precio Descuento:</strong> ${precioData.precioDescuento} €` : "");
-    setHTML("producto-precio-unidad",     precioData?.precioUnidadLote != null ? `<strong>Precio por unidad/lote:</strong> ${precioData.precioUnidadLote} €` : "");
-    setHTML("producto-unidad-lote",       precioData?.unidadLote != null ? `<strong>Unidad/Lote:</strong> ${precioData.unidadLote}` : "");
+    // =========================
+    // Precios
+    // =========================
+    setHTML("producto-precio", `<strong>Precio:</strong> ${precioData?.precioActual ?? "No disponible"} €`);
+    setHTML(
+      "producto-precio-descuento",
+      precioData?.precioDescuento != null ? `<strong>Precio Descuento:</strong> ${precioData.precioDescuento} €` : ""
+    );
+    setHTML(
+      "producto-precio-unidad",
+      precioData?.precioUnidadLote != null ? `<strong>Precio por unidad/lote:</strong> ${precioData.precioUnidadLote} €` : ""
+    );
+    setHTML(
+      "producto-unidad-lote",
+      precioData?.unidadLote != null ? `<strong>Unidad/Lote:</strong> ${precioData.unidadLote}` : ""
+    );
 
-    // Historial (aceptamos anio, año, ano, fecha, year)
     const historialTxt = (precioData?.precioHistorico ?? [])
       .map(h => {
-        const year = h.anio ?? h["año"] ?? h.ano ?? h.fecha ?? h.year;
+        const year  = h.anio ?? h["año"] ?? h.ano ?? h.fecha ?? h.year;
         const price = h.precio ?? h.valor ?? h.price;
         return (year != null && price != null) ? `${year}: ${price} €` : null;
       })
@@ -151,26 +171,50 @@ export async function cargarDetalleProductos() {
       .join("<br>");
     setHTML("producto-historico", `<strong>Precio histórico:</strong><br>${historialTxt || "No disponible"}`);
 
+    // =========================
     // Peso / estado
-    setHTML("producto-peso",   `<strong>Peso:</strong> ${producto.Peso ?? "No disponible"} ${producto.UnidadPeso ?? ""}`);
+    // =========================
+    setHTML("producto-peso", `<strong>Peso:</strong> ${producto.Peso ?? "No disponible"} ${producto.UnidadPeso ?? ""}`);
     setHTML("producto-estado", `<strong>Estado:</strong> ${producto.Estado ?? "Sin stock"}`);
 
-    // Supermercado + última ubicación conocida
+    // =========================
+    // Supermercado + Ubicación (¡SIN PISAR!)
+    // =========================
     setHTML("producto-supermercado", `<strong>Supermercado:</strong> ${supermercado?.Nombre ?? "No disponible"}`);
-    const u = (supermercado?.Ubicaciones || []).slice(-1)[0] || {};
-    setHTML("producto-ubicacion",     `<strong>Ubicación del supermercado:</strong> ${u.Ubicacion ?? u.ubicacion ?? "No disponible"}`);
-    setHTML("producto-pais-super",    `<strong>País del supermercado:</strong> ${u.Pais ?? u.pais ?? "No disponible"}`);
-    setHTML("producto-ciudad-super",  `<strong>Ciudad del supermercado:</strong> ${u.Ciudad ?? u.ciudad ?? "No disponible"}`);
 
+    // Normaliza claves de ubicaciones
+    const normaliza = (u = {}) => ({
+      pais:      u.pais      ?? u.Pais      ?? "",
+      ciudad:    u.ciudad    ?? u.Ciudad    ?? "",
+      ubicacion: u.ubicacion ?? u.Ubicacion ?? "",
+    });
+
+    // Fuente de ubicaciones: primero las del producto, si no hay, las del supermercado
+    const fuenteUbis = (Array.isArray(producto.Ubicaciones) && producto.Ubicaciones.length > 0)
+      ? producto.Ubicaciones
+      : (Array.isArray(supermercado?.Ubicaciones) ? supermercado.Ubicaciones : []);
+
+    const u0 = normaliza(fuenteUbis[0] || {});
+
+    setHTML("producto-ubicacion", `<strong>Ubicación del supermercado:</strong> ${u0.ubicacion || "No disponible"}`);
+    setHTML("producto-pais-super", `<strong>País del supermercado:</strong> ${u0.pais || "No disponible"}`);
+    setHTML("producto-ciudad-super", `<strong>Ciudad del supermercado:</strong> ${u0.ciudad || "No disponible"}`);
+
+    // =========================
     // Proveedor
-    setHTML("producto-proveedor",       `<strong>Proveedor:</strong> ${proveedor?.Nombre ?? "No disponible"}`);
-    setHTML("producto-pais-proveedor",  `<strong>País del proveedor:</strong> ${proveedor?.Pais ?? proveedor?.pais ?? "No disponible"}`);
+    // =========================
+    setHTML("producto-proveedor", `<strong>Proveedor:</strong> ${proveedor?.Nombre ?? "No disponible"}`);
+    setHTML(
+      "producto-pais-proveedor",
+      `<strong>País del proveedor:</strong> ${proveedor?.Pais ?? proveedor?.pais ?? "No disponible"}`
+    );
 
   } catch (error) {
     console.error("❌ Error al cargar el producto:", error);
     Swal.fire("Error", "No se pudo cargar el producto", "error");
   }
 }
+
 
 
 /* ==============================
@@ -180,7 +224,6 @@ export function cargarUbicaciones(supermercado, pais, ciudad) {
   const ubicacionSelect = document.getElementById("add-ubicacion-existente");
   const nuevaUbicacionInput = document.getElementById("add-nueva-ubicacion");
   const labelNuevaUbicacion = document.getElementById("label-add-nueva-ubicacion");
-
   if (!ubicacionSelect) return;
 
   if (!supermercado || !pais || !ciudad) {
@@ -191,8 +234,12 @@ export function cargarUbicaciones(supermercado, pais, ciudad) {
   }
 
   const ubicaciones = (supermercado.Ubicaciones || [])
-    .filter((u) => u.Pais === pais && u.Ciudad === ciudad && typeof u.Ubicacion === "string")
-    .map((u) => u.Ubicacion);
+    .filter((u) =>
+      (u.Pais ?? u.pais) === pais &&
+      (u.Ciudad ?? u.ciudad) === ciudad &&
+      typeof (u.Ubicacion ?? u.ubicacion) === "string"
+    )
+    .map((u) => u.Ubicacion ?? u.ubicacion);
 
   if (ubicaciones.length === 0) {
     ubicacionSelect.style.display = "none";
@@ -222,22 +269,22 @@ export function cargarUbicaciones(supermercado, pais, ciudad) {
    🧭 Obtener ubicaciones del formulario (add/edit)
    ============================== */
 export function obtenerUbicacionesGenerico(prefijo) {
-  const paisSelect       = document.getElementById(`${prefijo}-pais-existente`);
-  const ciudadSelect     = document.getElementById(`${prefijo}-ciudad-existente`);
-  const ubicacionSelect  = document.getElementById(`${prefijo}-ubicacion-existente`);
+  const paisSelect = document.getElementById(`${prefijo}-pais-existente`);
+  const ciudadSelect = document.getElementById(`${prefijo}-ciudad-existente`);
+  const ubicacionSelect = document.getElementById(`${prefijo}-ubicacion-existente`);
 
-  const paisInput        = document.getElementById(`${prefijo}-nuevo-pais`);
-  const ciudadInput      = document.getElementById(`${prefijo}-nueva-ciudad`);
-  const ubicacionInput   = document.getElementById(`${prefijo}-nueva-ubicacion`);
+  const paisInput = document.getElementById(`${prefijo}-nuevo-pais`);
+  const ciudadInput = document.getElementById(`${prefijo}-nueva-ciudad`);
+  const ubicacionInput = document.getElementById(`${prefijo}-nueva-ubicacion`);
 
   const getVal = (sel, inp) =>
     sel?.value === "nuevo"
       ? (inp?.value || "").trim()
       : (sel?.value || "").trim();
 
-  const pais       = getVal(paisSelect, paisInput);
-  const ciudad     = getVal(ciudadSelect, ciudadInput);
-  const ubicacion  = getVal(ubicacionSelect, ubicacionInput);
+  const pais = getVal(paisSelect, paisInput);
+  const ciudad = getVal(ciudadSelect, ciudadInput);
+  const ubicacion = getVal(ubicacionSelect, ubicacionInput);
 
   // Validación estricta en "add"
   if (prefijo === "add") {

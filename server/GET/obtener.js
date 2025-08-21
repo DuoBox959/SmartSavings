@@ -47,34 +47,47 @@ router.get("/usuarios/email/:email", async (req, res) => {
 // ==============================
 // PRODUCTOS
 // ==============================
+// ✅ Obtener todos los productos (mantiene los _id y añade nombres)
 router.get("/productos", async (req, res) => {
+  const db = req.db;
+
   try {
-    const productos = await req.db
+    const productos = await db
       .collection("Productos")
       .aggregate([
-        { // nombres derivados, pero conservamos los _id crudos
+        {
           $lookup: {
             from: "Proveedor",
             localField: "Proveedor_id",
             foreignField: "_id",
-            as: "ProveedorInfo",
-          },
+            as: "ProveedorInfo"
+          }
         },
         {
           $lookup: {
             from: "Supermercados",
             localField: "Supermercado_id",
             foreignField: "_id",
-            as: "SupermercadoInfo",
-          },
+            as: "SupermercadoInfo"
+          }
         },
         {
           $lookup: {
             from: "Usuarios",
             localField: "Usuario_id",
             foreignField: "_id",
-            as: "UsuarioInfo",
-          },
+            as: "UsuarioInfo"
+          }
+        },
+        {
+          $addFields: {
+            ProveedorNombre: { $arrayElemAt: ["$ProveedorInfo.Nombre", 0] },
+            SupermercadoNombre: { $arrayElemAt: ["$SupermercadoInfo.Nombre", 0] },
+            UsuarioNombre: { $arrayElemAt: ["$UsuarioInfo.nombre", 0] },
+            Ubicaciones: {
+              $ifNull: [{ $arrayElemAt: ["$SupermercadoInfo.Ubicaciones", 0] }, []]
+            }
+          }
         },
         {
           $project: {
@@ -85,22 +98,17 @@ router.get("/productos", async (req, res) => {
             Peso: 1,
             UnidadPeso: 1,
             Estado: 1,
-            Tipo: 1,
-            Subtipo: 1,
-            Utilidad: 1,
-            Ingredientes: 1,
-
-            // IDs crudos
+            // 👇 mantenemos los IDs originales
             Proveedor_id: 1,
             Supermercado_id: 1,
             Usuario_id: 1,
-
-            // Derivados
-            ProveedorNombre: { $ifNull: [{ $arrayElemAt: ["$ProveedorInfo.Nombre", 0] }, null] },
-            SupermercadoNombre: { $ifNull: [{ $arrayElemAt: ["$SupermercadoInfo.Nombre", 0] }, null] },
-            UsuarioNombre: { $ifNull: [{ $arrayElemAt: ["$UsuarioInfo.nombre", 0] }, null] },
-          },
-        },
+            // 👇 y además exponemos los nombres
+            ProveedorNombre: 1,
+            SupermercadoNombre: 1,
+            UsuarioNombre: 1,
+            Ubicaciones: 1
+          }
+        }
       ])
       .toArray();
 
@@ -110,6 +118,7 @@ router.get("/productos", async (req, res) => {
     res.status(500).json({ error: "Error al obtener productos" });
   }
 });
+
 
 router.get("/productos/:id", async (req, res) => {
   try {
@@ -189,6 +198,16 @@ router.get("/subtipos", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Error al obtener subtipos" });
+  }
+});
+
+router.get("/marcas", async (req, res) => {
+  try {
+    const marcas = await req.db.collection("Productos").distinct("Marca");
+    res.json((marcas || []).filter(Boolean));
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error al obtener marcas" });
   }
 });
 

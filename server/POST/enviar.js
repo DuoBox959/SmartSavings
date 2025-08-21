@@ -253,21 +253,54 @@ router.post("/precios", async (req, res) => {
 router.post("/supermercados", async (req, res) => {
   const db = req.db;
   try {
-    const { Nombre, Ubicaciones } = req.body;
+    const Nombre = (req.body.Nombre || "").trim();
+
+    const src = Array.isArray(req.body.Ubicaciones) ? req.body.Ubicaciones : [];
+    const Ubicaciones = src
+      .map(u => ({
+        pais: (u.pais || u.Pais || "").trim(),
+        ciudad: (u.ciudad || u.Ciudad || "").trim(),
+        ubicacion: (u.ubicacion || u.Ubicacion || "").trim(),
+      }))
+      .filter(u => u.pais && u.ciudad && u.ubicacion);
+
     if (!Nombre) return res.status(400).json({ error: "El nombre del supermercado es obligatorio" });
 
-    const ubicacionesLimpias = Array.isArray(Ubicaciones)
-      ? Ubicaciones.filter((u) => u?.pais && u?.ciudad && u?.ubicacion)
-      : [];
+    const nuevoSupermercado = { Nombre, Ubicaciones };
+    const r = await db.collection("Supermercados").insertOne(nuevoSupermercado);
 
-    const nuevo = { Nombre, Ubicaciones: ubicacionesLimpias };
-    const r = await db.collection("Supermercados").insertOne(nuevo);
-    res.status(201).json({ message: "Supermercado creado correctamente", supermercado: { ...nuevo, _id: r.insertedId } });
+    res.status(201).json({ message: "Supermercado creado correctamente", supermercado: { ...nuevoSupermercado, _id: r.insertedId } });
   } catch (err) {
     console.error("❌ Error creando Supermercado:", err);
     res.status(500).json({ error: "Error al crear Supermercado" });
   }
 });
+
+router.patch("/supermercados/:id/ubicacion", async (req, res) => {
+  const db = req.db;
+  const { id } = req.params;
+  if (!ObjectId.isValid(id)) return res.status(400).json({ error: "ID de supermercado inválido." });
+
+  const pais = (req.body.pais || req.body.Pais || "").trim();
+  const ciudad = (req.body.ciudad || req.body.Ciudad || "").trim();
+  const ubicacion = (req.body.ubicacion || req.body.Ubicacion || "").trim();
+  if (!pais || !ciudad || !ubicacion) return res.status(400).json({ error: "Se requiere 'pais', 'ciudad' y 'ubicacion'." });
+
+  const sup = await db.collection("Supermercados").findOne({ _id: new ObjectId(id) });
+  if (!sup) return res.status(404).json({ error: "Supermercado no encontrado." });
+
+  const ya = (sup.Ubicaciones || []).some(u => (u.ubicacion || u.Ubicacion || "").toLowerCase() === ubicacion.toLowerCase());
+  if (ya) return res.status(200).json({ message: "Ubicación ya registrada para este supermercado.", supermercado: sup });
+
+  await db.collection("Supermercados").updateOne(
+    { _id: sup._id },
+    { $push: { Ubicaciones: { pais, ciudad, ubicacion } } }
+  );
+
+  const actualizado = await db.collection("Supermercados").findOne({ _id: sup._id });
+  res.json({ message: "Ubicación añadida correctamente.", supermercado: actualizado });
+});
+
 
 // =============================================
 // PROVEEDOR
@@ -275,13 +308,27 @@ router.post("/supermercados", async (req, res) => {
 router.post("/proveedor", async (req, res) => {
   const db = req.db;
   try {
-    const { Nombre, Pais, "C.Autonoma": ComunidadAutonoma } = req.body;
-    if (!Nombre || !Pais || !ComunidadAutonoma)
-      return res.status(400).json({ error: "Todos los campos son obligatorios" });
+    const Nombre = (req.body.Nombre || "").trim();
+    const Pais = (req.body.Pais || "").trim();
 
-    const nuevo = { Nombre, Pais, "C.Autonoma": ComunidadAutonoma };
-    const r = await db.collection("Proveedor").insertOne(nuevo);
-    res.status(201).json({ message: "Proveedor creado correctamente", proveedor: { ...nuevo, _id: r.insertedId } });
+    // aceptar varias formas y hacerlo opcional
+    const ComunidadAutonoma =
+      (req.body?.C?.Autonoma || req.body["C.Autonoma"] || req.body.ComunidadAutonoma || "").trim();
+
+    if (!Nombre || !Pais) {
+      return res.status(400).json({ error: "Nombre y País son obligatorios" });
+    }
+
+    // guardamos sin puntos en las claves
+    const nuevoProveedor = { Nombre, Pais };
+    if (ComunidadAutonoma) nuevoProveedor.C = { Autonoma: ComunidadAutonoma };
+
+    const resultado = await db.collection("Proveedor").insertOne(nuevoProveedor);
+
+    res.status(201).json({
+      message: "Proveedor creado correctamente",
+      proveedor: { ...nuevoProveedor, _id: resultado.insertedId },
+    });
   } catch (err) {
     console.error("❌ Error creando proveedor:", err);
     res.status(500).json({ error: "Error al crear proveedor" });
