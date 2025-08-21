@@ -62,13 +62,9 @@ export async function guardarProductoNuevo() {
     // 👉 Ubicaciones:
     // - si el súper es "nuevo" usamos modo "add" (estricto, muestra alerta si faltan)
     // - si es existente, modo "edit" (no obliga) para permitir dejar vacío
-    let ubicaciones = [];
-    if (supermercadoSelect.value === "nuevo") {
-      ubicaciones = obtenerUbicacionesGenerico("add") || [];
-      if (ubicaciones.length === 0) return; // el usuario canceló el aviso
-    } else {
-      ubicaciones = obtenerUbicacionesGenerico("edit") || [];
-    }
+   // 👉 Ubicaciones opcionales (aunque el súper sea nuevo)
+    const ubicaciones = obtenerUbicacionesGenerico("add", { obligatorio: false }) || [];
+
 
     let supermercadoId = null;
     if (supermercadoSelect.value === "nuevo") {

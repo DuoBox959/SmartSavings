@@ -109,7 +109,6 @@ export async function guardarCambiosDesdeFormulario() {
     const ingredientes = ingInput.split(",").map((s) => s.trim()).filter(Boolean);
 
     // 💰 Otros campos de precio
-    const precioDescuento   = numOrNull(document.getElementById("edit-precioDescuento")?.value);
     const unidadLote        = numOrNull(document.getElementById("edit-unidadLote")?.value);
     const precioUnidadLote  = numOrNull(document.getElementById("edit-precioPorUnidad")?.value);
     const precioHistorico   = parsearPrecioHistorico(document.getElementById("edit-precioHistorico")?.value || "");
@@ -133,7 +132,6 @@ export async function guardarCambiosDesdeFormulario() {
 
     // (opcional) si tu endpoint /productos-completos también acepta precio, lo mandamos igual
     fd.append("precioActual", String(precioActual));
-    if (precioDescuento !== null)  fd.append("precioDescuento", String(precioDescuento));
     if (unidadLote !== null)       fd.append("unidadLote", String(unidadLote));
     if (precioUnidadLote !== null) {
       fd.append("precioPorUnidad", String(precioUnidadLote));
@@ -168,7 +166,6 @@ export async function guardarCambiosDesdeFormulario() {
     const payloadPrecio = {
       producto_id: id,
       precioActual,
-      precioDescuento,
       unidadLote,
       precioUnidadLote,
       precioHistorico,

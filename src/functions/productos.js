@@ -21,6 +21,9 @@ import { inicializarBotonesGlobales, inicializarSelectsDinamicos } from "../func
 import { agregarUbicacionAdd, toggleNuevoCampo } from "../functions/global/helpers/helpers.js";
 import { cargarOpcionesEnSelects } from "../functions/global/selects/carga.js";
 
+// 👇 Solo usamos helpers de modal importados (sin redefinirlos luego)
+import { openModal, closeModal, cerrarFormulario, cerrarFormularioAgregar } from "../functions/global/modals/cerrar.js";
+
 // ==============================
 // 🧰 HELPERS LOCALES (para esta vista)
 // ==============================
@@ -108,35 +111,35 @@ document.addEventListener("DOMContentLoaded", async () => {
     inicializarBotonesGlobales();
 
     // 🔽 Selects desde API (todo: incl. tipo/subtipo/marca)
-await cargarOpcionesEnSelects([
-  { campo: "supermercado", endpoint: "supermercados", usarId: true },
-  { campo: "proveedor",    endpoint: "proveedor",     usarId: true },
-  { campo: "tipo",         endpoint: "tipos" },
-  { campo: "subtipo",      endpoint: "subtipos" },
-  { campo: "marca",        endpoint: "marcas" },
-]);
+    await cargarOpcionesEnSelects([
+      { campo: "supermercado", endpoint: "supermercados", usarId: true },
+      { campo: "proveedor",    endpoint: "proveedor",     usarId: true },
+      { campo: "tipo",         endpoint: "tipos" },
+      { campo: "subtipo",      endpoint: "subtipos" },
+      { campo: "marca",        endpoint: "marcas" },
+    ]);
 
-// (Opcional) Fallback si los endpoints vinieran vacíos
-const needsFallback =
-  (document.getElementById("add-tipo-select")?.options.length ?? 0) <= 2 ||
-  (document.getElementById("edit-tipo-select")?.options.length ?? 0) <= 2;
-if (needsFallback) poblarDesdeProductos(productos);
-
+    // (Opcional) Fallback si los endpoints vinieran vacíos
+    const needsFallback =
+      (document.getElementById("add-tipo-select")?.options.length ?? 0) <= 2 ||
+      (document.getElementById("edit-tipo-select")?.options.length ?? 0) <= 2;
+    if (needsFallback) poblarDesdeProductos(productos);
 
     // 🆕 Habilitar selects con opción "nuevo"
     inicializarSelectsDinamicos();
 
     // ➕ Abrir modal agregar
-document.getElementById("btn-agregar-producto")?.addEventListener("click", async () => {
-  await cargarOpcionesEnSelects([
-    { campo: "supermercado", endpoint: "supermercados", usarId: true },
-    { campo: "proveedor",    endpoint: "proveedor",     usarId: true },
-    { campo: "tipo",         endpoint: "tipos" },
-    { campo: "subtipo",      endpoint: "subtipos" },
-    { campo: "marca",        endpoint: "marcas" },
-  ]);
-  mostrarFormularioAgregar();
-});
+    document.getElementById("btn-agregar-producto")?.addEventListener("click", async () => {
+      await cargarOpcionesEnSelects([
+        { campo: "supermercado", endpoint: "supermercados", usarId: true },
+        { campo: "proveedor",    endpoint: "proveedor",     usarId: true },
+        { campo: "tipo",         endpoint: "tipos" },
+        { campo: "subtipo",      endpoint: "subtipos" },
+        { campo: "marca",        endpoint: "marcas" },
+      ]);
+      mostrarFormularioAgregar();    // pinta/prepare form
+      openModal("modal-agregar");    // abre accesible
+    });
 
     // 💾 Guardar nuevo producto
     document.getElementById("btn-guardar-producto")?.addEventListener("click", guardarProductoNuevo);
@@ -156,30 +159,30 @@ document.getElementById("btn-agregar-producto")?.addEventListener("click", async
       if (campo) campo.style.display = this.checked ? "block" : "none";
     });
 
-    // 🪟 Modales (accesibilidad + UX)
-    const setModalVisible = (id, visible) => {
-      const m = document.getElementById(id);
-      if (!m) return;
-      m.style.display = visible ? "block" : "none";
-      m.setAttribute("aria-hidden", visible ? "false" : "true");
-    };
-    const closeModal = (id) => setModalVisible(id, false);
+    // 🪟 Modales (accesibilidad + UX) — usamos SOLO los helpers importados
 
-    // Cierres explícitos
-    document.getElementById("btn-cerrar-agregar")?.addEventListener("click", () => closeModal("modal-agregar"));
-    document.getElementById("btn-cancelar-agregar")?.addEventListener("click", () => closeModal("modal-agregar"));
-    document.getElementById("btn-cerrar-editar")?.addEventListener("click", () => closeModal("modal-editar"));
-    document.getElementById("btn-cancelar-editar")?.addEventListener("click", () => closeModal("modal-editar"));
+    // Cierres explícitos (limpian y cierran)
+    document.getElementById("btn-cerrar-agregar")
+      ?.addEventListener("click", () => cerrarFormularioAgregar());
+    document.getElementById("btn-cancelar-agregar")
+      ?.addEventListener("click", () => cerrarFormularioAgregar());
+
+    document.getElementById("btn-cerrar-editar")
+      ?.addEventListener("click", () => cerrarFormulario());
+    document.getElementById("btn-cancelar-editar")
+      ?.addEventListener("click", () => cerrarFormulario());
 
     // Escape para cerrar
     window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") ["modal-agregar", "modal-editar"].forEach((id) => setModalVisible(id, false));
+      if (e.key === "Escape") {
+        ["modal-agregar", "modal-editar"].forEach((id) => closeModal(id));
+      }
     });
 
-    // Clic en overlay para cerrar
+    // Clic en overlay para cerrar (fuera de .modal-content)
     document.querySelectorAll(".modal")?.forEach((m) =>
       m.addEventListener("click", (e) => {
-        if (e.target === m) setModalVisible(m.id, false);
+        if (e.target === m) closeModal(m.id);
       })
     );
 

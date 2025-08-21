@@ -268,26 +268,29 @@ export function cargarUbicaciones(supermercado, pais, ciudad) {
 /* ==============================
    🧭 Obtener ubicaciones del formulario (add/edit)
    ============================== */
-export function obtenerUbicacionesGenerico(prefijo) {
-  const paisSelect = document.getElementById(`${prefijo}-pais-existente`);
-  const ciudadSelect = document.getElementById(`${prefijo}-ciudad-existente`);
-  const ubicacionSelect = document.getElementById(`${prefijo}-ubicacion-existente`);
+// Hace que País/Ciudad/Ubicación sean OPCIONALES.
+// Solo devuelve un array con una ubicación si los 3 campos están completos.
+// Prefiere el input cuando el select está en "nuevo", está oculto o no tiene valor.
+export function obtenerUbicacionesGenerico(prefijo, { obligatorio = false } = {}) {
+  const $ = (id) => document.getElementById(id);
 
-  const paisInput = document.getElementById(`${prefijo}-nuevo-pais`);
-  const ciudadInput = document.getElementById(`${prefijo}-nueva-ciudad`);
-  const ubicacionInput = document.getElementById(`${prefijo}-nueva-ubicacion`);
+  const val = (sel, inp) => {
+    const s = (sel?.value || "").trim();
+    const i = (inp?.value || "").trim();
+    const selHidden = sel && getComputedStyle(sel).display === "none";
 
-  const getVal = (sel, inp) =>
-    sel?.value === "nuevo"
-      ? (inp?.value || "").trim()
-      : (sel?.value || "").trim();
+    if (s === "nuevo") return i;     // el usuario eligió "nuevo" -> usa input
+    if (selHidden && i) return i;    // el select está oculto -> usa input
+    return s || i || "";             // si hay valor en el select lo usamos; si no, el input
+  };
 
-  const pais = getVal(paisSelect, paisInput);
-  const ciudad = getVal(ciudadSelect, ciudadInput);
-  const ubicacion = getVal(ubicacionSelect, ubicacionInput);
+  const pais = val($(`${prefijo}-pais-existente`),     $(`${prefijo}-nuevo-pais`));
+  const ciudad = val($(`${prefijo}-ciudad-existente`), $(`${prefijo}-nueva-ciudad`));
+  const ubicacion = val($(`${prefijo}-ubicacion-existente`), $(`${prefijo}-nueva-ubicacion`));
 
-  // Validación estricta en "add"
-  if (prefijo === "add") {
+  // ¿Queremos forzar que sea obligatorio? (por defecto NO)
+  // Si se pusiera obligatorio=true, solo entonces avisamos si falta algo.
+  if (obligatorio && (!pais || !ciudad || !ubicacion)) {
     const faltan = [];
     if (!pais) faltan.push("País");
     if (!ciudad) faltan.push("Ciudad");
@@ -302,14 +305,13 @@ export function obtenerUbicacionesGenerico(prefijo) {
     }
   }
 
-  // En "edit": solo devolvemos si hay los 3 valores
-  const out = [];
+  // Si los 3 están completos, devolvemos la ubicación; si no, opcional -> []
   if (pais && ciudad && ubicacion) {
-    // Usa mayúsculas para empatar con tu backend
-    out.push({ Pais: pais, Ciudad: ciudad, Ubicacion: ubicacion });
+    return [{ Pais: pais, Ciudad: ciudad, Ubicacion: ubicacion }];
   }
-  return out;
+  return [];
 }
+
 
 /* ==============================
    🛒 Supermercados (caché simple)
